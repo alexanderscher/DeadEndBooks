@@ -67,11 +67,11 @@ const Navbar = ({ isSmallDevice }: Props) => {
                 <Link href="/about">About,</Link>
               </button>
 
-              <button className="hover:line-through text-lg mr-2">
-                <Link href="/cart">Cart,</Link>
+              <button className="hover:line-through text-lg ">
+                <Link href="/cart">Cart/</Link>
               </button>
-              <button className="hover:line-through text-lg mr-2">
-                <Link href="/saved">Saved,</Link>
+              <button className="hover:line-through text-lg">
+                <Link href="/saved">Saved/</Link>
               </button>
               <button className="hover:line-through text-lg mr-2">
                 <Link href="/cue">Cue,</Link>
@@ -155,12 +155,12 @@ const Navbar = ({ isSmallDevice }: Props) => {
                   <Link href="/about">About</Link>
                 </button>
               </div>
-              <div className="mt-5 flex flex-col items-start">
+              <div className="mt-5 flex items-start">
                 <button className="hover:line-through text-lg">
-                  <Link href="/cart">Cart</Link>
+                  <Link href="/cart">Cart/</Link>
                 </button>
-                <button className="hover:line-through text-lg mr-2">
-                  <Link href="/saved">Saved</Link>
+                <button className="hover:line-through text-lg">
+                  <Link href="/saved">Saved/</Link>
                 </button>
                 <button className="hover:line-through text-lg">
                   <Link href="/cue">Cue</Link>
