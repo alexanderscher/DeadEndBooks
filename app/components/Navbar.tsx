@@ -193,7 +193,7 @@ const Navbar = ({ isSmallDevice }: Props) => {
                   </a>
                 </button>
                 <button className="hover:line-through text-lg mr-2">
-                  <Link href="/admin">Admin</Link>
+                  <Link href="/admin/addbook">Admin</Link>
                 </button>
               </div>
             </div>

@@ -10,6 +10,10 @@ import Payments from "./Payments";
 import Cart from "./Cart";
 import Cue from "./Cue";
 import Saved from "./Saved";
+import UploadFrontImage from "./UploadFrontImage";
+import UploadBackImage from "./UploadBackImage";
+import AdminNav from "./Admin/AdminNav";
+import AddBook from "./Admin/AddBook";
 
 export {
   Books,
@@ -24,4 +28,8 @@ export {
   Cart,
   Saved,
   Cue,
+  UploadFrontImage,
+  UploadBackImage,
+  AdminNav,
+  AddBook,
 };

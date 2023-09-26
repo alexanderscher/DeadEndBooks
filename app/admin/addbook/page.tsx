@@ -3,16 +3,18 @@ import React, { useEffect, useState } from "react";
 
 import { useMediaQuery } from "react-responsive";
 import Link from "next/link";
-import { Loader, Navbar, Cart } from "@/app/components";
-import AdminNav from "../components/AminNav";
+import { AddBook, AdminNav, Loader, Navbar } from "@/app/components";
 
 const page = () => {
   const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
   const isSmallDeviceQuery = useMediaQuery({ maxWidth: 800 });
+  const isMediumDeviceQuery = useMediaQuery({ maxWidth: 1000 });
+  const [isMediumDevice, setIsMediumDevice] = useState<any>(null);
 
   useEffect(() => {
     setIsSmallDevice(isSmallDeviceQuery);
-  }, [isSmallDeviceQuery]);
+    setIsMediumDevice(isMediumDeviceQuery);
+  }, [isSmallDeviceQuery, isMediumDeviceQuery]);
 
   return (
     <main className={isSmallDevice ? "page-small" : "page"}>
@@ -26,7 +28,11 @@ const page = () => {
               isSmallDevice ? "page-margin-small " : "page-margin w-full"
             }
           >
-            <AdminNav isSmallDevice={isSmallDevice} />
+            <AdminNav
+              isSmallDevice={isSmallDevice}
+              isMediumDevice={isMediumDevice}
+            />
+            <AddBook />
           </div>
         </>
       )}
