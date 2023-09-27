@@ -8,7 +8,7 @@ datasource db {
 }
 
 model Book {
-  id          Int    @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   title       String
   author      String
   publisher   String
@@ -16,5 +16,64 @@ model Book {
   photo_front String
   photo_back  String
   inStock     Boolean
-  
+  Cue         Cue[]
+  Current     Current[]
+  History     History[]
+}
+
+model Current {
+  id           Int     @id @default(autoincrement())
+  bookId       Int
+  book         Book    @relation(fields: [bookId], references: [id])
+  User         User?   @relation(fields: [userId], references: [id])
+  userId       Int?
+  started_date String
+  return_date  String
+  isLate       Boolean
+  daysLate     Int
+}
+
+model History {
+  id           Int    @id @default(autoincrement())
+  bookId       Int
+  book         Book   @relation(fields: [bookId], references: [id])
+  User         User?  @relation(fields: [userId], references: [id])
+  userId       Int?
+  started_date String
+  return_date  String
+}
+
+model Cue {
+  id     Int    @id @default(autoincrement())
+  bookId Int
+  book   Book   @relation(fields: [bookId], references: [id])
+  User   User?  @relation(fields: [userId], references: [id])
+  userId Int?
+  date   String
+}
+
+model Address {
+  id      Int    @id @default(autoincrement())
+  address String
+  zipcode Int
+  city    Int
+  state   String
+  country String
+  phone   String
+  userId  Int    @unique
+  user    User   @relation(name: "UserAddress", fields: [userId], references: [id])
+}
+
+model User {
+  id         Int       @id @default(autoincrement())
+  email      String    @unique
+  password   String
+  name       String
+  admin      Boolean
+  addressId  Int       @unique
+  address    Address?  @relation(name: "UserAddress")
+  subscribed Boolean
+  Current    Current[]
+  History    History[]
+  Cue        Cue[]
 }

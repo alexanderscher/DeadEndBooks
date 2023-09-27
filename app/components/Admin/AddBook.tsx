@@ -147,7 +147,7 @@ const AddBook = () => {
   return (
     <div className="mt-16">
       <form ref={formRef} onSubmit={submitBook}>
-        <div className="flex flex-col w-1/2">
+        <div className="flex flex-col w-full">
           <input
             type="text"
             placeholder="Title"
@@ -262,30 +262,34 @@ const AddBook = () => {
               </div>
             </div>
           </div>
-          <div className="flex mt-10 relative">
+          <div className="flex mt-10 relative w-[500px]">
             {frontImage.length > 0 && (
-              <div className="w-[200px] ">
+              <div className="w-full mr-4">
                 <img src={frontImage[0].fileUrl} alt="" />
-                <p className="text-center">Front Cover</p>
-                <button
-                  className="absolute top-0 left-1 w-[20px] bg-white"
-                  onClick={frontDelete}
-                >
-                  <img src="/delete.png" alt="" />
-                </button>
+                <div className="flex justify-between">
+                  <p className="text-center text-slate-400">Front Cover</p>
+                  <p
+                    className="text-center cursor-pointer text-slate-400"
+                    onClick={frontDelete}
+                  >
+                    Undo
+                  </p>
+                </div>
               </div>
             )}
 
             {backImage.length > 0 && (
-              <div className="w-[200px] relative">
+              <div className="w-full relative">
                 <img src={backImage[0].fileUrl} alt="" />
-                <p className="text-center">Back Cover</p>
-                <button
-                  className="absolute top-0 left-1 w-[20px] bg-white"
-                  onClick={backDelete}
-                >
-                  <img src="/delete.png" alt="" />
-                </button>
+                <div className="flex justify-between">
+                  <p className="text-center text-slate-400">Back Cover</p>
+                  <p
+                    className="text-center cursor-pointer text-slate-400"
+                    onClick={backDelete}
+                  >
+                    Undo
+                  </p>
+                </div>
               </div>
             )}
           </div>

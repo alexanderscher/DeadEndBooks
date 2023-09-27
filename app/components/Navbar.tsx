@@ -55,33 +55,45 @@ const Navbar = ({ isSmallDevice }: Props) => {
             )}
           </div>
           {menu && (
-            <div className="flex mt-4">
-              <button className="hover:line-through text-lg mr-2">
-                <Link href="/">Library,</Link>
-              </button>
+            <div className="flex mt-4 flex-col">
+              <div>
+                <button className="hover:line-through text-lg mr-2">
+                  <Link href="/">Library,</Link>
+                </button>
+                <button className="hover:line-through text-lg mr-2">
+                  <Link href="/profile">Profile,</Link>
+                </button>
 
-              <button className="hover:line-through text-lg mr-2">
-                <Link href="/subscribe">Subscribe,</Link>
-              </button>
-              <button className="hover:line-through text-lg mr-2">
-                <Link href="/about">About,</Link>
-              </button>
+                <button className="hover:line-through text-lg ">
+                  <Link href="/cart">Cart/</Link>
+                </button>
+                <button className="hover:line-through text-lg">
+                  <Link href="/saved">Saved/</Link>
+                </button>
+                <button className="hover:line-through text-lg mr-2">
+                  <Link href="/cue">Cue,</Link>
+                </button>
 
-              <button className="hover:line-through text-lg ">
-                <Link href="/cart">Cart/</Link>
-              </button>
-              <button className="hover:line-through text-lg">
-                <Link href="/saved">Saved/</Link>
-              </button>
-              <button className="hover:line-through text-lg mr-2">
-                <Link href="/cue">Cue,</Link>
-              </button>
-              <button className="hover:line-through text-lg mr-2">
-                <Link href="/profile">Profile,</Link>
-              </button>
-              <button className="hover:line-through text-lg mr-2">
-                <Link href="/saved">Other's reads</Link>
-              </button>
+                <button className="hover:line-through text-lg mr-2">
+                  <Link href="/saved">Other's reads, </Link>
+                </button>
+              </div>
+              <div>
+                <button className="hover:line-through text-lg mr-2">
+                  <Link href="/subscribe">Subscribe,</Link>
+                </button>
+                <button className="hover:line-through text-lg mr-2">
+                  <Link href="/">Sign up,</Link>
+                </button>
+
+                <button className="hover:line-through text-lg mr-2">
+                  <Link href="/subscribe">Login,</Link>
+                </button>
+
+                <button className="hover:line-through text-lg mr-2">
+                  <Link href="/about">About</Link>
+                </button>
+              </div>
             </div>
           )}
           {sort && (
@@ -141,42 +153,50 @@ const Navbar = ({ isSmallDevice }: Props) => {
                         <button className="hover:line-through ">
                           <Link href={`/`}>All</Link>
                         </button>
-                        <button className="hover:line-through ">
+                        <button className="hover:line-through">
                           <Link href={`/home/painting`}>Painting</Link>
                         </button>
-                        <button className="hover:line-through"></button>
-                        <button className="hover:line-through "></button>
-                        <button className="hover:line-through "></button>
-                        <button className="hover:line-through "></button>
+
+                        <button className="hover:line-through ">
+                          <Link href={`/home/sculpture`}>Scultpure</Link>
+                        </button>
+                        <button className="hover:line-through ">
+                          <Link href={`/home/photography_film`}>
+                            Photography/film
+                          </Link>
+                        </button>
+                        <button className="hover:line-through ">
+                          <Link href={`/home/catalogs_magazines`}>
+                            Catalogs and Magazines
+                          </Link>
+                        </button>
+                        <button className="hover:line-through ">
+                          <Link href={`/home/anthologies_miscellaneous`}>
+                            Anthologies/miscellaneous
+                          </Link>
+                        </button>
                       </div>
                     )}
                   </div>
                 ) : null}
-              </div>
-              <div className="mt-5 flex flex-col items-start">
-                <button className="hover:line-through text-lg">
-                  <Link href="/subscribe">Subscribe</Link>
-                </button>
-                <button className="hover:line-through text-lg">
-                  <Link href="/about">About</Link>
-                </button>
-              </div>
-              <div className="mt-5 flex items-start">
-                <button className="hover:line-through text-lg">
-                  <Link href="/cart">Cart/</Link>
-                </button>
-                <button className="hover:line-through text-lg">
-                  <Link href="/saved">Saved/</Link>
-                </button>
-                <button className="hover:line-through text-lg">
-                  <Link href="/cue">Cue</Link>
-                </button>
               </div>
 
               <div className="mt-5 flex flex-col items-start">
                 <button className="hover:line-through text-lg">
                   <Link href="/profile">Profile</Link>
                 </button>
+
+                <div className="flex items-start">
+                  <button className="hover:line-through text-lg">
+                    <Link href="/cart">Cart/</Link>
+                  </button>
+                  <button className="hover:line-through text-lg">
+                    <Link href="/saved">Saved/</Link>
+                  </button>
+                  <button className="hover:line-through text-lg">
+                    <Link href="/cue">Cue</Link>
+                  </button>
+                </div>
                 <button className="hover:line-through text-lg mr-2">
                   <Link href="/saved">Other's reads</Link>
                 </button>
@@ -200,6 +220,20 @@ const Navbar = ({ isSmallDevice }: Props) => {
                 </button>
                 <button className="hover:line-through text-lg mr-2">
                   <Link href="/admin/addbook">Admin</Link>
+                </button>
+              </div>
+              <div className="mt-5 flex flex-col items-start text-lg">
+                <button className="hover:line-through text-lg">
+                  <Link href="/subscribe">Subscribe</Link>
+                </button>
+                <button className="hover:line-through text-lg">
+                  <Link href="/about">About</Link>
+                </button>
+                <button className="hover:line-through text-lg mr-2">
+                  <Link href="/signup">Sign up</Link>
+                </button>
+                <button className="hover:line-through text-lg mr-2">
+                  <Link href="/login">Log in</Link>
                 </button>
               </div>
             </div>

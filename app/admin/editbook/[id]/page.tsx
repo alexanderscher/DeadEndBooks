@@ -27,7 +27,7 @@ const page = () => {
               isSmallDevice ? "page-margin-small " : "page-margin w-full"
             }
           >
-            <EditBook />
+            <EditBook isSmallDevice={isSmallDevice} />
           </div>
         </>
       )}

@@ -6,19 +6,48 @@ import { OurFileRouter } from "../../api/uploadthing/core";
 import { useState } from "react";
 import { Book } from "@/types";
 import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 
-const EditBook = () => {
+interface Props {
+  isSmallDevice: boolean;
+}
+const EditBook = ({ isSmallDevice }: Props) => {
+  const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
   const [bookId, setBookId] = useState<number | null>(null);
+  const [bookTitle, setBookTitle] = useState<number | null>(null);
+
+  const [bookPlaceHolder, setBookPlaceHolder] = useState({
+    title: "",
+    author: "",
+    publisher: "",
+    medium: "",
+    photo_front: "",
+    photo_back: "",
+  });
 
   const [book, setBook] = useState({
     title: "",
     author: "",
     publisher: "",
     medium: "",
-    frontCover: "",
-    backCover: "",
+    photo_front: "",
+    photo_back: "",
   });
+
+  const currentPage = usePathname();
+  useEffect(() => {
+    const getBooks = async () => {
+      const res = await fetch(`/api/book/${currentPage.split("/")[3]}`);
+      const data = await res.json();
+      setBookTitle(data.title);
+      setBookPlaceHolder(data);
+
+      setBookId(data.id);
+      setBook(data);
+    };
+    getBooks();
+  }, []);
 
   const [frontImage, setFrontImage] = useState<
     {
@@ -38,20 +67,30 @@ const EditBook = () => {
   const [uploaded, setUploaded] = useState(false);
 
   useEffect(() => {
-    if (frontImage.length && backImage.length) {
+    if (frontImage.length) {
       setBook((prevBook) => ({
         ...prevBook,
-        frontCover: frontImage[0].fileUrl,
-        backCover: backImage[0].fileUrl,
+        photo_front: frontImage[0].fileUrl,
       }));
     }
-  }, [frontImage, backImage]);
+  }, [frontImage]);
+
+  useEffect(() => {
+    if (backImage.length) {
+      setBook((prevBook) => ({
+        ...prevBook,
+
+        photo_back: backImage[0].fileUrl,
+      }));
+    }
+    console.log("chnage");
+  }, [backImage]);
 
   const frontDelete = () => {
     setFrontImage([]);
     setBook((prevBook) => ({
       ...prevBook,
-      frontCover: "",
+      photo_front: "",
     }));
   };
 
@@ -59,7 +98,7 @@ const EditBook = () => {
     setBackImage([]);
     setBook((prevBook) => ({
       ...prevBook,
-      backCover: "",
+      photo_back: "",
     }));
   };
 
@@ -94,19 +133,15 @@ const EditBook = () => {
     }));
   };
 
-  const submitBook = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    console.log("Submitting book:", book);
-
+  const deleteBook = async () => {
     if (!bookId || typeof bookId !== "number") {
       setErrorText("Invalid book ID.");
       return;
     }
     console.log("URL:", `/api/book/${bookId}`);
-
     try {
       const response = await fetch(`/api/book/edit/${bookId}`, {
-        method: "PUT",
+        method: "DELETE",
         headers: {
           "Content-Type": "application/json",
         },
@@ -118,44 +153,67 @@ const EditBook = () => {
         setErrorText(errorText);
         throw new Error(errorText);
       } else {
-        setErrorText("");
-        setUploaded(true);
-        setTimeout(() => {
-          setUploaded(false);
-        }, 2000);
-
-        if (formRef.current) {
-          formRef.current.reset();
-          frontDelete();
-          backDelete();
-        }
-        console.log(`Sending PUT request for bookId: ${bookId}`);
+        router.push("/admin/allbooks");
       }
     } catch (error) {
       console.error(error);
     }
   };
 
-  const currentPage = usePathname();
-  useEffect(() => {
-    const getBooks = async () => {
-      const res = await fetch(`/api/book/${currentPage.split("/")[3]}`);
-      const data = await res.json();
-      setBookId(data.id);
-      setBook(data);
-    };
-    getBooks();
-  }, []);
+  const submitBook = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (!bookId || typeof bookId !== "number") {
+      setErrorText("Invalid book ID.");
+      return;
+    }
+    console.log("URL:", `/api/book/${bookId}`);
+
+    if (JSON.stringify(book) === JSON.stringify(bookPlaceHolder)) {
+      console.log(JSON.stringify(book), JSON.stringify(bookPlaceHolder));
+    } else {
+      try {
+        const response = await fetch(`/api/book/edit/${bookId}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(book),
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          setErrorText(errorText);
+          throw new Error(errorText);
+        } else {
+          setErrorText("");
+          setUploaded(true);
+          setTimeout(() => {
+            setUploaded(false);
+          }, 2000);
+
+          if (formRef.current) {
+            formRef.current.reset();
+            frontDelete();
+            backDelete();
+          }
+          console.log(`Sending PUT request for bookId: ${bookId}`);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
 
   return (
     <div>
-      <div>
+      <div className="">
         <form ref={formRef} onSubmit={submitBook}>
           <div className="flex flex-col">
             <input
               type="text"
-              placeholder={book.title}
-              className="border-black text-[20px] border-[3px] p-2 placeholder:text-black  w-[550px] focus:outline-none"
+              placeholder={bookPlaceHolder.title}
+              className="border-black text-[20px] border-b-[3px] placeholder:text-black  w-full focus:outline-none"
               onChange={handleTitleChange}
             />
             {errorText.includes("title") && (
@@ -163,8 +221,8 @@ const EditBook = () => {
             )}
             <input
               type="text"
-              placeholder={book.author}
-              className="border-black text-[20px] border-[3px] p-2 placeholder:text-black mt-6 w-[550px] focus:outline-none"
+              placeholder={bookPlaceHolder.author}
+              className="border-black text-[20px] border-b-[3px] placeholder:text-black mt-6 w-full focus:outline-none"
               onChange={handleAuthorChange}
             />
             {errorText.includes("author") && (
@@ -172,19 +230,19 @@ const EditBook = () => {
             )}
             <input
               type="text"
-              placeholder={book.publisher}
-              className="border-black text-[20px] border-[3px] p-2 placeholder:text-black mt-6 w-[550px] focus:outline-none"
+              placeholder={bookPlaceHolder.publisher}
+              className="border-black text-[20px] border-b-[3px] placeholder:text-black mt-6 w-full focus:outline-none"
               onChange={handlePublisherChange}
             />
             {errorText.includes("publisher") && (
               <p className="text-red-500">Missing publisher field</p>
             )}
             <select
-              className="border-black text-[20px] border-[3px] p-2 placeholder:text-black mt-6 w-[550px] focus:outline-none cursor-pointer"
+              className="border-black text-[20px] border-b-[3px] placeholder:text-black mt-6 w-full focus:outline-none cursor-pointer"
               onChange={handleMediumChange}
             >
-              <option value="" disabled selected>
-                Edit medium
+              <option value="" disabled selected className="text-black">
+                {bookPlaceHolder.medium}
               </option>
               <option value="painting">Painting</option>
               <option value="sculpture">Sculpture</option>
@@ -197,7 +255,7 @@ const EditBook = () => {
             {errorText.includes("medium") && (
               <p className="text-red-500">Missing medium field</p>
             )}
-            <div className="w-[550px] flex justify-start mt-6">
+            <div className="w-full flex justify-start mt-6">
               <div className="mr-6">
                 <div className="">
                   <UploadButton<OurFileRouter>
@@ -208,7 +266,7 @@ const EditBook = () => {
                     content={{
                       allowedContent: (
                         <div className="text-[12px] mt-2">
-                          Font cover photo
+                          Edit front cover photo
                           {errorText.includes("frontCover") && (
                             <p className="text-red-500">
                               Missing front cover field
@@ -242,7 +300,7 @@ const EditBook = () => {
                     content={{
                       allowedContent: (
                         <div className="text-[12px] mt-2">
-                          Back cover photo
+                          Edit back cover photo
                           {errorText.includes("frontCover") && (
                             <p className="text-red-500">
                               Missing back cover field
@@ -268,44 +326,56 @@ const EditBook = () => {
             </div>
             <div className="flex mt-10 relative">
               {frontImage.length > 0 && (
-                <div className="w-[200px] ">
+                <div className="w-[300px] mr-6">
                   <img src={frontImage[0].fileUrl} alt="" />
-                  <p className="text-center">Front Cover</p>
-                  <button
-                    className="absolute top-0 left-1 w-[20px] bg-white"
-                    onClick={frontDelete}
-                  >
-                    <img src="/delete.png" alt="" />
-                  </button>
+                  <div className="flex justify-between">
+                    <p className="text-cente text-slate-400">Front Cover</p>
+                    <p
+                      className="text-center cursor-pointer text-slate-400"
+                      onClick={frontDelete}
+                    >
+                      Undo
+                    </p>
+                  </div>
                 </div>
               )}
 
               {backImage.length > 0 && (
-                <div className="w-[200px] relative">
+                <div className="w-[300px] relative">
                   <img src={backImage[0].fileUrl} alt="" />
-                  <p className="text-center">Back Cover</p>
-                  <button
-                    className="absolute top-0 left-1 w-[20px] bg-white"
-                    onClick={backDelete}
-                  >
-                    <img src="/delete.png" alt="" />
-                  </button>
+                  <div className="flex justify-between">
+                    <p className="text-cente text-slate-400">Back Cover</p>
+                    <p
+                      className="text-center cursor-pointer text-slate-400"
+                      onClick={backDelete}
+                    >
+                      Undo
+                    </p>
+                  </div>
                 </div>
               )}
             </div>
+            <div className="flex">
+              {uploaded ? (
+                <p className="text-[32px] text-red-500 text-start mt-4 hover:line-through">
+                  Edited!
+                </p>
+              ) : (
+                <button
+                  type="submit"
+                  className="text-[32px] text-red-500 text-start mt-4 hover:line-through"
+                >
+                  Edit
+                </button>
+              )}
 
-            {uploaded ? (
-              <p className="text-[32px] text-red-500 text-start mt-4 hover:line-through">
-                Edited!
-              </p>
-            ) : (
               <button
-                type="submit"
-                className="text-[32px] text-red-500 text-start mt-4 hover:line-through"
+                onClick={deleteBook}
+                className="text-[32px] text-red-500 text-start mt-4 hover:line-through ml-6"
               >
-                Edit
+                Delete
               </button>
-            )}
+            </div>
           </div>
         </form>
       </div>

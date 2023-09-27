@@ -6,8 +6,6 @@ export async function GET() {
     const books = await prisma.book.findMany({
       orderBy: { title: "asc" },
     });
-    console.log(books);
-
     return new NextResponse(JSON.stringify(books), {
       status: 200,
       headers: { "Content-Type": "application/json" },
