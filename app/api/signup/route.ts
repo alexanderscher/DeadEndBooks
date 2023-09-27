@@ -70,8 +70,8 @@ export async function POST(request: Request): Promise<NextResponse> {
           name: name,
           email: email,
           password: hashedPassword,
-
           admin: false,
+          subscribed: false,
         },
       });
 

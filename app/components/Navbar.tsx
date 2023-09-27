@@ -1,7 +1,9 @@
 "use client";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { LogOutButton } from "../auth";
 
 interface Props {
   isSmallDevice: boolean;
@@ -11,6 +13,7 @@ const Navbar = ({ isSmallDevice }: Props) => {
   const currentPage = usePathname();
   const [sort, setSort] = useState(false);
   const [menu, setMenu] = useState(false);
+  const { data: session } = useSession();
 
   return (
     <>
@@ -83,16 +86,22 @@ const Navbar = ({ isSmallDevice }: Props) => {
                   <Link href="/subscribe">Subscribe,</Link>
                 </button>
                 <button className="hover:line-through text-lg mr-2">
-                  <Link href="/">Sign up,</Link>
+                  <Link href="/about">About,</Link>
                 </button>
 
-                <button className="hover:line-through text-lg mr-2">
-                  <Link href="/subscribe">Login,</Link>
-                </button>
-
-                <button className="hover:line-through text-lg mr-2">
-                  <Link href="/about">About</Link>
-                </button>
+                {session ? (
+                  <LogOutButton />
+                ) : (
+                  <>
+                    {" "}
+                    <button className="hover:line-through text-lg mr-2">
+                      <Link href="/">Sign up,</Link>
+                    </button>
+                    <button className="hover:line-through text-lg mr-2">
+                      <Link href="/subscribe">Login,</Link>
+                    </button>
+                  </>
+                )}
               </div>
             </div>
           )}
@@ -229,12 +238,20 @@ const Navbar = ({ isSmallDevice }: Props) => {
                 <button className="hover:line-through text-lg">
                   <Link href="/about">About</Link>
                 </button>
-                <button className="hover:line-through text-lg mr-2">
-                  <Link href="/signup">Sign up</Link>
-                </button>
-                <button className="hover:line-through text-lg mr-2">
-                  <Link href="/login">Log in</Link>
-                </button>
+
+                {session ? (
+                  <LogOutButton />
+                ) : (
+                  <>
+                    {" "}
+                    <button className="hover:line-through text-lg mr-2">
+                      <Link href="/signup">Sign up</Link>
+                    </button>
+                    <button className="hover:line-through text-lg mr-2">
+                      <Link href="/login">Log in</Link>
+                    </button>
+                  </>
+                )}
               </div>
             </div>
           </div>
