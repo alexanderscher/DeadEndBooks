@@ -1,9 +1,8 @@
 "use client";
+import { Books, Loader, Navbar } from "@/app/components";
 import React, { useEffect, useState } from "react";
-import Navbar from "./components/Navbar";
-import Loader from "./components/Loader";
+
 import { useMediaQuery } from "react-responsive";
-import Books from "./components/Books";
 
 const page = () => {
   const [isSmallDevice, setIsSmallDevice] = useState<any>(null);

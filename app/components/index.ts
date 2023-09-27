@@ -1,5 +1,4 @@
 import Books from "./Books";
-import BooksSmall from "./BooksSmall";
 import Loader from "./Loader";
 import Navbar from "./Navbar";
 import Profile from "./Profile";
@@ -17,7 +16,6 @@ import AddBook from "./Admin/AddBook";
 
 export {
   Books,
-  BooksSmall,
   Loader,
   Navbar,
   Profile,

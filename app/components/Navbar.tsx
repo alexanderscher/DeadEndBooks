@@ -25,7 +25,7 @@ const Navbar = ({ isSmallDevice }: Props) => {
               <Link href="/">DEAD END BOOKS</Link>
             </h1>
 
-            {currentPage === "/" ? (
+            {currentPage === "/" || currentPage.includes("/home") ? (
               <div className="mt-2">
                 <h1
                   className="text-xl cursor-pointer text-end hover:line-through"
@@ -86,18 +86,27 @@ const Navbar = ({ isSmallDevice }: Props) => {
           )}
           {sort && (
             <div className="flex flex-wrap mt-4">
-              <button className="hover:line-through text-lg mr-2">All,</button>
               <button className="hover:line-through text-lg mr-2">
-                Painting,
+                <Link href={`/`}>All,</Link>
               </button>
               <button className="hover:line-through text-lg mr-2">
-                Photography/film,
+                <Link href={`/home/painting`}>Painting,</Link>
               </button>
               <button className="hover:line-through text-lg mr-2">
-                Catalogs and Magazines,
+                <Link href={`/home/sculpture`}>Scultpure,</Link>
               </button>
               <button className="hover:line-through text-lg mr-2">
-                Anthologies/miscellaneous
+                <Link href={`/home/photography_film`}>Photography/film,</Link>
+              </button>
+              <button className="hover:line-through text-lg mr-2">
+                <Link href={`/home/catalogs_magazines`}>
+                  Catalogs and Magazines,
+                </Link>
+              </button>
+              <button className="hover:line-through text-lg mr-2">
+                <Link href={`/home/anthologies_miscellaneous`}>
+                  Anthologies/miscellaneous
+                </Link>
               </button>
             </div>
           )}
@@ -117,7 +126,7 @@ const Navbar = ({ isSmallDevice }: Props) => {
                 </button>
               </div>
               <div className="">
-                {currentPage === "/" ? (
+                {currentPage === "/" || currentPage.includes("/home") ? (
                   <div className="flex flex-col items-start">
                     <button
                       className="hover:line-through text-lg flex items-center"
@@ -129,19 +138,16 @@ const Navbar = ({ isSmallDevice }: Props) => {
                     </button>
                     {sort && (
                       <div className="flex flex-col items-start text-md">
-                        <button className="hover:line-through ">All</button>
                         <button className="hover:line-through ">
-                          Painting
+                          <Link href={`/`}>All</Link>
                         </button>
                         <button className="hover:line-through ">
-                          Photography/film
+                          <Link href={`/home/painting`}>Painting</Link>
                         </button>
-                        <button className="hover:line-through ">
-                          Catalogs and Magazines
-                        </button>
-                        <button className="hover:line-through ">
-                          Anthologies/miscellaneous
-                        </button>
+                        <button className="hover:line-through"></button>
+                        <button className="hover:line-through "></button>
+                        <button className="hover:line-through "></button>
+                        <button className="hover:line-through "></button>
                       </div>
                     )}
                   </div>

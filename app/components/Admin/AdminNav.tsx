@@ -8,11 +8,7 @@ interface Props {
 
 const AdminNav = ({ isSmallDevice, isMediumDevice }: Props) => {
   return (
-    <div
-      className={
-        isSmallDevice ? "flex mt-10 border-b-[2px] border-black" : "flex w-full"
-      }
-    >
+    <div className={isSmallDevice ? "flex mt-10" : "flex w-full"}>
       <h1
         className={`mr-6 ${
           isSmallDevice
@@ -33,7 +29,7 @@ const AdminNav = ({ isSmallDevice, isMediumDevice }: Props) => {
             : "text-[28px]"
         } hover:line-through cursor-pointer `}
       >
-        <Link href="/admin/allbook">See All Books</Link>
+        <Link href="/admin/allbooks">See All Books</Link>
       </h1>
       <h1
         className={`mr-6 ${
