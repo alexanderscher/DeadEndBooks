@@ -22,19 +22,12 @@ async function getDatabaseId(user: JWT) {
         },
         select: {
           id: true,
-          image: true,
-          provider: true,
           admin: true,
         },
       });
 
       if (queryResult) {
-        return [
-          queryResult.id,
-          queryResult.image,
-          queryResult.provider,
-          queryResult.admin,
-        ];
+        return [queryResult.id, queryResult.admin];
       }
     } else {
       return null;
@@ -116,9 +109,8 @@ export const authOptions: NextAuthOptions = {
           user: {
             ...session.user,
             id: databaseId[0] as number,
-            image: databaseId[1] as string,
-            provider: databaseId[2] as string,
-            admin: databaseId[3] as boolean,
+
+            admin: databaseId[1] as boolean,
           } as SessionUser,
         };
       }

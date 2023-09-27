@@ -10,6 +10,7 @@ interface DataProps {
   name: string;
   email: string;
   password: string;
+  subscribed: boolean;
 }
 
 export default function Signup() {
@@ -18,6 +19,7 @@ export default function Signup() {
     name: "",
     email: "",
     password: "",
+    subscribed: false,
   });
 
   const loginUser = async (e: FormEvent<HTMLFormElement>) => {
@@ -65,18 +67,6 @@ export default function Signup() {
       loginUser(e);
     }
   };
-
-  const [google, setGoogle] = useState(false);
-
-  const loginUserGoogle = async () => {
-    await signIn("google", { redirect: false, callbackUrl: "/" });
-    setGoogle(true);
-    if (google) {
-      router.push("/");
-    }
-  };
-
-  const isSmallDevice = useMediaQuery({ maxWidth: 700 });
 
   return (
     <div className="w-full h-screen">
