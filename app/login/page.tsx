@@ -16,7 +16,6 @@ export default function Login() {
   console.log(data);
 
   const [google, setGoogle] = useState(false);
-  const isSmallDevice = useMediaQuery({ maxWidth: 800 });
 
   const [missingEmail, setMissingEmail] = useState(false);
   const [missingPassword, setMissingPassowrd] = useState(false);
@@ -51,14 +50,6 @@ export default function Login() {
       setMissingPassowrd(false);
       setNotFound(false);
       setInvalidP(false);
-      router.push("/");
-    }
-  };
-
-  const loginUserGoogle = async () => {
-    await signIn("google", { redirect: false, callbackUrl: "/" });
-    setGoogle(true);
-    if (google) {
       router.push("/");
     }
   };
