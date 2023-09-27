@@ -1,17 +1,11 @@
-import NextAuth, { type NextAuthOptions } from "next-auth";
+import NextAuth, { User, type NextAuthOptions, Session } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { compare } from "bcrypt";
 
 import prisma from "@/prisma/client";
 import { JWT } from "next-auth/jwt";
-
-interface SessionUser {
-  id: number;
-  image: string;
-  provider: string;
-  admin: boolean;
-}
+import { ExtendedSession } from "@/types";
 
 async function getDatabaseId(user: JWT) {
   try {
@@ -27,7 +21,7 @@ async function getDatabaseId(user: JWT) {
       });
 
       if (queryResult) {
-        return [queryResult.id, queryResult.admin];
+        return [queryResult.id.toString(), queryResult.admin];
       }
     } else {
       return null;
@@ -104,15 +98,15 @@ export const authOptions: NextAuthOptions = {
       const databaseId = await getDatabaseId(token);
 
       if (databaseId !== null && databaseId !== undefined) {
-        return {
+        const extendedSession: ExtendedSession = {
           ...session,
           user: {
             ...session.user,
-            id: databaseId[0] as number,
-
+            id: databaseId[0] as string,
             admin: databaseId[1] as boolean,
-          } as SessionUser,
+          },
         };
+        return extendedSession;
       }
     },
     jwt: ({ token, user }) => {

@@ -1,6 +1,20 @@
-import React from "react";
+"use client";
+import { ExtendedSession, UserType } from "@/types";
+import { useSession } from "next-auth/react";
+import React, { useEffect } from "react";
+import { User, Session } from "next-auth";
 
 const Profile = () => {
+  const { data: session } = useSession();
+  useEffect(() => {
+    const getUser = async () => {
+      const res = await fetch(
+        `/api/user/${(session as ExtendedSession)?.user?.id}`
+      );
+      const data = await res.json();
+      console.log(data);
+    };
+  }, [session]);
   return (
     <div className="mt-10  w-full">
       <div className="mb-10">
