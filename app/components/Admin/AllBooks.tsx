@@ -33,6 +33,9 @@ const AllBooks = () => {
             <p className="mb-2">{book.medium}</p>
             <p className="text-slate-400">Publisher</p>
             <p className="mb-2">{book.publisher}</p>
+            <button className="text-red-500">
+              <Link href={`/admin/editbook/${book.title}`}>Edit</Link>
+            </button>
           </div>
 
           <div className="w-1/2 mt-2 flex ">

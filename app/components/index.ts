@@ -13,6 +13,7 @@ import UploadFrontImage from "./UploadFrontImage";
 import UploadBackImage from "./UploadBackImage";
 import AdminNav from "./Admin/AdminNav";
 import AddBook from "./Admin/AddBook";
+import EditBook from "./Admin/EditBook";
 
 export {
   Books,
@@ -30,4 +31,5 @@ export {
   UploadBackImage,
   AdminNav,
   AddBook,
+  EditBook,
 };
