@@ -3,25 +3,33 @@ import prisma from "@/prisma/client";
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: number } }
+  { params }: { params: { id: string } }
 ) {
-  const { id } = params;
-  console.log(id);
-
   try {
-    const user = await prisma.user.findUnique({
-      where: { id: id },
-    });
-    console.log(user);
+    const { id } = params;
 
-    return new NextResponse(JSON.stringify(user), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
+    if (!id) {
+      return new NextResponse("Missing name. Cannot find user.", {
+        status: 400,
+      });
+    }
+
+    const parsedId = parseInt(id);
+
+    if (isNaN(parsedId)) {
+      return new NextResponse("Invalid ID provided.", { status: 400 });
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id: parsedId },
+      include: {
+        address: true,
+      },
     });
-  } catch (err) {
-    return new NextResponse(JSON.stringify({ error: "Database error" }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
+
+    return NextResponse.json(user);
+  } catch (error) {
+    console.error(error);
+    return new NextResponse("Failed to find user", { status: 500 });
   }
 }

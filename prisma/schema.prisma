@@ -55,8 +55,8 @@ model Cue {
 model Address {
   id      Int    @id @default(autoincrement())
   address String
-  zipcode Int
-  city    Int
+  zipcode String
+  city    String
   state   String
   country String
   phone   String
