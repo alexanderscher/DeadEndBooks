@@ -75,12 +75,15 @@ const Profile = () => {
   }, [session]);
   return (
     <div className="mt-10  w-full">
-      <h1 className="text-[20px] text-red-500 hover:line-through cursor-pointer mb- text-end">
-        Edit profile
-      </h1>
-      <div className="mb-10">
-        <span className="text-[16px] text-slate-400">Name</span>
-        <h1 className="text-[30px]">{user.name}</h1>
+      <div className="mb-10 flex justify-between">
+        <div>
+          <span className="text-[16px] text-slate-400">Name</span>
+          <h1 className="text-[30px]">{user.name}</h1>
+        </div>
+
+        <h1 className="text-[20px] text-red-500 hover:line-through cursor-pointer mb- text-end">
+          Edit profile
+        </h1>
       </div>
       <div className="mb-10">
         <span className="text-[16px] text-slate-400">Email</span>
