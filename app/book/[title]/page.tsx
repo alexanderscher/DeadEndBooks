@@ -1,16 +1,22 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import Navbar from "../../components/Navbar";
+import React, { use, useEffect, useState } from "react";
+import Navbar from "../../components/Navbar/Navbar";
 import Loader from "../../components/Loader";
 import { useMediaQuery } from "react-responsive";
 import { usePathname } from "next/navigation";
+import { ExtendedSession } from "@/types";
+import { useSession } from "next-auth/react";
 
 const page = () => {
   const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
   const isSmallDeviceQuery = useMediaQuery({ maxWidth: 800 });
   const currentPage = usePathname();
   const title = currentPage.split("/")[2];
+  const { data: session } = useSession();
+  const [userId, setuserId] = useState("");
+
   const [pageData, setPageData] = useState({
+    id: "",
     title: "",
     author: "",
     publisher: "",
@@ -32,6 +38,37 @@ const page = () => {
     };
     getBook();
   }, []);
+
+  useEffect(() => {
+    const sessionId = (session as ExtendedSession)?.user?.id;
+    setuserId(sessionId);
+  }, [session]);
+
+  const handleSave = async () => {
+    const res = await fetch(`/api/saved`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        bookId: pageData.id,
+        userId: userId,
+      }),
+    });
+  };
+
+  const handleCart = async () => {
+    const res = await fetch(`/api/cart`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        bookId: pageData.id,
+        userId: userId,
+      }),
+    });
+  };
 
   return (
     <main className={isSmallDevice ? "page-small" : "page"}>
@@ -110,6 +147,7 @@ const page = () => {
                   className={`${
                     isSmallDevice ? "text-[24px]" : "book-text"
                   }  cursor-pointer hover:line-through text-red-500`}
+                  onClick={handleSave}
                 >
                   Save
                 </h1>
@@ -117,6 +155,7 @@ const page = () => {
                   className={`${
                     isSmallDevice ? "text-[24px]" : "book-text"
                   }  cursor-pointer hover:line-through text-red-500`}
+                  onClick={handleCart}
                 >
                   Add to cart
                 </h1>

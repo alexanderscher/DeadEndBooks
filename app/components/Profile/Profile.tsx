@@ -1,9 +1,8 @@
 "use client";
 import { ExtendedSession, UserType } from "@/types";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { User, Session } from "next-auth";
-import { get } from "http";
 
 const Profile = () => {
   const { data: session } = useSession();
@@ -22,7 +21,6 @@ const Profile = () => {
       phone: "",
     },
   });
-  console.log(user);
 
   const [formData, setFormData] = useState({
     address: "",
@@ -34,6 +32,8 @@ const Profile = () => {
     userId: "",
   });
 
+  const [errorText, setErrorText] = useState(false);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({ ...prevState, [name]: value }));
@@ -41,18 +41,28 @@ const Profile = () => {
 
   const submitAddress = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const res = await fetch("/api/user/address", {
-      method: "POST",
-      body: JSON.stringify(formData),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const data = await res.json();
-    if (res.ok) {
-      location.reload();
+
+    if (
+      Object.entries(formData).every(
+        ([key, value]) => key === "userId" || value === ""
+      )
+    ) {
     } else {
-      console.error("Error submitting address:", data.message);
+      const res = await fetch("/api/user/address", {
+        method: "POST",
+        body: JSON.stringify(formData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setErrorText(false);
+        location.reload();
+      } else {
+        console.error("Error submitting address:", data.message);
+        setErrorText(true);
+      }
     }
   };
 
@@ -82,20 +92,19 @@ const Profile = () => {
         </div>
 
         <h1 className="text-[20px] text-red-500 hover:line-through cursor-pointer mb- text-end">
-          Edit profile
+          <Link href="/profile/editprofile"> Edit profile</Link>
         </h1>
       </div>
       <div className="mb-10">
         <span className="text-[16px] text-slate-400">Email</span>
         <h1 className="text-[30px]">{user.email}</h1>
       </div>
+
       <div className="mb-10 flex flex-col flex-wrap">
         <span className="text-[16px] text-slate-400">Address</span>
         {user.address == null ? (
           <div className=" ">
-            <h1 className="text-[20px] text-red-500 mt-6">
-              Please fill out address
-            </h1>
+            <h1 className="text-[20px] ">Please fill out address</h1>
 
             <form onSubmit={submitAddress}>
               <input
@@ -104,7 +113,7 @@ const Profile = () => {
                 placeholder="Address"
                 value={formData.address}
                 onChange={handleChange}
-                className="border-black text-[20px] border-b-[3px] placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
+                className="border-black text-[20px] border-b-[2px] placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
               />
               <input
                 type="text"
@@ -112,7 +121,7 @@ const Profile = () => {
                 placeholder="Zip Code"
                 value={formData.zipCode}
                 onChange={handleChange}
-                className="border-black text-[20px] border-b-[3px] placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
+                className="border-black text-[20px] border-b-[2px] placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
               />
               <input
                 type="text"
@@ -120,7 +129,7 @@ const Profile = () => {
                 placeholder="City"
                 value={formData.city}
                 onChange={handleChange}
-                className="border-black text-[20px] border-b-[3px] placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
+                className="border-black text-[20px] border-b-[2px] placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
               />
               <input
                 type="text"
@@ -128,7 +137,7 @@ const Profile = () => {
                 placeholder="State"
                 value={formData.state}
                 onChange={handleChange}
-                className="border-black text-[20px] border-b-[3px] placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
+                className="border-black text-[20px] border-b-[2px] placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
               />
               <input
                 type="text"
@@ -136,7 +145,7 @@ const Profile = () => {
                 placeholder="Country"
                 value={formData.country}
                 onChange={handleChange}
-                className="border-black text-[20px] border-b-[3px] placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
+                className="border-black text-[20px] border-b-[2px] placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
               />
               <input
                 type="text"
@@ -144,9 +153,12 @@ const Profile = () => {
                 placeholder="Phone"
                 value={formData.phone}
                 onChange={handleChange}
-                className="border-black text-[20px] border-b-[3px] placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
+                className="border-black text-[20px] border-b-[2px] placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
               />
-              <button className="text-red-500 hover:line-through text-[30px] mt-6">
+              {errorText && (
+                <p className="text-red-500">Please fill out all fields</p>
+              )}
+              <button className="text-red-500 hover:line-through text-[20px] mt-2">
                 Submit
               </button>
             </form>

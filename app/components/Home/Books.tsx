@@ -27,6 +27,7 @@ interface Props {
   isSmallDevice: boolean;
   isMediumDevice: boolean;
 }
+
 const Books = ({ isSmallDevice, isMediumDevice }: Props) => {
   const currentPage = usePathname();
 

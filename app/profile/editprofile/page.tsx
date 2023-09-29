@@ -1,20 +1,23 @@
 "use client";
+import {
+  EditBook,
+  EditProfile,
+  Loader,
+  Navbar,
+  Profile,
+  ProfileNav,
+} from "@/app/components";
 import React, { useEffect, useState } from "react";
-import Navbar from "./components/Navbar/Navbar";
-import Loader from "./components/Loader";
+
 import { useMediaQuery } from "react-responsive";
-import Books from "./components/Home/Books";
 
 const page = () => {
   const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
   const isSmallDeviceQuery = useMediaQuery({ maxWidth: 800 });
-  const isMediumDeviceQuery = useMediaQuery({ maxWidth: 1200 });
-  const [isMediumDevice, setIsMediumDevice] = useState<any>(null);
 
   useEffect(() => {
     setIsSmallDevice(isSmallDeviceQuery);
-    setIsMediumDevice(isMediumDeviceQuery);
-  }, [isSmallDeviceQuery, isMediumDeviceQuery]);
+  }, [isSmallDeviceQuery]);
 
   return (
     <main className={isSmallDevice ? "page-small" : "page"}>
@@ -23,11 +26,15 @@ const page = () => {
       ) : (
         <>
           <Navbar isSmallDevice={isSmallDevice} />
+          <div
+            className={
+              isSmallDevice ? "page-margin-small" : "page-margin w-full"
+            }
+          >
+            <ProfileNav isSmallDevice={isSmallDevice} />
 
-          <Books
-            isSmallDevice={isSmallDevice}
-            isMediumDevice={isMediumDevice}
-          />
+            <EditProfile />
+          </div>
         </>
       )}
     </main>

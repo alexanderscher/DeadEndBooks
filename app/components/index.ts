@@ -1,19 +1,18 @@
-import Books from "./Books";
+import Books from "./Home/Books";
 import Loader from "./Loader";
-import Navbar from "./Navbar";
-import Profile from "./Profile";
-import Rentals from "./Rentals";
-import ProfileNav from "./ProfileNav";
-import History from "./History";
-import Payments from "./Payments";
-import Cart from "./Cart";
-import Cue from "./Cue";
-import Saved from "./Saved";
-import UploadFrontImage from "./UploadFrontImage";
-import UploadBackImage from "./UploadBackImage";
+import Navbar from "./Navbar/Navbar";
+import Profile from "./Profile/Profile";
+import Rentals from "./Profile/Rentals";
+import ProfileNav from "./Profile/ProfileNav";
+import History from "./Profile/History";
+import Payments from "./Profile/Payments";
+import Cart from "./Navbar/Cart";
+import Cue from "./Navbar/Cue";
+import Saved from "./Navbar/Saved";
 import AdminNav from "./Admin/AdminNav";
 import AddBook from "./Admin/AddBook";
 import EditBook from "./Admin/EditBook";
+import EditProfile from "./Profile/EditProfile";
 
 export {
   Books,
@@ -27,9 +26,8 @@ export {
   Cart,
   Saved,
   Cue,
-  UploadFrontImage,
-  UploadBackImage,
   AdminNav,
   AddBook,
   EditBook,
+  EditProfile,
 };

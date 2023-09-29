@@ -24,6 +24,8 @@ export async function GET(
       where: { id: parsedId },
       include: {
         address: true,
+        Saved: true,
+        Cart: true,
       },
     });
 

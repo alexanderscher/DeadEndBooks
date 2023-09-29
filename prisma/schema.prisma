@@ -19,6 +19,8 @@ model Book {
   Cue         Cue[]
   Current     Current[]
   History     History[]
+  Cart        Cart[]
+  Saved       Saved[]
 }
 
 model Current {
@@ -52,6 +54,22 @@ model Cue {
   date   String
 }
 
+model Cart {
+  id     Int   @id @default(autoincrement())
+  bookId Int
+  book   Book  @relation(fields: [bookId], references: [id])
+  User   User? @relation(fields: [userId], references: [id])
+  userId Int?
+}
+
+model Saved {
+  id     Int   @id @default(autoincrement())
+  bookId Int
+  book   Book  @relation(fields: [bookId], references: [id])
+  User   User? @relation(fields: [userId], references: [id])
+  userId Int?
+}
+
 model Address {
   id      Int    @id @default(autoincrement())
   address String
@@ -70,10 +88,11 @@ model User {
   password   String
   name       String
   admin      Boolean
-  addressId  Int?      @unique
   address    Address?  @relation(name: "UserAddress")
   subscribed Boolean
   Current    Current[]
   History    History[]
   Cue        Cue[]
+  Cart       Cart[]
+  Saved      Saved[]
 }

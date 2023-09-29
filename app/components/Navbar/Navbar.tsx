@@ -3,7 +3,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { LogOutButton } from "../auth";
+import { LogOutButton } from "../../auth";
 
 interface Props {
   isSmallDevice: boolean;

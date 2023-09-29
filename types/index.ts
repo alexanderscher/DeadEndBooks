@@ -6,10 +6,13 @@ export interface Book {
   author: string;
   publisher: string;
   medium: string;
+  inStock?: boolean;
   frontCover?: string;
   backCover?: string;
   photo_front?: string;
   photo_back?: string;
+  savedId?: number;
+  cartId?: number;
 }
 
 export type UserType = {
