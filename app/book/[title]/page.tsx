@@ -44,6 +44,8 @@ const page = () => {
     setuserId(sessionId);
   }, [session]);
 
+  const [saved, setSaved] = useState(false);
+  const [cart, setCart] = useState(false);
   const handleSave = async () => {
     const res = await fetch(`/api/saved`, {
       method: "POST",
@@ -55,6 +57,10 @@ const page = () => {
         userId: userId,
       }),
     });
+    setSaved(true);
+    setTimeout(() => {
+      setSaved(false);
+    }, 2000);
   };
 
   const handleCart = async () => {
@@ -68,6 +74,10 @@ const page = () => {
         userId: userId,
       }),
     });
+    setCart(true);
+    setTimeout(() => {
+      setCart(false);
+    }, 2000);
   };
 
   return (
@@ -149,7 +159,7 @@ const page = () => {
                   }  cursor-pointer hover:line-through text-red-500`}
                   onClick={handleSave}
                 >
-                  Save
+                  {saved ? "Saved" : "Save"}
                 </h1>
                 <h1
                   className={`${
@@ -157,7 +167,7 @@ const page = () => {
                   }  cursor-pointer hover:line-through text-red-500`}
                   onClick={handleCart}
                 >
-                  Add to cart
+                  {cart ? "Added to cart" : "Add to cart"}
                 </h1>
               </div>
             </div>

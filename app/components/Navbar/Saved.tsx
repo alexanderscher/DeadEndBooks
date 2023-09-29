@@ -9,29 +9,52 @@ const Saved = () => {
   const { data: session } = useSession();
   const [pageData, setPageData] = useState<Book[]>([]);
   const [userId, setUserId] = useState("");
+  const [cartIdList, setCartIdList] = useState<number[]>([]);
+  const [reload, setReload] = useState(false);
 
   useEffect(() => {
+    setReload(false);
     const sessionId = (session as ExtendedSession)?.user?.id;
     setUserId(sessionId);
     const getSaved = async () => {
       const res = await fetch(`/api/user/${sessionId}`);
       const data = await res.json();
       const savedBooks = [];
+      const cartIds = [];
+
+      for (const key in data.Cart) {
+        cartIds.push(data.Cart[key].bookId);
+      }
 
       for (const key in data.Saved) {
-        console.log(data.Saved[key].id);
         const res = await fetch(`/api/book/${data.Saved[key].bookId}`);
         const book = await res.json();
 
-        savedBooks.push({ ...book, savedId: data.Saved[key].id });
+        savedBooks.push({
+          ...book,
+          savedId: data.Saved[key].id,
+        });
       }
 
       setPageData(savedBooks);
+      setCartIdList(cartIds);
     };
     getSaved();
-  }, [session]);
+  }, [session, reload]);
+
+  const [cart, setCart] = useState(false);
+  const [alreadyCart, setAlreadyCart] = useState(false);
 
   const handleCart = async (bookId: number) => {
+    for (const cartId of cartIdList) {
+      if (cartId === bookId) {
+        setAlreadyCart(true);
+        setTimeout(() => {
+          setAlreadyCart(false);
+        }, 2000);
+        return;
+      }
+    }
     if (bookId === undefined) return;
     const res = await fetch(`/api/cart`, {
       method: "POST",
@@ -43,6 +66,10 @@ const Saved = () => {
         userId: userId,
       }),
     });
+    setCart(true);
+    setTimeout(() => {
+      setCart(false);
+    }, 2000);
   };
 
   const removeSave = async (savedId: number) => {
@@ -55,12 +82,18 @@ const Saved = () => {
         savedId,
       }),
     });
+    setReload(true);
   };
 
   return (
     <div>
+      {pageData.length === 0 && (
+        <div className="text-[30px] ">
+          <h1>No books saved</h1>
+        </div>
+      )}
       {pageData.map((book) => (
-        <div className="border-t-[2px] border-slate-400 mb-6">
+        <div key={book.id} className="border-t-[2px] border-slate-400 mb-6">
           <div key={book.id} className="mt-4 flex justify-start w-full">
             <div className="max-w-[200px] mr-[50px]">
               <img className="" src={book.photo_front} />
@@ -96,7 +129,11 @@ const Saved = () => {
                   className="text-red-500 cursor-pointer hover:line-through"
                   onClick={() => handleCart(book.id as number)}
                 >
-                  Add to cart
+                  {cart
+                    ? "Added to cart"
+                    : alreadyCart
+                    ? "Already in cart"
+                    : "Add to cart"}
                 </h1>
               ) : (
                 <>

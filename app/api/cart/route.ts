@@ -6,7 +6,7 @@ export async function POST(request: Request) {
   const json = await request.json();
   const { userId, bookId } = json;
   try {
-    const cart = await prisma.Cart.create({
+    const cart = await prisma.cart.create({
       data: {
         userId: parseInt(userId),
         bookId,
@@ -30,7 +30,7 @@ export async function DELETE(request: Request) {
   const { cartId } = json;
   console.log(cartId);
   try {
-    const cart = await prisma.Cart.delete({
+    const cart = await prisma.cart.delete({
       where: {
         id: cartId,
       },

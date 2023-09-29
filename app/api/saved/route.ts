@@ -5,7 +5,7 @@ export async function POST(request: Request) {
   const json = await request.json();
   const { userId, bookId } = json;
   try {
-    const saved = await prisma.Saved.create({
+    const saved = await prisma.saved.create({
       data: {
         userId: parseInt(userId),
         bookId,
@@ -28,7 +28,7 @@ export async function DELETE(request: Request) {
   const json = await request.json();
   const { savedId } = json;
   try {
-    const saved = await prisma.Saved.delete({
+    const saved = await prisma.saved.delete({
       where: {
         id: savedId,
       },
