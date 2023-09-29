@@ -26,6 +26,7 @@ export async function GET(
         address: true,
         Saved: true,
         Cart: true,
+        Current: true,
       },
     });
 

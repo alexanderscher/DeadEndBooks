@@ -18,7 +18,7 @@ const Navbar = ({ isSmallDevice }: Props) => {
   return (
     <>
       {isSmallDevice ? (
-        <div className="flex-col page-margin-small ">
+        <div className="flex-col page-margin-small bg-white">
           <div
             className={`w-full flex justify-between  ${
               currentPage === "/" ? "items-center" : "items-end"
@@ -133,8 +133,8 @@ const Navbar = ({ isSmallDevice }: Props) => {
           )}
         </div>
       ) : (
-        <div className="w-1/4 min-w-[200px] max-w-[200px]  page-margin">
-          <div className="fixed">
+        <div className="w-1/4 min-w-[200px] max-w-[200px]  page-margin ">
+          <div className="fixed bg-white">
             <div className="">
               <div className="">
                 <h1 className="font-bold text-lg">

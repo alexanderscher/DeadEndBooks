@@ -5,14 +5,6 @@ export async function POST(request: Request) {
   const json = await request.json();
   const { userId, bookId } = json;
 
-  //add to current
-  // bookdId, userId, start_date, end_date, isLate, daysLate
-  //   make book unavailable
-
-  //remove from cart
-
-  //if book unavailable, add to cue
-  // bookId, userId, date
   const today = new Date();
   const startDate = new Date(today);
   startDate.setDate(startDate.getDate() + 3);

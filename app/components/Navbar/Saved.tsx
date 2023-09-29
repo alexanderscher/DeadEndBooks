@@ -104,42 +104,43 @@ const Saved = () => {
                 <Link href={`/book/${book.title}`}>{book.title}</Link>
               </h1>
               <h1 className="mt-4">{book.author}</h1>
+
               {book.inStock ? (
-                <h1 className="text-slate-400 cursor-pointer">In Stock</h1>
-              ) : (
                 <>
-                  {" "}
-                  <h1 className="text-slate-400 cursor-pointer">
-                    Out of stock
+                  <h1 className="text-slate-400 cursor-pointer">In Stock</h1>
+                  <h1
+                    className="text-slate-400 cursor-pointer hover:line-through"
+                    onClick={() => removeSave(book.savedId as number)}
+                  >
+                    Remove
                   </h1>
-                  <h1 className="text-red-500 cursor-pointer hover:line-through">
-                    Get in line
+                  <h1
+                    className="text-red-500 cursor-pointer hover:line-through"
+                    onClick={() => handleCart(book.id as number)}
+                  >
+                    {cart
+                      ? "Added to cart"
+                      : alreadyCart
+                      ? "Already in cart"
+                      : "Add to cart"}
                   </h1>
                 </>
-              )}
-
-              <h1
-                className="text-slate-400 cursor-pointer hover:line-through"
-                onClick={() => removeSave(book.savedId as number)}
-              >
-                Remove
-              </h1>
-              {book.inStock ? (
-                <h1
-                  className="text-red-500 cursor-pointer hover:line-through"
-                  onClick={() => handleCart(book.id as number)}
-                >
-                  {cart
-                    ? "Added to cart"
-                    : alreadyCart
-                    ? "Already in cart"
-                    : "Add to cart"}
-                </h1>
               ) : (
                 <>
-                  <h1 className="text-red-500 cursor-pointer hover:line-through">
-                    Get in line
-                  </h1>
+                  <>
+                    <h1 className="text-slate-400 cursor-pointer">
+                      Out of stock
+                    </h1>
+                    <h1
+                      className="text-slate-400 cursor-pointer hover:line-through"
+                      onClick={() => removeSave(book.savedId as number)}
+                    >
+                      Remove
+                    </h1>
+                    <h1 className="text-red-500 cursor-pointer hover:line-through">
+                      Get in line
+                    </h1>
+                  </>
                 </>
               )}
             </div>

@@ -13,6 +13,7 @@ import AdminNav from "./Admin/AdminNav";
 import AddBook from "./Admin/AddBook";
 import EditBook from "./Admin/EditBook";
 import EditProfile from "./Profile/EditProfile";
+import CurrentRentals from "./Admin/CurrentRentals";
 
 export {
   Books,
@@ -30,4 +31,5 @@ export {
   AddBook,
   EditBook,
   EditProfile,
+  CurrentRentals,
 };

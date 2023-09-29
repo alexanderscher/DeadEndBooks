@@ -7,11 +7,7 @@ interface Props {
 
 const ProfileNav = ({ isSmallDevice }: Props) => {
   return (
-    <div
-      className={
-        isSmallDevice ? "flex mt-10 border-b-[2px] border-black" : "flex w-full"
-      }
-    >
+    <div className={isSmallDevice ? "flex mt-10  border-black" : "flex w-full"}>
       <h1
         className={`mr-6 ${
           isSmallDevice ? "text-[24px]" : "text-[28px]"
