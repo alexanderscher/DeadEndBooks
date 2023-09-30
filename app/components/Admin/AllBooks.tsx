@@ -2,18 +2,26 @@
 import { Book } from "@/types";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import { Loader } from "..";
 
 const AllBooks = () => {
   const [books, setBooks] = useState<Book[]>([]);
+  const [isLoaded, setIsLoaded] = useState(true);
 
   useEffect(() => {
     const getBooks = async () => {
+      setIsLoaded(true);
       const res = await fetch("/api/book");
       const data = await res.json();
       setBooks(data);
+      setIsLoaded(false);
     };
     getBooks();
   }, []);
+
+  if (isLoaded) {
+    return <Loader />;
+  }
   return (
     <div>
       {books.map((book) => (
@@ -33,7 +41,7 @@ const AllBooks = () => {
             <p className="mb-2">{book.medium}</p>
             <p className="text-slate-400">Publisher</p>
             <p className="mb-2">{book.publisher}</p>
-            <button className="text-red-500">
+            <button className="text-red-500 hover:line-through">
               <Link href={`/admin/editbook/${book.title}`}>Edit</Link>
             </button>
           </div>

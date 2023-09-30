@@ -41,10 +41,7 @@ const page = () => {
               isSmallDevice={isSmallDevice}
               isMediumDevice={isMediumDevice}
             />
-            <CurrentRentals
-              isSmallDevice={isSmallDevice}
-              isMediumDevice={isMediumDevice}
-            />
+            <CurrentRentals isSmallDevice={isSmallDevice} />
           </div>
         </>
       )}

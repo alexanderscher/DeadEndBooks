@@ -3,9 +3,11 @@ import { ExtendedSession, UserType } from "@/types";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import { Loader } from "..";
 
 const Profile = () => {
   const { data: session } = useSession();
+  const [isLoading, setisLoading] = useState(true);
   const [user, setUser] = useState({
     id: null,
     admin: false,
@@ -68,6 +70,8 @@ const Profile = () => {
 
   useEffect(() => {
     const getUser = async () => {
+      setisLoading(true);
+
       const res = await fetch(
         `/api/user/${(session as ExtendedSession)?.user?.id}`
       );
@@ -82,7 +86,12 @@ const Profile = () => {
       }
     };
     getUser();
+    setisLoading(false);
   }, [session]);
+
+  if (isLoading) {
+    return <Loader />;
+  }
   return (
     <div className="mt-10  w-full">
       <div className="mb-10 flex justify-between">

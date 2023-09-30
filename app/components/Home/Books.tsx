@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { use, useEffect, useState } from "react";
+import { Loader } from "..";
 
 interface BookImage {
   photo_front: string;
@@ -30,6 +31,7 @@ interface Props {
 
 const Books = ({ isSmallDevice, isMediumDevice }: Props) => {
   const currentPage = usePathname();
+  const [isLoading, setisLoading] = useState(true);
 
   const [columns, setColumns] = useState(isMediumDevice ? 3 : 2);
   const [columnsData, setColumnsData] = useState<BookImage[][]>([]);
@@ -54,6 +56,7 @@ const Books = ({ isSmallDevice, isMediumDevice }: Props) => {
 
   useEffect(() => {
     const getBooks = async () => {
+      setisLoading(true);
       const res = await fetch("/api/book");
       const data = await res.json();
       const booktoPush = [];
@@ -84,8 +87,13 @@ const Books = ({ isSmallDevice, isMediumDevice }: Props) => {
         setColumns(newColumns);
         setColumnsData(splitDataIntoColumns(data, newColumns));
       }
+      setisLoading(false);
     }
   }, [isMediumDevice, columns, data]);
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <>

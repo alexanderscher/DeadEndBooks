@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { parse } from "path";
 import React, { useEffect, useState } from "react";
+import { Loader } from "..";
 
 const Saved = () => {
   const { data: session } = useSession();
@@ -11,12 +12,15 @@ const Saved = () => {
   const [userId, setUserId] = useState("");
   const [cartIdList, setCartIdList] = useState<number[]>([]);
   const [reload, setReload] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(true);
 
   useEffect(() => {
     setReload(false);
     const sessionId = (session as ExtendedSession)?.user?.id;
     setUserId(sessionId);
+
     const getSaved = async () => {
+      setIsLoaded(true);
       const res = await fetch(`/api/user/${sessionId}`);
       const data = await res.json();
       const savedBooks = [];
@@ -38,12 +42,26 @@ const Saved = () => {
 
       setPageData(savedBooks);
       setCartIdList(cartIds);
+      setIsLoaded(false);
     };
     getSaved();
   }, [session, reload]);
 
   const [cart, setCart] = useState(false);
   const [alreadyCart, setAlreadyCart] = useState(false);
+
+  const getInLine = async (bookId: number) => {
+    const res = await fetch(`/api/queue`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        bookId,
+        userId: userId,
+      }),
+    });
+  };
 
   const handleCart = async (bookId: number) => {
     for (const cartId of cartIdList) {
@@ -85,13 +103,20 @@ const Saved = () => {
     setReload(true);
   };
 
+  if (isLoaded) {
+    return <Loader />;
+  }
+
+  if (pageData.length === 0) {
+    return (
+      <div className="text-[30px] ">
+        <h1>No books saved</h1>
+      </div>
+    );
+  }
+
   return (
     <div>
-      {pageData.length === 0 && (
-        <div className="text-[30px] ">
-          <h1>No books saved</h1>
-        </div>
-      )}
       {pageData.map((book) => (
         <div key={book.id} className="border-t-[2px] border-slate-400 mb-6">
           <div key={book.id} className="mt-4 flex justify-start w-full">

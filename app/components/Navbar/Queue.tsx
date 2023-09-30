@@ -1,6 +1,6 @@
 import React from "react";
 
-const Cue = () => {
+const Queue = () => {
   return (
     <div>
       <div className="border-t-[2px] border-slate-400 ">
@@ -41,4 +41,4 @@ const Cue = () => {
   );
 };
 
-export default Cue;
+export default Queue;

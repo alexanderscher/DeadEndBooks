@@ -16,7 +16,7 @@ model Book {
   photo_front String
   photo_back  String
   inStock     Boolean
-  Cue         Cue[]
+  Queue       Queue[]
   Current     Current[]
   History     History[]
   Cart        Cart[]
@@ -45,7 +45,7 @@ model History {
   return_date DateTime
 }
 
-model Cue {
+model Queue {
   id     Int      @id @default(autoincrement())
   bookId Int
   book   Book     @relation(fields: [bookId], references: [id])
@@ -92,7 +92,7 @@ model User {
   subscribed Boolean
   Current    Current[]
   History    History[]
-  Cue        Cue[]
+  Queue      Queue[]
   Cart       Cart[]
   Saved      Saved[]
 }

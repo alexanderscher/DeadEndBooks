@@ -2,17 +2,20 @@
 import { ExtendedSession } from "@/types";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
+import { Loader } from "..";
 
 const formatDate = (input: string) => {
   const date = new Date(input);
   const day = String(date.getDate()).padStart(2, "0");
-  const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are
-  const year = String(date.getFullYear()).slice(-2); // Get the last two
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = String(date.getFullYear()).slice(-2);
 
   return `${month}/${day}/${year}`;
 };
 
 const Rentals = () => {
+  const [isLoading, setisLoading] = useState(true);
+
   const { data: session } = useSession();
 
   const [rentals, setRentals] = useState([
@@ -26,6 +29,8 @@ const Rentals = () => {
 
   useEffect(() => {
     const getUser = async () => {
+      setisLoading(true);
+
       const res = await fetch(
         `/api/user/${(session as ExtendedSession)?.user?.id}`
       );
@@ -48,22 +53,40 @@ const Rentals = () => {
           }
         }
         setRentals(rentals);
+        setisLoading(false);
       }
     };
     getUser();
   }, [session]);
+
+  if (isLoading) {
+    return <Loader />;
+  }
   return (
     <div className="w-full">
-      <div className="mt-16 flex w-full  border-b-[1.5px] border-black">
-        <h1 className="w-3/4 text-[18px]">Title</h1>
-        <h1 className="w-1/3 text-[18px] text-end">Start Date</h1>
-        <h1 className="w-1/3 text-[18px] text-end">Return Date</h1>
-      </div>
       {rentals.map((rental, index) => (
-        <div className="mt-6 flex w-full  border-b-[1.5px] border-black">
-          <h1 className="w-3/4 text-[18px]">{rental.title}</h1>
-          <h1 className="w-1/3 text-[18px] text-end">{rental.start_date}</h1>
-          <h1 className="w-1/3 text-[18px] text-end">{rental.return_date}</h1>
+        <div
+          key={index}
+          className="mt-4 flex flex-col w-full  border-t-[2px] border-black"
+        >
+          <div className="flex mt-2 items-center justify-between border-b-[1.5px]  border-slate-300">
+            <h1>Title:</h1>
+            <h1 className=" text-md ">{rental.title}</h1>
+          </div>
+          <div className="flex mt-2 items-center justify-between border-b-[1.5px] border-slate-300">
+            <h1>Start Date:</h1>
+            <h1 className=" text-md ">{rental.start_date}</h1>
+          </div>
+
+          <div className="flex mt-2 items-center justify-between border-b-[1.5px] border-slate-300">
+            <h1>Return Date:</h1>
+            <h1 className=" text-md ">{rental.return_date}</h1>
+          </div>
+
+          <div className="flex mt-2 items-center justify-between">
+            <h1>Status:</h1>
+            <h1 className=" text-md ">Status</h1>
+          </div>
         </div>
       ))}
     </div>

@@ -9,7 +9,16 @@ import { useSession } from "next-auth/react";
 const page = () => {
   const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
   const isSmallDeviceQuery = useMediaQuery({ maxWidth: 800 });
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+  console.log(session);
+
+  const [isLoading, setisLoading] = useState(true);
+
+  useEffect(() => {
+    if (session) {
+      setisLoading(false);
+    }
+  }, [session]);
 
   useEffect(() => {
     setIsSmallDevice(isSmallDeviceQuery);
@@ -23,7 +32,9 @@ const page = () => {
         <>
           <Navbar isSmallDevice={isSmallDevice} />
 
-          {session ? (
+          {isLoading && session !== null ? (
+            <Loader /> // Show loader while session is being checked
+          ) : session ? (
             <div
               className={
                 isSmallDevice ? "page-margin-small" : "page-margin w-full"

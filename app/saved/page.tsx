@@ -9,7 +9,16 @@ import { useSession } from "next-auth/react";
 const page = () => {
   const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
   const isSmallDeviceQuery = useMediaQuery({ maxWidth: 800 });
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+  console.log(session);
+
+  const [isLoading, setisLoading] = useState(true);
+
+  useEffect(() => {
+    if (session) {
+      setisLoading(false);
+    }
+  }, [session]);
 
   useEffect(() => {
     setIsSmallDevice(isSmallDeviceQuery);
@@ -23,7 +32,9 @@ const page = () => {
         <>
           <Navbar isSmallDevice={isSmallDevice} />
 
-          {session ? (
+          {isLoading && session !== null ? (
+            <Loader />
+          ) : session ? (
             <div
               className={
                 isSmallDevice ? "page-margin-small" : "page-margin w-full"
@@ -38,7 +49,7 @@ const page = () => {
               }
             >
               <h1 className="text-[30px]">
-                Login or sign up to view your saved book
+                Login or sign up to view your saved books
               </h1>
               <div className="mt-10">
                 <h1 className="text-red-500  hover:line-through text-[30px]">

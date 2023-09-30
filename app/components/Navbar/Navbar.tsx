@@ -74,7 +74,7 @@ const Navbar = ({ isSmallDevice }: Props) => {
                   <Link href="/saved">Saved/</Link>
                 </button>
                 <button className="hover:line-through text-lg mr-2">
-                  <Link href="/cue">Cue,</Link>
+                  <Link href="/queue">Queue,</Link>
                 </button>
 
                 <button className="hover:line-through text-lg mr-2">
@@ -87,6 +87,9 @@ const Navbar = ({ isSmallDevice }: Props) => {
                 </button>
                 <button className="hover:line-through text-lg mr-2">
                   <Link href="/about">About,</Link>
+                </button>
+                <button className="hover:line-through text-lg mr-2">
+                  <Link href="/admin/addbook">Admin,</Link>
                 </button>
 
                 {session ? (
@@ -203,14 +206,23 @@ const Navbar = ({ isSmallDevice }: Props) => {
                     <Link href="/saved">Saved/</Link>
                   </button>
                   <button className="hover:line-through text-lg">
-                    <Link href="/cue">Cue</Link>
+                    <Link href="/queue">Queue</Link>
                   </button>
                 </div>
+              </div>
+
+              <div className="mt-5 flex flex-col items-start text-lg">
+                <button className="hover:line-through text-lg">
+                  <Link href="/subscribe">Subscribe</Link>
+                </button>
+
+                <button className="hover:line-through text-lg">
+                  <Link href="/about">About</Link>
+                </button>
                 <button className="hover:line-through text-lg mr-2">
                   <Link href="/saved">Other's reads</Link>
                 </button>
               </div>
-
               <div className="mt-5 flex flex-col items-start text-lg">
                 <a
                   className="hover:line-through"
@@ -230,15 +242,6 @@ const Navbar = ({ isSmallDevice }: Props) => {
                 <button className="hover:line-through text-lg mr-2">
                   <Link href="/admin/addbook">Admin</Link>
                 </button>
-              </div>
-              <div className="mt-5 flex flex-col items-start text-lg">
-                <button className="hover:line-through text-lg">
-                  <Link href="/subscribe">Subscribe</Link>
-                </button>
-                <button className="hover:line-through text-lg">
-                  <Link href="/about">About</Link>
-                </button>
-
                 {session ? (
                   <LogOutButton />
                 ) : (

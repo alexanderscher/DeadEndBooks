@@ -7,7 +7,7 @@ import ProfileNav from "./Profile/ProfileNav";
 import History from "./Profile/History";
 import Payments from "./Profile/Payments";
 import Cart from "./Navbar/Cart";
-import Cue from "./Navbar/Cue";
+import Queue from "./Navbar/Queue";
 import Saved from "./Navbar/Saved";
 import AdminNav from "./Admin/AdminNav";
 import AddBook from "./Admin/AddBook";
@@ -26,7 +26,7 @@ export {
   Payments,
   Cart,
   Saved,
-  Cue,
+  Queue,
   AdminNav,
   AddBook,
   EditBook,

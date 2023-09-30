@@ -1,7 +1,7 @@
 const Loader = () => {
   return (
     <div className="flex h-screen w-full justify-center items-center">
-      <div className="spinner"></div>
+      <div className="spinner">Loading</div>
     </div>
   );
 };

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 
 import { useMediaQuery } from "react-responsive";
 import Link from "next/link";
-import { Cue, Loader, Navbar, Saved } from "@/app/components";
+import { Queue, Loader, Navbar, Saved } from "@/app/components";
 import { useSession } from "next-auth/react";
 
 const page = () => {
@@ -29,7 +29,7 @@ const page = () => {
                 isSmallDevice ? "page-margin-small" : "page-margin w-full"
               }
             >
-              <Cue />
+              <Queue />
             </div>
           ) : (
             <div
@@ -38,7 +38,7 @@ const page = () => {
               }
             >
               <h1 className="text-[30px]">
-                Login or sign up to view your cued books
+                Login or sign up to view your queued books
               </h1>
               <div className="mt-10">
                 <h1 className="text-red-500  hover:line-through text-[30px]">

@@ -3,15 +3,17 @@ import { Book } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import { Loader } from "..";
 
 const Cart = ({}) => {
   const { data: session } = useSession();
   const [pageData, setPageData] = useState<Book[]>([]);
   const [reload, setReload] = useState(false);
   const [userId, setUserId] = useState("");
+  const [isLoading, setisLoading] = useState(true);
 
   useEffect(() => {
-    setReload(false);
+    setisLoading(true);
     const sessionId = (session as ExtendedSession)?.user?.id;
     setUserId(sessionId as string);
     const getCart = async () => {
@@ -31,6 +33,7 @@ const Cart = ({}) => {
       }
 
       setPageData(cartBooks);
+      setisLoading(false);
     };
     getCart();
   }, [session, reload]);
@@ -110,64 +113,67 @@ const Cart = ({}) => {
     setReload(true);
   };
 
+  if (isLoading) {
+    return <Loader />;
+  }
+  if (pageData.length === 0) {
+    return (
+      <div className="text-[30px]">
+        <h1>Your cart is empty</h1>
+      </div>
+    );
+  }
+
   return (
     <div>
-      {pageData.length === 0 ? (
-        <div className="text-[30px]">
-          <h1>Your cart is empty</h1>
-        </div>
-      ) : (
-        <>
-          <div className="fixed bottom-0 left-0 border-t-[2px] border-black bg-red-100 w-full text-red-500 p-5 flex hover:line-through">
-            <button
-              className="text-[30px]"
-              onClick={() => {
-                checkoutSubmit();
-              }}
-            >
-              Checkout
-            </button>
-          </div>
-          {pageData.map((book, index) => (
-            <div
-              key={book.id}
-              className={`border-t-[2px] border-slate-400 ${
-                index === pageData.length - 1 ? "mb-[200px]" : "mb-6"
-              }`}
-            >
-              <div className="mt-4 flex justify-start w-full">
-                <div className="max-w-[200px] mr-[50px]">
-                  <img className="max-w-[200px]" src={book.photo_front} />
-                </div>
-                <div className="w-3/4 text-[30px]">
-                  <h1 className="hover:line-through">
-                    <Link href={`/book/${book.title}`}>{book.title}</Link>
-                  </h1>
-                  <h1 className="mt-4">{book.author}</h1>
-                  {book.inStock ? (
-                    <h1 className="text-slate-400 cursor-pointer">In Stock</h1>
-                  ) : (
-                    <>
-                      <h1 className="text-slate-400 cursor-pointer">
-                        Out of stock
-                      </h1>
-                      <h1 className="text-red-500 cursor-pointer hover:line-through">
-                        Get in line
-                      </h1>
-                    </>
-                  )}
-                  <h1
-                    className="text-slate-400 cursor-pointer hover:line-through"
-                    onClick={() => removeCart(book.cartId as number)}
-                  >
-                    Remove
-                  </h1>
-                </div>
-              </div>
+      <div className="fixed bottom-0 left-0 border-t-[2px] border-black bg-red-100 w-full text-red-500 p-5 flex hover:line-through">
+        <button
+          className="text-[30px]"
+          onClick={() => {
+            checkoutSubmit();
+          }}
+        >
+          Checkout
+        </button>
+      </div>
+      {pageData.map((book, index) => (
+        <div
+          key={book.id}
+          className={`border-t-[2px] border-slate-400 ${
+            index === pageData.length - 1 ? "mb-[200px]" : "mb-6"
+          }`}
+        >
+          <div className="mt-4 flex justify-start w-full">
+            <div className="max-w-[200px] mr-[50px]">
+              <img className="max-w-[200px]" src={book.photo_front} />
             </div>
-          ))}
-        </>
-      )}
+            <div className="w-3/4 text-[30px]">
+              <h1 className="hover:line-through">
+                <Link href={`/book/${book.title}`}>{book.title}</Link>
+              </h1>
+              <h1 className="mt-4">{book.author}</h1>
+              {book.inStock ? (
+                <h1 className="text-slate-400 cursor-pointer">In Stock</h1>
+              ) : (
+                <>
+                  <h1 className="text-slate-400 cursor-pointer">
+                    Out of stock
+                  </h1>
+                  <h1 className="text-red-500 cursor-pointer hover:line-through">
+                    Get in line
+                  </h1>
+                </>
+              )}
+              <h1
+                className="text-slate-400 cursor-pointer hover:line-through"
+                onClick={() => removeCart(book.cartId as number)}
+              >
+                Remove
+              </h1>
+            </div>
+          </div>
+        </div>
+      ))}
     </div>
   );
 };
