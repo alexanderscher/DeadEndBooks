@@ -17,6 +17,8 @@ export async function GET(
           orderBy: { date: "asc" },
         },
         Current: true,
+        Saved: true,
+        Cart: true,
       },
     });
   } else {
@@ -28,6 +30,8 @@ export async function GET(
           orderBy: { date: "asc" },
         },
         Current: true,
+        Saved: true,
+        Cart: true,
       },
     });
   }

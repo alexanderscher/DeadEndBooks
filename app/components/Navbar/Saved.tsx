@@ -2,7 +2,6 @@
 import { Book, ExtendedSession } from "@/types";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { parse } from "path";
 import React, { useEffect, useState } from "react";
 import { Loader } from "..";
 
@@ -14,7 +13,10 @@ const Saved = () => {
   const [queuedLists, setQueuedLists] = useState<number[]>([]);
   const [reload, setReload] = useState(false);
   const [isLoaded, setIsLoaded] = useState(true);
-  const [bookStatuses, setBookStatuses] = useState<Record<number, string>>({});
+
+  const [cartStatuses, setCartStatuses] = useState<Record<number, string>>({});
+  const [lineStatuses, setLineStatuses] = useState<Record<number, string>>({});
+  console.log(pageData);
 
   useEffect(() => {
     setReload(false);
@@ -56,9 +58,9 @@ const Saved = () => {
 
   const getInLine = async (bookId: number) => {
     if (queuedLists.includes(bookId)) {
-      setBookStatuses((prev) => ({ ...prev, [bookId]: "Already in queue" }));
+      setLineStatuses((prev) => ({ ...prev, [bookId]: "Already in queue" }));
       setTimeout(() => {
-        setBookStatuses((prev) => ({ ...prev, [bookId]: "" }));
+        setLineStatuses((prev) => ({ ...prev, [bookId]: "" }));
       }, 2000);
       return;
     }
@@ -77,9 +79,9 @@ const Saved = () => {
 
   const handleCart = async (bookId: number) => {
     if (cartIdList.includes(bookId)) {
-      setBookStatuses((prev) => ({ ...prev, [bookId]: "Already in cart" }));
+      setCartStatuses((prev) => ({ ...prev, [bookId]: "Already in cart" }));
       setTimeout(() => {
-        setBookStatuses((prev) => ({ ...prev, [bookId]: "" }));
+        setCartStatuses((prev) => ({ ...prev, [bookId]: "" }));
       }, 2000);
       return;
     }
@@ -149,28 +151,40 @@ const Saved = () => {
                     className="text-red-500 cursor-pointer hover:line-through"
                     onClick={() => handleCart(book.id as number)}
                   >
-                    {bookStatuses[book.id as number] || "Add to cart"}
+                    {cartStatuses[book.id as number] || "Add to cart"}
                   </h1>
                 </>
               ) : (
                 <>
-                  <>
-                    <h1 className="text-slate-400 cursor-pointer">
-                      Out of stock
-                    </h1>
-                    <h1
-                      className="text-slate-400 cursor-pointer hover:line-through"
-                      onClick={() => removeSave(book.savedId as number)}
-                    >
-                      Remove
-                    </h1>
-                    <h1
-                      className="text-red-500 cursor-pointer hover:line-through"
-                      onClick={() => getInLine(book.id as number)}
-                    >
-                      {bookStatuses[book.id as number] || "Get in line"}
-                    </h1>
-                  </>
+                  {book.current ? (
+                    <>
+                      <h1
+                        className="text-slate-400 cursor-pointer hover:line-through"
+                        onClick={() => removeSave(book.savedId as number)}
+                      >
+                        Remove
+                      </h1>
+                      <h1 className="text-red-500">In your posession</h1>
+                    </>
+                  ) : (
+                    <>
+                      <h1 className="text-slate-400 cursor-pointer">
+                        Out of stock
+                      </h1>
+                      <h1
+                        className="text-slate-400 cursor-pointer hover:line-through"
+                        onClick={() => removeSave(book.savedId as number)}
+                      >
+                        Remove
+                      </h1>
+                      <h1
+                        className="text-red-500 cursor-pointer hover:line-through"
+                        onClick={() => getInLine(book.id as number)}
+                      >
+                        {lineStatuses[book.id as number] || "Get in line"}
+                      </h1>
+                    </>
+                  )}
                 </>
               )}
             </div>

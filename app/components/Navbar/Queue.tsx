@@ -1,5 +1,4 @@
-import { ExtendedSession } from "@/types";
-import { Book } from "@prisma/client";
+import { Book, ExtendedSession } from "@/types";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { Loader } from "..";
@@ -13,7 +12,6 @@ const Queue = () => {
   const [reload, setReload] = useState(false);
   const [isLoaded, setIsLoaded] = useState(true);
   const [bookStatuses, setBookStatuses] = useState<Record<number, string>>({});
-  console.log(pageData);
 
   useEffect(() => {
     setReload(false);
@@ -25,7 +23,6 @@ const Queue = () => {
 
       const res = await fetch(`/api/user/${sessionId}`);
       const data = await res.json();
-      console.log(data);
 
       const queuedBooks = [];
       const cartIds = [];
@@ -38,21 +35,21 @@ const Queue = () => {
         cartIds.push(data.Queue[key].bookId);
         const res = await fetch(`/api/book/${data.Queue[key].bookId}`);
         const book = await res.json();
+        console.log(book);
 
         const targetUserId = parseInt(sessionId);
 
         const positionInQueue = book.Queue.findIndex(
-          (queueItem) => queueItem.userId === targetUserId
+          (queueItem: any) => queueItem.userId === targetUserId
         );
 
         const numberOfPeopleAhead =
           positionInQueue !== -1 ? positionInQueue : 0;
-        console.log(numberOfPeopleAhead);
 
         queuedBooks.push({
           ...book,
           queuedId: data.Queue[key].id,
-          people: numberOfPeopleAhead,
+          people: numberOfPeopleAhead as number,
         });
       }
 
@@ -156,6 +153,10 @@ const Queue = () => {
                     {book.people === 1 ? (
                       <h1 className="text-red-500 cursor-pointer mt-4">
                         {book.people} person ahead of you
+                      </h1>
+                    ) : book.people === 0 ? (
+                      <h1 className="cursor-pointer mt-4 text-red-500">
+                        You are next in line
                       </h1>
                     ) : (
                       <h1 className="cursor-pointer mt-4 text-red-500">

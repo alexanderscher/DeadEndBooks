@@ -1,5 +1,5 @@
-import { ExtendedSession } from "@/types";
-import { Book } from "@prisma/client";
+import { Book, ExtendedSession } from "@/types";
+
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -11,6 +11,9 @@ const Cart = ({}) => {
   const [reload, setReload] = useState(false);
   const [userId, setUserId] = useState("");
   const [isLoading, setisLoading] = useState(true);
+  const [queuedLists, setQueuedLists] = useState<number[]>([]);
+
+  const [lineStatuses, setLineStatuses] = useState<Record<number, string>>({});
 
   useEffect(() => {
     setisLoading(true);
@@ -19,6 +22,11 @@ const Cart = ({}) => {
     const getCart = async () => {
       const res = await fetch(`/api/user/${sessionId}`);
       const data = await res.json();
+      const queuedIds = [];
+
+      for (const key in data.Queue) {
+        queuedIds.push(data.Queue[key].bookId);
+      }
 
       const cartBooks = [];
       const bookIds = [];
@@ -33,6 +41,7 @@ const Cart = ({}) => {
       }
 
       setPageData(cartBooks);
+      setQueuedLists(queuedIds);
       setisLoading(false);
     };
     getCart();
@@ -49,6 +58,27 @@ const Cart = ({}) => {
       }),
     });
     setReload(true);
+  };
+
+  const getInLine = async (bookId: number) => {
+    if (queuedLists.includes(bookId)) {
+      setLineStatuses((prev) => ({ ...prev, [bookId]: "Already in queue" }));
+      setTimeout(() => {
+        setLineStatuses((prev) => ({ ...prev, [bookId]: "" }));
+      }, 2000);
+      return;
+    }
+    if (bookId === undefined) return;
+    const res = await fetch(`/api/queue`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        bookId,
+        userId: userId,
+      }),
+    });
   };
 
   const checkoutSubmit = async () => {
@@ -153,23 +183,33 @@ const Cart = ({}) => {
               </h1>
               <h1 className="mt-4">{book.author}</h1>
               {book.inStock ? (
-                <h1 className="text-slate-400 cursor-pointer">In Stock</h1>
+                <>
+                  <h1 className="text-slate-400 mt-4">In Stock</h1>
+                  <h1
+                    className="text-slate-400 cursor-pointer hover:line-through"
+                    onClick={() => removeCart(book.cartId as number)}
+                  >
+                    Remove
+                  </h1>
+                </>
               ) : (
                 <>
-                  <h1 className="text-slate-400 cursor-pointer">
-                    Out of stock
+                  <h1 className="text-slate-400 mt-4">Out of stock</h1>
+
+                  <h1
+                    className="text-slate-400 cursor-pointer hover:line-through"
+                    onClick={() => removeCart(book.cartId as number)}
+                  >
+                    Remove
                   </h1>
-                  <h1 className="text-red-500 cursor-pointer hover:line-through">
-                    Get in line
+                  <h1
+                    className="text-red-500 cursor-pointer hover:line-through"
+                    onClick={() => getInLine(book.id as number)}
+                  >
+                    {lineStatuses[book.id as number] || "Get in line"}
                   </h1>
                 </>
               )}
-              <h1
-                className="text-slate-400 cursor-pointer hover:line-through"
-                onClick={() => removeCart(book.cartId as number)}
-              >
-                Remove
-              </h1>
             </div>
           </div>
         </div>

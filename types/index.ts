@@ -15,6 +15,7 @@ export interface Book {
   cartId?: number;
   queuedId?: number;
   people?: number;
+  current?: boolean;
 }
 
 export type UserType = {

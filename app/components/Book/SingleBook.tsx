@@ -14,8 +14,17 @@ const SingleBook = ({ isSmallDevice }: Props) => {
   const { data: session } = useSession();
   const [userId, setuserId] = useState("");
   const [queuedLists, setQueuedLists] = useState<number[]>([]);
+  const [savedLists, setSavedLists] = useState<number[]>([]);
+  const [cartLists, setCartLists] = useState<number[]>([]);
+
   const [current, setCurrent] = useState(false);
-  const [bookStatuses, setBookStatuses] = useState<Record<number, string>>({});
+  const [savedStatuses, setSavedStatuses] = useState<Record<number, string>>(
+    {}
+  );
+  const [cartStatuses, setCartStatuses] = useState<Record<number, string>>({});
+  const [linetatuses, setLinetatuses] = useState<Record<number, string>>({});
+  const [saved, setSaved] = useState(false);
+  const [cart, setCart] = useState(false);
 
   const [pageData, setPageData] = useState({
     id: "",
@@ -35,13 +44,25 @@ const SingleBook = ({ isSmallDevice }: Props) => {
       const res = await fetch(`/api/book/${title}`);
       const data = await res.json();
       const queuedIds = [];
+      const savedIds = [];
+      const cartIds = [];
+
+      for (const key in data.Saved) {
+        savedIds.push(data.Saved[key].userId);
+      }
 
       for (const key in data.Queue) {
         queuedIds.push(data.Queue[key].userId);
       }
 
+      for (const key in data.Cart) {
+        cartIds.push(data.Cart[key].userId);
+      }
+
       setPageData(data);
       setQueuedLists(queuedIds);
+      setSavedLists(savedIds);
+      setCartLists(cartIds);
 
       if (
         data.Current[0]?.userId &&
@@ -53,11 +74,18 @@ const SingleBook = ({ isSmallDevice }: Props) => {
       }
     };
     getBook();
-  }, [sessionStorage]);
+  }, [sessionStorage, saved, cart]);
 
-  const [saved, setSaved] = useState(false);
-  const [cart, setCart] = useState(false);
   const handleSave = async () => {
+    const uId = parseInt(userId);
+
+    if (savedLists.includes(uId)) {
+      setSavedStatuses((prev) => ({ ...prev, [uId]: "Already Saved" }));
+      setTimeout(() => {
+        setSavedStatuses((prev) => ({ ...prev, [uId]: "" }));
+      }, 2000);
+      return;
+    }
     const res = await fetch(`/api/saved`, {
       method: "POST",
       headers: {
@@ -75,6 +103,15 @@ const SingleBook = ({ isSmallDevice }: Props) => {
   };
 
   const handleCart = async () => {
+    const uId = parseInt(userId);
+
+    if (cartLists.includes(uId)) {
+      setCartStatuses((prev) => ({ ...prev, [uId]: "Already in cart" }));
+      setTimeout(() => {
+        setCartStatuses((prev) => ({ ...prev, [uId]: "" }));
+      }, 2000);
+      return;
+    }
     const res = await fetch(`/api/cart`, {
       method: "POST",
       headers: {
@@ -95,9 +132,9 @@ const SingleBook = ({ isSmallDevice }: Props) => {
     const uId = parseInt(userId);
 
     if (queuedLists.includes(uId)) {
-      setBookStatuses((prev) => ({ ...prev, [uId]: "Already in queue" }));
+      setLinetatuses((prev) => ({ ...prev, [uId]: "Already in queue" }));
       setTimeout(() => {
-        setBookStatuses((prev) => ({ ...prev, [uId]: "" }));
+        setLinetatuses((prev) => ({ ...prev, [uId]: "" }));
       }, 2000);
       return;
     }
@@ -175,12 +212,12 @@ const SingleBook = ({ isSmallDevice }: Props) => {
               }  cursor-pointer hover:line-through text-red-500 mt-10`}
               onClick={handleSave}
             >
-              {saved ? "Saved" : "Save"}
+              {saved ? "Saved" : savedStatuses[parseInt(userId)] || "Save"}
             </h1>
             <h1
               className={`${
                 isSmallDevice ? "text-[24px]" : "book-text"
-              }  cursor-pointer hover:line-through text-red-500`}
+              }   text-red-500`}
             >
               In your possesion
             </h1>
@@ -202,7 +239,7 @@ const SingleBook = ({ isSmallDevice }: Props) => {
               }  cursor-pointer hover:line-through text-red-500`}
               onClick={handleSave}
             >
-              {saved ? "Saved" : "Save"}
+              {saved ? "Saved" : savedStatuses[parseInt(userId)] || "Save"}
             </h1>
             {pageData.inStock ? (
               <h1
@@ -211,7 +248,9 @@ const SingleBook = ({ isSmallDevice }: Props) => {
                 }  cursor-pointer hover:line-through text-red-500`}
                 onClick={handleCart}
               >
-                {cart ? "Added to cart" : "Add to cart"}
+                {cart
+                  ? "Added to cart"
+                  : cartStatuses[parseInt(userId)] || "Add to cart"}
               </h1>
             ) : (
               <h1
@@ -220,7 +259,7 @@ const SingleBook = ({ isSmallDevice }: Props) => {
                 }  cursor-pointer hover:line-through text-red-500`}
                 onClick={() => getInLine(parseInt(pageData.id))}
               >
-                {bookStatuses[parseInt(userId)] || "Get in line"}
+                {linetatuses[parseInt(userId)] || "Get in line"}
               </h1>
             )}
           </div>
