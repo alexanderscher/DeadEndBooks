@@ -1,7 +1,5 @@
 "use client";
 import React, { use, useEffect, useState } from "react";
-import Navbar from "../../components/Navbar/Navbar";
-import Loader from "../../components/Loader";
 import { useMediaQuery } from "react-responsive";
 import { usePathname } from "next/navigation";
 import { ExtendedSession } from "@/types";

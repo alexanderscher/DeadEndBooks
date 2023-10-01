@@ -11,7 +11,6 @@ const page = () => {
   const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
   const isSmallDeviceQuery = useMediaQuery({ maxWidth: 800 });
   const { data: session, status } = useSession();
-  console.log(session);
 
   const [isLoading, setisLoading] = useState(true);
 

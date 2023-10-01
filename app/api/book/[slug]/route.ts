@@ -16,6 +16,7 @@ export async function GET(
         Queue: {
           orderBy: { date: "asc" },
         },
+        Current: true,
       },
     });
   } else {

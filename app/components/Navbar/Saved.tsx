@@ -40,13 +40,12 @@ const Saved = () => {
       for (const key in data.Saved) {
         const res = await fetch(`/api/book/${data.Saved[key].bookId}`);
         const book = await res.json();
-
         savedBooks.push({
           ...book,
           savedId: data.Saved[key].id,
+          current: book.Current[0]?.userId === parseInt(sessionId),
         });
       }
-
       setPageData(savedBooks);
       setCartIdList(cartIds);
       setQueuedLists(queuedIds);
