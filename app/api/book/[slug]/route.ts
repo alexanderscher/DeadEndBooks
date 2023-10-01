@@ -12,11 +12,22 @@ export async function GET(
   if (!isNaN(Number(slug))) {
     book = await prisma.book.findUnique({
       where: { id: parseInt(slug) },
+      include: {
+        Queue: {
+          orderBy: { date: "asc" },
+        },
+      },
     });
   } else {
     const decodedTitle = decodeURIComponent(slug);
     book = await prisma.book.findFirst({
       where: { title: decodedTitle },
+      include: {
+        Queue: {
+          orderBy: { date: "asc" },
+        },
+        Current: true,
+      },
     });
   }
 

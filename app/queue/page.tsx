@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 
 import { useMediaQuery } from "react-responsive";
 import Link from "next/link";
-import { Queue, Loader, Navbar, Saved } from "@/app/components";
+import { Queue, Loader, Navbar } from "@/app/components";
 import { useSession } from "next-auth/react";
 
 const page = () => {

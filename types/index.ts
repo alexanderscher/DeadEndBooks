@@ -13,6 +13,8 @@ export interface Book {
   photo_back?: string;
   savedId?: number;
   cartId?: number;
+  queuedId?: number;
+  people?: number;
 }
 
 export type UserType = {

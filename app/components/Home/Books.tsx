@@ -35,7 +35,6 @@ const Books = ({ isSmallDevice, isMediumDevice }: Props) => {
 
   const [columns, setColumns] = useState(isMediumDevice ? 3 : 2);
   const [columnsData, setColumnsData] = useState<BookImage[][]>([]);
-  console.log(columnsData);
   const [data, setData] = useState<BookImage[]>([]);
   type Page =
     | "/"
@@ -59,6 +58,7 @@ const Books = ({ isSmallDevice, isMediumDevice }: Props) => {
       setisLoading(true);
       const res = await fetch("/api/book");
       const data = await res.json();
+      console.log(data);
       const booktoPush = [];
 
       for (const d in data) {

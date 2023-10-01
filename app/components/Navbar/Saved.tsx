@@ -11,8 +11,10 @@ const Saved = () => {
   const [pageData, setPageData] = useState<Book[]>([]);
   const [userId, setUserId] = useState("");
   const [cartIdList, setCartIdList] = useState<number[]>([]);
+  const [queuedLists, setQueuedLists] = useState<number[]>([]);
   const [reload, setReload] = useState(false);
   const [isLoaded, setIsLoaded] = useState(true);
+  const [bookStatuses, setBookStatuses] = useState<Record<number, string>>({});
 
   useEffect(() => {
     setReload(false);
@@ -25,9 +27,14 @@ const Saved = () => {
       const data = await res.json();
       const savedBooks = [];
       const cartIds = [];
+      const queuedIds = [];
 
       for (const key in data.Cart) {
         cartIds.push(data.Cart[key].bookId);
+      }
+
+      for (const key in data.Queue) {
+        queuedIds.push(data.Queue[key].bookId);
       }
 
       for (const key in data.Saved) {
@@ -42,15 +49,21 @@ const Saved = () => {
 
       setPageData(savedBooks);
       setCartIdList(cartIds);
+      setQueuedLists(queuedIds);
       setIsLoaded(false);
     };
     getSaved();
   }, [session, reload]);
 
-  const [cart, setCart] = useState(false);
-  const [alreadyCart, setAlreadyCart] = useState(false);
-
   const getInLine = async (bookId: number) => {
+    if (queuedLists.includes(bookId)) {
+      setBookStatuses((prev) => ({ ...prev, [bookId]: "Already in queue" }));
+      setTimeout(() => {
+        setBookStatuses((prev) => ({ ...prev, [bookId]: "" }));
+      }, 2000);
+      return;
+    }
+    if (bookId === undefined) return;
     const res = await fetch(`/api/queue`, {
       method: "POST",
       headers: {
@@ -64,14 +77,12 @@ const Saved = () => {
   };
 
   const handleCart = async (bookId: number) => {
-    for (const cartId of cartIdList) {
-      if (cartId === bookId) {
-        setAlreadyCart(true);
-        setTimeout(() => {
-          setAlreadyCart(false);
-        }, 2000);
-        return;
-      }
+    if (cartIdList.includes(bookId)) {
+      setBookStatuses((prev) => ({ ...prev, [bookId]: "Already in cart" }));
+      setTimeout(() => {
+        setBookStatuses((prev) => ({ ...prev, [bookId]: "" }));
+      }, 2000);
+      return;
     }
     if (bookId === undefined) return;
     const res = await fetch(`/api/cart`, {
@@ -84,10 +95,6 @@ const Saved = () => {
         userId: userId,
       }),
     });
-    setCart(true);
-    setTimeout(() => {
-      setCart(false);
-    }, 2000);
   };
 
   const removeSave = async (savedId: number) => {
@@ -143,11 +150,7 @@ const Saved = () => {
                     className="text-red-500 cursor-pointer hover:line-through"
                     onClick={() => handleCart(book.id as number)}
                   >
-                    {cart
-                      ? "Added to cart"
-                      : alreadyCart
-                      ? "Already in cart"
-                      : "Add to cart"}
+                    {bookStatuses[book.id as number] || "Add to cart"}
                   </h1>
                 </>
               ) : (
@@ -162,8 +165,11 @@ const Saved = () => {
                     >
                       Remove
                     </h1>
-                    <h1 className="text-red-500 cursor-pointer hover:line-through">
-                      Get in line
+                    <h1
+                      className="text-red-500 cursor-pointer hover:line-through"
+                      onClick={() => getInLine(book.id as number)}
+                    >
+                      {bookStatuses[book.id as number] || "Get in line"}
                     </h1>
                   </>
                 </>

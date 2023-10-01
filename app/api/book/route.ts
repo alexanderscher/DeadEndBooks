@@ -5,6 +5,11 @@ export async function GET() {
   try {
     const books = await prisma.book.findMany({
       orderBy: { title: "asc" },
+      include: {
+        Queue: {
+          orderBy: { date: "asc" },
+        },
+      },
     });
     return new NextResponse(JSON.stringify(books), {
       status: 200,
