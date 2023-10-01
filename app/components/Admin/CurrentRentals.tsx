@@ -16,30 +16,83 @@ interface CurrentRentalsProps {
 }
 
 interface Rental {
+  id: number;
+  userId: number;
   title: string;
   start_date: string;
   return_date: string;
   user_email: string;
+  bookId: number;
   days_late: number;
 }
 const CurrentRentals = ({ isSmallDevice }: CurrentRentalsProps) => {
   const [rentals, setRentals] = useState<Rental[]>([
     {
+      id: 0,
       title: "",
       start_date: "",
       return_date: "",
       user_email: "",
+      userId: 0,
+      bookId: 0,
       days_late: 0,
     },
   ]);
 
   const [isLoaded, setIsLoaded] = useState(true);
+  const [isReturned, setIsReturned] = useState(false);
+
+  const returnHandler = async (
+    rentalId: number,
+    userId: number,
+    start_date: string,
+    return_date: string,
+    id: number
+  ) => {
+    console.log(rentalId, userId, start_date, return_date, id);
+    const res = await fetch(`/api/book/${rentalId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (res.ok) {
+      const res1 = await fetch(`/api/rentals/history`, {
+        method: "POST",
+        body: JSON.stringify({
+          userId,
+          bookId: rentalId,
+          start_date,
+          return_date,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (res1.ok) {
+        const res2 = await fetch(`/api/rentals/current`, {
+          method: "DELETE",
+          body: JSON.stringify({
+            id,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (res2.ok) {
+          setIsReturned(true);
+        }
+      }
+    }
+  };
 
   useEffect(() => {
     const getCurrentRentals = async () => {
       setIsLoaded(true);
       const res = await fetch(`/api/rentals/current`);
       const data = await res.json();
+      console.log(data);
 
       const apiRentals = [];
 
@@ -51,9 +104,12 @@ const CurrentRentals = ({ isSmallDevice }: CurrentRentalsProps) => {
         const user = await res1.json();
 
         apiRentals.push({
+          id: data[key].id,
           title: book.title,
-          start_date: formatDate(data[key].start_date),
-          return_date: formatDate(data[key].return_date),
+          bookId: data[key].bookId,
+          userId: data[key].userId,
+          start_date: data[key].start_date,
+          return_date: data[key].return_date,
           user_email: user.email,
           days_late: data[key].daysLate,
         });
@@ -63,7 +119,7 @@ const CurrentRentals = ({ isSmallDevice }: CurrentRentalsProps) => {
       setIsLoaded(false);
     };
     getCurrentRentals();
-  }, []);
+  }, [isReturned]);
 
   if (isLoaded) {
     return <Loader />;
@@ -90,12 +146,12 @@ const CurrentRentals = ({ isSmallDevice }: CurrentRentalsProps) => {
             </div>
             <div className="flex mt-2 items-center justify-between border-b-[1.5px] border-slate-300">
               <h1>Start Date:</h1>
-              <h1 className=" text-md ">{rental.start_date}</h1>
+              <h1 className=" text-md ">{formatDate(rental.start_date)}</h1>
             </div>
 
             <div className="flex mt-2 items-center justify-between border-b-[1.5px] border-slate-300">
               <h1>Return Date:</h1>
-              <h1 className=" text-md ">{rental.return_date}</h1>
+              <h1 className=" text-md ">{formatDate(rental.return_date)}</h1>
             </div>
             <div className="flex mt-2 items-center justify-between border-b-[1.5px] border-slate-300">
               <h1>User:</h1>
@@ -106,7 +162,18 @@ const CurrentRentals = ({ isSmallDevice }: CurrentRentalsProps) => {
               <h1 className=" text-md ">Status</h1>
             </div>
 
-            <h1 className=" text-md mt-2 mb-2 text-red-500">
+            <h1
+              className=" text-md mt-2 mb-2 text-red-500 cursor-pointer hover:line-through"
+              onClick={() =>
+                returnHandler(
+                  rental.bookId,
+                  rental.userId,
+                  rental.start_date,
+                  rental.return_date,
+                  rental.id
+                )
+              }
+            >
               Mark as returned
             </h1>
           </div>

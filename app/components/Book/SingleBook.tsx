@@ -17,7 +17,6 @@ const SingleBook = ({ isSmallDevice }: Props) => {
   const [savedLists, setSavedLists] = useState<number[]>([]);
   const [cartLists, setCartLists] = useState<number[]>([]);
 
-  const [current, setCurrent] = useState(false);
   const [savedStatuses, setSavedStatuses] = useState<Record<number, string>>(
     {}
   );
@@ -25,6 +24,15 @@ const SingleBook = ({ isSmallDevice }: Props) => {
   const [linetatuses, setLinetatuses] = useState<Record<number, string>>({});
   const [saved, setSaved] = useState(false);
   const [cart, setCart] = useState(false);
+
+  const [stock, setStock] = useState({
+    upForGrabs: false,
+    yours: false,
+    notYours: false,
+    inYourPossesion: false,
+  });
+
+  console.log(stock);
 
   const [pageData, setPageData] = useState({
     id: "",
@@ -46,6 +54,7 @@ const SingleBook = ({ isSmallDevice }: Props) => {
       const queuedIds = [];
       const savedIds = [];
       const cartIds = [];
+      console.log(data);
 
       for (const key in data.Saved) {
         savedIds.push(data.Saved[key].userId);
@@ -59,19 +68,30 @@ const SingleBook = ({ isSmallDevice }: Props) => {
         cartIds.push(data.Cart[key].userId);
       }
 
-      setPageData(data);
-      setQueuedLists(queuedIds);
-      setSavedLists(savedIds);
-      setCartLists(cartIds);
-
+      if (
+        data.Queue[0]?.userId !== parseInt(sessionId) &&
+        data.inStock &&
+        data.Queue.length > 0
+      ) {
+        setStock((prev) => ({ ...prev, notYours: true }));
+      }
+      if (data.Queue[0]?.userId === parseInt(sessionId) && data.inStock) {
+        setStock((prev) => ({ ...prev, yours: true }));
+      }
+      if (data.Queue.length === 0 && data.inStock) {
+        setStock((prev) => ({ ...prev, upForGrabs: true }));
+      }
       if (
         data.Current[0]?.userId &&
         data.Current[0]?.userId === parseInt(sessionId)
       ) {
-        setCurrent(true);
-      } else {
-        setCurrent(false);
+        setStock((prev) => ({ ...prev, inYourPossesion: true }));
       }
+
+      setPageData(data);
+      setQueuedLists(queuedIds);
+      setSavedLists(savedIds);
+      setCartLists(cartIds);
     };
     getBook();
   }, [sessionStorage, saved, cart]);
@@ -128,6 +148,8 @@ const SingleBook = ({ isSmallDevice }: Props) => {
     }, 2000);
   };
 
+  const [queued, setQueued] = useState(false);
+
   const getInLine = async (bookId: number) => {
     const uId = parseInt(userId);
 
@@ -149,6 +171,11 @@ const SingleBook = ({ isSmallDevice }: Props) => {
         bookId,
       }),
     });
+
+    setQueued(true);
+    setTimeout(() => {
+      setQueued(false);
+    }, 2000);
   };
 
   return (
@@ -204,7 +231,7 @@ const SingleBook = ({ isSmallDevice }: Props) => {
         <h1 className={isSmallDevice ? "text-[24px]" : "book-text"}>
           {pageData.publisher}
         </h1>
-        {current ? (
+        {stock.inYourPossesion ? (
           <div>
             <h1
               className={`${
@@ -231,7 +258,13 @@ const SingleBook = ({ isSmallDevice }: Props) => {
                   : "book-text text-red-500 mt-10"
               }
             >
-              {pageData.inStock ? "In stock" : "Out of stock"}
+              {pageData.inStock && stock.yours
+                ? "In stock"
+                : pageData.inStock && stock.upForGrabs
+                ? "In stock"
+                : pageData.inStock && stock.notYours
+                ? "Out of stock"
+                : !pageData.inStock && "Out of stock"}
             </h1>
             <h1
               className={`${
@@ -259,7 +292,9 @@ const SingleBook = ({ isSmallDevice }: Props) => {
                 }  cursor-pointer hover:line-through text-red-500`}
                 onClick={() => getInLine(parseInt(pageData.id))}
               >
-                {linetatuses[parseInt(userId)] || "Get in line"}
+                {queued
+                  ? "In queue"
+                  : linetatuses[parseInt(userId)] || "Get in line"}
               </h1>
             )}
           </div>
