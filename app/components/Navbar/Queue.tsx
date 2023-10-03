@@ -34,7 +34,6 @@ const Queue = () => {
       for (const key in data.Queue) {
         const res = await fetch(`/api/book/${data.Queue[key].bookId}`);
         const book = await res.json();
-        console.log(book);
 
         const targetUserId = parseInt(sessionId);
 

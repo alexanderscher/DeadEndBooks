@@ -13,6 +13,38 @@ const formatDate = (input: string) => {
   return `${month}/${day}/${year}`;
 };
 
+const daysLate = (input: string) => {
+  const dueDate = new Date(input);
+  const today = new Date();
+
+  // reset hours, minutes, seconds and milliseconds
+  dueDate.setHours(0, 0, 0, 0);
+  today.setHours(0, 0, 0, 0);
+
+  const diff = today.getTime() - dueDate.getTime();
+
+  // If dueDate is in the future or same as today, return 0 as it's not late.
+  if (diff <= 0) {
+    return 0;
+  }
+
+  // Convert milliseconds to days
+  return Math.round(diff / (1000 * 60 * 60 * 24));
+};
+
+const daysLeft = (input: string) => {
+  const date = new Date(input);
+  const today = new Date();
+
+  today.setHours(0, 0, 0, 0);
+  date.setHours(0, 0, 0, 0);
+
+  const diff = date.getTime() - today.getTime();
+
+  console.log(Math.round(diff / (1000 * 60 * 60 * 24)));
+  return Math.round(diff / (1000 * 60 * 60 * 24));
+};
+
 const Rentals = () => {
   const [isLoading, setisLoading] = useState(true);
 
@@ -23,7 +55,8 @@ const Rentals = () => {
       title: "",
       start_date: "",
       return_date: "",
-      isLate: false,
+      isLate: 0,
+      daysLeft: 0,
     },
   ]);
 
@@ -48,7 +81,8 @@ const Rentals = () => {
               title: dataBook.title,
               start_date: formatDate(data.Current[rental].start_date),
               return_date: formatDate(data.Current[rental].return_date),
-              isLate: data.Current[rental].isLate,
+              isLate: daysLate(data.Current[rental].return_date),
+              daysLeft: daysLeft(data.Current[rental].return_date),
             });
           }
         }
@@ -82,11 +116,17 @@ const Rentals = () => {
             <h1>Return Date:</h1>
             <h1 className=" text-md ">{rental.return_date}</h1>
           </div>
-
-          <div className="flex mt-2 items-center justify-between">
-            <h1>Status:</h1>
-            <h1 className=" text-md ">Status</h1>
-          </div>
+          {rental.isLate > 0 ? (
+            <div className="flex mt-2 items-center justify-between">
+              <h1>Status:</h1>
+              <h1 className=" text-md ">Late</h1>
+            </div>
+          ) : (
+            <div className="flex mt-2 items-center justify-between">
+              <h1>Days left:</h1>
+              <h1 className=" text-md ">{rental.daysLeft}</h1>
+            </div>
+          )}
         </div>
       ))}
     </div>

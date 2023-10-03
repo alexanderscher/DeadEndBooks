@@ -1,32 +1,85 @@
-import React from "react";
+"use client";
+import { ExtendedSession } from "@/types";
+import { useSession } from "next-auth/react";
+import React, { useEffect, useState } from "react";
+import { Loader } from "..";
+
+const formatDate = (input: string) => {
+  const date = new Date(input);
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = String(date.getFullYear()).slice(-2);
+
+  return `${month}/${day}/${year}`;
+};
 
 const History = () => {
+  const [isLoading, setisLoading] = useState(true);
+  const { data: session } = useSession();
+  const [rentals, setRentals] = useState([
+    {
+      title: "",
+      start_date: "",
+      return_date: "",
+    },
+  ]);
+
+  useEffect(() => {
+    const getUser = async () => {
+      setisLoading(true);
+
+      const res = await fetch(
+        `/api/user/${(session as ExtendedSession)?.user?.id}`
+      );
+      const data = await res.json();
+      console.log(data);
+
+      const rentals = [];
+
+      if (res.ok) {
+        for (const rental in data.History) {
+          const res = await fetch(`/api/book/${data.History[rental].bookId}`);
+          const dataBook = await res.json();
+
+          if (res.ok) {
+            rentals.push({
+              title: dataBook.title,
+              start_date: formatDate(data.History[rental].start_date),
+              return_date: formatDate(data.History[rental].return_date),
+            });
+          }
+        }
+        setRentals(rentals);
+        setisLoading(false);
+      }
+    };
+    getUser();
+  }, [session]);
+  if (isLoading) {
+    return <Loader />;
+  }
   return (
     <div className="w-full">
-      <div className="mt-10 flex w-full  border-b-[1.5px] border-black">
-        <h1 className="w-1/4 text-[18px]">Title</h1>
-        <h1 className="w-1/4 text-[18px]">Status</h1>
-        <h1 className="w-1/4 text-[18px]">Return Date</h1>
-        <h1 className="ww-1/4 text-[18px]">Late fee</h1>
-      </div>
-      <div className="flex w-full border-b-[1.5px] border-black">
-        <h1 className="w-1/4 text-[18px]">Book 1</h1>
-        <h1 className="w-1/4 text-[18px]">Returned</h1>
-        <h1 className="w-1/4 text-[18px]">1/1/23</h1>
-        <h1 className="w-1/4 text-[18px]">$0.00</h1>
-      </div>
-      <div className="flex w-full border-b-[1.5px] border-black">
-        <h1 className="w-1/4 text-[18px]">Book 1</h1>
-        <h1 className="w-1/4 text-[18px]">Pending return</h1>
-        <h1 className="w-1/4 text-[18px]">1/1/23</h1>
-        <h1 className="w-1/4 text-[18px]">$10.00</h1>
-      </div>
-      <div className="flex w-full border-b-[1.5px] border-black">
-        <h1 className="w-1/4 text-[18px]">Book 3</h1>
-        <h1 className="w-1/4 text-[18px]">Returned</h1>
-        <h1 className="w-1/4 text-[18px]">1/1/23</h1>
-        <h1 className="w-1/4 text-[18px]">$0.00</h1>
-      </div>
+      {rentals.map((rental, index) => (
+        <div
+          key={index}
+          className="mt-4 flex flex-col w-full  border-t-[2px] border-black"
+        >
+          <div className="flex mt-2 items-center justify-between border-b-[1.5px]  border-slate-300">
+            <h1>Title:</h1>
+            <h1 className=" text-md ">{rental.title}</h1>
+          </div>
+          <div className="flex mt-2 items-center justify-between border-b-[1.5px] border-slate-300">
+            <h1>Start Date:</h1>
+            <h1 className=" text-md ">{rental.start_date}</h1>
+          </div>
+
+          <div className="flex mt-2 items-center justify-between ">
+            <h1>Return Date:</h1>
+            <h1 className=" text-md ">{rental.return_date}</h1>
+          </div>
+        </div>
+      ))}
     </div>
   );
 };

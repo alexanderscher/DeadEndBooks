@@ -11,6 +11,38 @@ const formatDate = (input: string) => {
   return `${month}/${day}/${year}`;
 };
 
+const daysLate = (input: string) => {
+  const dueDate = new Date(input);
+  const today = new Date();
+
+  // reset hours, minutes, seconds and milliseconds
+  dueDate.setHours(0, 0, 0, 0);
+  today.setHours(0, 0, 0, 0);
+
+  const diff = today.getTime() - dueDate.getTime();
+
+  // If dueDate is in the future or same as today, return 0 as it's not late.
+  if (diff <= 0) {
+    return 0;
+  }
+
+  // Convert milliseconds to days
+  return Math.round(diff / (1000 * 60 * 60 * 24));
+};
+
+const daysLeft = (input: string) => {
+  const date = new Date(input);
+  const today = new Date();
+
+  today.setHours(0, 0, 0, 0);
+  date.setHours(0, 0, 0, 0);
+
+  const diff = date.getTime() - today.getTime();
+
+  console.log(Math.round(diff / (1000 * 60 * 60 * 24)));
+  return Math.round(diff / (1000 * 60 * 60 * 24));
+};
+
 interface CurrentRentalsProps {
   isSmallDevice: boolean;
 }
@@ -23,7 +55,8 @@ interface Rental {
   return_date: string;
   user_email: string;
   bookId: number;
-  days_late: number;
+  isLate: number;
+  daysLeft: number;
 }
 const CurrentRentals = ({ isSmallDevice }: CurrentRentalsProps) => {
   const [rentals, setRentals] = useState<Rental[]>([
@@ -35,7 +68,8 @@ const CurrentRentals = ({ isSmallDevice }: CurrentRentalsProps) => {
       user_email: "",
       userId: 0,
       bookId: 0,
-      days_late: 0,
+      isLate: 0,
+      daysLeft: 0,
     },
   ]);
 
@@ -111,7 +145,8 @@ const CurrentRentals = ({ isSmallDevice }: CurrentRentalsProps) => {
           start_date: data[key].start_date,
           return_date: data[key].return_date,
           user_email: user.email,
-          days_late: data[key].daysLate,
+          isLate: daysLate(data[key].return_date),
+          daysLeft: daysLeft(data[key].return_date),
         });
       }
 
@@ -161,6 +196,17 @@ const CurrentRentals = ({ isSmallDevice }: CurrentRentalsProps) => {
               <h1>Status:</h1>
               <h1 className=" text-md ">Status</h1>
             </div>
+            {rental.isLate > 0 ? (
+              <div className="flex mt-2 items-center justify-between border-b-[1.5px] border-slate-300">
+                <h1>Status:</h1>
+                <h1 className=" text-md ">Late</h1>
+              </div>
+            ) : (
+              <div className="flex mt-2 items-center justify-between border-b-[1.5px] border-slate-300">
+                <h1>Days left:</h1>
+                <h1 className=" text-md ">{rental.daysLeft}</h1>
+              </div>
+            )}
 
             <h1
               className=" text-md mt-2 mb-2 text-red-500 cursor-pointer hover:line-through"
