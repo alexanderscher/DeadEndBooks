@@ -31,8 +31,6 @@ model Current {
   userId      Int?
   start_date  DateTime
   return_date DateTime
-  isLate      Boolean
-  daysLate    Int
 }
 
 model History {

@@ -12,8 +12,8 @@ const Cart = ({}) => {
   const [userId, setUserId] = useState("");
   const [isLoading, setisLoading] = useState(true);
   const [queuedLists, setQueuedLists] = useState<number[]>([]);
-
   const [lineStatuses, setLineStatuses] = useState<Record<number, string>>({});
+  console.log(pageData);
 
   useEffect(() => {
     setisLoading(true);
@@ -82,78 +82,93 @@ const Cart = ({}) => {
   };
 
   const checkoutSubmit = async () => {
-    try {
-      for (const book of pageData) {
-        if (!book.inStock) {
-          console.log("Book is out of stock", book.id);
-        } else {
-          const res = await fetch(`/api/checkout`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              bookId: book.id,
-              userId: parseInt(userId),
-            }),
-          });
-          if (!res.ok) {
-            throw new Error(
-              `Error checking out book with ID ${book.id}: ${res.statusText}`
-            );
-          }
-          const res2 = await fetch(`/api/book/stock`, {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              bookId: book.id,
-              inStock: false,
-            }),
-          });
-          if (!res2.ok) {
-            throw new Error(
-              `Error checking out book with ID ${book.id}: ${res2.statusText}`
-            );
-          }
-          const res3 = await fetch(`/api/cart`, {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              cartId: book.cartId,
-            }),
-          });
-          if (res3.ok) {
-            for (const key in book.Queue) {
-              console.log(book.Queue[key]);
-              if (parseInt(userId) === book.Queue[key].userId) {
-                console.log(book.Queue[key].id);
-                const res4 = await fetch(`/api/queue`, {
-                  method: "DELETE",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({
-                    queuedId: book.Queue[key].id,
-                  }),
-                });
-              }
-            }
-          }
-          if (!res3.ok) {
-            throw new Error(
-              `Error checking out book with ID ${book.id}: ${res2.statusText}`
-            );
-          }
-        }
-      }
-    } catch (error) {
-      console.error("An error occurred:", error);
+    const useres = await fetch(`/api/user/${userId}`);
+    const user = await useres.json();
+    if (user.Current.length > 3) {
+      alert("You can only have 3 books checked out at a time.");
+      return;
+    } else if (user.Current.length + pageData.length > 3) {
+      alert(
+        `You can only have 3 books checked out at a time. You currently have ${user.Current.length} books already checked out.`
+      );
+      return;
+    } else {
+      // try {
+      // for (const book of pageData) {
+      //   console.log(book);
+      // if (!book.inStock) {
+      //   console.log("Book is out of stock", book.id);
+      // } else {
+      //   const res = await fetch(`/api/checkout`, {
+      //     method: "POST",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //     body: JSON.stringify({
+      //       bookId: book.id,
+      //       userId: parseInt(userId),
+      //     }),
+      //   });
+      //   if (!res.ok) {
+      //     throw new Error(
+      //       `Error checking out book with ID ${book.id}: ${res.statusText}`
+      //     );
+      //   }
+      //   const res2 = await fetch(`/api/book/stock`, {
+      //     method: "PUT",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //     body: JSON.stringify({
+      //       bookId: book.id,
+      //       inStock: false,
+      //     }),
+      //   });
+      //   if (!res2.ok) {
+      //     throw new Error(
+      //       `Error checking out book with ID ${book.id}: ${res2.statusText}`
+      //     );
+      //   }
+      //   const res3 = await fetch(`/api/cart`, {
+      //     method: "DELETE",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //     body: JSON.stringify({
+      //       cartId: book.cartId,
+      //     }),
+      //   });
+      //   if (res3.ok) {
+      //     if (book.Queue) {
+      //       for (const item of book.Queue) {
+      //         console.log(item);
+      //         if (parseInt(userId) === item.userId) {
+      //           console.log(item.id);
+      //           const res4 = await fetch(`/api/queue`, {
+      //             method: "DELETE",
+      //             headers: {
+      //               "Content-Type": "application/json",
+      //             },
+      //             body: JSON.stringify({
+      //               queuedId: item.id,
+      //             }),
+      //           });
+      //         }
+      //       }
+      //     }
+      //   }
+      //   if (!res3.ok) {
+      //     throw new Error(
+      //       `Error checking out book with ID ${book.id}: ${res2.statusText}`
+      //     );
+      //   }
+      // }
+      // }
+      // } catch (error) {
+      //   console.error("An error occurred:", error);
+      // }
+      // setReload(true);
     }
-    setReload(true);
   };
 
   if (isLoading) {

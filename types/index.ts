@@ -18,7 +18,15 @@ export interface Book {
   current?: boolean;
   userId?: number;
   stockStatus?: string;
-  Queue?: [];
+  Queue?: [
+    {
+      id: number;
+      bookId: number;
+      userId: number;
+      createdAt: string;
+      updatedAt: string;
+    }
+  ];
 }
 
 export type UserType = {
