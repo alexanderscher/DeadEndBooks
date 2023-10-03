@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { Loader } from "..";
+import page from "@/app/page";
 
 const Saved = () => {
   const { data: session } = useSession();
@@ -13,7 +14,7 @@ const Saved = () => {
   const [queuedLists, setQueuedLists] = useState<number[]>([]);
   const [reload, setReload] = useState(false);
   const [isLoaded, setIsLoaded] = useState(true);
-
+  console.log(pageData);
   const [cartStatuses, setCartStatuses] = useState<Record<number, string>>({});
   const [lineStatuses, setLineStatuses] = useState<Record<number, string>>({});
   console.log(pageData);
@@ -36,18 +37,45 @@ const Saved = () => {
       }
 
       for (const key in data.Queue) {
-        queuedIds.push(data.Queue[key].bookId);
+        const queueItem = data.Queue[key];
+        queuedIds.push(queueItem.bookId);
       }
 
       for (const key in data.Saved) {
-        const res = await fetch(`/api/book/${data.Saved[key].bookId}`);
+        const savedItem = data.Saved[key];
+        const res = await fetch(`/api/book/${savedItem.bookId}`);
         const book = await res.json();
+
+        let stockStatus = "";
+
+        if (
+          book.Queue[0]?.userId !== parseInt(sessionId) &&
+          book.inStock &&
+          book.Queue.length > 0
+        ) {
+          stockStatus = "notYours";
+        } else if (
+          book.Queue[0]?.userId === parseInt(sessionId) &&
+          book.inStock
+        ) {
+          stockStatus = "yours";
+        } else if (book.Queue.length === 0 && book.inStock) {
+          stockStatus = "upForGrabs";
+        } else if (
+          book.Current[0]?.userId &&
+          book.Current[0]?.userId === parseInt(sessionId)
+        ) {
+          stockStatus = "inYourPossession";
+        }
+
         savedBooks.push({
           ...book,
-          savedId: data.Saved[key].id,
+          savedId: savedItem.id,
           current: book.Current[0]?.userId === parseInt(sessionId),
+          stockStatus: stockStatus,
         });
       }
+
       setPageData(savedBooks);
       setCartIdList(cartIds);
       setQueuedLists(queuedIds);
@@ -55,6 +83,11 @@ const Saved = () => {
     };
     getSaved();
   }, [session, reload]);
+
+  const [addedToQueue, setAddedToQueue] = useState({
+    bookId: 0,
+    status: false,
+  });
 
   const getInLine = async (bookId: number) => {
     if (queuedLists.includes(bookId)) {
@@ -75,7 +108,21 @@ const Saved = () => {
         userId: userId,
       }),
     });
+    setAddedToQueue({
+      bookId,
+      status: true,
+    });
+    setTimeout(() => {
+      setAddedToQueue({
+        bookId: 0,
+        status: false,
+      });
+    }, 2000);
   };
+  const [addedToCart, setAddedToCart] = useState({
+    bookId: 0,
+    status: false,
+  });
 
   const handleCart = async (bookId: number) => {
     if (cartIdList.includes(bookId)) {
@@ -96,6 +143,18 @@ const Saved = () => {
         userId: userId,
       }),
     });
+
+    setAddedToCart({
+      bookId,
+      status: true,
+    });
+
+    setTimeout(() => {
+      setAddedToCart({
+        bookId: 0,
+        status: false,
+      });
+    }, 2000);
   };
 
   const removeSave = async (savedId: number) => {
@@ -137,8 +196,7 @@ const Saved = () => {
                 <Link href={`/book/${book.title}`}>{book.title}</Link>
               </h1>
               <h1 className="mt-4">{book.author}</h1>
-
-              {book.inStock ? (
+              {book.inStock && book.stockStatus === "yours" && (
                 <>
                   <h1 className="text-slate-400 cursor-pointer">In Stock</h1>
                   <h1
@@ -151,42 +209,88 @@ const Saved = () => {
                     className="text-red-500 cursor-pointer hover:line-through"
                     onClick={() => handleCart(book.id as number)}
                   >
-                    {cartStatuses[book.id as number] || "Add to cart"}
+                    {addedToCart.status && addedToCart.bookId === book.id
+                      ? "Added to cart"
+                      : cartStatuses[book.id as number] || "Add to cart"}
                   </h1>
                 </>
-              ) : (
+              )}
+
+              {book.inStock && book.stockStatus === "upForGrabs" && (
                 <>
-                  {book.current ? (
-                    <>
-                      <h1
-                        className="text-slate-400 cursor-pointer hover:line-through"
-                        onClick={() => removeSave(book.savedId as number)}
-                      >
-                        Remove
-                      </h1>
-                      <h1 className="text-red-500">In your posession</h1>
-                    </>
-                  ) : (
-                    <>
-                      <h1 className="text-slate-400 cursor-pointer">
-                        Out of stock
-                      </h1>
-                      <h1
-                        className="text-slate-400 cursor-pointer hover:line-through"
-                        onClick={() => removeSave(book.savedId as number)}
-                      >
-                        Remove
-                      </h1>
-                      <h1
-                        className="text-red-500 cursor-pointer hover:line-through"
-                        onClick={() => getInLine(book.id as number)}
-                      >
-                        {lineStatuses[book.id as number] || "Get in line"}
-                      </h1>
-                    </>
-                  )}
+                  <h1 className="text-slate-400 cursor-pointer">In Stock</h1>
+                  <h1
+                    className="text-slate-400 cursor-pointer hover:line-through"
+                    onClick={() => removeSave(book.savedId as number)}
+                  >
+                    Remove
+                  </h1>
+                  <h1
+                    className="text-red-500 cursor-pointer hover:line-through"
+                    onClick={() => handleCart(book.id as number)}
+                  >
+                    {addedToCart.status && addedToCart.bookId === book.id
+                      ? "Added to cart"
+                      : cartStatuses[book.id as number] || "Add to cart"}
+                  </h1>
                 </>
               )}
+              {book.inStock && book.stockStatus === "notYours" && (
+                <>
+                  <h1 className="text-slate-400 cursor-pointer">
+                    Out of Stock
+                  </h1>
+                  <h1
+                    className="text-slate-400 cursor-pointer hover:line-through"
+                    onClick={() => removeSave(book.savedId as number)}
+                  >
+                    Remove
+                  </h1>
+                  <h1
+                    className="text-red-500 cursor-pointer hover:line-through"
+                    onClick={() => getInLine(book.id as number)}
+                  >
+                    {addedToQueue.status && addedToQueue.bookId === book.id
+                      ? "Added to queue"
+                      : lineStatuses[book.id as number] || "Get in line"}
+                  </h1>
+                </>
+              )}
+              {!book.inStock && !book.current && (
+                <>
+                  <h1 className="text-slate-400 cursor-pointer">
+                    Out of Stock
+                  </h1>
+                  <h1
+                    className="text-slate-400 cursor-pointer hover:line-through"
+                    onClick={() => removeSave(book.savedId as number)}
+                  >
+                    Remove
+                  </h1>
+                  <h1
+                    className="text-red-500 cursor-pointer hover:line-through"
+                    onClick={() => getInLine(book.id as number)}
+                  >
+                    {addedToQueue.status && addedToQueue.bookId === book.id
+                      ? "Added to queue"
+                      : lineStatuses[book.id as number] || "Get in line"}
+                  </h1>
+                </>
+              )}
+
+              <>
+                {book.current && (
+                  <>
+                    <h1
+                      className="text-slate-400 cursor-pointer hover:line-through"
+                      onClick={() => removeSave(book.savedId as number)}
+                    >
+                      Remove
+                    </h1>
+                    <h1 className="text-red-500">In your posession</h1>
+                  </>
+                )}
+              </>
             </div>
           </div>
         </div>

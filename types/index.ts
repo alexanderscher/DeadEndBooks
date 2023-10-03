@@ -17,6 +17,8 @@ export interface Book {
   people?: number;
   current?: boolean;
   userId?: number;
+  stockStatus?: string;
+  Queue?: [];
 }
 
 export type UserType = {

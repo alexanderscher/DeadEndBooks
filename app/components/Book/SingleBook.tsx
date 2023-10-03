@@ -274,7 +274,7 @@ const SingleBook = ({ isSmallDevice }: Props) => {
             >
               {saved ? "Saved" : savedStatuses[parseInt(userId)] || "Save"}
             </h1>
-            {pageData.inStock ? (
+            {pageData.inStock && stock.yours && (
               <h1
                 className={`${
                   isSmallDevice ? "text-[24px]" : "book-text"
@@ -285,7 +285,32 @@ const SingleBook = ({ isSmallDevice }: Props) => {
                   ? "Added to cart"
                   : cartStatuses[parseInt(userId)] || "Add to cart"}
               </h1>
-            ) : (
+            )}
+            {pageData.inStock && stock.upForGrabs && (
+              <h1
+                className={`${
+                  isSmallDevice ? "text-[24px]" : "book-text"
+                }  cursor-pointer hover:line-through text-red-500`}
+                onClick={handleCart}
+              >
+                {cart
+                  ? "Added to cart"
+                  : cartStatuses[parseInt(userId)] || "Add to cart"}
+              </h1>
+            )}
+            {pageData.inStock && stock.notYours && (
+              <h1
+                className={`${
+                  isSmallDevice ? "text-[24px]" : "book-text"
+                }  cursor-pointer hover:line-through text-red-500`}
+                onClick={() => getInLine(parseInt(pageData.id))}
+              >
+                {queued
+                  ? "In queue"
+                  : linetatuses[parseInt(userId)] || "Get in line"}
+              </h1>
+            )}
+            {!pageData.inStock && (
               <h1
                 className={`${
                   isSmallDevice ? "text-[24px]" : "book-text"

@@ -84,57 +84,78 @@ const Cart = ({}) => {
   const checkoutSubmit = async () => {
     try {
       for (const book of pageData) {
-        if (!book.inStock) {
-          console.log("Book is out of stock", book.id);
-        } else {
-          const res = await fetch(`/api/checkout`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              bookId: book.id,
-              userId: parseInt(userId),
-            }),
-          });
-
-          if (!res.ok) {
-            throw new Error(
-              `Error checking out book with ID ${book.id}: ${res.statusText}`
-            );
+        for (const key in book.Queue) {
+          console.log(book.Queue[key]);
+          if (parseInt(userId) === book.Queue[key].userId) {
+            console.log("ok");
           }
+          // if (!book.inStock) {
+          //   console.log("Book is out of stock", book.id);
+          // } else {
+          //   const res = await fetch(`/api/checkout`, {
+          //     method: "POST",
+          //     headers: {
+          //       "Content-Type": "application/json",
+          //     },
+          //     body: JSON.stringify({
+          //       bookId: book.id,
+          //       userId: parseInt(userId),
+          //     }),
+          //   });
 
-          const res2 = await fetch(`/api/book/stock`, {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              bookId: book.id,
-              inStock: false,
-            }),
-          });
+          //   if (!res.ok) {
+          //     throw new Error(
+          //       `Error checking out book with ID ${book.id}: ${res.statusText}`
+          //     );
+          //   }
 
-          if (!res2.ok) {
-            throw new Error(
-              `Error checking out book with ID ${book.id}: ${res2.statusText}`
-            );
-          }
+          //   const res2 = await fetch(`/api/book/stock`, {
+          //     method: "PUT",
+          //     headers: {
+          //       "Content-Type": "application/json",
+          //     },
+          //     body: JSON.stringify({
+          //       bookId: book.id,
+          //       inStock: false,
+          //     }),
+          //   });
 
-          const res3 = await fetch(`/api/cart`, {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              cartId: book.cartId,
-            }),
-          });
-          if (!res3.ok) {
-            throw new Error(
-              `Error deleting cart with ID ${book.cartId}: ${res3.statusText}`
-            );
-          }
+          //   if (!res2.ok) {
+          //     throw new Error(
+          //       `Error checking out book with ID ${book.id}: ${res2.statusText}`
+          //     );
+          //   }
+
+          //   const res3 = await fetch(`/api/cart`, {
+          //     method: "DELETE",
+          //     headers: {
+          //       "Content-Type": "application/json",
+          //     },
+          //     body: JSON.stringify({
+          //       cartId: book.cartId,
+          //     }),
+          //   });
+          //   if (!res3.ok) {
+          //     for (const key in book.Queue) {
+          //       console.log(book.Queue[key]);
+          //       if (parseInt(userId) === book.Queue[key].userId) {
+          //         const res4 = await fetch(`/api/queue`, {
+          //           method: "DELETE",
+          //           headers: {
+          //             "Content-Type": "application/json",
+          //           },
+          //           body: JSON.stringify({
+          //             queuedId: book.queuedId,
+          //           }),
+          //         });
+          //         if (!res4.ok) {
+          //           throw new Error(
+          //             `Error deleting cart with ID ${book.cartId}: ${res4.statusText}`
+          //           );
+          //         }
+          //       }
+          //     }
+          //   }
         }
       }
     } catch (error) {

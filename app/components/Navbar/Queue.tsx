@@ -27,12 +27,11 @@ const Queue = () => {
       const queuedBooks = [];
       const cartIds = [];
 
-      for (const key in data.Queue) {
-        cartIds.push(data.Queue[key].bookId);
+      for (const key in data.Cart) {
+        cartIds.push(data.Cart[key].bookId);
       }
 
       for (const key in data.Queue) {
-        cartIds.push(data.Queue[key].bookId);
         const res = await fetch(`/api/book/${data.Queue[key].bookId}`);
         const book = await res.json();
         console.log(book);
@@ -60,6 +59,11 @@ const Queue = () => {
     getqueued();
   }, [session, reload]);
 
+  const [addedToCart, setAddedToCart] = useState({
+    bookId: 0,
+    status: false,
+  });
+
   const handleCart = async (bookId: number) => {
     if (cartIdList.includes(bookId)) {
       setBookStatuses((prev) => ({ ...prev, [bookId]: "Already in cart" }));
@@ -78,6 +82,10 @@ const Queue = () => {
         bookId,
         userId: userId,
       }),
+    });
+    setAddedToCart({
+      bookId,
+      status: true,
     });
   };
 
@@ -134,7 +142,9 @@ const Queue = () => {
                     className="text-red-500 cursor-pointer hover:line-through"
                     onClick={() => handleCart(book.id as number)}
                   >
-                    {bookStatuses[book.id as number] || "Add to cart"}
+                    {addedToCart.status && addedToCart.bookId === book.id
+                      ? "Added to cart"
+                      : bookStatuses[book.id as number] || "Add to cart"}
                   </h1>
                 </>
               ) : (
