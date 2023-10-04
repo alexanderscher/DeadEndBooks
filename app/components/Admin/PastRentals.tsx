@@ -36,16 +36,16 @@ const PastRentals = ({ isSmallDevice }: PastRentalsProps) => {
       bookId: 0,
     },
   ]);
+  console.log(rentals);
 
-  const [isLoaded, setIsLoaded] = useState(true);
+  const [isLoaded, setIsLoaded] = useState(false);
   console.log(isLoaded);
 
   useEffect(() => {
     const getPastRentals = async () => {
-      setIsLoaded(true);
+      setIsLoaded(false);
       const res = await fetch(`/api/rentals/history`);
       const data = await res.json();
-      console.log(data);
 
       const apiRentals = [];
 
@@ -55,6 +55,7 @@ const PastRentals = ({ isSmallDevice }: PastRentalsProps) => {
 
         const res1 = await fetch(`/api/user/${data[key].userId}`);
         const user = await res1.json();
+        console.log(user);
 
         apiRentals.push({
           id: data[key].id,
@@ -68,7 +69,7 @@ const PastRentals = ({ isSmallDevice }: PastRentalsProps) => {
       }
 
       setRentals(apiRentals);
-      setIsLoaded(false);
+      setIsLoaded(true);
     };
     getPastRentals();
   }, []);
