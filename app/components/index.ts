@@ -15,6 +15,7 @@ import EditBook from "./Admin/EditBook";
 import EditProfile from "./Profile/EditProfile";
 import CurrentRentals from "./Admin/CurrentRentals";
 import PastRentals from "./Admin/PastRentals";
+import Users from "./Admin/Users";
 
 export {
   Books,
@@ -34,4 +35,5 @@ export {
   EditProfile,
   CurrentRentals,
   PastRentals,
+  Users,
 };
