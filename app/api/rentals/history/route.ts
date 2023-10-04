@@ -1,6 +1,23 @@
 import { NextResponse } from "next/server";
 import prisma from "@/prisma/client";
 
+export async function GET() {
+  try {
+    const rentals = await prisma.history.findMany({
+      orderBy: { return_date: "asc" },
+    });
+    return new NextResponse(JSON.stringify(rentals), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
+  } catch (err) {
+    return new NextResponse(JSON.stringify({ error: "Database error" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+}
+
 export async function POST(request: Request) {
   const json = await request.json();
   const { userId, bookId, start_date, return_date } = json;

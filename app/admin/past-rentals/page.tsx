@@ -3,13 +3,7 @@ import React, { useEffect, useState } from "react";
 
 import { useMediaQuery } from "react-responsive";
 import Link from "next/link";
-import {
-  AddBook,
-  AdminNav,
-  CurrentRentals,
-  Loader,
-  Navbar,
-} from "@/app/components";
+import { AdminNav, Loader, Navbar, PastRentals } from "@/app/components";
 
 const page = () => {
   const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
@@ -38,7 +32,7 @@ const page = () => {
               isSmallDevice={isSmallDevice}
               isMediumDevice={isMediumDevice}
             />
-            <CurrentRentals isSmallDevice={isSmallDevice} />
+            <PastRentals isSmallDevice={isSmallDevice} />
           </div>
         </>
       )}

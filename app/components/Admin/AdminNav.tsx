@@ -55,7 +55,7 @@ const AdminNav = ({ isSmallDevice, isMediumDevice }: Props) => {
             : "text-[28px]"
         } hover:line-through cursor-pointer`}
       >
-        <Link href="/admin/payments">Past Rentals,</Link>
+        <Link href="/admin/past-rentals">Past Rentals,</Link>
       </h1>
       <h1
         className={`mr-4 ${

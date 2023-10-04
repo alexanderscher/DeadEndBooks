@@ -4,6 +4,7 @@ import { useMediaQuery } from "react-responsive";
 import { usePathname } from "next/navigation";
 import { ExtendedSession } from "@/types";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 interface Props {
   isSmallDevice: boolean;
@@ -16,7 +17,6 @@ const SingleBook = ({ isSmallDevice }: Props) => {
   const [queuedLists, setQueuedLists] = useState<number[]>([]);
   const [savedLists, setSavedLists] = useState<number[]>([]);
   const [cartLists, setCartLists] = useState<number[]>([]);
-
   const [savedStatuses, setSavedStatuses] = useState<Record<number, string>>(
     {}
   );
@@ -31,8 +31,6 @@ const SingleBook = ({ isSmallDevice }: Props) => {
     notYours: false,
     inYourPossesion: false,
   });
-
-  console.log(stock);
 
   const [pageData, setPageData] = useState({
     id: "",
@@ -231,98 +229,134 @@ const SingleBook = ({ isSmallDevice }: Props) => {
         <h1 className={isSmallDevice ? "text-[24px]" : "book-text"}>
           {pageData.publisher}
         </h1>
-        {stock.inYourPossesion ? (
-          <div>
+
+        {!userId ? (
+          <>
             <h1
               className={`${
                 isSmallDevice ? "text-[24px]" : "book-text mt-10"
               }  cursor-pointer hover:line-through text-red-500 mt-10`}
-              onClick={handleSave}
             >
-              {saved ? "Saved" : savedStatuses[parseInt(userId)] || "Save"}
+              You must have an account to checkout books
             </h1>
-            <h1
-              className={`${
-                isSmallDevice ? "text-[24px]" : "book-text"
-              }   text-red-500`}
-            >
-              In your possesion
-            </h1>
-          </div>
+            <Link href="/login">
+              <h1
+                className={`${
+                  isSmallDevice ? "text-[24px]" : "book-text mt-10"
+                }  cursor-pointer hover:line-through text-red-500 mt-10`}
+              >
+                {" "}
+                Login
+              </h1>
+            </Link>
+
+            <Link href="/signup">
+              <h1
+                className={`${
+                  isSmallDevice ? "text-[24px]" : "book-text "
+                }  cursor-pointer hover:line-through text-red-500 `}
+              >
+                {" "}
+                Signup
+              </h1>
+            </Link>
+          </>
         ) : (
-          <div>
-            <h1
-              className={
-                isSmallDevice
-                  ? "text-[24px] text-red-500 mt-10"
-                  : "book-text text-red-500 mt-10"
-              }
-            >
-              {pageData.inStock && stock.yours
-                ? "In stock"
-                : pageData.inStock && stock.upForGrabs
-                ? "In stock"
-                : pageData.inStock && stock.notYours
-                ? "Out of stock"
-                : !pageData.inStock && "Out of stock"}
-            </h1>
-            <h1
-              className={`${
-                isSmallDevice ? "text-[24px]" : "book-text"
-              }  cursor-pointer hover:line-through text-red-500`}
-              onClick={handleSave}
-            >
-              {saved ? "Saved" : savedStatuses[parseInt(userId)] || "Save"}
-            </h1>
-            {pageData.inStock && stock.yours && (
-              <h1
-                className={`${
-                  isSmallDevice ? "text-[24px]" : "book-text"
-                }  cursor-pointer hover:line-through text-red-500`}
-                onClick={handleCart}
-              >
-                {cart
-                  ? "Added to cart"
-                  : cartStatuses[parseInt(userId)] || "Add to cart"}
-              </h1>
+          <>
+            {stock.inYourPossesion ? (
+              <div>
+                <h1
+                  className={`${
+                    isSmallDevice ? "text-[24px]" : "book-text mt-10"
+                  }  cursor-pointer hover:line-through text-red-500 mt-10`}
+                  onClick={handleSave}
+                >
+                  {saved ? "Saved" : savedStatuses[parseInt(userId)] || "Save"}
+                </h1>
+                <h1
+                  className={`${
+                    isSmallDevice ? "text-[24px]" : "book-text"
+                  }   text-red-500`}
+                >
+                  In your possesion
+                </h1>
+              </div>
+            ) : (
+              <div>
+                <h1
+                  className={
+                    isSmallDevice
+                      ? "text-[24px] text-red-500 mt-10"
+                      : "book-text text-red-500 mt-10"
+                  }
+                >
+                  {pageData.inStock && stock.yours
+                    ? "In stock"
+                    : pageData.inStock && stock.upForGrabs
+                    ? "In stock"
+                    : pageData.inStock && stock.notYours
+                    ? "Out of stock"
+                    : !pageData.inStock && "Out of stock"}
+                </h1>
+                <h1
+                  className={`${
+                    isSmallDevice ? "text-[24px]" : "book-text"
+                  }  cursor-pointer hover:line-through text-red-500`}
+                  onClick={handleSave}
+                >
+                  {saved ? "Saved" : savedStatuses[parseInt(userId)] || "Save"}
+                </h1>
+                {pageData.inStock && stock.yours && (
+                  <h1
+                    className={`${
+                      isSmallDevice ? "text-[24px]" : "book-text"
+                    }  cursor-pointer hover:line-through text-red-500`}
+                    onClick={handleCart}
+                  >
+                    {cart
+                      ? "Added to cart"
+                      : cartStatuses[parseInt(userId)] || "Add to cart"}
+                  </h1>
+                )}
+                {pageData.inStock && stock.upForGrabs && (
+                  <h1
+                    className={`${
+                      isSmallDevice ? "text-[24px]" : "book-text"
+                    }  cursor-pointer hover:line-through text-red-500`}
+                    onClick={handleCart}
+                  >
+                    {cart
+                      ? "Added to cart"
+                      : cartStatuses[parseInt(userId)] || "Add to cart"}
+                  </h1>
+                )}
+                {pageData.inStock && stock.notYours && (
+                  <h1
+                    className={`${
+                      isSmallDevice ? "text-[24px]" : "book-text"
+                    }  cursor-pointer hover:line-through text-red-500`}
+                    onClick={() => getInLine(parseInt(pageData.id))}
+                  >
+                    {queued
+                      ? "In queue"
+                      : linetatuses[parseInt(userId)] || "Get in line"}
+                  </h1>
+                )}
+                {!pageData.inStock && (
+                  <h1
+                    className={`${
+                      isSmallDevice ? "text-[24px]" : "book-text"
+                    }  cursor-pointer hover:line-through text-red-500`}
+                    onClick={() => getInLine(parseInt(pageData.id))}
+                  >
+                    {queued
+                      ? "In queue"
+                      : linetatuses[parseInt(userId)] || "Get in line"}
+                  </h1>
+                )}
+              </div>
             )}
-            {pageData.inStock && stock.upForGrabs && (
-              <h1
-                className={`${
-                  isSmallDevice ? "text-[24px]" : "book-text"
-                }  cursor-pointer hover:line-through text-red-500`}
-                onClick={handleCart}
-              >
-                {cart
-                  ? "Added to cart"
-                  : cartStatuses[parseInt(userId)] || "Add to cart"}
-              </h1>
-            )}
-            {pageData.inStock && stock.notYours && (
-              <h1
-                className={`${
-                  isSmallDevice ? "text-[24px]" : "book-text"
-                }  cursor-pointer hover:line-through text-red-500`}
-                onClick={() => getInLine(parseInt(pageData.id))}
-              >
-                {queued
-                  ? "In queue"
-                  : linetatuses[parseInt(userId)] || "Get in line"}
-              </h1>
-            )}
-            {!pageData.inStock && (
-              <h1
-                className={`${
-                  isSmallDevice ? "text-[24px]" : "book-text"
-                }  cursor-pointer hover:line-through text-red-500`}
-                onClick={() => getInLine(parseInt(pageData.id))}
-              >
-                {queued
-                  ? "In queue"
-                  : linetatuses[parseInt(userId)] || "Get in line"}
-              </h1>
-            )}
-          </div>
+          </>
         )}
       </div>
     </div>

@@ -192,36 +192,41 @@ const CurrentRentals = ({ isSmallDevice }: CurrentRentalsProps) => {
               <h1>User:</h1>
               <h1 className=" text-md ">{rental.user_email}</h1>
             </div>
-            <div className="flex mt-2 items-center justify-between border-b-[1.5px] border-slate-300">
-              <h1>Status:</h1>
-              <h1 className=" text-md ">Status</h1>
-            </div>
-            {rental.isLate > 0 ? (
+            {/* {1 > 0 && 0 === 0 ? ( */}
+            {rental.isLate > 0 && rental.daysLeft === 0 ? (
               <div className="flex mt-2 items-center justify-between border-b-[1.5px] border-slate-300">
                 <h1>Status:</h1>
-                <h1 className=" text-md ">Late</h1>
+                <h1 className=" text-md text-red-500">Late</h1>
               </div>
             ) : (
               <div className="flex mt-2 items-center justify-between border-b-[1.5px] border-slate-300">
                 <h1>Days left:</h1>
-                <h1 className=" text-md ">{rental.daysLeft}</h1>
+                <h1 className=" text-md text-red-500">{rental.daysLeft}</h1>
               </div>
             )}
 
-            <h1
-              className=" text-md mt-2 mb-2 text-red-500 cursor-pointer hover:line-through"
-              onClick={() =>
-                returnHandler(
-                  rental.bookId,
-                  rental.userId,
-                  rental.start_date,
-                  rental.return_date,
-                  rental.id
-                )
-              }
-            >
-              Mark as returned
-            </h1>
+            <div className="flex justify-between">
+              <h1
+                className=" text-md mt-2 mb-2 text-red-500 cursor-pointer hover:line-through"
+                onClick={() =>
+                  returnHandler(
+                    rental.bookId,
+                    rental.userId,
+                    rental.start_date,
+                    rental.return_date,
+                    rental.id
+                  )
+                }
+              >
+                Mark as returned
+              </h1>
+
+              {rental.isLate > 0 && rental.daysLeft === 0 && (
+                <h1 className=" text-md mt-2 mb-2 text-red-500 cursor-pointer hover:line-through">
+                  Charge late fee
+                </h1>
+              )}
+            </div>
           </div>
         ))}
       </div>

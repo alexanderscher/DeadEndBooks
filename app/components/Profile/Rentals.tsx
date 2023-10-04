@@ -47,7 +47,7 @@ const daysLeft = (input: string) => {
 
 const Rentals = () => {
   const [isLoading, setisLoading] = useState(true);
-
+  const [modal, setModal] = useState(false);
   const { data: session } = useSession();
 
   const [rentals, setRentals] = useState([
@@ -96,8 +96,15 @@ const Rentals = () => {
   if (isLoading) {
     return <Loader />;
   }
+  if (rentals.length === 0) {
+    return (
+      <div className="w-full mt-10">
+        <h1 className="text-[30px]">You have no rentals</h1>
+      </div>
+    );
+  }
   return (
-    <div className="w-full">
+    <div className="w-full relative">
       {rentals.map((rental, index) => (
         <div
           key={index}
@@ -116,19 +123,39 @@ const Rentals = () => {
             <h1>Return Date:</h1>
             <h1 className=" text-md ">{rental.return_date}</h1>
           </div>
-          {rental.isLate > 0 ? (
-            <div className="flex mt-2 items-center justify-between">
-              <h1>Status:</h1>
-              <h1 className=" text-md ">Late</h1>
-            </div>
+          {/* {1 > 0 && 0 == 0 ? ( */}
+          {rental.isLate > 0 && rental.daysLeft == 0 ? (
+            <>
+              <div className="flex mt-2 items-center justify-between border-b-[1.5px] border-slate-300">
+                <h1>Status:</h1>
+                <h1 className="text-md text-red-500">Late</h1>
+              </div>
+            </>
           ) : (
-            <div className="flex mt-2 items-center justify-between">
-              <h1>Days left:</h1>
-              <h1 className=" text-md ">{rental.daysLeft}</h1>
+            <div className="flex mt-2 items-center justify-between relative">
+              <div
+                className="flex items-center cursor-pointer"
+                onMouseOver={() => setModal(true)}
+                onMouseOut={() => setModal(false)}
+              >
+                <h1>Days left:</h1>
+                <div className="w-[13px] ml-2 ">
+                  <img src="/question.png" alt="" />
+                </div>
+              </div>
+
+              <h1 className="text-md text-red-500">{rental.daysLeft}</h1>
             </div>
           )}
         </div>
       ))}
+      {modal && (
+        <div className="absolute top-2 left-2 bg-red-200 text-red-500 m-10 p-10 rounded-md text-[20px] border-[2px] border-red-500 shadow-lg">
+          Books need to be returned within the 38 day time period. If you fail
+          to do so, you will be charged a fee. Please ship the book by the 31st
+          day mark to ensure it arrives on time.
+        </div>
+      )}
     </div>
   );
 };

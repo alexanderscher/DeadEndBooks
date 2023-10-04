@@ -7,10 +7,9 @@ export async function POST(request: Request) {
 
   const today = new Date();
   const startDate = new Date(today);
-  startDate.setDate(startDate.getDate() + 3);
 
   const returnDate = new Date(startDate);
-  returnDate.setDate(returnDate.getDate() + 14);
+  returnDate.setDate(returnDate.getDate() + 38);
 
   try {
     const cart = await prisma.current.create({
@@ -19,8 +18,6 @@ export async function POST(request: Request) {
         bookId,
         start_date: startDate,
         return_date: returnDate,
-        isLate: false,
-        daysLate: 0,
       },
     });
 
