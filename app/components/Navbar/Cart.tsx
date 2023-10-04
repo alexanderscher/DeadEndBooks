@@ -95,72 +95,34 @@ const Cart = ({}) => {
     } else {
       try {
         for (const book of pageData) {
-          console.log(book);
-          if (!book.inStock) {
-            console.log("Book is out of stock", book.id);
-          } else {
-            const res = await fetch(`/api/checkout`, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                bookId: book.id,
-                userId: parseInt(userId),
-              }),
-            });
-            if (!res.ok) {
-              throw new Error(
-                `Error checking out book with ID ${book.id}: ${res.statusText}`
-              );
-            }
-            const res2 = await fetch(`/api/book/stock`, {
-              method: "PUT",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                bookId: book.id,
-                inStock: false,
-              }),
-            });
-            if (!res2.ok) {
-              throw new Error(
-                `Error checking out book with ID ${book.id}: ${res2.statusText}`
-              );
-            }
-            const res3 = await fetch(`/api/cart`, {
-              method: "DELETE",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                cartId: book.cartId,
-              }),
-            });
-            if (res3.ok) {
-              if (book.Queue) {
-                for (const item of book.Queue) {
-                  console.log(item);
-                  if (parseInt(userId) === item.userId) {
-                    console.log(item.id);
-                    const res4 = await fetch(`/api/queue`, {
-                      method: "DELETE",
-                      headers: {
-                        "Content-Type": "application/json",
-                      },
-                      body: JSON.stringify({
-                        queuedId: item.id,
-                      }),
-                    });
-                  }
-                }
+          const res = await fetch(`/api/checkout`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              userId,
+              bookId: book.id,
+              cartId: book.cartId,
+              inStock: false,
+            }),
+          });
+
+          if (book.Queue) {
+            for (const item of book.Queue) {
+              console.log(item);
+              if (parseInt(userId) === item.userId) {
+                console.log(item.id);
+                const res4 = await fetch(`/api/queue`, {
+                  method: "DELETE",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    queuedId: item.id,
+                  }),
+                });
               }
-            }
-            if (!res3.ok) {
-              throw new Error(
-                `Error checking out book with ID ${book.id}: ${res2.statusText}`
-              );
             }
           }
         }

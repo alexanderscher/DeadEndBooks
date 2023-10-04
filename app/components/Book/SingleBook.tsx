@@ -242,10 +242,9 @@ const SingleBook = ({ isSmallDevice }: Props) => {
             <Link href="/login">
               <h1
                 className={`${
-                  isSmallDevice ? "text-[24px]" : "book-text mt-10"
-                }  cursor-pointer hover:line-through text-red-500 mt-10`}
+                  isSmallDevice ? "text-[24px]" : "book-text mt-8"
+                }  cursor-pointer hover:line-through text-red-500 mt-8`}
               >
-                {" "}
                 Login
               </h1>
             </Link>

@@ -16,6 +16,7 @@ import EditProfile from "./Profile/EditProfile";
 import CurrentRentals from "./Admin/CurrentRentals";
 import PastRentals from "./Admin/PastRentals";
 import Users from "./Admin/Users";
+import Others from "./Navbar/Others";
 
 export {
   Books,
@@ -36,4 +37,5 @@ export {
   CurrentRentals,
   PastRentals,
   Users,
+  Others,
 };

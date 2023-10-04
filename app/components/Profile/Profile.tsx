@@ -93,7 +93,7 @@ const Profile = () => {
     return <Loader />;
   }
   return (
-    <div className="mt-10  w-full">
+    <div className="mt-10  w-full max-w-[800px]">
       <div className="mb-10 flex justify-between">
         <div>
           <span className="text-[16px] text-slate-400">Name</span>

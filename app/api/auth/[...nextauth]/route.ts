@@ -97,7 +97,7 @@ export const authOptions: NextAuthOptions = {
     session: async ({ session, token }) => {
       const databaseId = await getDatabaseId(token);
 
-      if (databaseId !== null && databaseId !== undefined) {
+      if (databaseId) {
         const extendedSession: ExtendedSession = {
           ...session,
           user: {
@@ -107,6 +107,8 @@ export const authOptions: NextAuthOptions = {
           },
         };
         return extendedSession;
+      } else {
+        return session;
       }
     },
     jwt: ({ token, user }) => {
@@ -131,11 +133,18 @@ export const authOptions: NextAuthOptions = {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ data }),
           });
+
+          if (response.ok) {
+            return true;
+          } else {
+            return false;
+          }
         } catch (error) {
           console.log(error);
+          return false;
         }
       }
-      return user;
+      return true;
     },
   },
 };

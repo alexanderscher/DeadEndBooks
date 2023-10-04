@@ -11,42 +11,6 @@ const formatDate = (input: string) => {
   return `${month}/${day}/${year}`;
 };
 
-const daysLate = (input: string) => {
-  const dueDate = new Date(input);
-  const today = new Date();
-
-  // reset hours, minutes, seconds and milliseconds
-  dueDate.setHours(0, 0, 0, 0);
-  today.setHours(0, 0, 0, 0);
-
-  const diff = today.getTime() - dueDate.getTime();
-
-  // If dueDate is in the future or same as today, return 0 as it's not late.
-  if (diff <= 0) {
-    return 0;
-  }
-
-  // Convert milliseconds to days
-  return Math.round(diff / (1000 * 60 * 60 * 24));
-};
-
-const daysLeft = (input: string) => {
-  const date = new Date(input);
-  const today = new Date();
-
-  today.setHours(0, 0, 0, 0);
-  date.setHours(0, 0, 0, 0);
-
-  const diff = date.getTime() - today.getTime();
-
-  console.log(Math.round(diff / (1000 * 60 * 60 * 24)));
-  return Math.round(diff / (1000 * 60 * 60 * 24));
-};
-
-interface CurrentRentalsProps {
-  isSmallDevice: boolean;
-}
-
 interface Rental {
   id: number;
   userId: number;
@@ -58,7 +22,7 @@ interface Rental {
   isLate: number;
   daysLeft: number;
 }
-const CurrentRentals = ({ isSmallDevice }: CurrentRentalsProps) => {
+const CurrentRentals = () => {
   const [rentals, setRentals] = useState<Rental[]>([
     {
       id: 0,
@@ -83,74 +47,30 @@ const CurrentRentals = ({ isSmallDevice }: CurrentRentalsProps) => {
     return_date: string,
     id: number
   ) => {
-    console.log(rentalId, userId, start_date, return_date, id);
-    const res = await fetch(`/api/book/${rentalId}`, {
-      method: "PUT",
+    const res = await fetch(`/api/rentals/admin/return`, {
+      method: "POST",
+      body: JSON.stringify({
+        userId,
+        bookId: rentalId,
+        start_date,
+        return_date,
+        id,
+      }),
       headers: {
         "Content-Type": "application/json",
       },
     });
-
-    if (res.ok) {
-      const res1 = await fetch(`/api/rentals/history`, {
-        method: "POST",
-        body: JSON.stringify({
-          userId,
-          bookId: rentalId,
-          start_date,
-          return_date,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (res1.ok) {
-        const res2 = await fetch(`/api/rentals/current`, {
-          method: "DELETE",
-          body: JSON.stringify({
-            id,
-          }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        if (res2.ok) {
-          setIsReturned(true);
-        }
-      }
-    }
+    setIsReturned(true);
   };
 
   useEffect(() => {
     const getCurrentRentals = async () => {
       setIsLoaded(true);
-      const res = await fetch(`/api/rentals/current`);
+      const res = await fetch(`/api/rentals/admin/current-rentals`);
       const data = await res.json();
       console.log(data);
 
-      const apiRentals = [];
-
-      for (const key in data) {
-        const res = await fetch(`/api/book/${data[key].bookId}`);
-        const book = await res.json();
-
-        const res1 = await fetch(`/api/user/${data[key].userId}`);
-        const user = await res1.json();
-
-        apiRentals.push({
-          id: data[key].id,
-          title: book.title,
-          bookId: data[key].bookId,
-          userId: data[key].userId,
-          start_date: data[key].start_date,
-          return_date: data[key].return_date,
-          user_email: user.email,
-          isLate: daysLate(data[key].return_date),
-          daysLeft: daysLeft(data[key].return_date),
-        });
-      }
-
-      setRentals(apiRentals);
+      setRentals(data);
       setIsLoaded(false);
     };
     getCurrentRentals();
@@ -162,7 +82,7 @@ const CurrentRentals = ({ isSmallDevice }: CurrentRentalsProps) => {
 
   if (rentals.length === 0) {
     return (
-      <div className="w-full max-w-[1000px] mt-10">
+      <div className="w-full  mt-10">
         <h1 className="text-[30px]">No current rentals</h1>
       </div>
     );

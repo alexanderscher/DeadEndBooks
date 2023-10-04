@@ -3,6 +3,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { use, useEffect, useState } from "react";
 import { Loader } from "..";
+import { ExtendedSession } from "@/types";
+import { useSession } from "next-auth/react";
 
 interface BookImage {
   photo_front: string;
@@ -32,25 +34,30 @@ interface Props {
 const Books = ({ isSmallDevice, isMediumDevice }: Props) => {
   const currentPage = usePathname();
   const [isLoading, setisLoading] = useState(true);
+  const { data: session } = useSession();
+  const sessionId = (session as ExtendedSession)?.user?.id;
+  console.log(sessionId);
 
   const [columns, setColumns] = useState(isMediumDevice ? 3 : 2);
   const [columnsData, setColumnsData] = useState<BookImage[][]>([]);
   const [data, setData] = useState<BookImage[]>([]);
   type Page =
     | "/"
-    | "/home/painting"
-    | "/home/sculpture"
-    | "/home/photography_film"
-    | "/home/catalogs_magazines"
-    | "/home/anthologies_miscellaneous";
+    | "/library/painting"
+    | "/library/sculpture"
+    | "/library/photography_film"
+    | "/library/catalogs_magazines"
+    | "/library/anthologies_miscellaneous"
+    | "/library/stock";
 
   const pageToMediumMap: Record<Page, string | null> = {
     "/": null,
-    "/home/painting": "painting",
-    "/home/sculpture": "sculpture",
-    "/home/photography_film": "photography_film",
-    "/home/catalogs_magazines": "catalogs_magazines",
-    "/home/anthologies_miscellaneous": "anthologies_miscellaneous",
+    "/library/painting": "painting",
+    "/library/sculpture": "sculpture",
+    "/library/photography_film": "photography_film",
+    "/library/catalogs_magazines": "catalogs_magazines",
+    "/library/anthologies_miscellaneous": "anthologies_miscellaneous",
+    "/library/stock": "stock",
   };
 
   useEffect(() => {
@@ -64,9 +71,47 @@ const Books = ({ isSmallDevice, isMediumDevice }: Props) => {
       for (const d in data) {
         const expectedMedium =
           pageToMediumMap[currentPage as keyof typeof pageToMediumMap];
-        console.log(expectedMedium);
 
-        if (expectedMedium === null || data[d].medium === expectedMedium) {
+        if (expectedMedium === "stock") {
+          if (data[d].inStock) {
+            let stockStatus = "";
+            if (
+              data[d].Queue[0]?.userId !== parseInt(sessionId) &&
+              data[d].inStock &&
+              data[d].Queue.length > 0
+            ) {
+              console.log("notYours");
+              stockStatus = "notYours";
+            } else if (
+              data[d].Queue[0]?.userId === parseInt(sessionId) &&
+              data[d].inStock
+            ) {
+              console.log("yours");
+              stockStatus = "yours";
+            } else if (data[d].Queue.length === 0 && data[d].inStock) {
+              stockStatus = "upForGrabs";
+              console.log("upForGrabs");
+            }
+            if (stockStatus !== "notYours") {
+              booktoPush.push({
+                photo_front: data[d].photo_front,
+                id: data[d].id,
+                title: data[d].title,
+                medium: data[d].medium,
+              });
+            } else if (sessionId === undefined) {
+              booktoPush.push({
+                photo_front: data[d].photo_front,
+                id: data[d].id,
+                title: data[d].title,
+                medium: data[d].medium,
+              });
+            }
+          }
+        } else if (
+          expectedMedium === null ||
+          data[d].medium === expectedMedium
+        ) {
           booktoPush.push({
             photo_front: data[d].photo_front,
             id: data[d].id,
@@ -78,7 +123,7 @@ const Books = ({ isSmallDevice, isMediumDevice }: Props) => {
       setData(booktoPush);
     };
     getBooks();
-  }, []);
+  }, [sessionId]);
 
   useEffect(() => {
     if (data.length > 0) {

@@ -15,8 +15,6 @@ export default function Login() {
 
   console.log(data);
 
-  const [google, setGoogle] = useState(false);
-
   const [missingEmail, setMissingEmail] = useState(false);
   const [missingPassword, setMissingPassowrd] = useState(false);
   const [notFound, setNotFound] = useState(false);
@@ -58,20 +56,23 @@ export default function Login() {
     <div className="w-full h-screen">
       <div className=" flex flex-col w-full h-full items-center justify-center">
         <Link href="/">
-          <Image
+          {/* <Image
             className="cursor-pointer mb-10 w-[200px]"
             alt="send"
             src="/Screenshot 2023-09-18 at 4.38.04 PM.png"
             width={100}
             height={100}
-          />
+          /> */}
+          <h1 className="text-[40px] text-red-500 mb-10 font-bold">
+            DEAD END BOOKS
+          </h1>
         </Link>
 
         <div className="w-3/4 min-w-[500px] max-w-[600px] ">
           <form noValidate onSubmit={loginUser} className={"flex flex-col "}>
             <input
-              className={`border-[3px] border-black  w-full h-[50px]  px-3 focus:outline-none focus:none placeholder:text-slate-400 ${
-                missingEmail ? "placeholder-red-500 border-red-500" : ""
+              className={`border-[3.5px] border-red-500  w-full h-[50px] px-3 focus:outline-none focus:none placeholder:text-red-300 text-red-500 ${
+                missingEmail ? "placeholder:text-blue-300 border-blue-500" : ""
               } ${missingPassword && !missingEmail ? "border-b-[0px]" : ""}`}
               id="email"
               name="email"
@@ -85,13 +86,13 @@ export default function Login() {
               }}
             />
             <input
-              className={`border-t-[0px] border-[3px] border-black  w-full h-[50px]  px-3 focus:outline-none focus:none  placeholder:text-slate-400 ${
+              className={`border-t-[0px] border-[3.5px] border-red-500  w-full h-[50px]  px-3 focus:outline-none focus:none  placeholder:text-red-300 text-red-500 ${
                 missingPassword && !missingEmail
-                  ? "placeholder-red-500 border-t-[1.5px] border-red-500"
+                  ? "placeholder:text-blue-300 border-t-[3.5px] border-blue-500"
                   : ""
               } ${
                 missingEmail && missingPassword
-                  ? "placeholder-red-500  border-red-500"
+                  ? "placeholder:text-blue-300  border-blue-500"
                   : ""
               }`}
               id="password"
@@ -108,24 +109,24 @@ export default function Login() {
               }}
             />
             {notFound && (
-              <p className="text-red-500 text-sm mt-2">User not found</p>
+              <p className="text-blue-500 text-sm mt-2">User not found</p>
             )}
             {invalidP && (
-              <p className="text-red-500 text-sm mt-2">Incorrect password</p>
+              <p className="text-blue-500 text-sm mt-2">Incorrect password</p>
             )}
 
             <div className="flex flex-col  mt-5 items-center">
               <button
                 type="submit"
-                className=" text-red-500  text-[26px] hover:line-through"
+                className=" text-red-500 font-bold text-[26px] hover:line-through"
               >
                 Login
               </button>
 
-              <p className="text-[26px] hover:line-through cursor-pointer">
+              <p className="text-[26px] text-red-400 hover:line-through cursor-pointer">
                 <Link href="\signup"> Create an account</Link>
               </p>
-              <p className="text-[26px] hover:line-through cursor-pointer">
+              <p className="text-[26px] text-red-400 hover:line-through cursor-pointer">
                 Forgot password
               </p>
             </div>

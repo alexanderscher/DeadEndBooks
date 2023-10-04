@@ -28,7 +28,7 @@ const Navbar = ({ isSmallDevice }: Props) => {
               <Link href="/">DEAD END BOOKS</Link>
             </h1>
 
-            {currentPage === "/" || currentPage.includes("/home") ? (
+            {currentPage === "/" || currentPage.includes("/library") ? (
               <div className="mt-2">
                 <h1
                   className="text-xl cursor-pointer text-end hover:line-through"
@@ -78,7 +78,7 @@ const Navbar = ({ isSmallDevice }: Props) => {
                 </button>
 
                 <button className="hover:line-through text-lg mr-2">
-                  <Link href="/saved">Other's reads, </Link>
+                  <Link href="/others">Other's reads, </Link>
                 </button>
               </div>
               <div>
@@ -109,28 +109,33 @@ const Navbar = ({ isSmallDevice }: Props) => {
             </div>
           )}
           {sort && (
-            <div className="flex flex-wrap mt-4">
+            <div className="flex flex-wrap mt-4 0">
               <button className="hover:line-through text-lg mr-2">
                 <Link href={`/`}>All,</Link>
               </button>
               <button className="hover:line-through text-lg mr-2">
-                <Link href={`/home/painting`}>Painting,</Link>
+                <Link href={`/library/painting`}>Painting,</Link>
               </button>
               <button className="hover:line-through text-lg mr-2">
-                <Link href={`/home/sculpture`}>Scultpure,</Link>
+                <Link href={`/library/sculpture`}>Scultpure,</Link>
               </button>
               <button className="hover:line-through text-lg mr-2">
-                <Link href={`/home/photography_film`}>Photography/film,</Link>
+                <Link href={`/library/photography_film`}>
+                  Photography/film,
+                </Link>
               </button>
               <button className="hover:line-through text-lg mr-2">
-                <Link href={`/home/catalogs_magazines`}>
+                <Link href={`/library/catalogs_magazines`}>
                   Catalogs and Magazines,
                 </Link>
               </button>
               <button className="hover:line-through text-lg mr-2">
-                <Link href={`/home/anthologies_miscellaneous`}>
-                  Anthologies/miscellaneous
+                <Link href={`/library/anthologies_miscellaneous`}>
+                  Anthologies/miscellaneous,
                 </Link>
+              </button>
+              <button className="hover:line-through text-lg mr-2">
+                <Link href={`/library/stock`}>In stock</Link>
               </button>
             </div>
           )}
@@ -150,7 +155,7 @@ const Navbar = ({ isSmallDevice }: Props) => {
                 </button>
               </div>
               <div className="">
-                {currentPage === "/" || currentPage.includes("/home") ? (
+                {currentPage === "/" || currentPage.includes("/library") ? (
                   <div className="flex flex-col items-start">
                     <button
                       className="hover:line-through text-lg flex items-center"
@@ -158,34 +163,37 @@ const Navbar = ({ isSmallDevice }: Props) => {
                         setSort(!sort);
                       }}
                     >
-                      Sort by medium:
+                      Sort:
                     </button>
                     {sort && (
-                      <div className="flex flex-col items-start text-md">
+                      <div className="flex flex-col items-start text-md text-red-500">
                         <button className="hover:line-through ">
                           <Link href={`/`}>All</Link>
                         </button>
                         <button className="hover:line-through">
-                          <Link href={`/home/painting`}>Painting</Link>
+                          <Link href={`/library/painting`}>Painting</Link>
                         </button>
 
                         <button className="hover:line-through ">
-                          <Link href={`/home/sculpture`}>Scultpure</Link>
+                          <Link href={`/library/sculpture`}>Scultpure</Link>
                         </button>
                         <button className="hover:line-through ">
-                          <Link href={`/home/photography_film`}>
+                          <Link href={`/library/photography_film`}>
                             Photography/film
                           </Link>
                         </button>
                         <button className="hover:line-through ">
-                          <Link href={`/home/catalogs_magazines`}>
+                          <Link href={`/library/catalogs_magazines`}>
                             Catalogs and Magazines
                           </Link>
                         </button>
                         <button className="hover:line-through ">
-                          <Link href={`/home/anthologies_miscellaneous`}>
+                          <Link href={`/library/anthologies_miscellaneous`}>
                             Anthologies/miscellaneous
                           </Link>
+                        </button>
+                        <button className="hover:line-through ">
+                          <Link href={`/library/stock`}>In stock</Link>
                         </button>
                       </div>
                     )}
@@ -220,7 +228,7 @@ const Navbar = ({ isSmallDevice }: Props) => {
                   <Link href="/about">About</Link>
                 </button>
                 <button className="hover:line-through text-lg mr-2">
-                  <Link href="/saved">Other's reads</Link>
+                  <Link href="/others">Other's reads</Link>
                 </button>
               </div>
               <div className="mt-5 flex flex-col items-start text-lg">

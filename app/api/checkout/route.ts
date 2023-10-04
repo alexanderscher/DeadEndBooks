@@ -3,7 +3,7 @@ import prisma from "@/prisma/client";
 
 export async function POST(request: Request) {
   const json = await request.json();
-  const { userId, bookId } = json;
+  const { userId, bookId, inStock, cartId } = json;
 
   const today = new Date();
   const startDate = new Date(today);
@@ -12,12 +12,27 @@ export async function POST(request: Request) {
   returnDate.setDate(returnDate.getDate() + 38);
 
   try {
-    const cart = await prisma.current.create({
+    const check = await prisma.current.create({
       data: {
         userId: parseInt(userId),
         bookId,
         start_date: startDate,
         return_date: returnDate,
+      },
+    });
+
+    const updatedBook = await prisma.book.update({
+      where: { id: bookId },
+      data: {
+        inStock: {
+          set: inStock,
+        },
+      },
+    });
+
+    const cart = await prisma.cart.delete({
+      where: {
+        id: cartId,
       },
     });
 

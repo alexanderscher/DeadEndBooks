@@ -104,7 +104,7 @@ const Rentals = () => {
     );
   }
   return (
-    <div className="w-full relative">
+    <div className="w-full mt-10 relative max-w-[800px]">
       {rentals.map((rental, index) => (
         <div
           key={index}
@@ -123,7 +123,6 @@ const Rentals = () => {
             <h1>Return Date:</h1>
             <h1 className=" text-md ">{rental.return_date}</h1>
           </div>
-          {/* {1 > 0 && 0 == 0 ? ( */}
           {rental.isLate > 0 && rental.daysLeft == 0 ? (
             <>
               <div className="flex mt-2 items-center justify-between border-b-[1.5px] border-slate-300">
@@ -132,28 +131,34 @@ const Rentals = () => {
               </div>
             </>
           ) : (
-            <div className="flex mt-2 items-center justify-between relative">
+            <div className="flex mt-2 items-center justify-between relative text-red-500 hover:line-through">
               <div
                 className="flex items-center cursor-pointer"
-                onMouseOver={() => setModal(true)}
-                onMouseOut={() => setModal(false)}
+                onClick={() => setModal(true)}
               >
                 <h1>Days left:</h1>
                 <div className="w-[13px] ml-2 ">
                   <img src="/question.png" alt="" />
                 </div>
               </div>
-
               <h1 className="text-md text-red-500">{rental.daysLeft}</h1>
             </div>
           )}
         </div>
       ))}
       {modal && (
-        <div className="absolute top-2 left-2 bg-red-200 text-red-500 m-10 p-10 rounded-md text-[20px] border-[2px] border-red-500 shadow-lg">
-          Books need to be returned within the 38 day time period. If you fail
-          to do so, you will be charged a fee. Please ship the book by the 31st
-          day mark to ensure it arrives on time.
+        <div className="absolute top-2 left-2 bg-red-200 text-red-500 m-10 p-8 rounded-md text-[20px] border-[2px] border-red-500 shadow-lg">
+          <p>
+            Books need to be returned within the 38 day time period. If you fail
+            to do so, you will be charged a fee. Please ship the book by the
+            31st day mark to ensure it arrives on time.
+          </p>
+          <button
+            onClick={() => setModal(false)}
+            className="hover:line-through text-md mt-4 text-end"
+          >
+            Close
+          </button>
         </div>
       )}
     </div>

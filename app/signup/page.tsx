@@ -72,19 +72,22 @@ export default function Signup() {
     <div className="w-full h-screen">
       <div className="flex flex-col w-full h-full items-center justify-center">
         <Link href="/">
-          <Image
+          {/* <Image
             className="cursor-pointer mb-10 w-[200px]"
             alt="send"
             src="/Screenshot 2023-09-18 at 4.38.04 PM.png"
             width={100}
             height={100}
-          />
+          /> */}
+          <h1 className="text-[40px] text-red-500 mb-10 font-bold">
+            DEAD END BOOKS
+          </h1>
         </Link>
         <div className="w-3/4 min-w-[500px] max-w-[600px] ">
           <form onSubmit={registerUser} noValidate className="flex flex-col">
             <input
-              className={`border-[3px] border-black  w-full h-[50px] px-3 focus:outline-none focus:none placeholder:text-slate-400 ${
-                usernameError ? "placeholder-red-500 border-red-500" : ""
+              className={`border-[3.5px] border-red-500  w-full h-[50px] px-3 focus:outline-none focus:none placeholder:text-red-300 text-red-500 ${
+                usernameError ? "placeholder:text-blue-300 border-blue-500" : ""
               } ${emailError && !usernameError ? "border-b-[0px]" : ""}`}
               id="name"
               name="name"
@@ -98,13 +101,13 @@ export default function Signup() {
               }}
             />
             <input
-              className={`border-t-[0px] border-[3px] border-black  w-full h-[50px] px-3 focus:outline-none focus:none placeholder:text-slate-400 ${
+              className={`border-t-[0px] border-[3.5px] border-red-500  w-full h-[50px] px-3 focus:outline-none focus:none placeholder:text-red-300 text-red-500 ${
                 emailError && !usernameError
-                  ? "placeholder-red-500 border-t-[1.5px] border-red-500"
+                  ? "placeholder:text-blue-300 border-t-[1.5px] border-blue-500"
                   : ""
               } ${
                 usernameError && emailError
-                  ? "placeholder-red-500  border-red-500"
+                  ? "placeholder:text-blue-300  border-blue-500"
                   : ""
               } ${!emailError && passwordError ? "border-b-[0px]" : ""}`}
               id="email"
@@ -119,13 +122,13 @@ export default function Signup() {
               }}
             />
             <input
-              className={`border-t-[0px] border-[3px] border-black  w-full h-[50px]  px-3 focus:outline-none focus:none placeholder:text-slate-400 ${
+              className={`border-t-[0px] border-[3.5px] border-red-500  w-full h-[50px]  px-3 focus:outline-none focus:none placeholder:text-red-300 text-red-500 ${
                 passwordError && !emailError
-                  ? "placeholder-red-500 border-t-[1.5px] border-red-500"
+                  ? "placeholder:text-blue-300 border-t-[1.5px] border-blue-500"
                   : ""
               } ${
                 emailError && passwordError
-                  ? "placeholder-red-500  border-red-500"
+                  ? "placeholder:text-blue-300  border-blue-500"
                   : ""
               }`}
               id="password"
@@ -151,12 +154,12 @@ export default function Signup() {
             <div className="flex flex-col  mt-5 items-center">
               <button
                 type="submit"
-                className=" text-red-500  text-[26px] hover:line-through"
+                className=" text-red-500 font-bold  text-[26px] hover:line-through"
               >
                 Submit
               </button>
 
-              <p className="text-[26px] hover:line-through cursor-pointer">
+              <p className="text-[26px] hover:line-through cursor-pointer text-red-300">
                 <Link href="\login">Have an account? Log in</Link>
               </p>
             </div>

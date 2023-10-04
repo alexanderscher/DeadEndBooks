@@ -1,0 +1,98 @@
+import { NextResponse } from "next/server";
+import prisma from "@/prisma/client";
+
+const daysLate = (input: string) => {
+  const dueDate = new Date(input);
+  const today = new Date();
+
+  // reset hours, minutes, seconds and milliseconds
+  dueDate.setHours(0, 0, 0, 0);
+  today.setHours(0, 0, 0, 0);
+
+  const diff = today.getTime() - dueDate.getTime();
+
+  // If dueDate is in the future or same as today, return 0 as it's not late.
+  if (diff <= 0) {
+    return 0;
+  }
+
+  // Convert milliseconds to days
+  return Math.round(diff / (1000 * 60 * 60 * 24));
+};
+
+const daysLeft = (input: string) => {
+  const date = new Date(input);
+  const today = new Date();
+
+  today.setHours(0, 0, 0, 0);
+  date.setHours(0, 0, 0, 0);
+
+  const diff = date.getTime() - today.getTime();
+
+  return Math.round(diff / (1000 * 60 * 60 * 24));
+};
+
+interface CurrentRentalsProps {
+  isSmallDevice: boolean;
+}
+
+export async function GET() {
+  try {
+    const rentals = await prisma.current.findMany({
+      orderBy: { start_date: "asc" },
+    });
+
+    const apiRentals = [];
+
+    for (const key in rentals) {
+      const book = await prisma.book.findUnique({
+        where: { id: rentals[key].bookId },
+      });
+
+      const user = await prisma.user.findUnique({
+        where: { id: rentals[key].userId as number },
+      });
+
+      apiRentals.push({
+        id: rentals[key].id,
+        title: book?.title,
+        bookId: rentals[key].bookId,
+        userId: rentals[key].userId,
+        start_date: rentals[key].start_date,
+        return_date: rentals[key].return_date,
+        user_email: user?.email as string,
+        isLate: daysLate(rentals[key].return_date.toISOString().split("T")[0]),
+        daysLeft: daysLeft(
+          rentals[key].return_date.toISOString().split("T")[0]
+        ),
+      });
+    }
+
+    console.log(apiRentals);
+
+    return new NextResponse(JSON.stringify(apiRentals), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
+  } catch (err) {
+    return new NextResponse(JSON.stringify({ error: "Database error" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+}
+
+// const res = await fetch(`/api/book/${data[key].bookId}`);
+// const book = await res.json();
+
+// const res1 = await fetch(`/api/user/${data[key].userId}`);
+// const user = await res1.json();
+//    id: 0,
+//   title: "",
+//   start_date: "",
+//   return_date: "",
+//   user_email: "",
+//   userId: 0,
+//   bookId: 0,
+//   isLate: 0,
+//   daysLeft: 0,

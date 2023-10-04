@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-  font-family: "SuisseIntl-Medium", sans-serif;
+  font-family: "SuisseIntl-Medium", Arial, Helvetica, sans-serif;
 }
 
 .page-margin {

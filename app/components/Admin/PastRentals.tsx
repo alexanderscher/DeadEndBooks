@@ -36,49 +36,25 @@ const PastRentals = ({ isSmallDevice }: PastRentalsProps) => {
       bookId: 0,
     },
   ]);
-  console.log(rentals);
 
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(true);
   console.log(isLoaded);
 
   useEffect(() => {
     const getPastRentals = async () => {
-      setIsLoaded(false);
-      const res = await fetch(`/api/rentals/history`);
+      const res = await fetch(`/api/rentals/admin/past-rentals`);
       const data = await res.json();
+      setRentals(data);
+      console.log(data);
 
-      const apiRentals = [];
-
-      for (const key in data) {
-        const res = await fetch(`/api/book/${data[key].bookId}`);
-        const book = await res.json();
-
-        const res1 = await fetch(`/api/user/${data[key].userId}`);
-        const user = await res1.json();
-        console.log(user);
-
-        apiRentals.push({
-          id: data[key].id,
-          title: book.title,
-          bookId: data[key].bookId,
-          userId: data[key].userId,
-          start_date: data[key].start_date,
-          return_date: data[key].return_date,
-          user_email: user.email,
-        });
-      }
-
-      setRentals(apiRentals);
-      setIsLoaded(true);
+      setIsLoaded(false);
     };
     getPastRentals();
   }, []);
 
   if (isLoaded) {
     return <Loader />;
-  }
-
-  if (rentals.length === 0) {
+  } else if (rentals.length === 0) {
     return (
       <div className="w-full max-w-[1000px] mt-10">
         <h1 className="text-[30px]">No current rentals</h1>

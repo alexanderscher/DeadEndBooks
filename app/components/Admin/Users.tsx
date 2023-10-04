@@ -21,7 +21,7 @@ const Users = () => {
     getUsers();
   }, []);
   return (
-    <div className="mt-6">
+    <div className="mt-10">
       {users.map((user) => (
         <div key={user.id} className="border-t-[2px] border-black">
           <div className="flex">
