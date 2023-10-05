@@ -47,6 +47,7 @@ const CurrentRentals = () => {
     return_date: string,
     id: number
   ) => {
+    setIsReturned(false);
     const res = await fetch(`/api/rentals/admin/return`, {
       method: "POST",
       body: JSON.stringify({

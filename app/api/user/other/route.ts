@@ -14,22 +14,32 @@ export async function GET() {
 
     for (const key in users) {
       const current_books_promises = users[key].Current.map(async (current) => {
-        return prisma.book.findUnique({
+        const book = await prisma.book.findUnique({
           where: {
             id: current.bookId,
           },
         });
+        if (book) {
+          book.start_date = current.start_date; // This line appends the start_date to the book
+        }
+        return book;
       });
 
       const past_books_promises = users[key].History.map(async (history) => {
-        return prisma.book.findUnique({
+        const book = await prisma.book.findUnique({
           where: {
             id: history.bookId,
           },
         });
+        if (book) {
+          book.start_date = history.start_date; // This line appends the start_date to the book
+        }
+        return book;
       });
 
       const current_books = await Promise.all(current_books_promises);
+      console.log(current_books);
+
       const past_books = await Promise.all(past_books_promises);
 
       result.push({
