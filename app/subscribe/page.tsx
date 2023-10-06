@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar/Navbar";
 import Loader from "../components/Loader";
 import { useMediaQuery } from "react-responsive";
+import Link from "next/link";
 
 const page = () => {
   const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
@@ -36,11 +37,11 @@ const page = () => {
                 film, anthologies, exhibition catalogs, and magazines. After
                 creating an account with your personal information, you will be
                 able to check our up to 3 books for 4 weeks at a time.
-                Subscriptions are $20/month or $200 for the year. We will cover
-                shipping costs. In your package from Deadend, you will receive a
-                return label, and can send the books back to us in the box they
-                came in. Subscription time starts 3 days after your order (to
-                account for shipping time). Your account will show the
+                Subscriptions are $18.88/month or $206.10 for the year. We will
+                cover shipping costs. In your package from Deadend, you will
+                receive a return label, and can send the books back to us in the
+                box they came in. Subscription time starts 3 days after your
+                order (to account for shipping time). Your account will show the
                 subscription end date. Late fees will be charged if books are
                 not returned on time. The fee will be $5 a day. 2 weeks past the
                 return date, your card will automatically be charged the price
@@ -53,7 +54,7 @@ const page = () => {
                     : "hover:line-through mt-10 text-red-500"
                 }
               >
-                Register
+                <Link href="/pricing">Register</Link>
               </button>
             </div>
           </div>

@@ -4,6 +4,7 @@ import React from "react";
 const PricingCard = ({ price }) => {
   const handleSubscription = async (e) => {
     e.preventDefault();
+
     const { data } = await axios.post(
       "/api/payment",
       {
@@ -20,14 +21,24 @@ const PricingCard = ({ price }) => {
 
   return (
     <div>
-      <h1>{price.nickname}</h1>
-      <p>
+      <h1
+        className={`text-[50px] ${price.nickname === "Yearly Plan" && "mt-10"}`}
+      >
+        {price.nickname}
+      </h1>
+      <p className="text-[40px] text-slate-500">
         {(price.unit_amount / 100).toLocaleString("en-US", {
           style: "currency",
           currency: "USD",
-        })}
+        })}{" "}
+        {price.nickname === "Yearly Plan" ? "/year" : "/month"}
       </p>
-      <button onClick={handleSubscription}>Subscribe</button>
+      <button
+        className="text-[40px] hover:line-through text-red-500"
+        onClick={handleSubscription}
+      >
+        Subscribe
+      </button>
     </div>
   );
 };

@@ -33,9 +33,7 @@ const ProfileNav = ({ isSmallDevice }: Props) => {
         className={`mr-6 ${
           isSmallDevice ? "text-[24px]" : "text-[28px]"
         } hover:line-through cursor-pointer`}
-      >
-        <Link href="/profile/payments">Payments</Link>
-      </h1>
+      ></h1>
     </div>
   );
 };

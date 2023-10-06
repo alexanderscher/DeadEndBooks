@@ -23,8 +23,8 @@ export async function POST(request: NextRequest) {
       },
     ],
     mode: "subscription",
-    success_url: "https://localhost:3003",
-    cancel_url: "https://localhost:3003",
+    success_url: "http://localhost:3000/profile",
+    cancel_url: "http://localhost:3000/",
   });
 
   return NextResponse.json(session.url);

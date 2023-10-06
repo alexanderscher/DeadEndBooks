@@ -1,8 +1,14 @@
 "use client";
-import React, { useEffect, useState } from "react";
+
 import { PricingCard } from "../components";
+import React, { useEffect, useState } from "react";
+import Navbar from "../components/Navbar/Navbar";
+import Loader from "../components/Loader";
+import { useMediaQuery } from "react-responsive";
 
 const page = () => {
+  const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
+  const isSmallDeviceQuery = useMediaQuery({ maxWidth: 800 });
   const [prices, setPrices] = useState([]);
   useEffect(() => {
     fetchPrices();
@@ -13,11 +19,29 @@ const page = () => {
     setPrices(data);
     console.log(data);
   };
+
+  useEffect(() => {
+    setIsSmallDevice(isSmallDeviceQuery);
+  }, [isSmallDeviceQuery]);
+
   return (
-    <section className="w-full">
-      {prices &&
-        prices.map((price) => <PricingCard price={price} key={price.id} />)}
-    </section>
+    <main className={isSmallDevice ? "page-small" : "page"}>
+      {isSmallDevice === null ? (
+        <Loader />
+      ) : (
+        <>
+          <Navbar isSmallDevice={isSmallDevice} />
+          <div className={isSmallDevice ? "page-margin-small" : "page-margin"}>
+            <div className="w-full ">
+              {prices &&
+                prices.map((price) => (
+                  <PricingCard price={price} key={price.id} />
+                ))}
+            </div>
+          </div>
+        </>
+      )}
+    </main>
   );
 };
 

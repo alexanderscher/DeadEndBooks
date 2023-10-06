@@ -18,5 +18,5 @@ export async function GET(request: Request) {
     limit: 2,
   });
 
-  return NextResponse.json(prices.data.reverse());
+  return NextResponse.json(prices.data);
 }

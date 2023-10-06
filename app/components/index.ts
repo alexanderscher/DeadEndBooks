@@ -5,7 +5,6 @@ import Profile from "./Profile/Profile";
 import Rentals from "./Profile/Rentals";
 import ProfileNav from "./Profile/ProfileNav";
 import History from "./Profile/History";
-import Payments from "./Profile/Payments";
 import Cart from "./Navbar/Cart";
 import Queue from "./Navbar/Queue";
 import Saved from "./Navbar/Saved";
@@ -27,7 +26,6 @@ export {
   Rentals,
   ProfileNav,
   History,
-  Payments,
   Cart,
   Saved,
   Queue,
