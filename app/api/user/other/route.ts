@@ -1,6 +1,17 @@
 import { NextResponse } from "next/server";
 import prisma from "@/prisma/client";
 
+type ExtendedBook = {
+  start_date?: Date;
+  id: number;
+  title: string;
+  author: string;
+  publisher: string;
+  medium: string;
+  photo_front: string;
+  photo_back: string;
+  inStock: boolean;
+};
 export async function GET() {
   try {
     const users = await prisma.user.findMany({
@@ -20,9 +31,10 @@ export async function GET() {
           },
         });
         if (book) {
-          book.start_date = current.start_date; // This line appends the start_date to the book
+          (book as ExtendedBook).start_date = current.start_date;
+          return book as ExtendedBook;
         }
-        return book;
+        return null;
       });
 
       const past_books_promises = users[key].History.map(async (history) => {
@@ -32,15 +44,29 @@ export async function GET() {
           },
         });
         if (book) {
-          book.start_date = history.start_date; // This line appends the start_date to the book
+          (book as ExtendedBook).start_date = history.start_date;
+          return book as ExtendedBook;
         }
         return book;
       });
 
       const current_books = await Promise.all(current_books_promises);
-      console.log(current_books);
 
-      const past_books = await Promise.all(past_books_promises);
+      let past_books = await Promise.all(past_books_promises);
+
+      // Remove duplicates from past_books based on book id
+      past_books = past_books.filter(
+        (book, index, self) =>
+          index === self.findIndex((b) => b?.id === book?.id)
+      );
+
+      // Sort past_books by start_date in descending order and retain only the first 3
+      past_books.sort(
+        (a, b) =>
+          new Date(b?.start_date as Date).getTime() -
+          new Date(a?.start_date as Date).getTime()
+      );
+      past_books = past_books.slice(0, 3);
 
       result.push({
         id: users[key].id,

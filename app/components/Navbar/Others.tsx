@@ -9,7 +9,7 @@ type Book = {
   inStock: boolean;
   photo_front: string;
   photo_back: string;
-  start_date: string; // assuming it's a string; adjust if necessary
+  start_date: string;
 };
 
 type User = {
@@ -94,7 +94,7 @@ const Others = () => {
               <div className="flex flex-wrap mt-6">
                 {user.past_books.map((book) => (
                   <div key={book.id} className="">
-                    <div className="w-[160px] mr-8">
+                    <div className="max-w-[250px] mr-8">
                       <Link href={`/book/${book.title}`}>
                         <img src={book.photo_front} alt="" />
                       </Link>
@@ -107,10 +107,10 @@ const Others = () => {
             <>
               <p className="text-slate-500 text-[20px]">Current rentals</p>
 
-              <div className="flex flex-wrap mt-6">
+              <div className="flex mt-6">
                 {user.current_books.map((book) => (
                   <div key={book.id} className="">
-                    <div className="w-[160px] mr-8">
+                    <div className="max-w-[250px] mr-8">
                       <Link href={`/book/${book.title}`}>
                         <img src={book.photo_front} alt="" />
                       </Link>

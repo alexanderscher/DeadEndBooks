@@ -82,7 +82,7 @@ const PastRentals = ({ isSmallDevice }: PastRentalsProps) => {
               <h1>Return Date:</h1>
               <h1 className=" text-md ">{formatDate(rental.return_date)}</h1>
             </div>
-            <div className="flex mt-2 items-center justify-between border-b-[1.5px] border-slate-300">
+            <div className="flex mt-2 items-center justify-between">
               <h1>User:</h1>
               <h1 className=" text-md ">{rental.user_email}</h1>
             </div>
