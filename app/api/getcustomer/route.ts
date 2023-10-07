@@ -14,10 +14,7 @@ export async function GET(request: Request) {
     apiVersion: "2023-08-16",
   });
 
-  const prices = await stripe.prices.list({
-    limit: 4,
-    active: true,
-  });
+  const customer = await stripe.customers.list({});
 
-  return NextResponse.json(prices.data);
+  return NextResponse.json(customer.data);
 }

@@ -37,7 +37,7 @@ const page = () => {
                 film, anthologies, exhibition catalogs, and magazines. After
                 creating an account with your personal information, you will be
                 able to check our up to 3 books for 4 weeks at a time.
-                Subscriptions are $18.88/month or $206.10 for the year. We will
+                Subscriptions are $18.85/month or $206.10 for the year. We will
                 cover shipping costs. In your package from Deadend, you will
                 receive a return label, and can send the books back to us in the
                 box they came in. Subscription time starts 3 days after your

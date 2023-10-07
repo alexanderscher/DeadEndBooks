@@ -1,6 +1,5 @@
 "use client";
 import React, { use, useEffect, useState } from "react";
-import { useMediaQuery } from "react-responsive";
 import { usePathname } from "next/navigation";
 import { ExtendedSession } from "@/types";
 import { useSession } from "next-auth/react";
