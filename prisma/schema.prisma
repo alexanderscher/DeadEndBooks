@@ -81,18 +81,18 @@ model Address {
 }
 
 model User {
-  id         Int       @id @default(autoincrement())
-  email      String    @unique
-  password   String
-  name       String
-  admin      Boolean
-  address    Address?  @relation(name: "UserAddress")
-  subscribed Boolean
-  Current    Current[]
-  History    History[]
-  Queue      Queue[]
-  Cart       Cart[]
-  Saved      Saved[]
+  id                     Int       @id @default(autoincrement())
+  email                  String    @unique
+  password               String
+  name                   String
+  admin                  Boolean
+  address                Address?  @relation(name: "UserAddress")
+  subscribed             Boolean
+  Current                Current[]
+  History                History[]
+  Queue                  Queue[]
+  Cart                   Cart[]
+  Saved                  Saved[]
   stripeCustomerId       String?   @unique @map(name: "stripe_customer_id")
   stripeSubscriptionId   String?   @unique @map(name: "stripe_subscription_id")
   stripePriceId          String?   @map(name: "stripe_price_id")

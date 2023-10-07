@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "stripe:listen" : "stripe listen --forward-to localhost:3000/api/webhooks"
+    "stripe:listen": "stripe listen --forward-to localhost:3000/api/webhooks/stripe"
   },
   "dependencies": {
     "@prisma/client": "^5.3.1",
@@ -26,6 +26,7 @@
     "react-dom": "^18.2.0",
     "react-responsive": "^9.0.2",
     "stripe": "^13.9.0",
+    "supports-color": "^9.4.0",
     "tailwindcss": "3.3.3",
     "typescript": "5.2.2",
     "uploadthing": "^5.6.1"

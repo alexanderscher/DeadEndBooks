@@ -37,7 +37,7 @@ export async function POST(request: Request) {
 
     await prisma.user.update({
       where: {
-        id: parseInt(session.metadata.userId),
+        id: session.metadata.userId,
       },
       data: {
         stripeSubscriptionId: subscription.id,
@@ -56,7 +56,6 @@ export async function POST(request: Request) {
       session.subscription as string
     );
 
-    // Update the price id and set the new period end.
     await prisma.user.update({
       where: {
         stripeSubscriptionId: subscription.id,
