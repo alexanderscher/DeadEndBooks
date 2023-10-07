@@ -1,4 +1,4 @@
-import Stripe from "stripe";
+import { stripe } from "@/stripe/stripe";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
@@ -9,10 +9,6 @@ export async function GET(request: Request) {
       "STRIPE_SECRET_KEY is not set in the environment variables."
     );
   }
-
-  const stripe = new Stripe(stripeSecretKey, {
-    apiVersion: "2023-08-16",
-  });
 
   const customer = await stripe.customers.list({});
 
