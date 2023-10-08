@@ -1,10 +1,10 @@
 import Stripe from "stripe";
-import prisma from "../../../../prisma/prisma";
 import { NextRequest, NextResponse } from "next/server";
+import prisma from "@/prisma/client";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   // https://github.com/stripe/stripe-node#configuration
-  apiVersion: "2022-11-15",
+  apiVersion: "2023-08-16",
 });
 
 const webhookSecret: string = process.env.STRIPE_WEBHOOK_SECRET!;
@@ -39,32 +39,31 @@ const webhookHandler = async (req: NextRequest) => {
 
     // getting to the data we want from the event
     const subscription = event.data.object as Stripe.Subscription;
+    const subscriptionId = subscription.id;
 
     switch (event.type) {
       case "customer.subscription.created":
         await prisma.user.update({
-          // Find the customer in our database with the Stripe customer ID linked to this purchase
           where: {
             stripeCustomerId: subscription.customer as string,
           },
-          // Update that customer so their status is now active
           data: {
             isActive: true,
+            subscriptionID: subscriptionId,
           },
         });
         break;
       case "customer.subscription.deleted":
         await prisma.user.update({
-          // Find the customer in our database with the Stripe customer ID linked to this purchase
           where: {
             stripeCustomerId: subscription.customer as string,
           },
-          // Update that customer so their status is now active
           data: {
             isActive: false,
           },
         });
         break;
+
       default:
         console.warn(`🤷‍♀️ Unhandled event type: ${event.type}`);
         break;

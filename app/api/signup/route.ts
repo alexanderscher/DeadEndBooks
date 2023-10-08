@@ -1,12 +1,12 @@
 import bcrypt from "bcrypt";
 import { NextResponse } from "next/server";
-
+import Stripe from "stripe"; // Assuming you're using the stripe npm package.
 import prisma from "@/prisma/client";
 
 export async function POST(request: Request): Promise<NextResponse> {
   try {
     const body = await request.json();
-    const { provider, name, email, password, admin } = body.data;
+    const { provider, name, email, password } = body.data;
 
     if (provider && provider === "Google") {
       const user = await prisma.user.create({
@@ -23,8 +23,6 @@ export async function POST(request: Request): Promise<NextResponse> {
         headers: { "Content-Type": "application/json" },
       });
     } else {
-      const { name, email, password } = body.data;
-
       if (!name || !email || !password) {
         return new NextResponse(JSON.stringify({ error: "Missing fields" }), {
           status: 400,
@@ -74,6 +72,25 @@ export async function POST(request: Request): Promise<NextResponse> {
           subscribed: false,
         },
       });
+
+      // Stripe Logic
+      const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+        apiVersion: "2023-08-16",
+      });
+
+      await stripe.customers
+        .create({
+          email: user.email!,
+          name: user.name!,
+        })
+        .then(async (customer) => {
+          return prisma.user.update({
+            where: { id: user.id },
+            data: {
+              stripeCustomerId: customer.id,
+            },
+          });
+        });
 
       return new NextResponse(JSON.stringify(user), {
         status: 201,
