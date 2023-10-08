@@ -2,11 +2,12 @@ import Stripe from "stripe";
 
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/prisma/client";
+import { stripe } from "@/stripe/stripe";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  // https://github.com/stripe/stripe-node#configuration
-  apiVersion: "2023-08-16",
-});
+// const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+//   // https://github.com/stripe/stripe-node#configuration
+//   apiVersion: "2023-08-16",
+// });
 
 const webhookSecret: string = process.env.STRIPE_WEBHOOK_SECRET!;
 

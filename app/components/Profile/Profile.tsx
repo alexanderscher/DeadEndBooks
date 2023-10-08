@@ -4,9 +4,12 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { Loader } from "..";
+import { useRouter } from "next/navigation";
 
 const Profile = () => {
   const { data: session } = useSession();
+  const router = useRouter();
+
   const [isLoading, setisLoading] = useState(true);
   const [user, setUser] = useState({
     id: null,
@@ -89,6 +92,17 @@ const Profile = () => {
     setisLoading(false);
   }, [session]);
 
+  const cancelSubscription = async () => {
+    try {
+      const res = await fetch("/api/stripe/subscription-cancel");
+      const { subscription } = await res.json();
+      console.log(subscription);
+      router.push("/pricing");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   if (isLoading) {
     return <Loader />;
   }
@@ -169,6 +183,9 @@ const Profile = () => {
               )}
               <button className="text-red-500 hover:line-through text-[20px] mt-2">
                 Submit
+              </button>
+              <button className="p-2 border mt-4" onClick={cancelSubscription}>
+                Cancel Subscription
               </button>
             </form>
           </div>
