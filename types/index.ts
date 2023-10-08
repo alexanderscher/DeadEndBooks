@@ -35,11 +35,13 @@ export type UserType = {
   name?: string | null | undefined;
   email?: string | null | undefined;
   image?: string | null | undefined;
+  stripeCustomerId?: string | null | undefined;
 };
 
 export interface ExtendedUser extends User {
   id: string;
   admin: boolean;
+  stripeCustomerId: string;
 }
 
 export interface ExtendedSession extends Session {

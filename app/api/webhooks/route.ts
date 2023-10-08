@@ -1,4 +1,5 @@
 import Stripe from "stripe";
+
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/prisma/client";
 
@@ -43,10 +44,13 @@ const webhookHandler = async (req: NextRequest) => {
 
     switch (event.type) {
       case "customer.subscription.created":
+        // console.log(subscription.customer);
         await prisma.user.update({
+          // Find the customer in our database with the Stripe customer ID linked to this purchasex
           where: {
             stripeCustomerId: subscription.customer as string,
           },
+          // Update that customer so their status is now active
           data: {
             isActive: true,
             subscriptionID: subscriptionId,
@@ -55,15 +59,16 @@ const webhookHandler = async (req: NextRequest) => {
         break;
       case "customer.subscription.deleted":
         await prisma.user.update({
+          // Find the customer in our database with the Stripe customer ID linked to this purchase
           where: {
             stripeCustomerId: subscription.customer as string,
           },
+          // Update that customer so their status is now active
           data: {
             isActive: false,
           },
         });
         break;
-
       default:
         console.warn(`🤷‍♀️ Unhandled event type: ${event.type}`);
         break;

@@ -17,11 +17,16 @@ async function getDatabaseId(user: JWT) {
         select: {
           id: true,
           admin: true,
+          stripeCustomerId: true,
         },
       });
 
       if (queryResult) {
-        return [queryResult.id.toString(), queryResult.admin];
+        return [
+          queryResult.id.toString(),
+          queryResult.admin,
+          queryResult.stripeCustomerId,
+        ];
       }
     } else {
       return null;
@@ -104,6 +109,7 @@ export const authOptions: NextAuthOptions = {
             ...session.user,
             id: databaseId[0] as string,
             admin: databaseId[1] as boolean,
+            stripeCustomerId: databaseId[2] as string,
           },
         };
         return extendedSession;
@@ -111,6 +117,7 @@ export const authOptions: NextAuthOptions = {
         return session;
       }
     },
+
     jwt: ({ token, user }) => {
       if (user) {
         const u = user as any;
