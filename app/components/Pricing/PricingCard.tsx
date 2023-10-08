@@ -7,7 +7,7 @@ const PricingCard = ({ price }) => {
     e.preventDefault();
 
     const { data } = await axios.post(
-      "/api/payment",
+      "/api/stripe/payment",
       {
         priceId: price.id,
       },

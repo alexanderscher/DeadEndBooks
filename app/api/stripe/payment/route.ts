@@ -1,7 +1,7 @@
 import Stripe from "stripe";
 import { NextResponse, NextRequest } from "next/server";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]/route";
+import { authOptions } from "../../auth/[...nextauth]/route";
 import { ExtendedSession } from "@/types";
 
 export async function POST(request: NextRequest) {
