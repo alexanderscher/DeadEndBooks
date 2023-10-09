@@ -17,6 +17,7 @@ import PastRentals from "./Admin/PastRentals";
 import Users from "./Admin/Users";
 import Others from "./Navbar/Others";
 import PricingCard from "./Pricing/PricingCard";
+import Checkout from "./Navbar/Checkout";
 
 export {
   Books,
@@ -38,4 +39,5 @@ export {
   Users,
   Others,
   PricingCard,
+  Checkout,
 };

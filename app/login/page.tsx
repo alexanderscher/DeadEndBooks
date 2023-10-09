@@ -71,9 +71,11 @@ export default function Login() {
         <div className="w-3/4 min-w-[500px] max-w-[600px] ">
           <form noValidate onSubmit={loginUser} className={"flex flex-col "}>
             <input
-              className={`border-[3.5px] border-red-500  w-full h-[50px] px-3 focus:outline-none focus:none placeholder:text-red-300 text-red-500 ${
-                missingEmail ? "placeholder:text-blue-300 border-blue-500" : ""
-              } ${missingPassword && !missingEmail ? "border-b-[0px]" : ""}`}
+              className={`w-full h-[50px] px-3 focus:outline-none border-[3.5px] ${
+                missingEmail
+                  ? "border-blue-500 placeholder:text-blue-300"
+                  : "border-red-500 placeholder:text-red-300"
+              }`}
               id="email"
               name="email"
               type="text"
@@ -86,15 +88,11 @@ export default function Login() {
               }}
             />
             <input
-              className={`border-t-[0px] border-[3.5px] border-red-500  w-full h-[50px]  px-3 focus:outline-none focus:none  placeholder:text-red-300 text-red-500 ${
-                missingPassword && !missingEmail
-                  ? "placeholder:text-blue-300 border-t-[3.5px] border-blue-500"
-                  : ""
-              } ${
-                missingEmail && missingPassword
-                  ? "placeholder:text-blue-300  border-blue-500"
-                  : ""
-              }`}
+              className={`border-t-0 border-[3.5px] w-full h-[50px] px-3 focus:outline-none ${
+                missingPassword
+                  ? "border-blue-500 placeholder:text-blue-300"
+                  : "border-red-500 placeholder:text-red-300"
+              } `}
               id="password"
               name="password"
               type="text"

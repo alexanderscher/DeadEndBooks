@@ -239,7 +239,7 @@ const Profile = () => {
           </>
         )}
       </div>
-      <div className="mb-10 flex flex-col w-full ">
+      {/* <div className="mb-10 flex flex-col w-full ">
         <span className="text-[16px] text-slate-400">Address</span>
 
         <div className="">
@@ -303,7 +303,7 @@ const Profile = () => {
             </button>
           </form>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

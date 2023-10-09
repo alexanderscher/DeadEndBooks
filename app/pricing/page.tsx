@@ -9,7 +9,8 @@ import { useMediaQuery } from "react-responsive";
 const page = () => {
   const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
   const isSmallDeviceQuery = useMediaQuery({ maxWidth: 800 });
-  const [prices, setPrices] = useState([]);
+  const [prices, setPrices] = useState<any>([]);
+  console.log(prices);
   useEffect(() => {
     fetchPrices();
   }, []);
@@ -34,7 +35,7 @@ const page = () => {
           <div className={isSmallDevice ? "page-margin-small" : "page-margin"}>
             <div className="w-full ">
               {prices &&
-                prices.map((price) => (
+                prices.map((price: any) => (
                   <PricingCard price={price} key={price.id} />
                 ))}
             </div>

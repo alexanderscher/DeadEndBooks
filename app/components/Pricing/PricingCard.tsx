@@ -1,33 +1,47 @@
-import { getUserSubscriptionPlan } from "@/stripe/subscription";
+"use client";
+import { ExtendedSession } from "@/types";
 import axios from "axios";
-import React, { useEffect } from "react";
+import { useSession } from "next-auth/react";
+import React, { useEffect, useState } from "react";
 
-const PricingCard = ({ price }) => {
-  const handleSubscription = async (e) => {
+interface priceProps {
+  price: any;
+}
+
+const PricingCard = ({ price }: priceProps) => {
+  const { data: session } = useSession();
+  const sessionId = (session as ExtendedSession)?.user?.id;
+  const [noSession, setNoSession] = useState(false);
+
+  const handleSubscription = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    const { data } = await axios.post(
-      "/api/stripe/payment",
-      {
-        priceId: price.id,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
+    if (!sessionId) {
+      setNoSession(true);
+    } else {
+      const { data } = await axios.post(
+        "/api/stripe/payment",
+        {
+          priceId: price.id,
         },
-      }
-    );
-    window.location.assign(data);
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      window.location.assign(data);
+    }
   };
 
   return (
     <div>
       <h1
-        className={`text-[50px] ${price.nickname === "Yearly Plan" && "mt-10"}`}
+        className={`text-[40px] ${price.nickname === "Yearly Plan" && "mt-10"}`}
       >
         {price.nickname}
       </h1>
-      <p className="text-[40px] text-slate-500">
+      <p className="text-[30px] text-slate-500">
         {(price.unit_amount / 100).toLocaleString("en-US", {
           style: "currency",
           currency: "USD",
@@ -35,11 +49,16 @@ const PricingCard = ({ price }) => {
         {price.nickname === "Yearly Plan" ? "/year" : "/month"}
       </p>
       <button
-        className="text-[40px] hover:line-through text-red-500"
+        className="text-[30px] hover:line-through text-red-500"
         onClick={handleSubscription}
       >
         Subscribe
       </button>
+      {noSession && (
+        <p className="text-red-500 text-[30px] mt-10 ">
+          Please login to subscribe
+        </p>
+      )}
     </div>
   );
 };

@@ -266,10 +266,10 @@ const AddBook = () => {
             {frontImage.length > 0 && (
               <div className="w-full max-w-[1000px] mr-4">
                 <img src={frontImage[0].fileUrl} alt="" />
-                <div className="flex justify-between">
-                  <p className="text-center text-slate-400">Front Cover</p>
+                <div className="flex flex-col items-start">
+                  <p className=" text-slate-400 ">Front Cover</p>
                   <p
-                    className="text-center cursor-pointer text-slate-400"
+                    className=" cursor-pointer text-slate-400 "
                     onClick={frontDelete}
                   >
                     Undo
@@ -281,10 +281,10 @@ const AddBook = () => {
             {backImage.length > 0 && (
               <div className="w-full max-w-[1000px] relative">
                 <img src={backImage[0].fileUrl} alt="" />
-                <div className="flex justify-between">
-                  <p className="text-center text-slate-400">Back Cover</p>
+                <div className="flex flex-col items-start">
+                  <p className=" text-slate-400 ">Front Cover</p>
                   <p
-                    className="text-center cursor-pointer text-slate-400"
+                    className=" cursor-pointer text-slate-400 "
                     onClick={backDelete}
                   >
                     Undo

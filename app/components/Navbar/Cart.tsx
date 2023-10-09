@@ -4,17 +4,18 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { Loader } from "..";
+import { useRouter } from "next/navigation";
 
 const Cart = ({}) => {
   const { data: session } = useSession();
+  const router = useRouter();
   const [pageData, setPageData] = useState<Book[]>([]);
   const [reload, setReload] = useState(false);
   const [userId, setUserId] = useState("");
   const [isLoading, setisLoading] = useState(true);
   const [queuedLists, setQueuedLists] = useState<number[]>([]);
   const [lineStatuses, setLineStatuses] = useState<Record<number, string>>({});
-  console.log(pageData);
-
+  const [notActive, setNotActive] = useState(false);
   useEffect(() => {
     setisLoading(true);
     const sessionId = (session as ExtendedSession)?.user?.id;
@@ -81,57 +82,71 @@ const Cart = ({}) => {
     });
   };
 
-  const checkoutSubmit = async () => {
-    const useres = await fetch(`/api/user/${userId}`);
-    const user = await useres.json();
-    if (user.Current.length > 3) {
-      alert("You can only have 3 books checked out at a time.");
-      return;
-    } else if (user.Current.length + pageData.length > 3) {
-      alert(
-        `You can only have 3 books checked out at a time. You currently have ${user.Current.length} books already checked out.`
-      );
-      return;
+  const checkoutSubmit = () => {
+    if (!(session as ExtendedSession)?.user?.isActive) {
+      setNotActive(true);
     } else {
-      try {
-        for (const book of pageData) {
-          const res = await fetch(`/api/checkout`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              userId,
-              bookId: book.id,
-              cartId: book.cartId,
-              inStock: false,
-            }),
-          });
-
-          if (book.Queue) {
-            for (const item of book.Queue) {
-              console.log(item);
-              if (parseInt(userId) === item.userId) {
-                console.log(item.id);
-                const res4 = await fetch(`/api/queue`, {
-                  method: "DELETE",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({
-                    queuedId: item.id,
-                  }),
-                });
-              }
-            }
-          }
-        }
-      } catch (error) {
-        console.error("An error occurred:", error);
-      }
-      setReload(true);
+      router.push("/checkout");
     }
   };
+
+  // const checkoutSubmit = async () => {
+  //   const active = (session as ExtendedSession)?.user?.isActive;
+  //   if (!active) {
+  //     setNotActive(true);
+  //     return;
+  //   } else {
+  //     const useres = await fetch(`/api/user/${userId}`);
+  //     const user = await useres.json();
+  //     if (user.Current.length > 3) {
+  //       alert("You can only have 3 books checked out at a time.");
+  //       return;
+  //     } else if (user.Current.length + pageData.length > 3) {
+  //       alert(
+  //         `You can only have 3 books checked out at a time. You currently have ${user.Current.length} books already checked out.`
+  //       );
+  //       return;
+  //     } else {
+  //       try {
+  //         for (const book of pageData) {
+  //           const res = await fetch(`/api/checkout`, {
+  //             method: "POST",
+  //             headers: {
+  //               "Content-Type": "application/json",
+  //             },
+  //             body: JSON.stringify({
+  //               userId,
+  //               bookId: book.id,
+  //               cartId: book.cartId,
+  //               inStock: false,
+  //             }),
+  //           });
+
+  //           if (book.Queue) {
+  //             for (const item of book.Queue) {
+  //               console.log(item);
+  //               if (parseInt(userId) === item.userId) {
+  //                 console.log(item.id);
+  //                 const res4 = await fetch(`/api/queue`, {
+  //                   method: "DELETE",
+  //                   headers: {
+  //                     "Content-Type": "application/json",
+  //                   },
+  //                   body: JSON.stringify({
+  //                     queuedId: item.id,
+  //                   }),
+  //                 });
+  //               }
+  //             }
+  //           }
+  //         }
+  //       } catch (error) {
+  //         console.error("An error occurred:", error);
+  //       }
+  //       setReload(true);
+  //     }
+  //   }
+  // };
 
   if (isLoading) {
     return <Loader />;
@@ -145,14 +160,9 @@ const Cart = ({}) => {
   }
 
   return (
-    <div>
+    <div className="relative">
       <div className="fixed bottom-0 left-0 border-t-[2px] border-black bg-red-100 w-full text-red-500 p-5 flex hover:line-through">
-        <button
-          className="text-[30px]"
-          onClick={() => {
-            checkoutSubmit();
-          }}
-        >
+        <button className="text-[30px]" onClick={checkoutSubmit}>
           Checkout
         </button>
       </div>
@@ -204,6 +214,20 @@ const Cart = ({}) => {
           </div>
         </div>
       ))}
+
+      <div className="flex justify-center items-center">
+        {notActive && (
+          <div className="bg-red-200 text-red-500 m-10 p-8 rounded-md text-[20px] border-[2px] border-red-500 shadow-lg">
+            <p>Please subscribe to checkout books</p>
+            <button
+              onClick={() => setNotActive(false)}
+              className="hover:line-through text-md mt-4 text-end"
+            >
+              Close
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

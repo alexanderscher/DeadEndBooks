@@ -37,6 +37,7 @@ export type UserType = {
   image?: string | null | undefined;
   stripeCustomerId?: string | null | undefined;
   subscriptionID: string | null | undefined;
+  isActive: boolean;
 };
 
 export interface ExtendedUser extends User {
@@ -44,6 +45,7 @@ export interface ExtendedUser extends User {
   admin: boolean;
   stripeCustomerId: string;
   subscriptionID: string;
+  isActive: boolean;
 }
 
 export interface ExtendedSession extends Session {

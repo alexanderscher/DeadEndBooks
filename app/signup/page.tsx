@@ -72,13 +72,6 @@ export default function Signup() {
     <div className="w-full h-screen">
       <div className="flex flex-col w-full h-full items-center justify-center">
         <Link href="/">
-          {/* <Image
-            className="cursor-pointer mb-10 w-[200px]"
-            alt="send"
-            src="/Screenshot 2023-09-18 at 4.38.04 PM.png"
-            width={100}
-            height={100}
-          /> */}
           <h1 className="text-[40px] text-red-500 mb-10 font-bold">
             DEAD END BOOKS
           </h1>
@@ -86,9 +79,11 @@ export default function Signup() {
         <div className="w-3/4 min-w-[500px] max-w-[600px] ">
           <form onSubmit={registerUser} noValidate className="flex flex-col">
             <input
-              className={`border-[3.5px] border-red-500  w-full h-[50px] px-3 focus:outline-none focus:none placeholder:text-red-300 text-red-500 ${
-                usernameError ? "placeholder:text-blue-300 border-blue-500" : ""
-              } ${emailError && !usernameError ? "border-b-[0px]" : ""}`}
+              className={`w-full h-[50px] px-3 focus:outline-none border-[3.5px] ${
+                usernameError
+                  ? "border-blue-500 placeholder:text-blue-300"
+                  : "border-red-500 placeholder:text-red-300"
+              }`}
               id="name"
               name="name"
               type="text"
@@ -101,15 +96,11 @@ export default function Signup() {
               }}
             />
             <input
-              className={`border-t-[0px] border-[3.5px] border-red-500  w-full h-[50px] px-3 focus:outline-none focus:none placeholder:text-red-300 text-red-500 ${
-                emailError && !usernameError
-                  ? "placeholder:text-blue-300 border-t-[1.5px] border-blue-500"
-                  : ""
-              } ${
-                usernameError && emailError
-                  ? "placeholder:text-blue-300  border-blue-500"
-                  : ""
-              } ${!emailError && passwordError ? "border-b-[0px]" : ""}`}
+              className={`border-t-0 border-[3.5px] w-full h-[50px] px-3 focus:outline-none ${
+                emailError
+                  ? "border-blue-500 placeholder:text-blue-300"
+                  : "border-red-500 placeholder:text-red-300"
+              } ${passwordError ? "border-b-[3.5px]" : ""}`}
               id="email"
               name="email"
               type="text"
@@ -122,14 +113,10 @@ export default function Signup() {
               }}
             />
             <input
-              className={`border-t-[0px] border-[3.5px] border-red-500  w-full h-[50px]  px-3 focus:outline-none focus:none placeholder:text-red-300 text-red-500 ${
-                passwordError && !emailError
-                  ? "placeholder:text-blue-300 border-t-[1.5px] border-blue-500"
-                  : ""
-              } ${
-                emailError && passwordError
-                  ? "placeholder:text-blue-300  border-blue-500"
-                  : ""
+              className={`border-t-0 border-[3.5px] w-full h-[50px] px-3 focus:outline-none ${
+                passwordError
+                  ? "border-blue-500 placeholder:text-blue-300"
+                  : "border-red-500 placeholder:text-red-300"
               }`}
               id="password"
               name="password"

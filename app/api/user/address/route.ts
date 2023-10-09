@@ -117,3 +117,15 @@ export async function PUT(request: Request) {
     });
   }
 }
+
+export async function DELETE(request: Request) {
+  const json = await request.json();
+  const { id } = json;
+  const address = await prisma.address.delete({
+    where: { id },
+  });
+  return new NextResponse(JSON.stringify(address), {
+    status: 201,
+    headers: { "Content-Type": "application/json" },
+  });
+}

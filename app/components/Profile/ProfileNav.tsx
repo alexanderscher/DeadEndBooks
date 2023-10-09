@@ -29,11 +29,6 @@ const ProfileNav = ({ isSmallDevice }: Props) => {
       >
         <Link href="/profile/history">History</Link>
       </h1>
-      <h1
-        className={`mr-6 ${
-          isSmallDevice ? "text-[24px]" : "text-[28px]"
-        } hover:line-through cursor-pointer`}
-      ></h1>
     </div>
   );
 };

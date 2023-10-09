@@ -19,6 +19,7 @@ async function getDatabaseId(user: JWT) {
           admin: true,
           stripeCustomerId: true,
           subscriptionID: true,
+          isActive: true,
         },
       });
 
@@ -28,6 +29,7 @@ async function getDatabaseId(user: JWT) {
           queryResult.admin,
           queryResult.stripeCustomerId,
           queryResult.subscriptionID,
+          queryResult.isActive,
         ];
       }
     } else {
@@ -113,6 +115,7 @@ export const authOptions: NextAuthOptions = {
             admin: databaseId[1] as boolean,
             stripeCustomerId: databaseId[2] as string,
             subscriptionID: databaseId[3] as string,
+            isActive: databaseId[4] as boolean,
           },
         };
         return extendedSession;

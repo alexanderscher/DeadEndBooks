@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 const Profile = () => {
   const { data: session } = useSession();
   const router = useRouter();
+  const active = (session as ExtendedSession)?.user?.isActive;
 
   const [isLoading, setisLoading] = useState(true);
   const [user, setUser] = useState({
@@ -113,90 +114,23 @@ const Profile = () => {
           <span className="text-[16px] text-slate-400">Name</span>
           <h1 className="text-[30px]">{user.name}</h1>
         </div>
-
-        <h1 className="text-[20px] text-red-500 hover:line-through cursor-pointer mb- text-end">
-          <Link href="/profile/editprofile"> Edit profile</Link>
-        </h1>
       </div>
       <div className="mb-10">
         <span className="text-[16px] text-slate-400">Email</span>
         <h1 className="text-[30px]">{user.email}</h1>
       </div>
 
-      <div className="mb-10 flex flex-col flex-wrap">
-        <span className="text-[16px] text-slate-400">Address</span>
-        {user.address == null ? (
-          <div className=" ">
-            <h1 className="text-[20px] ">Please fill out address</h1>
-
-            <form onSubmit={submitAddress}>
-              <input
-                type="text"
-                name="address"
-                placeholder="Address"
-                value={formData.address}
-                onChange={handleChange}
-                className="border-black text-[20px] border-b-[2px] placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
-              />
-              <input
-                type="text"
-                name="zipCode"
-                placeholder="Zip Code"
-                value={formData.zipCode}
-                onChange={handleChange}
-                className="border-black text-[20px] border-b-[2px] placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
-              />
-              <input
-                type="text"
-                name="city"
-                placeholder="City"
-                value={formData.city}
-                onChange={handleChange}
-                className="border-black text-[20px] border-b-[2px] placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
-              />
-              <input
-                type="text"
-                name="state"
-                placeholder="State"
-                value={formData.state}
-                onChange={handleChange}
-                className="border-black text-[20px] border-b-[2px] placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
-              />
-              <input
-                type="text"
-                name="country"
-                placeholder="Country"
-                value={formData.country}
-                onChange={handleChange}
-                className="border-black text-[20px] border-b-[2px] placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
-              />
-              <input
-                type="text"
-                name="phone"
-                placeholder="Phone"
-                value={formData.phone}
-                onChange={handleChange}
-                className="border-black text-[20px] border-b-[2px] placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
-              />
-              {errorText && (
-                <p className="text-red-500">Please fill out all fields</p>
-              )}
-              <button className="text-red-500 hover:line-through text-[20px] mt-2">
-                Submit
-              </button>
-              <button className="p-2 border mt-4" onClick={cancelSubscription}>
-                Cancel Subscription
-              </button>
-            </form>
-          </div>
-        ) : (
-          <>
-            <h1 className="text-[30px]">{user.address.address}</h1>
-            <h1 className="text-[30px]">{user.address.zipcode}</h1>
-            <h1 className="text-[30px]">{user.address.city}</h1>
-            <h1 className="text-[30px]">{user.address.state}</h1>
-            <h1 className="text-[30px]">{user.address.phone}</h1>
-          </>
+      <div className="mt-10">
+        <h1 className="text-[26px] text-red-500 hover:line-through cursor-pointer mb- ">
+          <Link href="/profile/editprofile"> Edit profile</Link>
+        </h1>
+        {active && (
+          <button
+            className="text-red-500 hover:line-through text-[26px]"
+            onClick={cancelSubscription}
+          >
+            Cancel Subscription
+          </button>
         )}
       </div>
     </div>

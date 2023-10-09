@@ -76,8 +76,8 @@ model Address {
   state   String
   country String
   phone   String
-  userId  Int    @unique
-  user    User   @relation(name: "UserAddress", fields: [userId], references: [id])
+  userId  Int
+  User    User?  @relation(fields: [userId], references: [id])
 }
 
 model User {
@@ -86,7 +86,7 @@ model User {
   password         String
   name             String
   admin            Boolean
-  address          Address?  @relation(name: "UserAddress")
+  address          Address[]
   subscribed       Boolean
   Current          Current[]
   History          History[]
