@@ -37,61 +37,63 @@ const Checkout = () => {
     getCart();
   }, [session, reload]);
 
-  // const checkoutSubmit = async () => {
-  //   const active = (session as ExtendedSession)?.user?.isActive;
-  //   if (!active) {
-  //     setNotActive(true);
-  //     return;
-  //   } else {
-  //     const useres = await fetch(`/api/user/${userId}`);
-  //     const user = await useres.json();
-  //     if (user.Current.length > 3) {
-  //       alert("You can only have 3 books checked out at a time.");
-  //       return;
-  //     } else if (user.Current.length + pageData.length > 3) {
-  //       alert(
-  //         `You can only have 3 books checked out at a time. You currently have ${user.Current.length} books already checked out.`
-  //       );
-  //       return;
-  //     } else {
-  //       try {
-  //         for (const book of pageData) {
-  //           const res = await fetch(`/api/checkout`, {
-  //             method: "POST",
-  //             headers: {
-  //               "Content-Type": "application/json",
-  //             },
-  //             body: JSON.stringify({
-  //               userId,
-  //               bookId: book.id,
-  //               cartId: book.cartId,
-  //               inStock: false,
-  //             }),
-  //           });
+  const checkoutSubmit = async () => {
+    const active = (session as ExtendedSession)?.user?.isActive;
+    if (!active) {
+      setNotActive(true);
+      return;
+    } else {
+      const useres = await fetch(`/api/user/${userId}`);
+      const user = await useres.json();
+      if (user.Current.length > 3) {
+        alert("You can only have 3 books checked out at a time.");
+        return;
+      } else if (user.Current.length + pageData.length > 3) {
+        alert(
+          `You can only have 3 books checked out at a time. You currently have ${user.Current.length} books already checked out.`
+        );
+        return;
+      } else {
+        try {
+          for (const book of pageData) {
+            const res = await fetch(`/api/checkout`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                userId,
+                bookId: book.id,
+                cartId: book.cartId,
+                inStock: false,
+              }),
+            });
 
-  //           if (book.Queue) {
-  //             for (const item of book.Queue) {
-  //               if (parseInt(userId) === item.userId) {
-  //                 const res4 = await fetch(`/api/queue`, {
-  //                   method: "DELETE",
-  //                   headers: {
-  //                     "Content-Type": "application/json",
-  //                   },
-  //                   body: JSON.stringify({
-  //                     queuedId: item.id,
-  //                   }),
-  //                 });
-  //               }
-  //             }
-  //           }
-  //         }
-  //       } catch (error) {
-  //         console.error("An error occurred:", error);
-  //       }
-  //       setReload(true);
-  //     }
-  //   }
-  // };
+            if (book.Queue) {
+              for (const item of book.Queue) {
+                if (parseInt(userId) === item.userId) {
+                  const res4 = await fetch(`/api/queue`, {
+                    method: "DELETE",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                      queuedId: item.id,
+                    }),
+                  });
+                }
+              }
+            }
+          }
+        } catch (error) {
+          console.error("An error occurred:", error);
+        }
+        setReload(true);
+      }
+    }
+  };
+  const [checkedId, setCheckedId] = useState(null);
+  console.log(checkedId);
 
   const addressDelete = async (id: number) => {
     const res = await fetch(`/api/user/address`, {
@@ -115,29 +117,54 @@ const Checkout = () => {
   }
   return (
     <div className="relative">
-      <div className="w-full border-b-[2.5px] border-black">
+      <div className="w-full ">
         <h1 className="text-[30px] ">Checkout</h1>
       </div>
-      <div className="mt-10">
-        <h2 className="text-[20px]">Shipping</h2>
-        <p className="mb-6 text-slate-400">
-          Please check your shipping address
-        </p>
+      <div className="mt-10 max-w-[1000px]">
+        <div className="flex justify-between">
+          <div>
+            <h2 className="text-[20px]">Shipping</h2>
+            <p className="mb-6 text-slate-400">
+              Please check your shipping address
+            </p>
+          </div>
+          <button
+            className="text-red-500 hover:line-through text-[20px]"
+            onClick={() => {
+              setModal(true);
+            }}
+          >
+            Add new address
+          </button>
+        </div>
+
         {modal && <AddressModal setModal={setModal} userId={userId} />}
 
         {address.length > 0 &&
           address.map((item) => (
             <div
               key={item.id}
-              className="border-t-[2px] border-slate-400 flex justify-between mt-1 "
+              className="border-t-[2px] border-black flex justify-between mt-1 "
             >
-              <div className="">
-                <h3 className="mt-1 text-lg">{item.address}</h3>
-                <h3 className="mt-1 text-lg">{item.city}</h3>
-                <h3 className="mt-1 text-lg">{item.state}</h3>
-                <h3 className="mt-1 text-lg">{item.country}</h3>
-                <h3 className="mt-1 text-lg">{item.zipcode}</h3>
-                <h3 className="mt-1 text-lg">{item.phone}</h3>
+              <div className="flex">
+                <label
+                  className="custom-checkbox mt-2 mr-6"
+                  onClick={() => setCheckedId(item.id)}
+                >
+                  <span
+                    className={
+                      item.id === checkedId ? "checkmark checked" : "checkmark"
+                    }
+                  ></span>
+                </label>
+                <div>
+                  <h3 className="mt-1 text-lg">{item.address}</h3>
+                  <h3 className="mt-1 text-lg">{item.city}</h3>
+                  <h3 className="mt-1 text-lg">{item.state}</h3>
+                  <h3 className="mt-1 text-lg">{item.country}</h3>
+                  <h3 className="mt-1 text-lg">{item.zipcode}</h3>
+                  <h3 className="mt-1 text-lg">{item.phone}</h3>
+                </div>
               </div>
               <div>
                 <button
@@ -151,17 +178,9 @@ const Checkout = () => {
               </div>
             </div>
           ))}
-        <div className="mt-10">
-          <button className="text-red-500 hover:line-through text-[26px]">
-            Submit
-          </button>
-          <button
-            className="text-red-500 hover:line-through text-[26px] ml-6"
-            onClick={() => {
-              setModal(true);
-            }}
-          >
-            Add new address
+        <div className="mt-16 flex flex-col items-center">
+          <button className="text-red-500 border-[2px] w-full bg-red-200 border-black hover:line-through text-[26px] p-4 rounded-sm">
+            Submit order
           </button>
         </div>
       </div>

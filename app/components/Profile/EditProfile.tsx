@@ -5,6 +5,16 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { Loader } from "..";
 
+interface ChangeEventState {
+  username: string;
+  currentPasswordPassword: string;
+  currentPasswordEmail: string;
+  newPassword: string;
+  email: string;
+  userId: string;
+  [key: string]: string; // This is the index signature
+}
+
 const Profile = () => {
   const { data: session } = useSession();
   const [isLoading, setisLoading] = useState(true);
@@ -24,25 +34,14 @@ const Profile = () => {
     },
   });
 
-  const [changeEvent, setChangeEvent] = useState({
+  const [changeEvent, setChangeEvent] = useState<ChangeEventState>({
     username: "",
-    currentPassword: "",
+    currentPasswordPassword: "",
+    currentPasswordEmail: "",
     newPassword: "",
     email: "",
     userId: "",
   });
-
-  const [formData, setFormData] = useState({
-    address: "",
-    zipCode: "",
-    city: "",
-    state: "",
-    country: "",
-    phone: "",
-    userId: "",
-  });
-
-  console.log(formData);
 
   const [passwordPrompt, setPasswordPrompt] = useState(false);
   const [emailPrompt, setEmailPrompt] = useState(false);
@@ -60,45 +59,16 @@ const Profile = () => {
     setChangeEvent((prevState) => ({ ...prevState, [name]: value }));
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({ ...prevState, [name]: value }));
-  };
-
-  const submitAddress = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (
-      Object.entries(formData).every(
-        ([key, value]) => key === "userId" || value === ""
-      )
-    ) {
-    } else {
-      const res = await fetch("/api/user/address", {
-        method: "PUT",
-        body: JSON.stringify(formData),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const data = await res.json();
-      if (res.ok) {
-        setErrorText({
-          ...errorText,
-          address: false,
-        });
-        location.reload();
-      } else {
-        console.error("Error submitting address:", data.message);
-        setErrorText({
-          ...errorText,
-          address: true,
-        });
-      }
-    }
-  };
+  const [success, setSuccess] = useState({
+    username: false,
+    password: false,
+    email: false,
+  });
 
   const changeSubmit = async (name: string) => {
+    if (!changeEvent[name]) {
+      return;
+    }
     const res = await fetch(`/api/user/${name}`, {
       method: "PUT",
       body: JSON.stringify(changeEvent),
@@ -107,11 +77,19 @@ const Profile = () => {
       },
     });
     const data = await res.json();
+
     if (res.ok) {
-      console.log("Success!");
+      setSuccess({ ...success, [name]: true });
       setErrorText({ ...errorText, [name]: false });
+      setChangeEvent({
+        ...changeEvent,
+        [name]: "",
+      });
+
+      setTimeout(() => {
+        setSuccess({ ...success, [name]: false });
+      }, 3000);
     } else {
-      console.error(data.message);
       setErrorText({ ...errorText, [name]: true });
       seterrorMessage(data.message);
     }
@@ -130,10 +108,7 @@ const Profile = () => {
         ...prevState,
         userId: data.id,
       }));
-      setFormData((prevState) => ({
-        ...prevState,
-        userId: data.id,
-      }));
+
       setisLoading(false);
     };
     getUser();
@@ -153,7 +128,7 @@ const Profile = () => {
             name="username"
             value={changeEvent.username}
             onChange={handleChangeEvent}
-            placeholder={user.name}
+            placeholder="Change Name"
             className="border-b-[2px] border-black placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
           />
           {errorText.name && <p className="text-red-300">{errorMessage}</p>}
@@ -161,7 +136,7 @@ const Profile = () => {
             className="text-red-500 hover:line-through text-[20px] mt-2"
             onClick={() => changeSubmit("username")}
           >
-            Submit
+            {success.username ? "Submitted" : "Submit"}
           </button>
         </div>
       </div>
@@ -172,7 +147,7 @@ const Profile = () => {
           name="email"
           value={changeEvent.email}
           onChange={handleChangeEvent}
-          placeholder={user.email}
+          placeholder="Change email"
           className="border-b-[2px] border-black placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
         />
 
@@ -187,8 +162,8 @@ const Profile = () => {
           <>
             <input
               type="text"
-              name="currentPassword"
-              value={changeEvent.currentPassword}
+              name="currentPasswordEmail"
+              value={changeEvent.currentPasswordEmail}
               onChange={handleChangeEvent}
               placeholder="Current Password"
               className="border-b-[2px] border-black placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
@@ -198,7 +173,7 @@ const Profile = () => {
               className="text-red-500 hover:line-through text-[20px] mt-2"
               onClick={() => changeSubmit("email")}
             >
-              Submit
+              {success.email ? "Submitted" : "Submit"}
             </button>
           </>
         )}
@@ -213,97 +188,36 @@ const Profile = () => {
           placeholder="Change Password"
           className="border-b-[2px] border-black placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
         />
+
         {!passwordPrompt ? (
           <button
             className="text-red-500 hover:line-through text-[20px] mt-2"
             onClick={() => setPasswordPrompt(true)}
           >
-            Submit
+            {success.password ? "Submitted" : "Submit"}
           </button>
         ) : (
           <>
             <input
               type="text"
-              name="currentPassword"
-              value={changeEvent.currentPassword}
+              name="currentPasswordPassword"
+              value={changeEvent.currentPasswordPassword}
               onChange={handleChangeEvent}
               placeholder="Current Password"
               className="border-b-[2px] border-black placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
             />
+            {errorText.password && (
+              <p className="text-red-300">{errorMessage}</p>
+            )}
             <button
               className="text-red-500 hover:line-through text-[20px] mt-2"
               onClick={() => changeSubmit("password")}
             >
-              Submit
+              {success.password ? "Submitted" : "Submit"}
             </button>
           </>
         )}
       </div>
-      {/* <div className="mb-10 flex flex-col w-full ">
-        <span className="text-[16px] text-slate-400">Address</span>
-
-        <div className="">
-          <form onSubmit={submitAddress}>
-            <input
-              type="text"
-              name="address"
-              placeholder="Address"
-              value={formData.address}
-              onChange={handleChange}
-              className="border-black text-[20px] border-b-[2px] placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
-            />
-            <input
-              type="text"
-              name="zipCode"
-              placeholder="Zip Code"
-              value={formData.zipCode}
-              onChange={handleChange}
-              className="border-black text-[20px] border-b-[2px] placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
-            />
-            <input
-              type="text"
-              name="city"
-              placeholder="City"
-              value={formData.city}
-              onChange={handleChange}
-              className="border-black text-[20px] border-b-[2px] placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
-            />
-            <input
-              type="text"
-              name="state"
-              placeholder="State"
-              value={formData.state}
-              onChange={handleChange}
-              className="border-black text-[20px] border-b-[2px] placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
-            />
-            <input
-              type="text"
-              name="country"
-              placeholder="Country"
-              value={formData.country}
-              onChange={handleChange}
-              className="border-black text-[20px] border-b-[2px] placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
-            />
-            <input
-              type="text"
-              name="phone"
-              placeholder="Phone"
-              value={formData.phone}
-              onChange={handleChange}
-              className="border-black text-[20px] border-b-[2px] placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
-            />
-            {errorText.address && (
-              <p className="text-red-300">Please fill out all fields</p>
-            )}
-            <button
-              type="submit"
-              className="text-red-500 hover:line-through text-[20px] mt-2"
-            >
-              Submit
-            </button>
-          </form>
-        </div>
-      </div> */}
     </div>
   );
 };

@@ -84,3 +84,62 @@ body {
   pointer-events: none; /* Prevents the pseudo-element from capturing click events */
   z-index: -1; /* Place it behind the content of the div */
 }
+.custom-checkbox input[type="checkbox"] {
+  display: none;
+}
+
+/* Create a custom checkbox */
+.custom-checkbox .checkmark {
+  position: relative;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+  border: 2px solid #555;
+  border-radius: 4px;
+  display: inline-block;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+/* Set background color for checked checkbox using the .checked class */
+.custom-checkbox .checkmark.checked {
+  background-color: rgb(239 68 68);
+}
+
+/* Style for the checkmark icon (hidden by default) */
+.custom-checkbox .checkmark:after {
+  content: "";
+  position: absolute;
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+  display: none;
+}
+
+/* Show the checkmark when the checkbox has the .checked class */
+.custom-checkbox .checkmark.checked:after {
+  display: block;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-text-fill-color: rgb(0, 0, 0); /* Change the text color */
+  transition: background-color 5000s ease-in-out 0s; /* Prevents quick flash of autofill color */
+  background: rgb(
+    254 202 202
+  ); /* Set your desired autofill background color here */
+}
+
+/* If you want to change the shadow color for the autofill (optional) */
+input:-webkit-autofill::first-line {
+  font-family: inherit; /* Ensures consistent font */
+  font-size: inherit; /* Ensures consistent font size */
+  color: black !important; /* Adjust if necessary */
+}

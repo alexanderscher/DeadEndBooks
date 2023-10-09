@@ -8,7 +8,7 @@ export async function PUT(request: Request) {
     console.log(json);
     const userId = json.userId;
     const newEmail = json.email;
-    const currentPassword = json.currentPassword;
+    const currentPasswordEmail = json.currentPasswordEmail;
 
     const user = await prisma.user.findUnique({
       where: {
@@ -33,9 +33,9 @@ export async function PUT(request: Request) {
     }
 
     if (
-      (newEmail === "" && currentPassword === "") ||
+      (newEmail === "" && currentPasswordEmail === "") ||
       newEmail === "" ||
-      currentPassword === ""
+      currentPasswordEmail === ""
     ) {
       return new NextResponse(
         JSON.stringify({
@@ -71,7 +71,10 @@ export async function PUT(request: Request) {
     }
 
     if (user.password) {
-      const isPasswordValid = await compare(currentPassword, user.password);
+      const isPasswordValid = await compare(
+        currentPasswordEmail,
+        user.password
+      );
       if (!isPasswordValid) {
         return new NextResponse(
           JSON.stringify({

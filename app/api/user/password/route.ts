@@ -11,7 +11,7 @@ export async function PUT(request: Request) {
     console.log(json);
     const userId = json.userId;
     const newPassword = json.newPassword;
-    const oldPassword = json.currentPassword;
+    const oldPassword = json.currentPasswordPassword;
 
     if (
       (newPassword === "" && oldPassword === "") ||
@@ -51,7 +51,7 @@ export async function PUT(request: Request) {
       if (!isPasswordValid) {
         return new NextResponse(
           JSON.stringify({
-            message: "Invalid password",
+            message: "Current password is incorrect",
           }),
           {
             status: 500,
