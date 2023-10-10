@@ -18,6 +18,7 @@ import Users from "./Admin/Users";
 import Others from "./Navbar/Others";
 import PricingCard from "./Pricing/PricingCard";
 import Checkout from "./Navbar/Checkout";
+import Order from "./Admin/Order";
 
 export {
   Books,
@@ -40,4 +41,5 @@ export {
   Others,
   PricingCard,
   Checkout,
+  Order,
 };

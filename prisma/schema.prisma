@@ -21,6 +21,7 @@ model Book {
   History     History[]
   Cart        Cart[]
   Saved       Saved[]
+  Orders      Orders[]
 }
 
 model Current {
@@ -31,6 +32,8 @@ model Current {
   userId      Int?
   start_date  DateTime
   return_date DateTime
+  orderId     Int      @unique
+  order       Orders   @relation(fields: [orderId], references: [id])
 }
 
 model History {
@@ -96,4 +99,31 @@ model User {
   stripeCustomerId String?   @unique
   isActive         Boolean   @default(false)
   subscriptionID   String?
+  Orders           Orders[]
+}
+
+model OrderAddress {
+  id      Int    @id @default(autoincrement())
+  address String
+  zipcode String
+  city    String
+  state   String
+  country String
+  phone   String
+  orderId Int    @unique
+  order   Orders @relation(fields: [orderId], references: [id])
+}
+
+model Orders {
+  id          Int           @id @default(autoincrement())
+  bookId      Int
+  book        Book          @relation(fields: [bookId], references: [id])
+  userId      Int
+  User        User          @relation(fields: [userId], references: [id])
+  address     OrderAddress?
+  shipped     Boolean
+  returned    Boolean
+  start_date  DateTime
+  return_date DateTime
+  Current     Current?
 }

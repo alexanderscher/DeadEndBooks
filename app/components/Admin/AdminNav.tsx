@@ -66,7 +66,7 @@ const AdminNav = ({ isSmallDevice, isMediumDevice }: Props) => {
             : "text-[28px]"
         } hover:line-through cursor-pointer`}
       >
-        <Link href="/admin/users">Users</Link>
+        <Link href="/admin/users">Users, </Link>
       </h1>
       <h1
         className={`mr-4 ${
@@ -76,7 +76,9 @@ const AdminNav = ({ isSmallDevice, isMediumDevice }: Props) => {
             ? "text-[24px]"
             : "text-[28px]"
         } hover:line-through cursor-pointer`}
-      ></h1>
+      >
+        <Link href="/admin/orders">Orders</Link>
+      </h1>
     </div>
   );
 };

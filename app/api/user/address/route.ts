@@ -95,7 +95,7 @@ export async function PUT(request: Request) {
 
   try {
     const address = await prisma.address.update({
-      where: { userId: parseInt(json.userId) }, // <-- You need to provide a unique identifier here
+      where: { id: parseInt(json.userId) },
       data: {
         address: json.address,
         zipcode: json.zipCode,

@@ -29,6 +29,7 @@ export async function GET(
         Current: true,
         Queue: true,
         History: true,
+        Orders: true,
       },
     });
 
