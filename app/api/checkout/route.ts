@@ -71,10 +71,17 @@ export async function POST(request: Request) {
       },
     });
 
-    return new NextResponse(JSON.stringify(order), {
-      status: 201,
-      headers: { "Content-Type": "application/json" },
-    });
+    if (!order || !addy || !check || !updatedBook || !cart) {
+      return new NextResponse(JSON.stringify({ error: "Order not created" }), {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      });
+    } else {
+      return new NextResponse(JSON.stringify(order), {
+        status: 201,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
   } catch (err) {
     return new NextResponse(JSON.stringify({ error: "Database error" }), {
       status: 500,

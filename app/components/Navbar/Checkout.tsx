@@ -41,7 +41,7 @@ const Checkout = () => {
   }, [session, reload]);
 
   const [checkedId, setCheckedId] = useState(null);
-  console.log(checkedId);
+
   const [orderAddy, setOrderAddy] = useState({
     address: "",
     city: "",
@@ -52,21 +52,52 @@ const Checkout = () => {
   });
 
   const [checkoutSuccess, setCheckoutSuccess] = useState(false);
+  const [modalCheckout, setModalCheckout] = useState({
+    first: false,
+    second: false,
+  });
+
+  const [userCurrentLength, setUserCurrentLength] = useState(0);
 
   const checkoutSubmit = async () => {
     const active = (session as ExtendedSession)?.user?.isActive;
+
     if (!active) {
       setNotActive(true);
       return;
-    } else {
-      if (!checkedId) {
-        setNoAddress(true);
-        return;
-      } else {
-        const resAddy = await fetch(`/api/user/address/${checkedId}`);
-        const data = await resAddy.json();
-        setOrderAddy(data);
-        if (orderAddy.address) {
+    }
+
+    if (!checkedId) {
+      setNoAddress(true);
+      return;
+    }
+
+    const useres = await fetch(`/api/user/${userId}`);
+    const user = await useres.json();
+
+    if (user.Cart.length > 3) {
+      setModalCheckout({ second: false, first: true });
+      return;
+    }
+
+    if (user.Current.length + pageData.length > 3) {
+      setUserCurrentLength(user.Current.length);
+      setModalCheckout({ second: true, first: false });
+      return;
+    }
+
+    const resAddy = await fetch(`/api/user/address/${checkedId}`);
+    const data = await resAddy.json();
+
+    setOrderAddy(data);
+  };
+
+  useEffect(() => {
+    const checkout = async () => {
+      if (orderAddy.address) {
+        console.log("Success");
+
+        try {
           for (const book of pageData) {
             const res = await fetch(`/api/checkout`, {
               method: "POST",
@@ -102,58 +133,13 @@ const Checkout = () => {
               }
             }
           }
+        } catch (error) {
+          console.error("An error occurred:", error);
         }
-        // router.push("/checkout/success");
       }
-
-      //   const useres = await fetch(`/api/user/${userId}`);
-      //   const user = await useres.json();
-      //   if (user.Current.length > 3) {
-      //     alert("You can only have 3 books checked out at a time.");
-      //     return;
-      //   } else if (user.Current.length + pageData.length > 3) {
-      //     alert(
-      //       `You can only have 3 books checked out at a time. You currently have ${user.Current.length} books already checked out.`
-      //     );
-      //     return;
-      //   } else {
-      //     try {
-      //       for (const book of pageData) {
-      //         const res = await fetch(`/api/checkout`, {
-      //           method: "POST",
-      //           headers: {
-      //             "Content-Type": "application/json",
-      //           },
-      //           body: JSON.stringify({
-      //             userId,
-      //             bookId: book.id,
-      //             cartId: book.cartId,
-      //             inStock: false,
-      //           }),
-      //         });
-      //         if (book.Queue) {
-      //           for (const item of book.Queue) {
-      //             if (parseInt(userId) === item.userId) {
-      //               const res4 = await fetch(`/api/queue`, {
-      //                 method: "DELETE",
-      //                 headers: {
-      //                   "Content-Type": "application/json",
-      //                 },
-      //                 body: JSON.stringify({
-      //                   queuedId: item.id,
-      //                 }),
-      //               });
-      //             }
-      //           }
-      //         }
-      //       }
-      //     } catch (error) {
-      //       console.error("An error occurred:", error);
-      //     }
-      //     setReload(true);
-      //   }
-    }
-  };
+    };
+    checkout();
+  }, [orderAddy]);
 
   const addressDelete = async (id: number) => {
     const res = await fetch(`/api/user/address`, {
@@ -253,6 +239,35 @@ const Checkout = () => {
           </button>
         </div>
       </div>
+      {modalCheckout.first && (
+        <div className="fixed top-0 right-0 bottom-0 left-0 flex items-center justify-center">
+          <div className="bg-red-200 text-red-500 m-10 p-8 rounded-md text-[20px] border-[2px] border-red-500 shadow-lg">
+            <p>You can only have 3 books checked out at a time</p>
+            <button
+              onClick={() => setModalCheckout({ first: false, second: false })}
+              className="hover:line-through text-md mt-4 text-end"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+      {modalCheckout.second && (
+        <div className="fixed top-0 right-0 bottom-0 left-0 flex items-center justify-center">
+          <div className="bg-red-200 text-red-500 m-10 p-8 rounded-md text-[20px] border-[2px] border-red-500 shadow-lg">
+            <p>
+              You can only have 3 books checked out at a time. You currently
+              have {userCurrentLength} checked out
+            </p>
+            <button
+              onClick={() => setModalCheckout({ first: false, second: false })}
+              className="hover:line-through text-md mt-4 text-end"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

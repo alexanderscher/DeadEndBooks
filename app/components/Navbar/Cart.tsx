@@ -49,6 +49,7 @@ const Cart = ({}) => {
   }, [session, reload]);
 
   const removeCart = async (cartId: number) => {
+    setReload(false);
     const res = await fetch(`/api/cart`, {
       method: "DELETE",
       headers: {
@@ -81,72 +82,34 @@ const Cart = ({}) => {
       }),
     });
   };
+  const [modalCheckout, setModalCheckout] = useState({
+    first: false,
+    second: false,
+  });
 
-  const checkoutSubmit = () => {
+  console.log(modalCheckout);
+
+  const [userCurrentLength, setUserCurrentLength] = useState(0);
+
+  const checkoutSubmit = async () => {
     if (!(session as ExtendedSession)?.user?.isActive) {
       setNotActive(true);
     } else {
-      router.push("/checkout");
+      const useres = await fetch(`/api/user/${userId}`);
+      const user = await useres.json();
+      if (user.Cart.length > 3) {
+        setModalCheckout({ second: false, first: true });
+        return;
+      } else if (user.Current.length + pageData.length > 3) {
+        setUserCurrentLength(user.Current.length);
+
+        setModalCheckout({ second: true, first: false });
+        return;
+      } else {
+        router.push("/checkout");
+      }
     }
   };
-
-  // const checkoutSubmit = async () => {
-  //   const active = (session as ExtendedSession)?.user?.isActive;
-  //   if (!active) {
-  //     setNotActive(true);
-  //     return;
-  //   } else {
-  //     const useres = await fetch(`/api/user/${userId}`);
-  //     const user = await useres.json();
-  //     if (user.Current.length > 3) {
-  //       alert("You can only have 3 books checked out at a time.");
-  //       return;
-  //     } else if (user.Current.length + pageData.length > 3) {
-  //       alert(
-  //         `You can only have 3 books checked out at a time. You currently have ${user.Current.length} books already checked out.`
-  //       );
-  //       return;
-  //     } else {
-  //       try {
-  //         for (const book of pageData) {
-  //           const res = await fetch(`/api/checkout`, {
-  //             method: "POST",
-  //             headers: {
-  //               "Content-Type": "application/json",
-  //             },
-  //             body: JSON.stringify({
-  //               userId,
-  //               bookId: book.id,
-  //               cartId: book.cartId,
-  //               inStock: false,
-  //             }),
-  //           });
-
-  //           if (book.Queue) {
-  //             for (const item of book.Queue) {
-  //               console.log(item);
-  //               if (parseInt(userId) === item.userId) {
-  //                 console.log(item.id);
-  //                 const res4 = await fetch(`/api/queue`, {
-  //                   method: "DELETE",
-  //                   headers: {
-  //                     "Content-Type": "application/json",
-  //                   },
-  //                   body: JSON.stringify({
-  //                     queuedId: item.id,
-  //                   }),
-  //                 });
-  //               }
-  //             }
-  //           }
-  //         }
-  //       } catch (error) {
-  //         console.error("An error occurred:", error);
-  //       }
-  //       setReload(true);
-  //     }
-  //   }
-  // };
 
   if (isLoading) {
     return <Loader />;
@@ -228,6 +191,36 @@ const Cart = ({}) => {
           </div>
         )}
       </div>
+
+      {modalCheckout.first && (
+        <div className="fixed top-0 right-0 bottom-0 left-0 flex items-center justify-center">
+          <div className="bg-red-200 text-red-500 m-10 p-8 rounded-md text-[20px] border-[2px] border-red-500 shadow-lg">
+            <p>You can only have 3 books checked out at a time</p>
+            <button
+              onClick={() => setModalCheckout({ first: false, second: false })}
+              className="hover:line-through text-md mt-4 text-end"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+      {modalCheckout.second && (
+        <div className="fixed top-0 right-0 bottom-0 left-0 flex items-center justify-center">
+          <div className="bg-red-200 text-red-500 m-10 p-8 rounded-md text-[20px] border-[2px] border-red-500 shadow-lg">
+            <p>
+              You can only have 3 books checked out at a time. You currently
+              have {userCurrentLength} checked out
+            </p>
+            <button
+              onClick={() => setModalCheckout({ first: false, second: false })}
+              className="hover:line-through text-md mt-4 text-end"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
