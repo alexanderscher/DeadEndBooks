@@ -11,7 +11,19 @@ const Checkout = () => {
   const [pageData, setPageData] = useState<Book[]>([]);
   const [reload, setReload] = useState(false);
   const [userId, setUserId] = useState("");
-  const [address, setAddress] = useState([]);
+  const [address, setAddress] = useState([
+    {
+      id: 0,
+      userId: 0,
+      name: "",
+      address: "",
+      city: "",
+      state: "",
+      country: "",
+      zipcode: "",
+      phone: "",
+    },
+  ]);
   const [isLoading, setisLoading] = useState(true);
   const [notActive, setNotActive] = useState(false);
   const [noAddress, setNoAddress] = useState(false);
@@ -40,7 +52,7 @@ const Checkout = () => {
     getCart();
   }, [session, reload]);
 
-  const [checkedId, setCheckedId] = useState(null);
+  const [checkedId, setCheckedId] = useState(0);
 
   const [orderAddy, setOrderAddy] = useState({
     name: "",

@@ -38,40 +38,6 @@ const Profile = () => {
     userId: "",
   });
 
-  const [errorText, setErrorText] = useState(false);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({ ...prevState, [name]: value }));
-  };
-
-  const submitAddress = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (
-      Object.entries(formData).every(
-        ([key, value]) => key === "userId" || value === ""
-      )
-    ) {
-    } else {
-      const res = await fetch("/api/user/address", {
-        method: "POST",
-        body: JSON.stringify(formData),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const data = await res.json();
-      if (res.ok) {
-        setErrorText(false);
-        location.reload();
-      } else {
-        console.error("Error submitting address:", data.message);
-        setErrorText(true);
-      }
-    }
-  };
-
   useEffect(() => {
     const getUser = async () => {
       setisLoading(true);

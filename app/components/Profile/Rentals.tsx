@@ -140,12 +140,12 @@ const Rentals = () => {
           ) : (
             // rental.daysLeft <= 38 &&
             // rental.daysLeft !== 0 && (
-            <div className="flex mt-2 items-center justify-between relative text-red-500 hover:line-through">
+            <div className="flex mt-2 items-center justify-between relative text-red-500 ">
               <div
                 className="flex items-center cursor-pointer"
                 onClick={() => setModal(true)}
               >
-                <h1>Days left:</h1>
+                <h1 className="hover:line-through">Days left:</h1>
                 <div className="w-[13px] ml-2 ">
                   <img src="/question.png" alt="" />
                 </div>
