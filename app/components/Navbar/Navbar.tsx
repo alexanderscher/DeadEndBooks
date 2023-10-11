@@ -2,8 +2,9 @@
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import { LogOutButton } from "../../auth";
+import { ExtendedSession } from "@/types";
 
 interface Props {
   isSmallDevice: boolean;
@@ -14,6 +15,13 @@ const Navbar = ({ isSmallDevice }: Props) => {
   const [sort, setSort] = useState(false);
   const [menu, setMenu] = useState(false);
   const { data: session } = useSession();
+
+  const [admin, setAdmin] = useState(false);
+  useEffect(() => {
+    if (session && (session as ExtendedSession)?.user?.admin) {
+      setAdmin(true);
+    }
+  }, []);
 
   return (
     <>
@@ -88,12 +96,9 @@ const Navbar = ({ isSmallDevice }: Props) => {
                 <button className="hover:line-through text-lg mr-2">
                   <Link href="/about">About,</Link>
                 </button>
-                <button className="hover:line-through text-lg mr-2">
-                  <Link href="/admin/addbook">Admin,</Link>
-                </button>
 
                 {session ? (
-                  <LogOutButton />
+                  <LogOutButton isSmallDevice={isSmallDevice} />
                 ) : (
                   <>
                     {" "}
@@ -104,6 +109,11 @@ const Navbar = ({ isSmallDevice }: Props) => {
                       <Link href="/subscribe">Login,</Link>
                     </button>
                   </>
+                )}
+                {admin && (
+                  <button className="hover:line-through text-lg mr-2">
+                    <Link href="/admin/addbook">Admin</Link>
+                  </button>
                 )}
               </div>
             </div>
@@ -247,14 +257,11 @@ const Navbar = ({ isSmallDevice }: Props) => {
                     Instagram
                   </a>
                 </button>
-                <button className="hover:line-through text-lg mr-2">
-                  <Link href="/admin/addbook">Admin</Link>
-                </button>
+
                 {session ? (
-                  <LogOutButton />
+                  <LogOutButton isSmallDevice={isSmallDevice} />
                 ) : (
                   <>
-                    {" "}
                     <button className="hover:line-through text-lg mr-2">
                       <Link href="/signup">Sign up</Link>
                     </button>
@@ -262,6 +269,11 @@ const Navbar = ({ isSmallDevice }: Props) => {
                       <Link href="/login">Log in</Link>
                     </button>
                   </>
+                )}
+                {admin && (
+                  <button className="hover:line-through text-lg mr-2">
+                    <Link href="/admin/addbook">Admin</Link>
+                  </button>
                 )}
               </div>
             </div>

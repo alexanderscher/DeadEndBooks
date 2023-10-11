@@ -43,6 +43,7 @@ const Checkout = () => {
   const [checkedId, setCheckedId] = useState(null);
 
   const [orderAddy, setOrderAddy] = useState({
+    name: "",
     address: "",
     city: "",
     state: "",
@@ -85,18 +86,14 @@ const Checkout = () => {
       setModalCheckout({ second: true, first: false });
       return;
     }
-
     const resAddy = await fetch(`/api/user/address/${checkedId}`);
     const data = await resAddy.json();
-
     setOrderAddy(data);
   };
 
   useEffect(() => {
     const checkout = async () => {
       if (orderAddy.address) {
-        console.log("Success");
-
         try {
           for (const book of pageData) {
             const res = await fetch(`/api/checkout`, {
@@ -106,6 +103,7 @@ const Checkout = () => {
               },
               body: JSON.stringify({
                 userId,
+                name: orderAddy.name,
                 bookId: book.id,
                 cartId: book.cartId,
                 inStock: false,
@@ -132,6 +130,7 @@ const Checkout = () => {
                 }
               }
             }
+            router.push("/admin/orders/pending");
           }
         } catch (error) {
           console.error("An error occurred:", error);
@@ -170,9 +169,7 @@ const Checkout = () => {
         <div className="flex justify-between">
           <div>
             <h2 className="text-[20px]">Shipping</h2>
-            <p className="mb-6 text-slate-400">
-              Please check your shipping address
-            </p>
+            <p className="mb-6 text-slate-400">Choose a shipping address</p>
           </div>
           <button
             className="text-red-500 hover:line-through text-[20px]"
@@ -204,6 +201,7 @@ const Checkout = () => {
                   ></span>
                 </label>
                 <div>
+                  <h3 className="mt-1 text-lg">{item.name}</h3>
                   <h3 className="mt-1 text-lg">{item.address}</h3>
                   <h3 className="mt-1 text-lg">{item.city}</h3>
                   <h3 className="mt-1 text-lg">{item.state}</h3>
@@ -224,20 +222,29 @@ const Checkout = () => {
               </div>
             </div>
           ))}
-
-        <div className="mt-16 flex flex-col items-center">
-          {noAddress && (
-            <p className="text-red-800 text-[20px] mb-3">
-              Please select an address
-            </p>
-          )}
-          <button
-            className="text-red-500 border-[2px] w-full bg-red-200 border-black hover:line-through text-[26px] p-4 rounded-sm"
-            onClick={checkoutSubmit}
-          >
-            Submit order
-          </button>
-        </div>
+        {address.length === 0 ? (
+          <div>
+            <h1 className="text-red-500 text-[30px]">
+              Please add a shipping address
+            </h1>
+          </div>
+        ) : (
+          <>
+            <div className="mt-16 flex flex-col items-center">
+              {noAddress && (
+                <p className="text-red-800 text-[20px] mb-3">
+                  Please select an address
+                </p>
+              )}
+              <button
+                className="text-red-500 border-[2px] w-full bg-red-200 border-black hover:line-through text-[26px] p-4 rounded-sm"
+                onClick={checkoutSubmit}
+              >
+                Submit order
+              </button>
+            </div>
+          </>
+        )}
       </div>
       {modalCheckout.first && (
         <div className="fixed top-0 right-0 bottom-0 left-0 flex items-center justify-center">

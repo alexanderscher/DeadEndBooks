@@ -77,7 +77,7 @@ const AdminNav = ({ isSmallDevice, isMediumDevice }: Props) => {
             : "text-[28px]"
         } hover:line-through cursor-pointer`}
       >
-        <Link href="/admin/orders">Orders</Link>
+        <Link href="/admin/orders/pending">Orders</Link>
       </h1>
     </div>
   );

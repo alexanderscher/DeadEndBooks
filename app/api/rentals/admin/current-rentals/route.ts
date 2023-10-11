@@ -5,18 +5,15 @@ const daysLate = (input: string) => {
   const dueDate = new Date(input);
   const today = new Date();
 
-  // reset hours, minutes, seconds and milliseconds
   dueDate.setHours(0, 0, 0, 0);
   today.setHours(0, 0, 0, 0);
 
   const diff = today.getTime() - dueDate.getTime();
 
-  // If dueDate is in the future or same as today, return 0 as it's not late.
   if (diff <= 0) {
     return 0;
   }
 
-  // Convert milliseconds to days
   return Math.round(diff / (1000 * 60 * 60 * 24));
 };
 

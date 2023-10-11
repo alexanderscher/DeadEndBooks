@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 
 import { useMediaQuery } from "react-responsive";
-import { AdminNav, Loader, Navbar, PastRentals, Users } from "@/app/components";
+import { AdminNav, EditBook, Loader, Navbar, Order } from "@/app/components";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { ExtendedSession } from "@/types";
@@ -10,7 +10,7 @@ import { ExtendedSession } from "@/types";
 const page = () => {
   const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
   const isSmallDeviceQuery = useMediaQuery({ maxWidth: 800 });
-  const isMediumDeviceQuery = useMediaQuery({ maxWidth: 1200 });
+  const isMediumDeviceQuery = useMediaQuery({ maxWidth: 1000 });
   const [isMediumDevice, setIsMediumDevice] = useState<any>(null);
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -48,7 +48,7 @@ const page = () => {
               isSmallDevice={isSmallDevice}
               isMediumDevice={isMediumDevice}
             />
-            <Users />
+            <Order />
           </div>
         </>
       )}

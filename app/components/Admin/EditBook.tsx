@@ -35,6 +35,8 @@ const EditBook = ({ isSmallDevice }: Props) => {
     photo_back: "",
   });
 
+  console.log(bookPlaceHolder);
+
   const currentPage = usePathname();
   useEffect(() => {
     const getBooks = async () => {
@@ -83,7 +85,6 @@ const EditBook = ({ isSmallDevice }: Props) => {
         photo_back: backImage[0].fileUrl,
       }));
     }
-    console.log("chnage");
   }, [backImage]);
 
   const frontDelete = () => {
@@ -167,10 +168,9 @@ const EditBook = ({ isSmallDevice }: Props) => {
       setErrorText("Invalid book ID.");
       return;
     }
-    console.log("URL:", `/api/book/${bookId}`);
 
     if (JSON.stringify(book) === JSON.stringify(bookPlaceHolder)) {
-      console.log(JSON.stringify(book), JSON.stringify(bookPlaceHolder));
+      return;
     } else {
       try {
         const response = await fetch(`/api/book/edit/${bookId}`, {
@@ -197,8 +197,8 @@ const EditBook = ({ isSmallDevice }: Props) => {
             frontDelete();
             backDelete();
           }
-          console.log(`Sending PUT request for bookId: ${bookId}`);
         }
+        router.push(`/admin/editbook/${book.title}`);
       } catch (error) {
         console.error(error);
       }
@@ -240,8 +240,9 @@ const EditBook = ({ isSmallDevice }: Props) => {
             <select
               className="border-black text-[20px] border-b-[3px] placeholder:text-black mt-6 w-full focus:outline-none cursor-pointer"
               onChange={handleMediumChange}
+              value={book.medium}
             >
-              <option value="" disabled selected className="text-black">
+              <option value="" disabled className="text-black">
                 {bookPlaceHolder.medium}
               </option>
               <option value="painting">Painting</option>

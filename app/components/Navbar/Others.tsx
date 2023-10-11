@@ -55,7 +55,11 @@ const Others = () => {
       const res = await fetch("/api/user/other");
       const data: User[] = await res.json();
 
-      data.sort((a: User, b: User) => {
+      const filteredData = data.filter(
+        (user) => user.current_books.length > 0 || user.past_books.length > 0
+      );
+
+      filteredData.sort((a: User, b: User) => {
         const aRecentDate =
           a.current_books.length > 0
             ? getMostRecentDate(a.current_books)
@@ -69,7 +73,7 @@ const Others = () => {
         return bRecentDate - aRecentDate;
       });
 
-      setUsers(data);
+      setUsers(filteredData);
     };
 
     const getMostRecentDate = (books: Book[]): number => {

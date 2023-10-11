@@ -73,6 +73,7 @@ model Saved {
 
 model Address {
   id      Int    @id @default(autoincrement())
+  name    String
   address String
   zipcode String
   city    String
@@ -90,7 +91,6 @@ model User {
   name             String
   admin            Boolean
   address          Address[]
-  subscribed       Boolean
   Current          Current[]
   History          History[]
   Queue            Queue[]
@@ -104,6 +104,7 @@ model User {
 
 model OrderAddress {
   id      Int    @id @default(autoincrement())
+  name    String
   address String
   zipcode String
   city    String
@@ -123,6 +124,7 @@ model Orders {
   address     OrderAddress?
   shipped     Boolean
   returned    Boolean
+  order_date  DateTime
   start_date  DateTime
   return_date DateTime
   Current     Current?

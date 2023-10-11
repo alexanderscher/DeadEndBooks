@@ -5,17 +5,22 @@ import { useMediaQuery } from "react-responsive";
 import Link from "next/link";
 import { Loader, Navbar, Cart, Checkout } from "@/app/components";
 import { useSession } from "next-auth/react";
+import { ExtendedSession } from "@/types";
+import { useRouter } from "next/navigation";
 
 const page = () => {
   const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
   const isSmallDeviceQuery = useMediaQuery({ maxWidth: 800 });
   const { data: session, status } = useSession();
-
+  const router = useRouter();
   const [isLoading, setisLoading] = useState(true);
 
   useEffect(() => {
     if (session) {
       setisLoading(false);
+      if (!(session as ExtendedSession)?.user?.isActive) {
+        router.push("/subscribe");
+      }
     }
   }, [session]);
 

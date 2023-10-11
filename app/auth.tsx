@@ -2,7 +2,10 @@
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
-export const LogOutButton = () => {
+interface Props {
+  isSmallDevice: boolean;
+}
+export const LogOutButton = ({ isSmallDevice }: Props) => {
   const router = useRouter();
 
   const signout = async () => {
@@ -13,7 +16,7 @@ export const LogOutButton = () => {
       className="hover:line-through text-lg mr-2"
       onClick={() => signout()}
     >
-      Log Out
+      {isSmallDevice ? "Log Out, " : "Log Out"}
     </button>
   );
 };

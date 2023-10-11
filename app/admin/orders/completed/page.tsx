@@ -3,17 +3,34 @@ import React, { useEffect, useState } from "react";
 
 import { useMediaQuery } from "react-responsive";
 import { AdminNav, EditBook, Loader, Navbar, Order } from "@/app/components";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { ExtendedSession } from "@/types";
 
 const page = () => {
   const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
   const isSmallDeviceQuery = useMediaQuery({ maxWidth: 800 });
   const isMediumDeviceQuery = useMediaQuery({ maxWidth: 1000 });
   const [isMediumDevice, setIsMediumDevice] = useState<any>(null);
+  const { data: session, status } = useSession();
+  const router = useRouter();
 
   useEffect(() => {
-    setIsSmallDevice(isSmallDeviceQuery);
-    setIsMediumDevice(isMediumDeviceQuery);
-  }, [isSmallDeviceQuery, isMediumDeviceQuery]);
+    if (session && !(session as ExtendedSession)?.user?.admin) {
+      router.push("/not-found");
+    } else {
+      setIsSmallDevice(isSmallDeviceQuery);
+      setIsMediumDevice(isMediumDeviceQuery);
+    }
+  }, [isSmallDeviceQuery, isMediumDeviceQuery, session, status]);
+
+  if (
+    status === "loading" ||
+    status === "unauthenticated" ||
+    !(session as ExtendedSession)?.user?.admin
+  ) {
+    return <Loader />;
+  }
 
   return (
     <main className={isSmallDevice ? "page-small" : "page"}>

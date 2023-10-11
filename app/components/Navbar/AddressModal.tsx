@@ -8,6 +8,7 @@ interface Props {
 
 const AddressModal = ({ setModal, userId }: Props) => {
   const [formData, setFormData] = useState({
+    name: "",
     address: "",
     zipCode: "",
     city: "",
@@ -52,15 +53,23 @@ const AddressModal = ({ setModal, userId }: Props) => {
   };
   return (
     <div className="fixed inset-0 flex items-center justify-center z-40">
-      <div className="p-8 z-50 max-w-[700px] w-3/4 bg-red-200 h-[380px] rounded-md border-black border-[2px] shadow-lg">
+      <div className="p-8 z-50 max-w-[700px] w-3/4 bg-red-100 h-[430px] rounded-md border-black border-[2px] shadow-lg">
         <form onSubmit={submitAddress}>
+          <input
+            type="text"
+            name="name"
+            placeholder="Name"
+            value={formData.name}
+            onChange={handleChange}
+            className="bg-red-100  border-black text-[20px] border-b-[2px] placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
+          />
           <input
             type="text"
             name="address"
             placeholder="Address"
             value={formData.address}
             onChange={handleChange}
-            className="bg-red-200  border-black text-[20px] border-b-[2px] placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
+            className="bg-red-100  border-black text-[20px] border-b-[2px] placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
           />
           <input
             type="text"
@@ -68,7 +77,7 @@ const AddressModal = ({ setModal, userId }: Props) => {
             placeholder="Zip Code"
             value={formData.zipCode}
             onChange={handleChange}
-            className="bg-red-200 border-black text-[20px] border-b-[2px] placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
+            className="bg-red-100 border-black text-[20px] border-b-[2px] placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
           />
           <input
             type="text"
@@ -76,7 +85,7 @@ const AddressModal = ({ setModal, userId }: Props) => {
             placeholder="City"
             value={formData.city}
             onChange={handleChange}
-            className="bg-red-200 border-black text-[20px] border-b-[2px] placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
+            className="bg-red-100 border-black text-[20px] border-b-[2px] placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
           />
           <input
             type="text"
@@ -84,7 +93,7 @@ const AddressModal = ({ setModal, userId }: Props) => {
             placeholder="State"
             value={formData.state}
             onChange={handleChange}
-            className="bg-red-200 border-black text-[20px] border-b-[2px] placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
+            className="bg-red-100 border-black text-[20px] border-b-[2px] placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
           />
           <input
             type="text"
@@ -92,7 +101,7 @@ const AddressModal = ({ setModal, userId }: Props) => {
             placeholder="Country"
             value={formData.country}
             onChange={handleChange}
-            className="bg-red-200 border-black text-[20px] border-b-[2px] placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
+            className="bg-red-100 border-black text-[20px] border-b-[2px] placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
           />
           <input
             type="text"
@@ -100,7 +109,7 @@ const AddressModal = ({ setModal, userId }: Props) => {
             placeholder="Phone"
             value={formData.phone}
             onChange={handleChange}
-            className="bg-red-200 border-black text-[20px] border-b-[2px] placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
+            className="bg-red-100 border-black text-[20px] border-b-[2px] placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
           />
           {errorText && (
             <p className="text-red-800 mt-2">Please fill out all fields</p>

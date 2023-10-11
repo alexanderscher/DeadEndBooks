@@ -14,10 +14,12 @@ export async function POST(request: Request) {
     state,
     country,
     phone,
+    name,
   } = json;
 
   const today = new Date();
   const startDate = new Date(today);
+  startDate.setDate(startDate.getDate() + 3);
 
   const returnDate = new Date(startDate);
   returnDate.setDate(returnDate.getDate() + 38);
@@ -27,6 +29,7 @@ export async function POST(request: Request) {
       data: {
         userId: parseInt(userId),
         bookId,
+        order_date: today,
         start_date: startDate,
         return_date: returnDate,
         shipped: false,
@@ -36,6 +39,7 @@ export async function POST(request: Request) {
 
     const addy = await prisma.orderAddress.create({
       data: {
+        name: name,
         orderId: order.id,
         address: address,
         zipcode: zipcode,

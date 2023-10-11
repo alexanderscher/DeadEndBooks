@@ -7,7 +7,7 @@ const Users = () => {
       id: 0,
       name: "",
       email: "",
-      subcribed: false,
+      isActive: false,
       admin: false,
     },
   ]);
@@ -33,9 +33,8 @@ const Users = () => {
             <p className="mt-4 text-[20px] ml-2">{user.name}</p>
           </div>
           <div className="flex">
-            <p className="mt-4 text-[20px] text-slate-500">Subscribed:</p>
-            <p className="mt-4 text-[20px] ml-2 mb-4">
-              {user.subcribed ? "Subcribed" : "Not subcribed"}
+            <p className="mt-4 text-[20px] mb-4 text-red-500">
+              {user.isActive ? "Subcribed" : "Not subcribed"}
             </p>
           </div>
         </div>

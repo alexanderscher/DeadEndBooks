@@ -16,32 +16,30 @@ const formatDate = (input: string) => {
 const daysLate = (input: string) => {
   const dueDate = new Date(input);
   const today = new Date();
+  // const today = new Date("2023-10-13");
 
-  // reset hours, minutes, seconds and milliseconds
   dueDate.setHours(0, 0, 0, 0);
   today.setHours(0, 0, 0, 0);
 
   const diff = today.getTime() - dueDate.getTime();
 
-  // If dueDate is in the future or same as today, return 0 as it's not late.
   if (diff <= 0) {
     return 0;
   }
 
-  // Convert milliseconds to days
   return Math.round(diff / (1000 * 60 * 60 * 24));
 };
 
 const daysLeft = (input: string) => {
   const date = new Date(input);
   const today = new Date();
+  // const today = new Date("2023-10-13");
 
   today.setHours(0, 0, 0, 0);
   date.setHours(0, 0, 0, 0);
 
   const diff = date.getTime() - today.getTime();
 
-  console.log(Math.round(diff / (1000 * 60 * 60 * 24)));
   return Math.round(diff / (1000 * 60 * 60 * 24));
 };
 
@@ -59,6 +57,8 @@ const Rentals = () => {
       daysLeft: 0,
     },
   ]);
+
+  console.log(rentals);
 
   useEffect(() => {
     const getUser = async () => {
@@ -123,14 +123,23 @@ const Rentals = () => {
             <h1>Return Date:</h1>
             <h1 className=" text-md ">{rental.return_date}</h1>
           </div>
-          {rental.isLate > 0 && rental.daysLeft == 0 ? (
+          {rental.isLate >= 0 && rental.daysLeft <= 0 ? (
             <>
+              {}
               <div className="flex mt-2 items-center justify-between border-b-[1.5px] border-slate-300">
                 <h1>Status:</h1>
-                <h1 className="text-md text-red-500">Late</h1>
+                <h1 className="text-md text-red-500">
+                  {rental.isLate === 0
+                    ? "Item is due today"
+                    : rental.isLate === 1
+                    ? "1 day late"
+                    : `${rental.isLate} days late`}
+                </h1>
               </div>
             </>
           ) : (
+            // rental.daysLeft <= 38 &&
+            // rental.daysLeft !== 0 && (
             <div className="flex mt-2 items-center justify-between relative text-red-500 hover:line-through">
               <div
                 className="flex items-center cursor-pointer"
@@ -143,15 +152,16 @@ const Rentals = () => {
               </div>
               <h1 className="text-md text-red-500">{rental.daysLeft}</h1>
             </div>
+            // )
           )}
         </div>
       ))}
       {modal && (
         <div className="absolute top-2 left-2 bg-red-200 text-red-500 m-10 p-8 rounded-md text-[20px] border-[2px] border-red-500 shadow-lg">
           <p>
-            Books need to be returned within the 38 day time period. If you fail
-            to do so, you will be charged a fee. Please ship the book by the
-            31st day mark to ensure it arrives on time.
+            Books need to be returned within the 41 day time period. If you fail
+            to do so, you will be charged a fee. Please ship the book a week in
+            advance to avoid any late fees.
           </p>
           <button
             onClick={() => setModal(false)}

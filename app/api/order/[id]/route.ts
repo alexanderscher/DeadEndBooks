@@ -1,11 +1,15 @@
 import { NextResponse } from "next/server";
 import prisma from "@/prisma/client";
 
-export async function PUT(request: Request) {
-  const json = await request.json();
+export async function PUT(
+  request: Request,
+  { params }: { params: { slug: string } }
+) {
+  const { slug } = params;
+  console.log(slug);
 
   const book = await prisma.orders.update({
-    where: { id: parseInt(json.id) },
+    where: { id: parseInt(slug) },
     data: {
       shipped: true,
     },

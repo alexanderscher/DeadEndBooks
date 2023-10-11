@@ -5,6 +5,7 @@ export async function POST(request: Request) {
   const json = await request.json();
 
   const requiredFields = [
+    "name",
     "address",
     "zipCode",
     "city",
@@ -37,6 +38,7 @@ export async function POST(request: Request) {
   try {
     const address = await prisma.address.create({
       data: {
+        name: json.name,
         address: json.address,
         zipcode: json.zipCode,
         city: json.city,
@@ -64,6 +66,7 @@ export async function PUT(request: Request) {
   console.log(json);
 
   const requiredFields = [
+    "name",
     "address",
     "zipCode",
     "city",
@@ -97,6 +100,7 @@ export async function PUT(request: Request) {
     const address = await prisma.address.update({
       where: { id: parseInt(json.userId) },
       data: {
+        name: json.name,
         address: json.address,
         zipcode: json.zipCode,
         city: json.city,

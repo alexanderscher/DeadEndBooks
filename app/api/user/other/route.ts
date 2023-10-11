@@ -15,6 +15,9 @@ type ExtendedBook = {
 export async function GET() {
   try {
     const users = await prisma.user.findMany({
+      where: {
+        isActive: true,
+      },
       include: {
         Current: true,
         History: true,
