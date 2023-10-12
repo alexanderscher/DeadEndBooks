@@ -65,8 +65,6 @@ export async function GET() {
       });
     }
 
-    console.log(apiRentals);
-
     return new NextResponse(JSON.stringify(apiRentals), {
       status: 200,
       headers: { "Content-Type": "application/json" },
@@ -78,18 +76,3 @@ export async function GET() {
     });
   }
 }
-
-// const res = await fetch(`/api/book/${data[key].bookId}`);
-// const book = await res.json();
-
-// const res1 = await fetch(`/api/user/${data[key].userId}`);
-// const user = await res1.json();
-//    id: 0,
-//   title: "",
-//   start_date: "",
-//   return_date: "",
-//   user_email: "",
-//   userId: 0,
-//   bookId: 0,
-//   isLate: 0,
-//   daysLeft: 0,

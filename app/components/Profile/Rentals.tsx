@@ -138,8 +138,6 @@ const Rentals = () => {
               </div>
             </>
           ) : (
-            // rental.daysLeft <= 38 &&
-            // rental.daysLeft !== 0 && (
             <div className="flex mt-2 items-center justify-between relative text-red-500 ">
               <div
                 className="flex items-center cursor-pointer"

@@ -62,7 +62,7 @@ export async function PUT(
     const user = await prisma.user.update({
       where: { id: parsedId },
       data: {
-        subscribed: true,
+        isActive: true,
       },
     });
 

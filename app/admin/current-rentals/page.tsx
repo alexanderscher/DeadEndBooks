@@ -2,14 +2,7 @@
 import React, { useEffect, useState } from "react";
 
 import { useMediaQuery } from "react-responsive";
-import Link from "next/link";
-import {
-  AddBook,
-  AdminNav,
-  CurrentRentals,
-  Loader,
-  Navbar,
-} from "@/app/components";
+import { AdminNav, CurrentRentals, Loader, Navbar } from "@/app/components";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { ExtendedSession } from "@/types";

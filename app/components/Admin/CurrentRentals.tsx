@@ -39,6 +39,41 @@ const CurrentRentals = () => {
 
   const [isLoaded, setIsLoaded] = useState(true);
   const [isReturned, setIsReturned] = useState(false);
+  const [charge, setCharge] = useState({
+    bookId: 0,
+    charged: false,
+  });
+
+  const lateFee = async (userId: number, bookId: number) => {
+    const res = await fetch(`/api/user/${userId}`);
+    const data = await res.json();
+    const stripeCustomerId = data.stripeCustomerId;
+    const res1 = await fetch(`/api/getcustomer/${stripeCustomerId}`);
+    const data1 = await res1.json();
+    const paymentMethodId = data1.invoice_settings.default_payment_method;
+
+    const res2 = await fetch(`/api/stripe/charge`, {
+      method: "POST",
+      body: JSON.stringify({
+        amount: 500,
+        paymentMethodId,
+        stripeCustomerId,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    setCharge({
+      bookId,
+      charged: true,
+    });
+    setTimeout(() => {
+      setCharge({
+        bookId: 0,
+        charged: false,
+      });
+    }, 2000);
+  };
 
   const returnHandler = async (
     rentalId: number,
@@ -69,7 +104,6 @@ const CurrentRentals = () => {
       setIsLoaded(true);
       const res = await fetch(`/api/rentals/admin/current-rentals`);
       const data = await res.json();
-      console.log(data);
 
       setRentals(data);
       setIsLoaded(false);
@@ -113,8 +147,7 @@ const CurrentRentals = () => {
               <h1>User:</h1>
               <h1 className=" text-md ">{rental.user_email}</h1>
             </div>
-            {/* {1 > 0 && 0 === 0 ? ( */}
-            {rental.isLate > 0 && rental.daysLeft === 0 ? (
+            {rental.isLate >= 0 && rental.daysLeft <= 0 ? (
               <div className="flex mt-2 items-center justify-between border-b-[1.5px] border-slate-300">
                 <h1>Status:</h1>
                 <h1 className=" text-md text-red-500">Late</h1>
@@ -126,7 +159,7 @@ const CurrentRentals = () => {
               </div>
             )}
 
-            <div className="flex justify-between">
+            <div className="flex justify-between items-start">
               <h1
                 className=" text-md mt-2 mb-2 text-red-500 cursor-pointer hover:line-through"
                 onClick={() =>
@@ -141,12 +174,24 @@ const CurrentRentals = () => {
               >
                 Mark as returned
               </h1>
+              <div className="flex flex-col items-end mt-2">
+                {charge.bookId == rental.bookId && charge.charged ? (
+                  <h1 className="text-red-300">Late fee charged!</h1>
+                ) : (
+                  <button
+                    className="text-red-300 hover:line-through"
+                    onClick={() => {
+                      lateFee(rental.userId, rental.bookId);
+                    }}
+                  >
+                    Charge late fee
+                  </button>
+                )}
 
-              {rental.isLate > 0 && rental.daysLeft === 0 && (
-                <h1 className=" text-md mt-2 mb-2 text-red-500 cursor-pointer hover:line-through">
-                  Charge late fee
-                </h1>
-              )}
+                <button className="hover:line-through text-red-300">
+                  Charge book amount
+                </button>
+              </div>
             </div>
           </div>
         ))}
