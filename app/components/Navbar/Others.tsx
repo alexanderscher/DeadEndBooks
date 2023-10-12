@@ -1,4 +1,6 @@
 "use client";
+import { ExtendedSession } from "@/types";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import React, { use, useEffect, useState } from "react";
 
@@ -21,6 +23,9 @@ type User = {
 };
 
 const Others = () => {
+  const { data: session, status } = useSession();
+  const sessionId = (session as ExtendedSession)?.user?.id;
+
   const [users, setUsers] = useState([
     {
       current_books: [
@@ -54,9 +59,12 @@ const Others = () => {
     const getUsers = async () => {
       const res = await fetch("/api/user/other");
       const data: User[] = await res.json();
+      console.log(data);
 
       const filteredData = data.filter(
-        (user) => user.current_books.length > 0 || user.past_books.length > 0
+        (user) =>
+          (user.current_books.length > 0 || user.past_books.length > 0) &&
+          user.id !== parseInt(sessionId)
       );
 
       filteredData.sort((a: User, b: User) => {
@@ -85,7 +93,7 @@ const Others = () => {
     };
 
     getUsers();
-  }, []);
+  }, [sessionId]);
 
   return (
     <div>

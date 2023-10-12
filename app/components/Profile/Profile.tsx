@@ -10,6 +10,7 @@ const Profile = () => {
   const { data: session } = useSession();
   const router = useRouter();
   const active = (session as ExtendedSession)?.user?.isActive;
+  console.log(session);
 
   const [isLoading, setisLoading] = useState(true);
   const [user, setUser] = useState({

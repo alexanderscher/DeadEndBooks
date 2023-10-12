@@ -15,7 +15,6 @@ export async function POST(request: Request): Promise<NextResponse> {
           email: email,
           password: "",
           admin: false,
-          subscribed: false,
         },
       });
       return new NextResponse(JSON.stringify(user), {
@@ -69,7 +68,6 @@ export async function POST(request: Request): Promise<NextResponse> {
           email: email,
           password: hashedPassword,
           admin: false,
-          subscribed: false,
         },
       });
 

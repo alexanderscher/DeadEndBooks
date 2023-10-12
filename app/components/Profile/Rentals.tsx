@@ -157,8 +157,8 @@ const Rentals = () => {
       {modal && (
         <div className="absolute top-2 left-2 bg-red-200 text-red-500 m-10 p-8 rounded-md text-[20px] border-[2px] border-red-500 shadow-lg">
           <p>
-            Books need to be returned within the 41 day time period. If you fail
-            to do so, you will be charged a fee. Please ship the book a week in
+            Books need to be returned within the time period. If you fail to do
+            so, you will be charged a fee. Please ship the book a week in
             advance to avoid any late fees.
           </p>
           <button
