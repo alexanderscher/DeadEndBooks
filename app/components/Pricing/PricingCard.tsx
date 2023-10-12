@@ -20,7 +20,7 @@ const PricingCard = ({ price }: priceProps) => {
       setNoSession(true);
     } else {
       const { data } = await axios.post(
-        "/api/admin/stripe/payment",
+        "/api/stripe/payment",
         {
           priceId: price.id,
         },

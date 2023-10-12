@@ -41,6 +41,7 @@ type Order = {
 const Order = () => {
   const [isLoaded, setIsLoaded] = useState(true);
   const [orders, setOrders] = useState<Order[]>([]);
+  const [reload, setReload] = useState(false);
 
   const currentPage = usePathname();
 
@@ -56,13 +57,15 @@ const Order = () => {
       }),
     });
     const data = await res.json();
-    console.log(data);
+    setReload(true);
   };
 
   useEffect(() => {
     setOrders([]);
+
     const getOrders = async () => {
       setIsLoaded(true);
+      setReload(false);
       console.log(`/api/admin/order/${currentPage.split("/")[3]}`);
 
       const res = await fetch(`/api/admin/order/${currentPage.split("/")[3]}`);
@@ -104,7 +107,7 @@ const Order = () => {
       setIsLoaded(false);
     };
     getOrders();
-  }, []);
+  }, [reload]);
 
   if (isLoaded) {
     return <Loader />;
@@ -113,7 +116,8 @@ const Order = () => {
   if (orders.length === 0) {
     return (
       <div className="w-full  mt-10">
-        <h1 className="text-[30px]">No orders</h1>
+        <OrderNav />
+        <h1 className="text-[30px] mt-10">No current orders</h1>
       </div>
     );
   }

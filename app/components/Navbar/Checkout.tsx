@@ -44,6 +44,9 @@ const Checkout = () => {
         const book = await res.json();
         cartBooks.push({ ...book, cartId: data.Cart[key].id });
       }
+      if (cartBooks.length === 0) {
+        router.push("/cart");
+      }
 
       setPageData(cartBooks);
 
@@ -127,22 +130,31 @@ const Checkout = () => {
                 phone: orderAddy.phone,
               }),
             });
-            if (book.Queue) {
-              for (const item of book.Queue) {
-                if (parseInt(userId) === item.userId) {
-                  const res4 = await fetch(`/api/queue`, {
-                    method: "DELETE",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                      queuedId: item.id,
-                    }),
-                  });
+
+            const data = await res.json();
+
+            if (res.ok && data.id) {
+              const orderId = data.id;
+
+              if (book.Queue) {
+                for (const item of book.Queue) {
+                  if (parseInt(userId) === item.userId) {
+                    await fetch(`/api/queue`, {
+                      method: "DELETE",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({
+                        queuedId: item.id,
+                      }),
+                    });
+                  }
                 }
               }
+              router.push(`/checkout/success/${orderId}`);
+            } else {
+              console.error("Failed to get order ID from server.");
             }
-            router.push("/admin/orders/pending");
           }
         } catch (error) {
           console.error("An error occurred:", error);

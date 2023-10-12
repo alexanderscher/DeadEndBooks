@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { ExtendedSession } from "@/types";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface Props {
   isSmallDevice: boolean;
@@ -11,6 +12,7 @@ interface Props {
 const SingleBook = ({ isSmallDevice }: Props) => {
   const currentPage = usePathname();
   const title = currentPage.split("/")[2];
+  const router = useRouter();
   const { data: session } = useSession();
   const [userId, setuserId] = useState("");
   const [queuedLists, setQueuedLists] = useState<number[]>([]);
@@ -51,7 +53,10 @@ const SingleBook = ({ isSmallDevice }: Props) => {
       const queuedIds = [];
       const savedIds = [];
       const cartIds = [];
-      console.log(data);
+      if (res.status === 404) {
+        router.push("/not-found");
+        return;
+      }
 
       for (const key in data.Saved) {
         savedIds.push(data.Saved[key].userId);

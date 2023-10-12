@@ -2,6 +2,14 @@
 import React, { useEffect, useState } from "react";
 import { Loader } from "..";
 
+function dollarsToCents(dollarString: string): number {
+  let cleanedString = dollarString.replace("$", "");
+
+  let cents = Math.round(parseFloat(cleanedString) * 100);
+
+  return cents;
+}
+
 const formatDate = (input: string) => {
   const date = new Date(input);
   const day = String(date.getDate()).padStart(2, "0");
@@ -43,6 +51,59 @@ const CurrentRentals = () => {
     bookId: 0,
     charged: false,
   });
+  const [chargeBookInput, setChargeBookInput] = useState({
+    input: false,
+    userId: 0,
+    bookId: 0,
+  });
+
+  const [lateFeeModal, setLateFeeModal] = useState({
+    bookId: 0,
+    charged: false,
+    userId: 0,
+  });
+
+  const [amountBook, setAmount] = useState("0.00");
+
+  const amountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAmount(e.target.value);
+  };
+
+  const bookAmount = async (userId: number, bookId: number) => {
+    const res = await fetch(`/api/user/${userId}`);
+    const data = await res.json();
+    const stripeCustomerId = data.stripeCustomerId;
+    const res1 = await fetch(
+      `/api/admin/stripe/getcustomer/${stripeCustomerId}`
+    );
+    const data1 = await res1.json();
+    const paymentMethodId = data1.invoice_settings.default_payment_method;
+    try {
+      const res2 = await fetch(`/api/admin/stripe/charge`, {
+        method: "POST",
+        body: JSON.stringify({
+          amount: dollarsToCents(amountBook),
+          paymentMethodId,
+          stripeCustomerId,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      setCharge({
+        bookId,
+        charged: true,
+      });
+      setTimeout(() => {
+        setCharge({
+          bookId: 0,
+          charged: false,
+        });
+      }, 3000);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const lateFee = async (userId: number, bookId: number) => {
     const res = await fetch(`/api/user/${userId}`);
@@ -53,28 +114,31 @@ const CurrentRentals = () => {
     );
     const data1 = await res1.json();
     const paymentMethodId = data1.invoice_settings.default_payment_method;
-
-    const res2 = await fetch(`/api/admin/stripe/charge`, {
-      method: "POST",
-      body: JSON.stringify({
-        amount: 500,
-        paymentMethodId,
-        stripeCustomerId,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    setCharge({
-      bookId,
-      charged: true,
-    });
-    setTimeout(() => {
-      setCharge({
-        bookId: 0,
-        charged: false,
+    try {
+      const res2 = await fetch(`/api/admin/stripe/charge`, {
+        method: "POST",
+        body: JSON.stringify({
+          amount: 500,
+          paymentMethodId,
+          stripeCustomerId,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
-    }, 2000);
+      setCharge({
+        bookId,
+        charged: true,
+      });
+      setTimeout(() => {
+        setCharge({
+          bookId: 0,
+          charged: false,
+        });
+      }, 3000);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const returnHandler = async (
@@ -177,22 +241,112 @@ const CurrentRentals = () => {
                 Mark as returned
               </h1>
               <div className="flex flex-col items-end mt-2">
-                {charge.bookId == rental.bookId && charge.charged ? (
-                  <h1 className="text-red-300">Late fee charged!</h1>
-                ) : (
-                  <button
-                    className="text-red-300 hover:line-through"
-                    onClick={() => {
-                      lateFee(rental.userId, rental.bookId);
-                    }}
-                  >
-                    Charge late fee
-                  </button>
-                )}
+                <button
+                  className="text-red-300 hover:line-through"
+                  onClick={() => {
+                    setLateFeeModal({
+                      bookId: rental.bookId,
+                      charged: !lateFeeModal.charged,
+                      userId: rental.userId,
+                    });
+                  }}
+                >
+                  Charge $5.00 late fee
+                </button>
 
-                <button className="hover:line-through text-red-300">
+                {lateFeeModal.charged &&
+                  lateFeeModal.bookId == rental.bookId &&
+                  lateFeeModal.userId == rental.userId && (
+                    <div className="fixed inset-0 flex items-center justify-center z-40">
+                      <div className="p-8 z-50 max-w-[400px] w-3/4 bg-red-100 h-[160px] rounded-md border-black border-[2px] shadow-lg">
+                        <h1>
+                          Charging $5.00 to {rental.user_email} for{" "}
+                          {rental.title}
+                        </h1>
+                        <div className="flex justify-between mt-6">
+                          <button
+                            className="text-red-500 hover:line-through "
+                            onClick={() => {
+                              lateFee(rental.userId, rental.bookId);
+                            }}
+                          >
+                            {charge.bookId == rental.bookId && charge.charged
+                              ? "Late fee charged"
+                              : "Confirm"}
+                          </button>
+                          <button
+                            className="text-red-500 hover:line-through "
+                            onClick={() => {
+                              setLateFeeModal({
+                                bookId: 0,
+                                charged: !lateFeeModal.charged,
+                                userId: 0,
+                              });
+                            }}
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                <button
+                  className="hover:line-through text-red-300"
+                  onClick={() => {
+                    setChargeBookInput({
+                      input: !chargeBookInput.input,
+                      userId: rental.userId,
+                      bookId: rental.bookId,
+                    });
+                  }}
+                >
                   Charge book amount
                 </button>
+                {chargeBookInput.input &&
+                  chargeBookInput.bookId == rental.bookId &&
+                  chargeBookInput.bookId == rental.bookId && (
+                    <div className="fixed inset-0 flex items-center justify-center z-40">
+                      <div className="p-8 z-50 max-w-[400px] w-3/4 bg-red-100 h-[300px] rounded-md border-black border-[2px] shadow-lg">
+                        <h1>Input late fee amount</h1>
+                        <input
+                          type="text"
+                          className="border-b-[2px] border-black mt-4 bg-red-100 focus:outline-none"
+                          placeholder="$0.00"
+                          onChange={amountChange}
+                        />
+                        <h1 className="mt-2">
+                          Charging to {amountBook} {rental.user_email} for{" "}
+                          {rental.title}
+                        </h1>
+                        <div className="flex justify-between mt-[80px]">
+                          <button
+                            className="text-red-500 hover:line-through "
+                            onClick={() => {
+                              bookAmount(rental.userId, rental.bookId);
+                            }}
+                          >
+                            {charge.bookId == rental.bookId && charge.charged
+                              ? "Late fee charged"
+                              : "Confirm"}
+                          </button>
+                          <button
+                            className="text-red-500 hover:line-through "
+                            onClick={() => {
+                              setChargeBookInput({
+                                bookId: 0,
+                                input: !chargeBookInput.input,
+                                userId: 0,
+                              });
+                              setAmount("0.00");
+                            }}
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
               </div>
             </div>
           </div>

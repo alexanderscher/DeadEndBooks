@@ -8,7 +8,7 @@ datasource db {
 }
 
 model Book {
-  id          Int       @id @default(autoincrement())
+  id          Int         @id @default(autoincrement())
   title       String
   author      String
   publisher   String
@@ -21,7 +21,7 @@ model Book {
   History     History[]
   Cart        Cart[]
   Saved       Saved[]
-  Orders      Orders[]
+  orderBooks  OrderBook[]
 }
 
 model Current {
@@ -117,10 +117,9 @@ model OrderAddress {
 
 model Orders {
   id          Int           @id @default(autoincrement())
-  bookId      Int
-  book        Book          @relation(fields: [bookId], references: [id])
   userId      Int
   User        User          @relation(fields: [userId], references: [id])
+  books       OrderBook[]
   address     OrderAddress?
   shipped     Boolean
   returned    Boolean
@@ -128,4 +127,13 @@ model Orders {
   start_date  DateTime
   return_date DateTime
   Current     Current?
+}
+
+model OrderBook {
+  orderId Int
+  order   Orders @relation(fields: [orderId], references: [id])
+  bookId  Int
+  book    Book   @relation(fields: [bookId], references: [id])
+
+  @@id([orderId, bookId])
 }

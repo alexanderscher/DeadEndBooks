@@ -16,8 +16,6 @@ const page = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
 
-  const [done, setDone] = useState(false);
-
   useEffect(() => {
     if (session && !(session as ExtendedSession)?.user?.admin) {
       router.push("/not-found");
