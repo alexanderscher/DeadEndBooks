@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { authOptions } from "../../auth/[...nextauth]/route";
 import { ExtendedSession } from "@/types";
 import { stripe } from "@/stripe/stripe";
+import prisma from "@/prisma/client";
 
 export async function GET(req: NextRequest) {
   const session = await getServerSession(authOptions);
@@ -24,6 +25,13 @@ export async function GET(req: NextRequest) {
 
   const subscription = await stripe.subscriptions.update(stripeSubscriptionId, {
     cancel_at_period_end: true,
+  });
+
+  const user = await prisma.user.update({
+    where: { id: parseInt((session as ExtendedSession)?.user?.id) },
+    data: {
+      isActive: false,
+    },
   });
 
   return NextResponse.json({ subscription }, { status: 200 });
