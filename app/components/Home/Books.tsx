@@ -143,7 +143,7 @@ const Books = ({ isSmallDevice, isMediumDevice }: Props) => {
   return (
     <>
       {!isSmallDevice ? (
-        <div className="flex  page-margin">
+        <div className="flex page-margin w-full">
           {columnsData.map((column, columnIndex) => (
             <div key={columnIndex} className={`flex flex-col w-full`}>
               {column.map((item, index) => (

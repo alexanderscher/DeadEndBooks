@@ -150,15 +150,23 @@ const Order = () => {
             <div className="flex justify-between text-lg ">
               <div className="flex flex-col justify-between">
                 <h1 className="text-slate-500">Order address:</h1>
-
-                <button
-                  className="text-red-500 hover:line-through text-[20px]"
-                  onClick={() => markasShipped(order.id)}
-                >
-                  Mark as shipped
-                </button>
+                {currentPage === "/admin/orders/pending" && (
+                  <button
+                    className="text-red-500 hover:line-through text-[20px]"
+                    onClick={() => markasShipped(order.id)}
+                  >
+                    Mark as shipped
+                  </button>
+                )}
               </div>
-              <div className="text-end">
+
+              <div
+                className={
+                  currentPage === "/admin/orders/pending"
+                    ? "text-end"
+                    : "text-end w-3/4"
+                }
+              >
                 <h1 className="mt-1">{order.addressOrder.orderName}</h1>
                 <h1 className="mt-1">{order.addressOrder.address}</h1>
                 <h1 className="mt-1">{order.addressOrder.city}</h1>

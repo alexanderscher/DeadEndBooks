@@ -176,7 +176,7 @@ const AddBook = () => {
             <p className="text-red-500">Missing publisher field</p>
           )}
           <select
-            className="border-black text-[20px] border-[3px] p-2 placeholder:text-black mt-6 w-full max-w-[1000px] focus:outline-none cursor-pointer"
+            className="border-black text-[20px] border-[3px] p-3 placeholder:text-black mt-6 w-full max-w-[1000px] focus:outline-none cursor-pointer"
             onChange={handleMediumChange}
           >
             <option value="" disabled selected>
