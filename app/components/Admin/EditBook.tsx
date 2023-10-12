@@ -40,7 +40,7 @@ const EditBook = ({ isSmallDevice }: Props) => {
   const currentPage = usePathname();
   useEffect(() => {
     const getBooks = async () => {
-      const res = await fetch(`/api/book/${currentPage.split("/")[3]}`);
+      const res = await fetch(`/api/admin/book/${currentPage.split("/")[3]}`);
       const data = await res.json();
       setBookTitle(data.title);
       setBookPlaceHolder(data);
@@ -139,9 +139,9 @@ const EditBook = ({ isSmallDevice }: Props) => {
       setErrorText("Invalid book ID.");
       return;
     }
-    console.log("URL:", `/api/book/${bookId}`);
+
     try {
-      const response = await fetch(`/api/book/edit/${bookId}`, {
+      const response = await fetch(`/api/admin/book/edit/${bookId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -173,7 +173,7 @@ const EditBook = ({ isSmallDevice }: Props) => {
       return;
     } else {
       try {
-        const response = await fetch(`/api/book/edit/${bookId}`, {
+        const response = await fetch(`/api/admin/book/edit/${bookId}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",

@@ -46,7 +46,7 @@ const Order = () => {
 
   const markasShipped = async (id: number) => {
     console.log(id);
-    const res = await fetch(`/api/order`, {
+    const res = await fetch(`/api/admin/order`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -63,9 +63,9 @@ const Order = () => {
     setOrders([]);
     const getOrders = async () => {
       setIsLoaded(true);
-      console.log(`/api/order/${currentPage.split("/")[3]}`);
+      console.log(`/api/admin/order/${currentPage.split("/")[3]}`);
 
-      const res = await fetch(`/api/order/${currentPage.split("/")[3]}`);
+      const res = await fetch(`/api/admin/order/${currentPage.split("/")[3]}`);
       const data = await res.json();
       console.log(data);
 

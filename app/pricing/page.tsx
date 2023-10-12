@@ -16,7 +16,7 @@ const page = () => {
   }, []);
 
   const fetchPrices = async () => {
-    const res = await fetch("/api/getproducts");
+    const res = await fetch("/api/stripe/getproducts");
     const data = await res.json();
     setPrices(data);
   };

@@ -48,11 +48,13 @@ const CurrentRentals = () => {
     const res = await fetch(`/api/user/${userId}`);
     const data = await res.json();
     const stripeCustomerId = data.stripeCustomerId;
-    const res1 = await fetch(`/api/getcustomer/${stripeCustomerId}`);
+    const res1 = await fetch(
+      `/api/admin/stripe/getcustomer/${stripeCustomerId}`
+    );
     const data1 = await res1.json();
     const paymentMethodId = data1.invoice_settings.default_payment_method;
 
-    const res2 = await fetch(`/api/stripe/charge`, {
+    const res2 = await fetch(`/api/admin/stripe/charge`, {
       method: "POST",
       body: JSON.stringify({
         amount: 500,

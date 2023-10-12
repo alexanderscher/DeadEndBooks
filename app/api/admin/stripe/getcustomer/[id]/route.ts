@@ -3,7 +3,6 @@ import { NextResponse } from "next/server";
 
 export async function GET(request: Request, data: any) {
   const id = data.params?.id;
-  console.log(id);
 
   if (!id) {
     return new NextResponse("Missing id. Cannot find user.", {

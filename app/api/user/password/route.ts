@@ -12,6 +12,7 @@ export async function PUT(request: Request) {
     const userId = json.userId;
     const newPassword = json.newPassword;
     const oldPassword = json.currentPasswordPassword;
+    console.log(newPassword, oldPassword);
 
     if (
       (newPassword === "" && oldPassword === "") ||

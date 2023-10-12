@@ -20,7 +20,7 @@ const PricingCard = ({ price }: priceProps) => {
       setNoSession(true);
     } else {
       const { data } = await axios.post(
-        "/api/stripe/payment",
+        "/api/admin/stripe/payment",
         {
           priceId: price.id,
         },
@@ -55,9 +55,7 @@ const PricingCard = ({ price }: priceProps) => {
         Subscribe
       </button>
       {noSession && (
-        <p className="text-red-500 text-[30px] mt-10 ">
-          Please login to subscribe
-        </p>
+        <p className="text-red-300 text-[30px]  ">Please login to subscribe</p>
       )}
     </div>
   );

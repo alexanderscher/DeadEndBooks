@@ -43,6 +43,8 @@ const Profile = () => {
     userId: "",
   });
 
+  console.log(changeEvent);
+
   const [passwordPrompt, setPasswordPrompt] = useState(false);
   const [emailPrompt, setEmailPrompt] = useState(false);
   const [errorText, setErrorText] = useState({
@@ -66,8 +68,12 @@ const Profile = () => {
   });
 
   const changeSubmit = async (name: string) => {
+    console.log(changeEvent[name]);
     if (!changeEvent[name]) {
       return;
+    }
+    if (name === "newPassword") {
+      name = "password";
     }
     const res = await fetch(`/api/user/${name}`, {
       method: "PUT",
@@ -76,6 +82,8 @@ const Profile = () => {
         "Content-Type": "application/json",
       },
     });
+
+    console.log(`/api/user/${name}`);
     const data = await res.json();
 
     if (res.ok) {
@@ -194,7 +202,7 @@ const Profile = () => {
             className="text-red-500 hover:line-through text-[20px] mt-2"
             onClick={() => setPasswordPrompt(true)}
           >
-            {success.password ? "Submitted" : "Submit"}
+            Submit
           </button>
         ) : (
           <>
@@ -211,7 +219,7 @@ const Profile = () => {
             )}
             <button
               className="text-red-500 hover:line-through text-[20px] mt-2"
-              onClick={() => changeSubmit("password")}
+              onClick={() => changeSubmit("newPassword")}
             >
               {success.password ? "Submitted" : "Submit"}
             </button>
