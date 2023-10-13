@@ -4,14 +4,9 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/prisma/client";
 import { stripe } from "@/stripe/stripe";
 
-// const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-//   // https://github.com/stripe/stripe-node#configuration
-//   apiVersion: "2023-08-16",
-// });
-
 const webhookSecret: string = process.env.STRIPE_WEBHOOK_SECRET!;
 
-const webhookHandler = async (req: NextRequest) => {
+const webhookHandler = async (req: NextRequest): Promise<NextResponse> => {
   try {
     const buf = await req.text();
     const sig = req.headers.get("stripe-signature")!;
@@ -22,36 +17,30 @@ const webhookHandler = async (req: NextRequest) => {
       event = stripe.webhooks.constructEvent(buf, sig, webhookSecret);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "Unknown error";
-      // On error, log and return the error message.
       if (err! instanceof Error) console.log(err);
       console.log(`❌ Error message: ${errorMessage}`);
 
-      return NextResponse.json(
-        {
+      return new NextResponse(
+        JSON.stringify({
           error: {
             message: `Webhook Error: ${errorMessage}`,
           },
-        },
-        { status: 400 }
+        }),
+        { status: 400, headers: { "Content-Type": "application/json" } }
       );
     }
 
-    // Successfully constructed event.
     console.log("✅ Success:", event.id);
 
-    // getting to the data we want from the event
     const subscription = event.data.object as Stripe.Subscription;
     const subscriptionId = subscription.id;
 
     switch (event.type) {
       case "customer.subscription.created":
-        // console.log(subscription.customer);
         await prisma.user.update({
-          // Find the customer in our database with the Stripe customer ID linked to this purchasex
           where: {
             stripeCustomerId: subscription.customer as string,
           },
-          // Update that customer so their status is now active
           data: {
             isActive: true,
             subscriptionID: subscriptionId,
@@ -60,11 +49,9 @@ const webhookHandler = async (req: NextRequest) => {
         break;
       case "customer.subscription.deleted":
         await prisma.user.update({
-          // Find the customer in our database with the Stripe customer ID linked to this purchase
           where: {
             stripeCustomerId: subscription.customer as string,
           },
-          // Update that customer so their status is now active
           data: {
             isActive: false,
           },
@@ -75,17 +62,22 @@ const webhookHandler = async (req: NextRequest) => {
         break;
     }
 
-    // Return a response to acknowledge receipt of the event.
-    return NextResponse.json({ received: true });
+    return new NextResponse(JSON.stringify({ received: true }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
   } catch {
-    return NextResponse.json(
-      {
+    const response = new NextResponse(
+      JSON.stringify({
         error: {
           message: `Method Not Allowed`,
         },
-      },
-      { status: 405 }
-    ).headers.set("Allow", "POST");
+      }),
+      { status: 405, headers: { "Content-Type": "application/json" } }
+    );
+
+    response.headers.set("Allow", "POST");
+    return response;
   }
 };
 
