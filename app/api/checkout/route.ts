@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import prisma from "@/prisma/client";
 
-export async function POST(request: Request) {
+export async function POST(request: Request): Promise<NextResponse> {
   const json = await request.json();
   const {
     userId,
@@ -90,6 +90,10 @@ export async function POST(request: Request) {
         });
       });
     }
+    return new NextResponse(JSON.stringify({ success: true }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
   } catch (err) {
     return new NextResponse(JSON.stringify({ error: "Database error" }), {
       status: 500,
