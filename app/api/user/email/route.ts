@@ -99,6 +99,16 @@ export async function PUT(request: Request) {
         });
       }
     }
+
+    // This is a catch-all return for any case that hasn't been explicitly handled:
+    return new NextResponse(
+      JSON.stringify({
+        message: "Unexpected scenario encountered.",
+      }),
+      {
+        status: 500,
+      }
+    );
   } catch (error: any) {
     if (error.code === "P2002") {
       return new NextResponse(
