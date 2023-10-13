@@ -9,6 +9,7 @@ const Checkout = () => {
   const { data: session } = useSession();
   const router = useRouter();
   const [pageData, setPageData] = useState<Book[]>([]);
+
   const [reload, setReload] = useState(false);
   const [userId, setUserId] = useState("");
   const [address, setAddress] = useState([
@@ -67,7 +68,6 @@ const Checkout = () => {
     phone: "",
   });
 
-  const [checkoutSuccess, setCheckoutSuccess] = useState(false);
   const [modalCheckout, setModalCheckout] = useState({
     first: false,
     second: false,
@@ -104,65 +104,32 @@ const Checkout = () => {
     const resAddy = await fetch(`/api/user/address/${checkedId}`);
     const data = await resAddy.json();
     setOrderAddy(data);
+    checkout(data);
   };
 
-  useEffect(() => {
-    const checkout = async () => {
-      if (orderAddy.address) {
-        try {
-          for (const book of pageData) {
-            const res = await fetch(`/api/checkout`, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                userId,
-                name: orderAddy.name,
-                bookId: book.id,
-                cartId: book.cartId,
-                inStock: false,
-                address: orderAddy.address,
-                city: orderAddy.city,
-                state: orderAddy.state,
-                country: orderAddy.country,
-                zipcode: orderAddy.zipcode,
-                phone: orderAddy.phone,
-              }),
-            });
+  const checkout = async (addyData) => {
+    // Use addyData directly here instead of orderAddy, to ensure you're working with the most recent data
+    const res = await fetch(`/api/checkout`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId,
+        name: addyData.name,
+        books: pageData,
+        inStock: false,
+        address: addyData.address,
+        city: addyData.city,
+        state: addyData.state,
+        country: addyData.country,
+        zipcode: addyData.zipcode,
+        phone: addyData.phone,
+      }),
+    });
 
-            const data = await res.json();
-
-            if (res.ok && data.id) {
-              const orderId = data.id;
-
-              if (book.Queue) {
-                for (const item of book.Queue) {
-                  if (parseInt(userId) === item.userId) {
-                    await fetch(`/api/queue`, {
-                      method: "DELETE",
-                      headers: {
-                        "Content-Type": "application/json",
-                      },
-                      body: JSON.stringify({
-                        queuedId: item.id,
-                      }),
-                    });
-                  }
-                }
-              }
-              router.push(`/checkout/success/${orderId}`);
-            } else {
-              console.error("Failed to get order ID from server.");
-            }
-          }
-        } catch (error) {
-          console.error("An error occurred:", error);
-        }
-      }
-    };
-    checkout();
-  }, [orderAddy]);
+    // ... handle the response or errors from this fetch request
+  };
 
   const addressDelete = async (id: number) => {
     const res = await fetch(`/api/user/address`, {

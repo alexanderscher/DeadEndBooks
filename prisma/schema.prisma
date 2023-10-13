@@ -32,8 +32,10 @@ model Current {
   userId      Int?
   start_date  DateTime
   return_date DateTime
-  orderId     Int      @unique
+  orderId     Int
   order       Orders   @relation(fields: [orderId], references: [id])
+
+  @@unique([orderId, bookId])
 }
 
 model History {
@@ -126,7 +128,7 @@ model Orders {
   order_date  DateTime
   start_date  DateTime
   return_date DateTime
-  Current     Current?
+  Currents    Current[]
 }
 
 model OrderBook {
