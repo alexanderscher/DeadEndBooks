@@ -68,6 +68,16 @@ export default function Signup() {
     }
   };
 
+  const [google, setGoogle] = useState(false);
+
+  const loginUserGoogle = async () => {
+    await signIn("google", { redirect: false, callbackUrl: "/" });
+    setGoogle(true);
+    if (google) {
+      router.push("/");
+    }
+  };
+
   return (
     <div className="w-full h-screen">
       <div className="flex flex-col w-full h-full items-center justify-center">
@@ -79,7 +89,7 @@ export default function Signup() {
         <div className="w-3/4 min-w-[500px] max-w-[600px] ">
           <form onSubmit={registerUser} noValidate className="flex flex-col">
             <input
-              className={`w-full h-[50px] px-3 focus:outline-none border-[3.5px] ${
+              className={`w-full h-[50px] px-3 focus:outline-none border-[3.5px] text-red-500 ${
                 usernameError
                   ? "border-blue-500 placeholder:text-blue-300"
                   : "border-red-500 placeholder:text-red-300"
@@ -96,7 +106,7 @@ export default function Signup() {
               }}
             />
             <input
-              className={`border-t-0 border-[3.5px] w-full h-[50px] px-3 focus:outline-none ${
+              className={`border-t-0 border-[3.5px] w-full h-[50px] px-3 focus:outline-none text-red-500 ${
                 emailError
                   ? "border-blue-500 placeholder:text-blue-300"
                   : "border-red-500 placeholder:text-red-300"
@@ -113,14 +123,14 @@ export default function Signup() {
               }}
             />
             <input
-              className={`border-t-0 border-[3.5px] w-full h-[50px] px-3 focus:outline-none ${
+              className={`border-t-0 border-[3.5px] w-full h-[50px] px-3 focus:outline-none text-red-500 ${
                 passwordError
                   ? "border-blue-500 placeholder:text-blue-300"
                   : "border-red-500 placeholder:text-red-300"
               }`}
               id="password"
               name="password"
-              type="text"
+              type="password"
               placeholder={passwordError ? "Password is required" : "Password"}
               required
               value={data.password}
@@ -151,6 +161,16 @@ export default function Signup() {
               </p>
             </div>
           </form>
+          <div className="border-t-[3.5px] border-red-800 mt-10">
+            <button
+              className="border-[3.5px]  border-red-800 p-4 w-full  text-sm mt-11 relative flex items-center justify-center"
+              onClick={loginUserGoogle}
+            >
+              <p className="hover:line-through text-[26px] text-red-800">
+                Login with Google
+              </p>
+            </button>
+          </div>
         </div>
       </div>
     </div>

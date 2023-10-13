@@ -136,7 +136,7 @@ export const authOptions: NextAuthOptions = {
         const data = {
           name: user.name,
           email: user.email,
-          password: user.id,
+          password: "",
           provider: "Google",
         };
 

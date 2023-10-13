@@ -5,6 +5,19 @@ import { Loader } from "..";
 import AddressModal from "./AddressModal";
 import { useRouter } from "next/navigation";
 
+type AddyData = {
+  userId: number;
+  name: string;
+  books: any;
+  inStock: boolean;
+  address: string;
+  city: string;
+  state: string;
+  country: string;
+  zipcode: string;
+  phone: string;
+};
+
 const Checkout = () => {
   const { data: session } = useSession();
   const router = useRouter();
@@ -107,8 +120,7 @@ const Checkout = () => {
     checkout(data);
   };
 
-  const checkout = async (addyData) => {
-    // Use addyData directly here instead of orderAddy, to ensure you're working with the most recent data
+  const checkout = async (addyData: AddyData) => {
     const res = await fetch(`/api/checkout`, {
       method: "POST",
       headers: {

@@ -14,11 +14,19 @@ export default function Login() {
   });
 
   console.log(data);
-
+  const [google, setGoogle] = useState(false);
   const [missingEmail, setMissingEmail] = useState(false);
   const [missingPassword, setMissingPassowrd] = useState(false);
   const [notFound, setNotFound] = useState(false);
   const [invalidP, setInvalidP] = useState(false);
+
+  const loginUserGoogle = async () => {
+    await signIn("google", { redirect: false, callbackUrl: "/" });
+    setGoogle(true);
+    if (google) {
+      router.push("/");
+    }
+  };
 
   const loginUser = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -56,13 +64,6 @@ export default function Login() {
     <div className="w-full h-screen">
       <div className=" flex flex-col w-full h-full items-center justify-center">
         <Link href="/">
-          {/* <Image
-            className="cursor-pointer mb-10 w-[200px]"
-            alt="send"
-            src="/Screenshot 2023-09-18 at 4.38.04 PM.png"
-            width={100}
-            height={100}
-          /> */}
           <h1 className="text-[40px] text-red-500 mb-10 font-bold">
             DEAD END BOOKS
           </h1>
@@ -71,7 +72,7 @@ export default function Login() {
         <div className="w-3/4 min-w-[500px] max-w-[600px] ">
           <form noValidate onSubmit={loginUser} className={"flex flex-col "}>
             <input
-              className={`w-full h-[50px] px-3 focus:outline-none border-[3.5px] ${
+              className={`w-full h-[50px] px-3 focus:outline-none border-[3.5px] text-red-500  ${
                 missingEmail
                   ? "border-blue-500 placeholder:text-blue-300"
                   : "border-red-500 placeholder:text-red-300"
@@ -88,14 +89,14 @@ export default function Login() {
               }}
             />
             <input
-              className={`border-t-0 border-[3.5px] w-full h-[50px] px-3 focus:outline-none ${
+              className={`border-t-0 border-[3.5px] w-full h-[50px] px-3 focus:outline-none text-red-500 ${
                 missingPassword
                   ? "border-blue-500 placeholder:text-blue-300"
                   : "border-red-500 placeholder:text-red-300"
               } `}
               id="password"
               name="password"
-              type="text"
+              type="password"
               placeholder={
                 missingPassword ? "Please fill out password" : "Password"
               }
@@ -121,14 +122,24 @@ export default function Login() {
                 Login
               </button>
 
-              <p className="text-[26px] text-red-400 hover:line-through cursor-pointer">
+              <p className="text-[26px] text-red-300 hover:line-through cursor-pointer">
                 <Link href="\signup"> Create an account</Link>
               </p>
-              <p className="text-[26px] text-red-400 hover:line-through cursor-pointer">
+              <p className="text-[26px] text-red-300 hover:line-through cursor-pointer">
                 Forgot password
               </p>
             </div>
           </form>
+          <div className="border-t-[3.5px] border-red-800 mt-10">
+            <button
+              className="border-[3.5px]  border-red-800 p-4 w-full  text-sm mt-11 relative flex items-center justify-center"
+              onClick={loginUserGoogle}
+            >
+              <p className="hover:line-through text-[26px] text-red-800">
+                Login with Google
+              </p>
+            </button>
+          </div>
         </div>
       </div>
     </div>

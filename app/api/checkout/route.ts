@@ -72,7 +72,7 @@ export async function POST(request: Request) {
         },
       });
 
-      book.Cart.map(async (cartItem) => {
+      book.Cart.map(async (cartItem: any) => {
         await prisma.cart.delete({
           where: {
             id: cartItem.id,
@@ -81,7 +81,7 @@ export async function POST(request: Request) {
           },
         });
       });
-      book.Queue.map(async (QueueItem) => {
+      book.Queue.map(async (QueueItem: any) => {
         await prisma.cart.delete({
           where: {
             id: QueueItem.id,
@@ -90,40 +90,6 @@ export async function POST(request: Request) {
         });
       });
     }
-
-    // prisma.book.update({
-    //   where: { id: book.id },
-    //   data: {
-    //     inStock: false,
-    //   },
-    // }),
-    // ...book.Cart.map((cartItem) =>
-    //   prisma.cart.delete({
-    //     where: {
-    //       id: cartItem.id,
-    //       userId: parseInt(userId),
-    //     },
-    //   })
-    // ),
-    // ...book.Queue.map((queueItem) =>
-    //   prisma.queue.delete({
-    //     where: {
-    //       id: queueItem.id,
-    //       userId: parseInt(userId),
-    //     },
-    //   })
-    // ),
-
-    // if (!order || !addy || !check || !updatedBook || !cart) {
-    //   return new NextResponse(JSON.stringify({ error: "Order not created" }), {
-    //     status: 500,
-    //     headers: { "Content-Type": "application/json" },
-    //   });
-    // } else {
-    //   return new NextResponse(JSON.stringify(order), {
-    //     status: 201,
-    //     headers: { "Content-Type": "application/json" },
-    //   });
   } catch (err) {
     return new NextResponse(JSON.stringify({ error: "Database error" }), {
       status: 500,

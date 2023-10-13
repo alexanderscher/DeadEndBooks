@@ -17,6 +17,7 @@ interface ChangeEventState {
 
 const Profile = () => {
   const { data: session } = useSession();
+  console.log(session);
   const [isLoading, setisLoading] = useState(true);
   const [user, setUser] = useState({
     id: null,
@@ -148,84 +149,90 @@ const Profile = () => {
           </button>
         </div>
       </div>
-      <div className="mb-10 w-full items-start">
-        <span className="text-[16px] text-slate-400">Email</span>
-        <input
-          type="text"
-          name="email"
-          value={changeEvent.email}
-          onChange={handleChangeEvent}
-          placeholder="Change email"
-          className="border-b-[2px] border-black placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
-        />
-
-        {!emailPrompt ? (
-          <button
-            className="text-red-500 hover:line-through text-[20px] mt-2"
-            onClick={() => setEmailPrompt(true)}
-          >
-            Submit
-          </button>
-        ) : (
-          <>
+      {!(session as ExtendedSession)?.user?.image && (
+        <>
+          <div className="mb-10 w-full items-start">
+            <span className="text-[16px] text-slate-400">Email</span>
             <input
               type="text"
-              name="currentPasswordEmail"
-              value={changeEvent.currentPasswordEmail}
+              name="email"
+              value={changeEvent.email}
               onChange={handleChangeEvent}
-              placeholder="Current Password"
+              placeholder="Change email"
               className="border-b-[2px] border-black placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
             />
-            {errorText.email && <p className="text-red-300">{errorMessage}</p>}
-            <button
-              className="text-red-500 hover:line-through text-[20px] mt-2"
-              onClick={() => changeSubmit("email")}
-            >
-              {success.email ? "Submitted" : "Submit"}
-            </button>
-          </>
-        )}
-      </div>
-      <div className="mb-10 w-full items-start">
-        <span className="text-[16px] text-slate-400">Password</span>
-        <input
-          type="text"
-          name="newPassword"
-          value={changeEvent.newPassword}
-          onChange={handleChangeEvent}
-          placeholder="Change Password"
-          className="border-b-[2px] border-black placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
-        />
 
-        {!passwordPrompt ? (
-          <button
-            className="text-red-500 hover:line-through text-[20px] mt-2"
-            onClick={() => setPasswordPrompt(true)}
-          >
-            Submit
-          </button>
-        ) : (
-          <>
-            <input
-              type="text"
-              name="currentPasswordPassword"
-              value={changeEvent.currentPasswordPassword}
-              onChange={handleChangeEvent}
-              placeholder="Current Password"
-              className="border-b-[2px] border-black placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
-            />
-            {errorText.password && (
-              <p className="text-red-300">{errorMessage}</p>
+            {!emailPrompt ? (
+              <button
+                className="text-red-500 hover:line-through text-[20px] mt-2"
+                onClick={() => setEmailPrompt(true)}
+              >
+                Submit
+              </button>
+            ) : (
+              <>
+                <input
+                  type="password"
+                  name="currentPasswordEmail"
+                  value={changeEvent.currentPasswordEmail}
+                  onChange={handleChangeEvent}
+                  placeholder="Current Password"
+                  className="border-b-[2px] border-black placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
+                />
+                {errorText.email && (
+                  <p className="text-red-300">{errorMessage}</p>
+                )}
+                <button
+                  className="text-red-500 hover:line-through text-[20px] mt-2"
+                  onClick={() => changeSubmit("email")}
+                >
+                  {success.email ? "Submitted" : "Submit"}
+                </button>
+              </>
             )}
-            <button
-              className="text-red-500 hover:line-through text-[20px] mt-2"
-              onClick={() => changeSubmit("newPassword")}
-            >
-              {success.password ? "Submitted" : "Submit"}
-            </button>
-          </>
-        )}
-      </div>
+          </div>
+          <div className="mb-10 w-full items-start">
+            <span className="text-[16px] text-slate-400">Password</span>
+            <input
+              type="password"
+              name="newPassword"
+              value={changeEvent.newPassword}
+              onChange={handleChangeEvent}
+              placeholder="Change Password"
+              className="border-b-[2px] border-black placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
+            />
+
+            {!passwordPrompt ? (
+              <button
+                className="text-red-500 hover:line-through text-[20px] mt-2"
+                onClick={() => setPasswordPrompt(true)}
+              >
+                Submit
+              </button>
+            ) : (
+              <>
+                <input
+                  type="password"
+                  name="currentPasswordPassword"
+                  value={changeEvent.currentPasswordPassword}
+                  onChange={handleChangeEvent}
+                  placeholder="Current Password"
+                  className="border-b-[2px] border-black placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
+                />
+                {errorText.password && (
+                  <p className="text-red-300">{errorMessage}</p>
+                )}
+                <button
+                  className="text-red-500 hover:line-through text-[20px] mt-2"
+                  onClick={() => changeSubmit("newPassword")}
+                >
+                  {success.password ? "Submitted" : "Submit"}
+                </button>
+              </>
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 };
