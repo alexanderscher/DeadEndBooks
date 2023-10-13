@@ -53,6 +53,7 @@ export async function GET() {
       apiRentals.push({
         id: rentals[key].id,
         title: book?.title,
+        orderId: rentals[key].orderId,
         bookId: rentals[key].bookId,
         userId: rentals[key].userId,
         start_date: rentals[key].start_date,

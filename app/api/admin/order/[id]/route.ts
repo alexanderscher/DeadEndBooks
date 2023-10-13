@@ -37,6 +37,7 @@ export async function GET(
         headers: { "Content-Type": "application/json" },
       });
     }
+    console.log(order);
 
     return new NextResponse(JSON.stringify(order), {
       status: 200,

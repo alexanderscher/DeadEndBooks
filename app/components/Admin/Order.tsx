@@ -17,6 +17,11 @@ const formatDate = (input: string) => {
   }
 };
 
+type OrderBook = {
+  bookId: number;
+  orderId: number;
+};
+
 type Order = {
   addressOrder: {
     address: string;
@@ -29,7 +34,7 @@ type Order = {
   };
 
   id: number;
-  title: string;
+  title: string[];
   email: string;
   name: string;
   start_date: string;
@@ -41,8 +46,8 @@ type Order = {
 const Order = () => {
   const [isLoaded, setIsLoaded] = useState(true);
   const [orders, setOrders] = useState<Order[]>([]);
+  console.log(orders);
   const [reload, setReload] = useState(false);
-
   const currentPage = usePathname();
 
   const markasShipped = async (id: number) => {
@@ -66,41 +71,43 @@ const Order = () => {
     const getOrders = async () => {
       setIsLoaded(true);
       setReload(false);
-      console.log(`/api/admin/order/${currentPage.split("/")[3]}`);
 
       const res = await fetch(`/api/admin/order/${currentPage.split("/")[3]}`);
       const data = await res.json();
-      console.log(data);
+      for (const order of data) {
+        console.log(order.books);
+        const bookTitles = await Promise.all(
+          order.books.map(async (book: OrderBook) => {
+            const res = await fetch(`/api/book/${book.bookId}`);
+            const bookOrder = await res.json();
+            return bookOrder.title;
+          })
+        );
 
-      for (const order in data) {
-        console.log("order");
-        const res = await fetch(`/api/book/${data[order].bookId}`);
-        const book = await res.json();
-
-        const userres = await fetch(`/api/user/${data[order].userId}`);
+        const userres = await fetch(`/api/user/${order.userId}`);
         const user = await userres.json();
 
         setOrders((prevOrders) => [
           ...prevOrders,
           {
             addressOrder: {
-              address: data[order].address.address,
-              city: data[order].address.city,
-              country: data[order].address.country,
-              state: data[order].address.state,
-              zipcode: data[order].address.zipcode,
-              phone: data[order].address.phone,
-              orderName: data[order].address.name,
+              address: order.address.address,
+              city: order.address.city,
+              country: order.address.country,
+              state: order.address.state,
+              zipcode: order.address.zipcode,
+              phone: order.address.phone,
+              orderName: order.address.name,
             },
-            id: data[order].id,
-            title: book.title,
+            id: order.id,
+            title: bookTitles,
             email: user.email,
             name: user.name,
-            order_date: formatDate(data[order].order_date) as string,
+            order_date: formatDate(order.order_date) as string,
 
-            start_date: formatDate(data[order].start_date) as string,
-            shipped: data[order].shipped,
-            returned: data[order].returned,
+            start_date: formatDate(order.start_date) as string,
+            shipped: order.shipped,
+            returned: order.returned,
           },
         ]);
       }
@@ -132,13 +139,14 @@ const Order = () => {
         >
           <div className="mt-2 w-full mb-2">
             <div className="flex justify-between text-lg border-b-[2px] border-slate-300 mt-1">
+              <h1 className="text-slate-500">Order ID:</h1>
+              <h1 className="">{order.id}</h1>
+            </div>
+            <div className="flex justify-between text-lg border-b-[2px] border-slate-300 mt-1">
               <h1 className="text-slate-500">Email:</h1>
               <h1 className="">{order.email}</h1>
             </div>
-            <div className="flex justify-between text-lg border-b-[2px] border-slate-300 mt-1">
-              <h1 className="text-slate-500">Book title:</h1>
-              <h1>{order.title}</h1>
-            </div>
+
             <div className="flex justify-between text-lg border-b-[2px] border-slate-300 mt-1">
               <h1 className="text-slate-500">Subscription start date:</h1>
               <h1>{order.start_date}</h1>
@@ -150,6 +158,14 @@ const Order = () => {
             <div className="flex justify-between text-lg border-b-[2px] border-slate-300 mt-1">
               <h1 className="text-slate-500">Status:</h1>
               <h1>{order.shipped ? "Shipped" : "Not shipped"}</h1>
+            </div>
+            <div className="flex justify-between text-lg border-b-[2px] border-slate-300 mt-1">
+              <h1 className="text-slate-500">Order items:</h1>
+              <div className="flex flex-col">
+                {order.title.map((title) => (
+                  <h1 className="">{title}</h1>
+                ))}
+              </div>
             </div>
             <div className="flex justify-between text-lg ">
               <div className="flex flex-col justify-between">

@@ -42,7 +42,7 @@ const PastRentals = ({ isSmallDevice }: PastRentalsProps) => {
 
   useEffect(() => {
     const getPastRentals = async () => {
-      const res = await fetch(`/api/rentals/admin/past-rentals`);
+      const res = await fetch(`/api/admin/rentals/past-rentals`);
       const data = await res.json();
       setRentals(data);
       console.log(data);
@@ -57,7 +57,7 @@ const PastRentals = ({ isSmallDevice }: PastRentalsProps) => {
   } else if (rentals.length === 0) {
     return (
       <div className="w-full max-w-[1000px] mt-10">
-        <h1 className="text-[30px]">No current rentals</h1>
+        <h1 className="text-[30px]">No past rentals</h1>
       </div>
     );
   }

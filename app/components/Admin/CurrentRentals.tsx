@@ -29,6 +29,7 @@ interface Rental {
   bookId: number;
   isLate: number;
   daysLeft: number;
+  orderId: number;
 }
 const CurrentRentals = () => {
   const [rentals, setRentals] = useState<Rental[]>([
@@ -42,6 +43,7 @@ const CurrentRentals = () => {
       bookId: 0,
       isLate: 0,
       daysLeft: 0,
+      orderId: 0,
     },
   ]);
 
@@ -149,7 +151,7 @@ const CurrentRentals = () => {
     id: number
   ) => {
     setIsReturned(false);
-    const res = await fetch(`/api/rentals/admin/return`, {
+    const res = await fetch(`/api/admin/rentals/return`, {
       method: "POST",
       body: JSON.stringify({
         userId,
@@ -168,8 +170,9 @@ const CurrentRentals = () => {
   useEffect(() => {
     const getCurrentRentals = async () => {
       setIsLoaded(true);
-      const res = await fetch(`/api/rentals/admin/current-rentals`);
+      const res = await fetch(`/api/admin/rentals/current-rentals`);
       const data = await res.json();
+      console.log(data);
 
       setRentals(data);
       setIsLoaded(false);
@@ -201,6 +204,14 @@ const CurrentRentals = () => {
               <h1 className=" text-md ">{rental.title}</h1>
             </div>
             <div className="flex mt-2 items-center justify-between border-b-[1.5px] border-slate-300">
+              <h1>Order ID:</h1>
+              <h1 className=" text-md ">{rental.orderId}</h1>
+            </div>
+            <div className="flex mt-2 items-center justify-between border-b-[1.5px] border-slate-300">
+              <h1>User:</h1>
+              <h1 className=" text-md ">{rental.user_email}</h1>
+            </div>
+            <div className="flex mt-2 items-center justify-between border-b-[1.5px] border-slate-300">
               <h1>Start Date:</h1>
               <h1 className=" text-md ">{formatDate(rental.start_date)}</h1>
             </div>
@@ -209,10 +220,7 @@ const CurrentRentals = () => {
               <h1>Return Date:</h1>
               <h1 className=" text-md ">{formatDate(rental.return_date)}</h1>
             </div>
-            <div className="flex mt-2 items-center justify-between border-b-[1.5px] border-slate-300">
-              <h1>User:</h1>
-              <h1 className=" text-md ">{rental.user_email}</h1>
-            </div>
+
             {rental.isLate >= 0 && rental.daysLeft <= 0 ? (
               <div className="flex mt-2 items-center justify-between border-b-[1.5px] border-slate-300">
                 <h1>Status:</h1>

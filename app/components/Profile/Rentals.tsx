@@ -55,6 +55,7 @@ const Rentals = () => {
       return_date: "",
       isLate: 0,
       daysLeft: 0,
+      orderId: 0,
     },
   ]);
 
@@ -83,6 +84,7 @@ const Rentals = () => {
               return_date: formatDate(data.Current[rental].return_date),
               isLate: daysLate(data.Current[rental].return_date),
               daysLeft: daysLeft(data.Current[rental].return_date),
+              orderId: data.Current[rental].orderId,
             });
           }
         }
@@ -113,6 +115,10 @@ const Rentals = () => {
           <div className="flex mt-2 items-center justify-between border-b-[1.5px]  border-slate-300">
             <h1>Title:</h1>
             <h1 className=" text-md ">{rental.title}</h1>
+          </div>
+          <div className="flex mt-2 items-center justify-between border-b-[1.5px]  border-slate-300">
+            <h1>Order ID:</h1>
+            <h1 className=" text-md ">{rental.orderId}</h1>
           </div>
           <div className="flex mt-2 items-center justify-between border-b-[1.5px] border-slate-300">
             <h1>Start Date:</h1>
