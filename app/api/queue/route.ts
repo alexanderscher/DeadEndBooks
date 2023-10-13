@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/prisma/client";
 
-export async function GET(request: Request) {}
-
 export async function POST(request: Request) {
   const json = await request.json();
   const { userId, bookId } = json;
