@@ -1,4 +1,3 @@
-import { PrismaClient } from "@prisma/client";
 import { compare } from "bcrypt";
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
@@ -74,6 +73,15 @@ export async function PUT(request: Request) {
           status: 200,
         });
       }
+    } else {
+      return new NextResponse(
+        JSON.stringify({
+          message: "User doesn't have an associated password.",
+        }),
+        {
+          status: 500,
+        }
+      );
     }
   } catch (error: any) {
     if (error.code === "P2002") {
