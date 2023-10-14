@@ -52,6 +52,18 @@ const webhookHandler = async (req: NextRequest): Promise<NextResponse> => {
         });
         break;
       case "customer.subscription.updated":
+        await prisma.user.update({
+          where: {
+            stripeCustomerId: subscription.customer as string,
+          },
+          data: {
+            isActive: true,
+            subscriptionID: subscriptionId,
+            subscriptionType: null,
+          },
+        });
+        break;
+      case "customer.subscription.deleted":
         const updateed = await prisma.user.update({
           where: {
             stripeCustomerId: subscription.customer as string,

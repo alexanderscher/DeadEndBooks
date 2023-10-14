@@ -16,13 +16,6 @@ const Navbar = ({ isSmallDevice }: Props) => {
   const [menu, setMenu] = useState(false);
   const { data: session } = useSession();
 
-  const [admin, setAdmin] = useState(false);
-  useEffect(() => {
-    if (session && (session as ExtendedSession)?.user?.admin) {
-      setAdmin(true);
-    }
-  }, []);
-
   return (
     <>
       {isSmallDevice ? (
@@ -105,14 +98,9 @@ const Navbar = ({ isSmallDevice }: Props) => {
                       <Link href="/home">Sign up,</Link>
                     </button>
                     <button className="hover:line-through text-md mr-2">
-                      <Link href="/subscribe">Login,</Link>
+                      <Link href="/subscribe">Login</Link>
                     </button>
                   </>
-                )}
-                {admin && (
-                  <button className="hover:line-through text-md mr-2">
-                    <Link href="/admin/addbook">Admin</Link>
-                  </button>
                 )}
               </div>
             </div>
@@ -268,11 +256,6 @@ const Navbar = ({ isSmallDevice }: Props) => {
                       <Link href="/login">Log in</Link>
                     </button>
                   </>
-                )}
-                {admin && (
-                  <button className="hover:line-through text-md mr-2">
-                    <Link href="/admin/addbook">Admin</Link>
-                  </button>
                 )}
               </div>
             </div>

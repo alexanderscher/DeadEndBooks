@@ -31,6 +31,7 @@ export async function GET(req: NextRequest) {
     where: { id: parseInt((session as ExtendedSession)?.user?.id) },
     data: {
       isActive: false,
+      subscriptionID: null,
     },
   });
 
