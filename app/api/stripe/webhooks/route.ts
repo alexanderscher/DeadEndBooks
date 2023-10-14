@@ -33,7 +33,8 @@ const webhookHandler = async (req: NextRequest): Promise<NextResponse> => {
     console.log("✅ Success:", event.id);
 
     const subscription = event.data.object as Stripe.Subscription;
-    console.log(subscription.plan.nickname);
+    const planNickname = subscription.items.data[0].plan.nickname;
+    console.log("planNickname", planNickname);
 
     const subscriptionId = subscription.id;
 
@@ -46,19 +47,22 @@ const webhookHandler = async (req: NextRequest): Promise<NextResponse> => {
           data: {
             isActive: true,
             subscriptionID: subscriptionId,
+            subscriptionType: planNickname,
           },
         });
         break;
-      case "customer.subscription.deleted":
-        await prisma.user.update({
+      case "customer.subscription.updated":
+        const updateed = await prisma.user.update({
           where: {
             stripeCustomerId: subscription.customer as string,
           },
           data: {
             isActive: false,
-            subscriptionType: subscription.plan.nickname,
+            subscriptionType: null,
           },
         });
+        console.log("Updated User (deleted):", updateed);
+
         break;
       default:
         console.warn(`🤷‍♀️ Unhandled event type: ${event.type}`);

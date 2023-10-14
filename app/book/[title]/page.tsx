@@ -9,7 +9,7 @@ import SingleBook from "@/app/components/Book/SingleBook";
 
 const page = () => {
   const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
-  const isSmallDeviceQuery = useMediaQuery({ maxWidth: 800 });
+  const isSmallDeviceQuery = useMediaQuery({ maxWidth: 700 });
   const { data: session, status } = useSession();
 
   const [isLoading, setisLoading] = useState(true);

@@ -47,10 +47,10 @@ const AllBooks = () => {
           </div>
 
           <div className="w-1/2 mt-2 flex ">
-            <div className="w-[200px] mr-4">
+            <div className="w-1/2 mr-4">
               <img src={book.photo_front} alt="" />
             </div>
-            <div className="w-[200px]">
+            <div className="w-1/2">
               <img src={book.photo_back} alt="" />
             </div>
           </div>

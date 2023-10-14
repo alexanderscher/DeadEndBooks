@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 
 const page = () => {
   const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
-  const isSmallDeviceQuery = useMediaQuery({ maxWidth: 800 });
+  const isSmallDeviceQuery = useMediaQuery({ maxWidth: 700 });
   const isMediumDeviceQuery = useMediaQuery({ maxWidth: 1000 });
   const [isMediumDevice, setIsMediumDevice] = useState<any>(null);
   const { data: session, status } = useSession();

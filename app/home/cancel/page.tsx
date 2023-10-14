@@ -7,7 +7,7 @@ import { usePathname, useRouter } from "next/navigation";
 
 const page = () => {
   const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
-  const isSmallDeviceQuery = useMediaQuery({ maxWidth: 800 });
+  const isSmallDeviceQuery = useMediaQuery({ maxWidth: 700 });
   const router = useRouter();
   const currentPage = usePathname();
 

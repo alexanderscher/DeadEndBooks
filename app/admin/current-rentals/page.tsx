@@ -9,7 +9,7 @@ import { ExtendedSession } from "@/types";
 
 const page = () => {
   const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
-  const isSmallDeviceQuery = useMediaQuery({ maxWidth: 800 });
+  const isSmallDeviceQuery = useMediaQuery({ maxWidth: 700 });
   const isMediumDeviceQuery = useMediaQuery({ maxWidth: 1200 });
   const [isMediumDevice, setIsMediumDevice] = useState<any>(null);
   const { data: session, status } = useSession();

@@ -9,7 +9,7 @@ import { usePathname, useRouter } from "next/navigation";
 
 const Page = () => {
   const [isSmallDevice, setIsSmallDevice] = useState<boolean | null>(null);
-  const isSmallDeviceQuery = useMediaQuery({ maxWidth: 800 });
+  const isSmallDeviceQuery = useMediaQuery({ maxWidth: 700 });
   const { data: session, status } = useSession();
   const router = useRouter();
   const [yourOrder, setYourOrder] = useState<boolean | null>(null);
