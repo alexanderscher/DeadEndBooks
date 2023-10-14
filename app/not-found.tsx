@@ -10,7 +10,7 @@ const notfound = () => {
           <p className="text-[30px]">Page not found</p>
 
           <button className="text-red-500 text-[40px] hover:line-through">
-            <Link href="/">Go Home</Link>
+            <Link href="/home">Go Home</Link>
           </button>
         </div>
         <div className="flex items-center justify-center">

@@ -42,7 +42,7 @@ const Books = ({ isSmallDevice, isMediumDevice }: Props) => {
   const [columnsData, setColumnsData] = useState<BookImage[][]>([]);
   const [data, setData] = useState<BookImage[]>([]);
   type Page =
-    | "/"
+    | "/home"
     | "/library/painting"
     | "/library/sculpture"
     | "/library/photography_film"
@@ -51,7 +51,7 @@ const Books = ({ isSmallDevice, isMediumDevice }: Props) => {
     | "/library/stock";
 
   const pageToMediumMap: Record<Page, string | null> = {
-    "/": null,
+    "/home": null,
     "/library/painting": "painting",
     "/library/sculpture": "sculpture",
     "/library/photography_film": "photography_film",

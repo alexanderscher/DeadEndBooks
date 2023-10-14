@@ -29,14 +29,14 @@ const Navbar = ({ isSmallDevice }: Props) => {
         <div className="flex-col page-margin-small bg-white">
           <div
             className={`w-full flex justify-between  ${
-              currentPage === "/" ? "items-center" : "items-end"
+              currentPage === "/home" ? "items-center" : "items-end"
             }`}
           >
             <h1 className="font-bold text-[40px]">
-              <Link href="/">DEAD END BOOKS</Link>
+              <Link href="/home">DEAD END BOOKS</Link>
             </h1>
 
-            {currentPage === "/" || currentPage.includes("/library") ? (
+            {currentPage === "/home" || currentPage.includes("/library") ? (
               <div className="mt-2">
                 <h1
                   className="text-lg cursor-pointer text-end hover:line-through"
@@ -69,7 +69,7 @@ const Navbar = ({ isSmallDevice }: Props) => {
             <div className="flex mt-4 flex-col">
               <div>
                 <button className="hover:line-through text-md mr-2">
-                  <Link href="/">Library,</Link>
+                  <Link href="/home">Library,</Link>
                 </button>
                 <button className="hover:line-through text-md mr-2">
                   <Link href="/profile">Profile,</Link>
@@ -102,7 +102,7 @@ const Navbar = ({ isSmallDevice }: Props) => {
                   <>
                     {" "}
                     <button className="hover:line-through text-md mr-2">
-                      <Link href="/">Sign up,</Link>
+                      <Link href="/home">Sign up,</Link>
                     </button>
                     <button className="hover:line-through text-md mr-2">
                       <Link href="/subscribe">Login,</Link>
@@ -155,16 +155,16 @@ const Navbar = ({ isSmallDevice }: Props) => {
             <div className="">
               <div className="">
                 <h1 className="font-bold text-md">
-                  <Link href="/">DEAD END BOOKS</Link>
+                  <Link href="/home">DEAD END BOOKS</Link>
                 </h1>
               </div>
               <div className="mt-5 flex flex-col items-start">
                 <button className={`hover:line-through text-md`}>
-                  <Link href="/">Library</Link>
+                  <Link href="/home">Library</Link>
                 </button>
               </div>
               <div className="">
-                {currentPage === "/" || currentPage.includes("/library") ? (
+                {currentPage === "/home" || currentPage.includes("/library") ? (
                   <div className="flex flex-col items-start">
                     <button
                       className="hover:line-through text-md flex items-center"

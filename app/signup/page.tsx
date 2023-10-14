@@ -25,7 +25,7 @@ export default function Signup() {
   const loginUser = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await signIn("credentials", { ...data, redirect: false });
-    router.push("/");
+    router.push("/home");
   };
 
   const [emailError, setEmailError] = useState(false);
@@ -71,22 +71,22 @@ export default function Signup() {
   const [google, setGoogle] = useState(false);
 
   const loginUserGoogle = async () => {
-    await signIn("google", { redirect: false, callbackUrl: "/" });
+    await signIn("google", { redirect: false, callbackUrl: "/home" });
     setGoogle(true);
     if (google) {
-      router.push("/");
+      router.push("/home");
     }
   };
 
   return (
     <div className="w-full h-screen">
       <div className="flex flex-col w-full h-full items-center justify-center">
-        <Link href="/">
+        <Link href="/home">
           <h1 className="text-[30px] text-red-500 mb-10 font-bold">
             DEAD END BOOKS
           </h1>
         </Link>
-        <div className="w-3/4 min-w-[400px] max-w-[600px] ">
+        <div className="w-3/4 min-w-[400px] max-w-[500px] ">
           <form onSubmit={registerUser} noValidate className="flex flex-col">
             <input
               className={`w-full h-[50px] px-3 focus:outline-none border-[3.5px] text-red-500 ${
