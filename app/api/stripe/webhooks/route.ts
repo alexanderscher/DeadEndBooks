@@ -33,6 +33,8 @@ const webhookHandler = async (req: NextRequest): Promise<NextResponse> => {
     console.log("✅ Success:", event.id);
 
     const subscription = event.data.object as Stripe.Subscription;
+    console.log(subscription.plan.nickname);
+
     const subscriptionId = subscription.id;
 
     switch (event.type) {
@@ -54,6 +56,7 @@ const webhookHandler = async (req: NextRequest): Promise<NextResponse> => {
           },
           data: {
             isActive: false,
+            subscriptionType: subscription.plan.nickname,
           },
         });
         break;

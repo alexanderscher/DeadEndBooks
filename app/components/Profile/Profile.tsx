@@ -65,8 +65,7 @@ const Profile = () => {
     try {
       const res = await fetch("/api/stripe/subscription-cancel");
       const { subscription } = await res.json();
-      console.log(subscription);
-      router.push("/pricing");
+      router.push("/home/cancel");
     } catch (error) {
       console.log(error);
     }

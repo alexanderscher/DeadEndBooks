@@ -101,6 +101,7 @@ model User {
   stripeCustomerId String?   @unique
   isActive         Boolean   @default(false)
   subscriptionID   String?
+  subscriptionType String?
   Orders           Orders[]
 }
 

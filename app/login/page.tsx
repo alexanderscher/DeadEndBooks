@@ -72,7 +72,7 @@ export default function Login() {
         <div className="w-3/4 min-w-[400px] max-w-[500px] ">
           <form noValidate onSubmit={loginUser} className={"flex flex-col "}>
             <input
-              className={`w-full h-[50px] px-3 focus:outline-none border-[3.5px] text-red-500  ${
+              className={` specific-input w-full h-[50px] px-3 focus:outline-none border-[3.5px] text-red-500  ${
                 missingEmail
                   ? "border-blue-500 placeholder:text-blue-300"
                   : "border-red-500 placeholder:text-red-300"
@@ -89,7 +89,7 @@ export default function Login() {
               }}
             />
             <input
-              className={`border-t-0 border-[3.5px] w-full h-[50px] px-3 focus:outline-none text-red-500 ${
+              className={` specific-input border-t-0 border-[3.5px] w-full h-[50px] px-3 focus:outline-none text-red-500 ${
                 missingPassword
                   ? "border-blue-500 placeholder:text-blue-300"
                   : "border-red-500 placeholder:text-red-300"

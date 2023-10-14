@@ -5,11 +5,15 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar/Navbar";
 import Loader from "../components/Loader";
 import { useMediaQuery } from "react-responsive";
+import { ExtendedSession } from "@/types";
+import { useSession } from "next-auth/react";
 
 const page = () => {
   const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
   const isSmallDeviceQuery = useMediaQuery({ maxWidth: 800 });
   const [prices, setPrices] = useState<any>([]);
+  const { data: session } = useSession();
+
   console.log(prices);
   useEffect(() => {
     fetchPrices();
@@ -23,7 +27,7 @@ const page = () => {
 
   useEffect(() => {
     setIsSmallDevice(isSmallDeviceQuery);
-  }, [isSmallDeviceQuery]);
+  }, [isSmallDeviceQuery, session]);
 
   return (
     <main className={isSmallDevice ? "page-small" : "page"}>

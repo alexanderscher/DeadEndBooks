@@ -13,13 +13,13 @@ const notfound = () => {
             <Link href="/home">Go Home</Link>
           </button>
         </div>
-        <div className="flex items-center justify-center">
+        {/* <div className="flex items-center justify-center">
           <img
             className="max-w-[500px] mt-16"
             src="/Screenshot 2023-09-18 at 4.38.04 PM.png"
             alt=""
           />
-        </div>
+        </div> */}
       </div>
     </div>
   );

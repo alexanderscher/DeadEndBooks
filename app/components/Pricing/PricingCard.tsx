@@ -37,11 +37,11 @@ const PricingCard = ({ price }: priceProps) => {
   return (
     <div>
       <h1
-        className={`text-[40px] ${price.nickname === "Yearly Plan" && "mt-10"}`}
+        className={`text-[30px] ${price.nickname === "Yearly Plan" && "mt-10"}`}
       >
         {price.nickname}
       </h1>
-      <p className="text-[30px] text-slate-500">
+      <p className="text-[26px] text-slate-500">
         {(price.unit_amount / 100).toLocaleString("en-US", {
           style: "currency",
           currency: "USD",
@@ -49,13 +49,13 @@ const PricingCard = ({ price }: priceProps) => {
         {price.nickname === "Yearly Plan" ? "/year" : "/month"}
       </p>
       <button
-        className="text-[30px] hover:line-through text-red-500"
+        className="text-[26px] hover:line-through text-red-500"
         onClick={handleSubscription}
       >
         Subscribe
       </button>
       {noSession && (
-        <p className="text-red-300 text-[30px]  ">Please login to subscribe</p>
+        <p className="text-red-300 text-[26px]  ">Please login to subscribe</p>
       )}
     </div>
   );

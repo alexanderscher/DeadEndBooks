@@ -29,8 +29,8 @@ export async function POST(request: NextRequest) {
       },
     ],
     mode: "subscription",
-    success_url: "http://localhost:3000/success",
-    cancel_url: "http://localhost:3000/cancel",
+    success_url: "http://localhost:3000/home/success",
+    cancel_url: "http://localhost:3000/home/cancel",
   });
 
   return NextResponse.json(stripeSession.url);

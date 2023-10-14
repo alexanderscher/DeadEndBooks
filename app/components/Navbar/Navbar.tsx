@@ -58,7 +58,7 @@ const Navbar = ({ isSmallDevice }: Props) => {
               </div>
             ) : (
               <h1
-                className="text-[26px] cursor-pointer text-end mb-2 hover:line-through"
+                className="text-lg cursor-pointer text-end mb-2 hover:line-through"
                 onClick={() => setMenu(!menu)}
               >
                 Menu
