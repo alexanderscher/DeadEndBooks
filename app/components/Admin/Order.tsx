@@ -124,13 +124,13 @@ const Order = () => {
     return (
       <div className="w-full  mt-10">
         <OrderNav />
-        <h1 className="text-[30px] mt-10">No current orders</h1>
+        <h1 className="text-[26px] mt-10">No orders</h1>
       </div>
     );
   }
 
   return (
-    <div className="mt-10 max-w-[1000px]">
+    <div className="mt-10 max-w-[840px]">
       <OrderNav />
       {orders.map((order) => (
         <div
@@ -138,28 +138,28 @@ const Order = () => {
           className="border-t-[2px] border-black flex  justify-between "
         >
           <div className="mt-2 w-full mb-2">
-            <div className="flex justify-between text-lg border-b-[2px] border-slate-300 mt-1">
+            <div className="flex justify-between text-md border-b-[2px] border-slate-300 mt-1">
               <h1 className="text-slate-500">Order ID:</h1>
               <h1 className="">{order.id}</h1>
             </div>
-            <div className="flex justify-between text-lg border-b-[2px] border-slate-300 mt-1">
+            <div className="flex justify-between text-md border-b-[2px] border-slate-300 mt-1">
               <h1 className="text-slate-500">Email:</h1>
               <h1 className="">{order.email}</h1>
             </div>
 
-            <div className="flex justify-between text-lg border-b-[2px] border-slate-300 mt-1">
+            <div className="flex justify-between text-md border-b-[2px] border-slate-300 mt-1">
               <h1 className="text-slate-500">Subscription start date:</h1>
               <h1>{order.start_date}</h1>
             </div>
-            <div className="flex justify-between text-lg border-b-[2px] border-slate-300 mt-1">
+            <div className="flex justify-between text-md border-b-[2px] border-slate-300 mt-1">
               <h1 className="text-slate-500">Order date:</h1>
               <h1>{order.order_date}</h1>
             </div>
-            <div className="flex justify-between text-lg border-b-[2px] border-slate-300 mt-1">
+            <div className="flex justify-between text-md border-b-[2px] border-slate-300 mt-1">
               <h1 className="text-slate-500">Status:</h1>
               <h1>{order.shipped ? "Shipped" : "Not shipped"}</h1>
             </div>
-            <div className="flex justify-between text-lg border-b-[2px] border-slate-300 mt-1">
+            <div className="flex justify-between text-md border-b-[2px] border-slate-300 mt-1">
               <h1 className="text-slate-500">Order items:</h1>
               <div className="flex flex-col">
                 {order.title.map((title) => (
@@ -167,12 +167,12 @@ const Order = () => {
                 ))}
               </div>
             </div>
-            <div className="flex justify-between text-lg ">
+            <div className="flex justify-between text-md ">
               <div className="flex flex-col justify-between">
                 <h1 className="text-slate-500">Order address:</h1>
                 {currentPage === "/admin/orders/pending" && (
                   <button
-                    className="text-red-500 hover:line-through text-[20px]"
+                    className="text-red-500 hover:line-through text-[18px]"
                     onClick={() => markasShipped(order.id)}
                   >
                     Mark as shipped

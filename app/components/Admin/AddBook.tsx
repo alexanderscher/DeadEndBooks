@@ -145,13 +145,13 @@ const AddBook = () => {
   };
 
   return (
-    <div className="mt-16">
+    <div className="mt-10">
       <form ref={formRef} onSubmit={submitBook}>
-        <div className="flex flex-col w-full max-w-[1000px]">
+        <div className="flex flex-col w-full max-w-[840px]">
           <input
             type="text"
             placeholder="Title"
-            className="border-black text-[20px] border-[3px] p-2 placeholder:text-black mt-6 w-full max-w-[1000px] focus:outline-none"
+            className="border-black text-[18px] border-[3px] p-2 placeholder:text-black mt-6 w-full max-w-[840px] focus:outline-none"
             onChange={handleTitleChange}
           />
           {errorText.includes("title") && (
@@ -160,7 +160,7 @@ const AddBook = () => {
           <input
             type="text"
             placeholder="Author"
-            className="border-black text-[20px] border-[3px] p-2 placeholder:text-black mt-6 w-full max-w-[1000px] focus:outline-none"
+            className="border-black text-[18px] border-[3px] p-2 placeholder:text-black mt-6 w-full max-w-[840px] focus:outline-none"
             onChange={handleAuthorChange}
           />
           {errorText.includes("author") && (
@@ -169,14 +169,14 @@ const AddBook = () => {
           <input
             type="text"
             placeholder="Publisher"
-            className="border-black text-[20px] border-[3px] p-2 placeholder:text-black mt-6 w-full max-w-[1000px] focus:outline-none"
+            className="border-black text-[18px] border-[3px] p-2 placeholder:text-black mt-6 w-full max-w-[840px] focus:outline-none"
             onChange={handlePublisherChange}
           />
           {errorText.includes("publisher") && (
             <p className="text-red-500">Missing publisher field</p>
           )}
           <select
-            className="border-black text-[20px] border-[3px] p-2 placeholder:text-black mt-6 w-full max-w-[1000px] focus:outline-none cursor-pointer h-[50px]"
+            className="border-black text-[18px] border-[3px] p-2 placeholder:text-black mt-6 w-full max-w-[840px] focus:outline-none cursor-pointer h-[50px]"
             onChange={handleMediumChange}
           >
             <option value="" disabled selected>
@@ -193,7 +193,7 @@ const AddBook = () => {
           {errorText.includes("medium") && (
             <p className="text-red-500">Missing medium field</p>
           )}
-          <div className="w-full max-w-[1000px] flex justify-start mt-6">
+          <div className="w-full max-w-[840px] flex justify-start mt-6">
             <div className="mr-6">
               <div className="">
                 <UploadButton<OurFileRouter>
@@ -262,9 +262,9 @@ const AddBook = () => {
               </div>
             </div>
           </div>
-          <div className="flex mt-10 relative w-full max-w-[1000px]">
+          <div className="flex mt-10 relative w-full max-w-[840px]">
             {frontImage.length > 0 && (
-              <div className="w-full max-w-[1000px] mr-4">
+              <div className="w-full max-w-[840px] mr-4">
                 <img src={frontImage[0].fileUrl} alt="" />
                 <div className="flex flex-col items-start">
                   <p className=" text-slate-400 ">Front Cover</p>
@@ -279,7 +279,7 @@ const AddBook = () => {
             )}
 
             {backImage.length > 0 && (
-              <div className="w-full max-w-[1000px] relative">
+              <div className="w-full max-w-[840px] relative">
                 <img src={backImage[0].fileUrl} alt="" />
                 <div className="flex flex-col items-start">
                   <p className=" text-slate-400 ">Front Cover</p>
@@ -301,7 +301,7 @@ const AddBook = () => {
           ) : (
             <button
               type="submit"
-              className="text-[32px] text-red-500 text-start mt-4 hover:line-through"
+              className="text-[26px] text-red-500 text-start mt-4 hover:line-through"
             >
               Upload
             </button>

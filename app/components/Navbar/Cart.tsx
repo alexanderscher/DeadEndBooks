@@ -124,8 +124,8 @@ const Cart = ({}) => {
 
   return (
     <div className="relative">
-      <div className="fixed bottom-0 left-0 border-t-[2px] border-black bg-red-100 w-full text-red-500 p-5 flex hover:line-through">
-        <button className="text-[30px]" onClick={checkoutSubmit}>
+      <div className="fixed bottom-0 left-0 border-t-[2px] border-black bg-red-100 w-full text-red-500 p-4 flex hover:line-through">
+        <button className="text-[26px]" onClick={checkoutSubmit}>
           Checkout
         </button>
       </div>

@@ -7,7 +7,7 @@ body {
 }
 
 .page-margin {
-  margin: 30px;
+  margin: 24px;
 }
 .page-margin-small {
   margin: 20px;
@@ -48,7 +48,7 @@ body {
 
 @media screen and (min-width: 700px) {
   .info {
-    font-size: 2.6vw;
+    font-size: 2.4vw;
   }
 }
 
@@ -142,4 +142,21 @@ input:-webkit-autofill::first-line {
   font-family: inherit; /* Ensures consistent font */
   font-size: inherit; /* Ensures consistent font size */
   color: black !important; /* Adjust if necessary */
+}
+.specific-input:-webkit-autofill,
+.specific-input:-webkit-autofill:hover,
+.specific-input:-webkit-autofill:focus {
+  -webkit-text-fill-color: rgb(239 68 68); /* Sets text color */
+  transition: background-color 5000s ease-in-out 0s; /* Override the yellow background */
+}
+
+/* Firefox */
+.specific-input:-moz-autofill,
+.specific-input:-moz-autofill-preview {
+  color: rgb(239 68 68); /* Sets text color */
+}
+
+/* Internet Explorer */
+.specific-input:-ms-input-placeholder {
+  color: rgb(239 68 68);
 }

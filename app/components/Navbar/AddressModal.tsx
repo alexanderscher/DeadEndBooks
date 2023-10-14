@@ -61,7 +61,7 @@ const AddressModal = ({ setModal, userId }: Props) => {
             placeholder="Name"
             value={formData.name}
             onChange={handleChange}
-            className="bg-red-100  border-black text-[20px] border-b-[2px] placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
+            className="bg-red-100  border-black text-[20px] border-b-[2px] placeholder:text-black placeholder:text-[18px] mt-2 w-full focus:outline-none"
           />
           <input
             type="text"
@@ -69,7 +69,7 @@ const AddressModal = ({ setModal, userId }: Props) => {
             placeholder="Address"
             value={formData.address}
             onChange={handleChange}
-            className="bg-red-100  border-black text-[20px] border-b-[2px] placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
+            className="bg-red-100  border-black text-[20px] border-b-[2px] placeholder:text-black placeholder:text-[18px] mt-2 w-full focus:outline-none"
           />
           <input
             type="text"
@@ -77,7 +77,7 @@ const AddressModal = ({ setModal, userId }: Props) => {
             placeholder="Zip Code"
             value={formData.zipCode}
             onChange={handleChange}
-            className="bg-red-100 border-black text-[20px] border-b-[2px] placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
+            className="bg-red-100 border-black text-[20px] border-b-[2px] placeholder:text-black placeholder:text-[18px] mt-2 w-full focus:outline-none"
           />
           <input
             type="text"
@@ -85,7 +85,7 @@ const AddressModal = ({ setModal, userId }: Props) => {
             placeholder="City"
             value={formData.city}
             onChange={handleChange}
-            className="bg-red-100 border-black text-[20px] border-b-[2px] placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
+            className="bg-red-100 border-black text-[20px] border-b-[2px] placeholder:text-black placeholder:text-[18px] mt-2 w-full focus:outline-none"
           />
           <input
             type="text"
@@ -93,7 +93,7 @@ const AddressModal = ({ setModal, userId }: Props) => {
             placeholder="State"
             value={formData.state}
             onChange={handleChange}
-            className="bg-red-100 border-black text-[20px] border-b-[2px] placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
+            className="bg-red-100 border-black text-[20px] border-b-[2px] placeholder:text-black placeholder:text-[18px] mt-2 w-full focus:outline-none"
           />
           <input
             type="text"
@@ -101,7 +101,7 @@ const AddressModal = ({ setModal, userId }: Props) => {
             placeholder="Country"
             value={formData.country}
             onChange={handleChange}
-            className="bg-red-100 border-black text-[20px] border-b-[2px] placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
+            className="bg-red-100 border-black text-[20px] border-b-[2px] placeholder:text-black placeholder:text-[18px] mt-2 w-full focus:outline-none"
           />
           <input
             type="text"
@@ -109,7 +109,7 @@ const AddressModal = ({ setModal, userId }: Props) => {
             placeholder="Phone"
             value={formData.phone}
             onChange={handleChange}
-            className="bg-red-100 border-black text-[20px] border-b-[2px] placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
+            className="bg-red-100 border-black text-[20px] border-b-[2px] placeholder:text-black placeholder:text-[18px] mt-2 w-full focus:outline-none"
           />
           {errorText && (
             <p className="text-red-800 mt-2">Please fill out all fields</p>

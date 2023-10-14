@@ -80,12 +80,12 @@ const Profile = () => {
       <div className="mb-10 flex justify-between">
         <div>
           <span className="text-[16px] text-slate-400">Name</span>
-          <h1 className="text-[30px]">{user.name}</h1>
+          <h1 className="text-[26px]">{user.name}</h1>
         </div>
       </div>
       <div className="mb-10">
         <span className="text-[16px] text-slate-400">Email</span>
-        <h1 className="text-[30px]">{user.email}</h1>
+        <h1 className="text-[26px]">{user.email}</h1>
       </div>
 
       <div className="mt-10">

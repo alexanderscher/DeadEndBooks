@@ -168,7 +168,7 @@ const Checkout = () => {
       <div className="w-full ">
         <h1 className="text-[30px] ">Checkout</h1>
       </div>
-      <div className="mt-10 max-w-[1000px]">
+      <div className="mt-10 max-w-[840px]">
         <div className="flex justify-between">
           <div>
             <h2 className="text-[20px]">Shipping</h2>
@@ -204,13 +204,13 @@ const Checkout = () => {
                   ></span>
                 </label>
                 <div>
-                  <h3 className="mt-1 text-lg">{item.name}</h3>
-                  <h3 className="mt-1 text-lg">{item.address}</h3>
-                  <h3 className="mt-1 text-lg">{item.city}</h3>
-                  <h3 className="mt-1 text-lg">{item.state}</h3>
-                  <h3 className="mt-1 text-lg">{item.country}</h3>
-                  <h3 className="mt-1 text-lg">{item.zipcode}</h3>
-                  <h3 className="mt-1 text-lg">{item.phone}</h3>
+                  <h3 className="mt-1 text-md">{item.name}</h3>
+                  <h3 className="mt-1 text-md">{item.address}</h3>
+                  <h3 className="mt-1 text-md">{item.city}</h3>
+                  <h3 className="mt-1 text-md">{item.state}</h3>
+                  <h3 className="mt-1 text-md">{item.country}</h3>
+                  <h3 className="mt-1 text-md">{item.zipcode}</h3>
+                  <h3 className="mt-1 text-md">{item.phone}</h3>
                 </div>
               </div>
               <div>
@@ -240,7 +240,7 @@ const Checkout = () => {
                 </p>
               )}
               <button
-                className="text-red-500 border-[2px] w-full bg-red-200 border-black hover:line-through text-[26px] p-4 rounded-sm"
+                className="text-red-500 border-[3px] w-full  border-red-500 hover:line-through text-[20px] p-2"
                 onClick={checkoutSubmit}
               >
                 Submit order

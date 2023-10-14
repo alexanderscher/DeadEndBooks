@@ -61,7 +61,7 @@ const History = () => {
   if (rentals.length === 0) {
     return (
       <div className="w-full mt-10 ">
-        <h1 className="text-[30px]">You have no past rentals</h1>
+        <h1 className="text-[26px]">You have no past rentals</h1>
       </div>
     );
   }

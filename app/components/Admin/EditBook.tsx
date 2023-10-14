@@ -209,11 +209,12 @@ const EditBook = ({ isSmallDevice }: Props) => {
     <div>
       <div className="">
         <form ref={formRef} onSubmit={submitBook}>
-          <div className="flex flex-col">
+          <div className="flex flex-col max-w-[800px]">
+            <h1 className="text-[26px] mb-10">{bookPlaceHolder.title}</h1>
             <input
               type="text"
               placeholder={bookPlaceHolder.title}
-              className="border-black text-[20px] border-b-[3px] placeholder:text-black  w-full focus:outline-none"
+              className="border-black text-[18px] border-b-[3px] placeholder:text-black  w-full focus:outline-none"
               onChange={handleTitleChange}
             />
             {errorText.includes("title") && (
@@ -222,7 +223,7 @@ const EditBook = ({ isSmallDevice }: Props) => {
             <input
               type="text"
               placeholder={bookPlaceHolder.author}
-              className="border-black text-[20px] border-b-[3px] placeholder:text-black mt-6 w-full focus:outline-none"
+              className="border-black text-[18px] border-b-[3px] placeholder:text-black mt-6 w-full focus:outline-none"
               onChange={handleAuthorChange}
             />
             {errorText.includes("author") && (
@@ -231,14 +232,14 @@ const EditBook = ({ isSmallDevice }: Props) => {
             <input
               type="text"
               placeholder={bookPlaceHolder.publisher}
-              className="border-black text-[20px] border-b-[3px] placeholder:text-black mt-6 w-full focus:outline-none"
+              className="border-black text-[18px] border-b-[3px] placeholder:text-black mt-6 w-full focus:outline-none"
               onChange={handlePublisherChange}
             />
             {errorText.includes("publisher") && (
               <p className="text-red-500">Missing publisher field</p>
             )}
             <select
-              className="border-black text-[20px] border-b-[3px] placeholder:text-black mt-6 w-full focus:outline-none cursor-pointer"
+              className="border-black text-[18px] border-b-[3px] placeholder:text-black mt-6 w-full focus:outline-none cursor-pointer"
               onChange={handleMediumChange}
               value={book.medium}
             >
@@ -358,13 +359,13 @@ const EditBook = ({ isSmallDevice }: Props) => {
             </div>
             <div className="flex">
               {uploaded ? (
-                <p className="text-[32px] text-red-500 text-start mt-4 hover:line-through">
+                <p className="text-[26px] text-red-500 text-start mt-4 hover:line-through">
                   Edited!
                 </p>
               ) : (
                 <button
                   type="submit"
-                  className="text-[32px] text-red-500 text-start mt-4 hover:line-through"
+                  className="text-[26px] text-red-500 text-start mt-4 hover:line-through"
                 >
                   Edit
                 </button>
@@ -372,7 +373,7 @@ const EditBook = ({ isSmallDevice }: Props) => {
 
               <button
                 onClick={deleteBook}
-                className="text-[32px] text-red-500 text-start mt-4 hover:line-through ml-6"
+                className="text-[26px] text-red-500 text-start mt-4 hover:line-through ml-6"
               >
                 Delete
               </button>

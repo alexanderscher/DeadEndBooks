@@ -187,13 +187,13 @@ const CurrentRentals = () => {
   if (rentals.length === 0) {
     return (
       <div className="w-full  mt-10">
-        <h1 className="text-[30px]">No current rentals</h1>
+        <h1 className="text-[26px]">No current rentals</h1>
       </div>
     );
   }
   return (
     <div>
-      <div className="w-full max-w-[1000px] mt-10">
+      <div className="w-full max-w-[840px] mt-10">
         {rentals.map((rental, index) => (
           <div
             key={index}
@@ -250,7 +250,7 @@ const CurrentRentals = () => {
               </h1>
               <div className="flex flex-col items-end mt-2">
                 <button
-                  className="text-red-300 hover:line-through"
+                  className="text-red-500 hover:line-through text-sm"
                   onClick={() => {
                     setLateFeeModal({
                       bookId: rental.bookId,
@@ -266,7 +266,7 @@ const CurrentRentals = () => {
                   lateFeeModal.bookId == rental.bookId &&
                   lateFeeModal.userId == rental.userId && (
                     <div className="fixed inset-0 flex items-center justify-center z-40">
-                      <div className="p-8 z-50 max-w-[400px] w-3/4 bg-red-100 h-[160px] rounded-md border-black border-[2px] shadow-lg">
+                      <div className="p-8 z-50 max-w-[400px] w-3/4 bg-red-100 h-[160px] rounded-md border-black border-[2px] shadow-xl">
                         <h1>
                           Charging $5.00 to {rental.user_email} for{" "}
                           {rental.title}
@@ -300,7 +300,7 @@ const CurrentRentals = () => {
                   )}
 
                 <button
-                  className="hover:line-through text-red-300"
+                  className="hover:line-through text-red-500 text-sm"
                   onClick={() => {
                     setChargeBookInput({
                       input: !chargeBookInput.input,
@@ -315,7 +315,7 @@ const CurrentRentals = () => {
                   chargeBookInput.bookId == rental.bookId &&
                   chargeBookInput.bookId == rental.bookId && (
                     <div className="fixed inset-0 flex items-center justify-center z-40">
-                      <div className="p-8 z-50 max-w-[400px] w-3/4 bg-red-100 h-[300px] rounded-md border-black border-[2px] shadow-lg">
+                      <div className="p-8 z-50 max-w-[400px] w-3/4 bg-red-100 h-[260px] rounded-md border-black border-[2px] shadow-xl">
                         <h1>Input late fee amount</h1>
                         <input
                           type="text"
@@ -327,7 +327,7 @@ const CurrentRentals = () => {
                           Charging to {amountBook} {rental.user_email} for{" "}
                           {rental.title}
                         </h1>
-                        <div className="flex justify-between mt-[80px]">
+                        <div className="flex justify-between mt-[70px]">
                           <button
                             className="text-red-500 hover:line-through "
                             onClick={() => {

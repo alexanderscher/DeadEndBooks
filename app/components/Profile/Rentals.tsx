@@ -101,7 +101,7 @@ const Rentals = () => {
   if (rentals.length === 0) {
     return (
       <div className="w-full mt-10">
-        <h1 className="text-[30px]">You have no rentals</h1>
+        <h1 className="text-[26px]">You have no rentals</h1>
       </div>
     );
   }
@@ -161,18 +161,20 @@ const Rentals = () => {
         </div>
       ))}
       {modal && (
-        <div className="absolute top-2 left-2 bg-red-200 text-red-500 m-10 p-8 rounded-md text-[20px] border-[2px] border-red-500 shadow-lg">
-          <p>
-            Books need to be returned within the time period. If you fail to do
-            so, you will be charged a fee. Please ship the book a week in
-            advance to avoid any late fees.
-          </p>
-          <button
-            onClick={() => setModal(false)}
-            className="hover:line-through text-md mt-4 text-end"
-          >
-            Close
-          </button>
+        <div className="fixed inset-0 flex items-center justify-center">
+          <div className="bg-red-200 text-red-500 p-8 rounded-md text-[20px] border-[2px] border-red-500 shadow-lg z-50 w-3/4 max-w-[500px]">
+            <p>
+              Books need to be returned within the time period. If you fail to
+              do so, you will be charged a fee. Please ship the book a week in
+              advance to avoid any late fees.
+            </p>
+            <button
+              onClick={() => setModal(false)}
+              className="hover:line-through text-md mt-4 text-end"
+            >
+              Close
+            </button>
+          </div>
         </div>
       )}
     </div>

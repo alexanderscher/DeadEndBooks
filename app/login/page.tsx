@@ -64,12 +64,12 @@ export default function Login() {
     <div className="w-full h-screen">
       <div className=" flex flex-col w-full h-full items-center justify-center">
         <Link href="/">
-          <h1 className="text-[40px] text-red-500 mb-10 font-bold">
+          <h1 className="text-[36px] text-red-500 mb-10 font-bold">
             DEAD END BOOKS
           </h1>
         </Link>
 
-        <div className="w-3/4 min-w-[500px] max-w-[600px] ">
+        <div className="w-3/4 min-w-[400px] max-w-[600px] ">
           <form noValidate onSubmit={loginUser} className={"flex flex-col "}>
             <input
               className={`w-full h-[50px] px-3 focus:outline-none border-[3.5px] text-red-500  ${
@@ -117,15 +117,15 @@ export default function Login() {
             <div className="flex flex-col  mt-5 items-center">
               <button
                 type="submit"
-                className=" text-red-500 font-bold text-[26px] hover:line-through"
+                className=" text-red-500 font-bold text-[22px] hover:line-through"
               >
                 Login
               </button>
 
-              <p className="text-[26px] text-red-300 hover:line-through cursor-pointer">
+              <p className="text-[22px] text-red-300 hover:line-through cursor-pointer">
                 <Link href="\signup"> Create an account</Link>
               </p>
-              <p className="text-[26px] text-red-300 hover:line-through cursor-pointer">
+              <p className="text-[22px] text-red-300 hover:line-through cursor-pointer">
                 Forgot password
               </p>
             </div>
@@ -135,7 +135,7 @@ export default function Login() {
               className="border-[3.5px]  border-red-800 p-4 w-full  text-sm mt-11 relative flex items-center justify-center"
               onClick={loginUserGoogle}
             >
-              <p className="hover:line-through text-[26px] text-red-800">
+              <p className="hover:line-through text-[22px] text-red-800">
                 Login with Google
               </p>
             </button>

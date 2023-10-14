@@ -56,14 +56,14 @@ const PastRentals = ({ isSmallDevice }: PastRentalsProps) => {
     return <Loader />;
   } else if (rentals.length === 0) {
     return (
-      <div className="w-full max-w-[1000px] mt-10">
-        <h1 className="text-[30px]">No past rentals</h1>
+      <div className="w-full max-w-[840px] mt-10">
+        <h1 className="text-[26px]">No past rentals</h1>
       </div>
     );
   }
   return (
     <div>
-      <div className="w-full max-w-[1000px] mt-10">
+      <div className="w-full max-w-[840px] mt-10">
         {rentals.map((rental, index) => (
           <div
             key={index}

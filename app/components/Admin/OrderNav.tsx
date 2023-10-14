@@ -3,7 +3,7 @@ import React from "react";
 
 const OrderNav = () => {
   return (
-    <div>
+    <div className="text-[18px] mb-2">
       <button className="hover:line-through">
         <Link href="/admin/orders/pending">Pending Orders</Link>
       </button>

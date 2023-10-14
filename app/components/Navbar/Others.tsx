@@ -99,14 +99,14 @@ const Others = () => {
     <div>
       {users.map((user) => (
         <div key={user.id} className="mb-10 border-t-[2px] border-black">
-          <h1 className="text-[30px] mt-2">{user.name}</h1>
+          <h1 className="text-[24px] mt-2">{user.name}</h1>
           {user.current_books.length === 0 ? (
             <>
-              <p className="text-slate-500 text-[20px]">Recent rentals</p>
+              <p className="text-slate-500 text-[18px]">Recent rentals</p>
               <div className="flex flex-wrap mt-6">
                 {user.past_books.map((book) => (
                   <div key={book.id} className="">
-                    <div className="max-w-[250px] mr-8">
+                    <div className="max-w-[200px] mr-6">
                       <Link href={`/book/${book.title}`}>
                         <img src={book.photo_front} alt="" />
                       </Link>
@@ -117,12 +117,12 @@ const Others = () => {
             </>
           ) : (
             <>
-              <p className="text-slate-500 text-[20px]">Current rentals</p>
+              <p className="text-slate-500 text-[18px]">Current rentals</p>
 
               <div className="flex mt-6">
                 {user.current_books.map((book) => (
                   <div key={book.id} className="">
-                    <div className="max-w-[250px] mr-8">
+                    <div className="max-w-[200px] mr-6">
                       <Link href={`/book/${book.title}`}>
                         <img src={book.photo_front} alt="" />
                       </Link>

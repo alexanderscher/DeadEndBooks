@@ -32,14 +32,14 @@ const Navbar = ({ isSmallDevice }: Props) => {
               currentPage === "/" ? "items-center" : "items-end"
             }`}
           >
-            <h1 className="font-bold text-[50px]">
+            <h1 className="font-bold text-[40px]">
               <Link href="/">DEAD END BOOKS</Link>
             </h1>
 
             {currentPage === "/" || currentPage.includes("/library") ? (
               <div className="mt-2">
                 <h1
-                  className="text-xl cursor-pointer text-end hover:line-through"
+                  className="text-lg cursor-pointer text-end hover:line-through"
                   onClick={() => {
                     setMenu(!menu), setSort(false);
                   }}
@@ -48,7 +48,7 @@ const Navbar = ({ isSmallDevice }: Props) => {
                 </h1>
 
                 <h1
-                  className="text-xl cursor-pointer text-end hover:line-through"
+                  className="text-lg cursor-pointer text-end hover:line-through"
                   onClick={() => {
                     setSort(!sort), setMenu(false);
                   }}
@@ -68,32 +68,31 @@ const Navbar = ({ isSmallDevice }: Props) => {
           {menu && (
             <div className="flex mt-4 flex-col">
               <div>
-                <button className="hover:line-through text-lg mr-2">
+                <button className="hover:line-through text-md mr-2">
                   <Link href="/">Library,</Link>
                 </button>
-                <button className="hover:line-through text-lg mr-2">
+                <button className="hover:line-through text-md mr-2">
                   <Link href="/profile">Profile,</Link>
                 </button>
 
-                <button className="hover:line-through text-lg ">
+                <button className="hover:line-through text-md ">
                   <Link href="/cart">Cart/</Link>
                 </button>
-                <button className="hover:line-through text-lg">
+                <button className="hover:line-through text-md">
                   <Link href="/saved">Saved/</Link>
                 </button>
-                <button className="hover:line-through text-lg mr-2">
+                <button className="hover:line-through text-md mr-2">
                   <Link href="/queue">Queue,</Link>
                 </button>
 
-                <button className="hover:line-through text-lg mr-2">
+                <button className="hover:line-through text-md mr-2">
                   <Link href="/others">Other's reads, </Link>
                 </button>
-              </div>
-              <div>
-                <button className="hover:line-through text-lg mr-2">
+
+                <button className="hover:line-through text-md mr-2">
                   <Link href="/subscribe">Subscribe,</Link>
                 </button>
-                <button className="hover:line-through text-lg mr-2">
+                <button className="hover:line-through text-md mr-2">
                   <Link href="/about">About,</Link>
                 </button>
 
@@ -102,16 +101,16 @@ const Navbar = ({ isSmallDevice }: Props) => {
                 ) : (
                   <>
                     {" "}
-                    <button className="hover:line-through text-lg mr-2">
+                    <button className="hover:line-through text-md mr-2">
                       <Link href="/">Sign up,</Link>
                     </button>
-                    <button className="hover:line-through text-lg mr-2">
+                    <button className="hover:line-through text-md mr-2">
                       <Link href="/subscribe">Login,</Link>
                     </button>
                   </>
                 )}
                 {admin && (
-                  <button className="hover:line-through text-lg mr-2">
+                  <button className="hover:line-through text-md mr-2">
                     <Link href="/admin/addbook">Admin</Link>
                   </button>
                 )}
@@ -119,32 +118,32 @@ const Navbar = ({ isSmallDevice }: Props) => {
             </div>
           )}
           {sort && (
-            <div className="flex flex-wrap mt-4 0">
-              <button className="hover:line-through text-lg mr-2">
+            <div className="flex w-full flex-wrap mt-4 0">
+              <button className="hover:line-through text-md mr-2">
                 <Link href={`/`}>All,</Link>
               </button>
-              <button className="hover:line-through text-lg mr-2">
+              <button className="hover:line-through text-md mr-2">
                 <Link href={`/library/painting`}>Painting,</Link>
               </button>
-              <button className="hover:line-through text-lg mr-2">
+              <button className="hover:line-through text-md mr-2">
                 <Link href={`/library/sculpture`}>Scultpure,</Link>
               </button>
-              <button className="hover:line-through text-lg mr-2">
+              <button className="hover:line-through text-md mr-2">
                 <Link href={`/library/photography_film`}>
                   Photography/film,
                 </Link>
               </button>
-              <button className="hover:line-through text-lg mr-2">
+              <button className="hover:line-through text-md mr-2">
                 <Link href={`/library/catalogs_magazines`}>
                   Catalogs and Magazines,
                 </Link>
               </button>
-              <button className="hover:line-through text-lg mr-2">
+              <button className="hover:line-through text-md mr-2">
                 <Link href={`/library/anthologies_miscellaneous`}>
                   Anthologies/miscellaneous,
                 </Link>
               </button>
-              <button className="hover:line-through text-lg mr-2">
+              <button className="hover:line-through text-md mr-2">
                 <Link href={`/library/stock`}>In stock</Link>
               </button>
             </div>
@@ -155,12 +154,12 @@ const Navbar = ({ isSmallDevice }: Props) => {
           <div className="fixed bg-white">
             <div className="">
               <div className="">
-                <h1 className="font-bold text-lg">
+                <h1 className="font-bold text-md">
                   <Link href="/">DEAD END BOOKS</Link>
                 </h1>
               </div>
               <div className="mt-5 flex flex-col items-start">
-                <button className={`hover:line-through text-lg`}>
+                <button className={`hover:line-through text-md`}>
                   <Link href="/">Library</Link>
                 </button>
               </div>
@@ -168,7 +167,7 @@ const Navbar = ({ isSmallDevice }: Props) => {
                 {currentPage === "/" || currentPage.includes("/library") ? (
                   <div className="flex flex-col items-start">
                     <button
-                      className="hover:line-through text-lg flex items-center"
+                      className="hover:line-through text-md flex items-center"
                       onClick={() => {
                         setSort(!sort);
                       }}
@@ -212,36 +211,36 @@ const Navbar = ({ isSmallDevice }: Props) => {
               </div>
 
               <div className="mt-5 flex flex-col items-start">
-                <button className="hover:line-through text-lg">
+                <button className="hover:line-through text-md">
                   <Link href="/profile">Profile</Link>
                 </button>
 
                 <div className="flex items-start">
-                  <button className="hover:line-through text-lg">
+                  <button className="hover:line-through text-md">
                     <Link href="/cart">Cart/</Link>
                   </button>
-                  <button className="hover:line-through text-lg">
+                  <button className="hover:line-through text-md">
                     <Link href="/saved">Saved/</Link>
                   </button>
-                  <button className="hover:line-through text-lg">
+                  <button className="hover:line-through text-md">
                     <Link href="/queue">Queue</Link>
                   </button>
                 </div>
               </div>
 
-              <div className="mt-5 flex flex-col items-start text-lg">
-                <button className="hover:line-through text-lg">
+              <div className="mt-5 flex flex-col items-start text-md">
+                <button className="hover:line-through text-md">
                   <Link href="/subscribe">Subscribe</Link>
                 </button>
 
-                <button className="hover:line-through text-lg">
+                <button className="hover:line-through text-md">
                   <Link href="/about">About</Link>
                 </button>
-                <button className="hover:line-through text-lg mr-2">
+                <button className="hover:line-through text-md mr-2">
                   <Link href="/others">Other's reads</Link>
                 </button>
               </div>
-              <div className="mt-5 flex flex-col items-start text-lg">
+              <div className="mt-5 flex flex-col items-start text-md">
                 <a
                   className="hover:line-through"
                   href="mailto:deadendbooks@gmail.com"
@@ -249,7 +248,7 @@ const Navbar = ({ isSmallDevice }: Props) => {
                   Email
                 </a>
 
-                <button className="hover:line-through text-lg">
+                <button className="hover:line-through text-md">
                   <a
                     target="_blank"
                     href="https://www.instagram.com/deadendbooks_/"
@@ -262,16 +261,16 @@ const Navbar = ({ isSmallDevice }: Props) => {
                   <LogOutButton isSmallDevice={isSmallDevice} />
                 ) : (
                   <>
-                    <button className="hover:line-through text-lg mr-2">
+                    <button className="hover:line-through text-md mr-2">
                       <Link href="/signup">Sign up</Link>
                     </button>
-                    <button className="hover:line-through text-lg mr-2">
+                    <button className="hover:line-through text-md mr-2">
                       <Link href="/login">Log in</Link>
                     </button>
                   </>
                 )}
                 {admin && (
-                  <button className="hover:line-through text-lg mr-2">
+                  <button className="hover:line-through text-md mr-2">
                     <Link href="/admin/addbook">Admin</Link>
                   </button>
                 )}

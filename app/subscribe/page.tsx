@@ -30,7 +30,7 @@ const page = () => {
                 How it works
               </button>
               <p
-                className={isSmallDevice ? "text-[25px] mt-6" : "w-full mt-10"}
+                className={isSmallDevice ? "text-[20px] mt-6" : "w-full mt-10"}
               >
                 Subscribing to Deadend Books gives you access to a diverse
                 collection of art books on painting, sculpture, photography,

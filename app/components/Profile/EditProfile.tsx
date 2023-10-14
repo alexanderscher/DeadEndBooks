@@ -138,11 +138,11 @@ const Profile = () => {
             value={changeEvent.username}
             onChange={handleChangeEvent}
             placeholder="Change Name"
-            className="border-b-[2px] border-black placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
+            className="border-b-[2px] border-black placeholder:text-black placeholder:text-[16px] mt-2 w-full focus:outline-none"
           />
           {errorText.name && <p className="text-red-300">{errorMessage}</p>}
           <button
-            className="text-red-500 hover:line-through text-[20px] mt-2"
+            className="text-red-500 hover:line-through text-[16px] mt-2"
             onClick={() => changeSubmit("username")}
           >
             {success.username ? "Submitted" : "Submit"}
@@ -159,12 +159,12 @@ const Profile = () => {
               value={changeEvent.email}
               onChange={handleChangeEvent}
               placeholder="Change email"
-              className="border-b-[2px] border-black placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
+              className="border-b-[2px] border-black placeholder:text-black placeholder:text-[16px] mt-2 w-full focus:outline-none"
             />
 
             {!emailPrompt ? (
               <button
-                className="text-red-500 hover:line-through text-[20px] mt-2"
+                className="text-red-500 hover:line-through text-[16px] mt-2"
                 onClick={() => setEmailPrompt(true)}
               >
                 Submit
@@ -177,13 +177,13 @@ const Profile = () => {
                   value={changeEvent.currentPasswordEmail}
                   onChange={handleChangeEvent}
                   placeholder="Current Password"
-                  className="border-b-[2px] border-black placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
+                  className="border-b-[2px] border-black placeholder:text-black placeholder:text-[16px] mt-2 w-full focus:outline-none"
                 />
                 {errorText.email && (
                   <p className="text-red-300">{errorMessage}</p>
                 )}
                 <button
-                  className="text-red-500 hover:line-through text-[20px] mt-2"
+                  className="text-red-500 hover:line-through text-[16px] mt-2"
                   onClick={() => changeSubmit("email")}
                 >
                   {success.email ? "Submitted" : "Submit"}
@@ -199,12 +199,12 @@ const Profile = () => {
               value={changeEvent.newPassword}
               onChange={handleChangeEvent}
               placeholder="Change Password"
-              className="border-b-[2px] border-black placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
+              className="border-b-[2px] border-black placeholder:text-black placeholder:text-[16px] mt-2 w-full focus:outline-none"
             />
 
             {!passwordPrompt ? (
               <button
-                className="text-red-500 hover:line-through text-[20px] mt-2"
+                className="text-red-500 hover:line-through text-[16px] mt-2"
                 onClick={() => setPasswordPrompt(true)}
               >
                 Submit
@@ -217,13 +217,13 @@ const Profile = () => {
                   value={changeEvent.currentPasswordPassword}
                   onChange={handleChangeEvent}
                   placeholder="Current Password"
-                  className="border-b-[2px] border-black placeholder:text-black placeholder:text-[20px] mt-2 w-full focus:outline-none"
+                  className="border-b-[2px] border-black placeholder:text-black placeholder:text-[16px] mt-2 w-full focus:outline-none"
                 />
                 {errorText.password && (
                   <p className="text-red-300">{errorMessage}</p>
                 )}
                 <button
-                  className="text-red-500 hover:line-through text-[20px] mt-2"
+                  className="text-red-500 hover:line-through text-[16px] mt-2"
                   onClick={() => changeSubmit("newPassword")}
                 >
                   {success.password ? "Submitted" : "Submit"}
