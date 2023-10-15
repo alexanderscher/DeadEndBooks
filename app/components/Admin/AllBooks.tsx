@@ -27,9 +27,9 @@ const AllBooks = () => {
       {books.map((book) => (
         <div
           key={book.id}
-          className="border-t-[2px] border-slate-400 mt-6 flex w-full"
+          className="border-t-[2px] border-slate-300 mt-6 flex w-full"
         >
-          <div className="w-[200px] mt-2 mr-10">
+          <div className="w-[200px] mt-2 mr-10 ">
             <p className="text-slate-400">Title</p>
             <p className="mb-2 hover:line-through">
               <Link href={`/book/${book.title}`}>{book.title}</Link>
@@ -46,7 +46,7 @@ const AllBooks = () => {
             </button>
           </div>
 
-          <div className="w-1/2 mt-2 flex ">
+          <div className="w-1/2 max-w-[500px] mt-4 flex ">
             <div className="w-1/2 mr-4">
               <img src={book.photo_front} alt="" />
             </div>

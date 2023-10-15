@@ -31,7 +31,6 @@ export async function POST(request: Request): Promise<NextResponse> {
         start_date: startDate,
         return_date: returnDate,
         shipped: false,
-        returned: false,
       },
     });
 
@@ -53,6 +52,14 @@ export async function POST(request: Request): Promise<NextResponse> {
         data: {
           orderId: order.id,
           bookId: book.id,
+        },
+      });
+
+      await prisma.returned.create({
+        data: {
+          orderId: order.id,
+          bookId: book.id,
+          returned: false,
         },
       });
       await prisma.book.update({

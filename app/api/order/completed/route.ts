@@ -4,14 +4,18 @@ import prisma from "@/prisma/client";
 export async function GET() {
   try {
     const orders = await prisma.orders.findMany({
+      orderBy: { order_date: "desc" },
+
       include: {
         address: true,
         books: true,
+        returned: true,
       },
       where: {
         shipped: true,
       },
     });
+
     return new NextResponse(JSON.stringify(orders), {
       status: 200,
       headers: { "Content-Type": "application/json" },

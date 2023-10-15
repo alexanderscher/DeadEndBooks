@@ -25,11 +25,17 @@ export async function POST(request: Request) {
     });
 
     await prisma.returned.update({
-      where: { id: parseInt(orderId) },
+      where: {
+        orderId_bookId: {
+          orderId: orderId,
+          bookId: bookId,
+        },
+      },
       data: {
         returned: true,
       },
     });
+
     await prisma.current.delete({
       where: { id: parseInt(id) },
     });

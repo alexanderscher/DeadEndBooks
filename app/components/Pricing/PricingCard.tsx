@@ -91,11 +91,11 @@ const PricingCard = ({ price, session }: priceProps) => {
   return (
     <div>
       <h1
-        className={`text-[26px] ${price.nickname === "Yearly Plan" && "mt-10"}`}
+        className={`text-[30px] ${price.nickname === "Yearly Plan" && "mt-10"}`}
       >
         {price.nickname}
       </h1>
-      <p className="text-[26px] text-slate-500">
+      <p className="text-[30px] text-slate-500">
         {(price.unit_amount / 100).toLocaleString("en-US", {
           style: "currency",
           currency: "USD",
@@ -104,19 +104,19 @@ const PricingCard = ({ price, session }: priceProps) => {
       </p>
 
       {userSub === price.nickname && sessionId ? (
-        <h1 className="text-[26px] hover:line-through text-red-300">
+        <h1 className="text-[30px] hover:line-through text-red-300">
           Current subscription
         </h1>
       ) : currentPage === "/profile/subscription" ? (
         <button
-          className="text-[26px] hover:line-through text-red-500"
+          className="text-[30px] hover:line-through text-red-500"
           onClick={changeSubscription}
         >
           Subscribe
         </button>
       ) : (
         <button
-          className="text-[26px] hover:line-through text-red-500"
+          className="text-[30px] hover:line-through text-red-500"
           onClick={handleSubscription}
         >
           Subscribe
@@ -124,7 +124,7 @@ const PricingCard = ({ price, session }: priceProps) => {
       )}
 
       {noSession && (
-        <p className="text-red-300 text-[26px]  ">Please login to subscribe</p>
+        <p className="text-red-300 text-[30px]  ">Please login to subscribe</p>
       )}
     </div>
   );

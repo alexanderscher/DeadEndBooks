@@ -20,6 +20,7 @@ const formatDate = (input: string) => {
 type OrderBook = {
   bookId: number;
   orderId: number;
+  returned?: boolean;
 };
 
 type Order = {
@@ -38,15 +39,18 @@ type Order = {
   email: string;
   name: string;
   start_date: string;
+  return_date: string;
+
   shipped: boolean;
-  returned: boolean;
   order_date: string;
+  returned: { bookTitle: string; returned: boolean }[];
 };
 
 const Order = () => {
   const [isLoaded, setIsLoaded] = useState(true);
   const [orders, setOrders] = useState<Order[]>([]);
   console.log(orders);
+
   const [reload, setReload] = useState(false);
   const currentPage = usePathname();
 
@@ -74,6 +78,7 @@ const Order = () => {
 
       const res = await fetch(`/api/order/${currentPage.split("/")[3]}`);
       const data = await res.json();
+      console.log(data);
       for (const order of data) {
         const bookTitles = await Promise.all(
           order.books.map(async (book: OrderBook) => {
@@ -81,6 +86,19 @@ const Order = () => {
             const bookOrder = await res.json();
             return bookOrder.title;
           })
+        );
+
+        const bookReturnStatus = order.books.map(
+          (book: OrderBook, index: number) => {
+            const returnStatus = order.returned.find(
+              (ret: OrderBook) =>
+                ret.bookId === book.bookId && ret.orderId === book.orderId
+            );
+            return {
+              bookTitle: bookTitles[index],
+              returned: returnStatus?.returned || false,
+            };
+          }
         );
 
         const userres = await fetch(`/api/user/${order.userId}`);
@@ -103,10 +121,10 @@ const Order = () => {
             email: user.email,
             name: user.name,
             order_date: formatDate(order.order_date) as string,
-
             start_date: formatDate(order.start_date) as string,
+            return_date: formatDate(order.return_date) as string,
             shipped: order.shipped,
-            returned: order.returned,
+            returned: bookReturnStatus,
           },
         ]);
       }
@@ -121,9 +139,11 @@ const Order = () => {
 
   if (orders.length === 0) {
     return (
-      <div className="w-full  mt-10">
+      <div className="w-full  mt-10  max-w-[840px]">
         <OrderNav />
-        <h1 className="text-[26px] mt-10">No orders</h1>
+        <div className="w-full flex justify-end mt-10">
+          <span className="text-[26px]">No orders</span>
+        </div>
       </div>
     );
   }
@@ -138,45 +158,61 @@ const Order = () => {
         >
           <div className="mt-2 w-full mb-2">
             <div className="flex justify-between text-md border-b-[2px] border-slate-300 mt-1">
-              <h1 className="text-slate-500">Order ID:</h1>
-              <h1 className="">{order.id}</h1>
+              <span className="text-slate-400">Order ID:</span>
+              <span className="">{order.id}</span>
             </div>
             <div className="flex justify-between text-md border-b-[2px] border-slate-300 mt-1">
-              <h1 className="text-slate-500">Email:</h1>
-              <h1 className="">{order.email}</h1>
+              <span className="text-slate-400">Email:</span>
+              <span className="">{order.email}</span>
+            </div>
+            <div className="flex justify-between text-md border-b-[2px] border-slate-300 mt-1">
+              <span className="text-slate-400">Order date:</span>
+              <span>{order.order_date}</span>
+            </div>
+            <div className="flex justify-between text-md border-b-[2px] border-slate-300 mt-1">
+              <span className="text-slate-400">Subscription start date:</span>
+              <span>{order.start_date}</span>
+            </div>
+            <div className="flex justify-between text-md border-b-[2px] border-slate-300 mt-1">
+              <span className="text-slate-400">Subscription end date:</span>
+              <span>{order.return_date}</span>
             </div>
 
             <div className="flex justify-between text-md border-b-[2px] border-slate-300 mt-1">
-              <h1 className="text-slate-500">Subscription start date:</h1>
-              <h1>{order.start_date}</h1>
-            </div>
-            <div className="flex justify-between text-md border-b-[2px] border-slate-300 mt-1">
-              <h1 className="text-slate-500">Order date:</h1>
-              <h1>{order.order_date}</h1>
-            </div>
-            <div className="flex justify-between text-md border-b-[2px] border-slate-300 mt-1">
-              <h1 className="text-slate-500">Status:</h1>
-              <h1>
-                {!order.shipped
-                  ? "Not shipped"
-                  : order.returned
-                  ? "Returned"
-                  : "Shipped"}
-              </h1>
-            </div>
-            <div className="flex justify-between text-md border-b-[2px] border-slate-300 mt-1">
-              <h1 className="text-slate-500">Order items:</h1>
+              <span className="text-slate-400">Order items:</span>
               <div className="flex flex-col">
                 {order.title.map((title) => (
-                  <h1 key={title} className="">
+                  <span key={title} className="">
                     {title}
-                  </h1>
+                  </span>
                 ))}
               </div>
             </div>
+            <div className="flex justify-between text-md border-b-[2px] border-slate-300 mt-1">
+              <span className="text-slate-400">Status:</span>
+              <span>{!order.shipped ? "Not shipped" : "Shipped"}</span>
+            </div>
+            {currentPage === "/admin/orders/completed" && (
+              <div className="flex justify-between text-md border-b-[2px] border-slate-300 mt-1">
+                <span className="text-slate-400">Return Status:</span>
+                <div className="flex flex-col">
+                  {order.returned.map((title) => (
+                    <div className="flex justify-end">
+                      <span key={title.bookTitle} className="">
+                        {title.bookTitle}:
+                      </span>
+                      <span className="text-end ml-2">
+                        {title.returned ? "Returned" : "Not returned"}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             <div className="flex justify-between text-md ">
               <div className="flex flex-col justify-between">
-                <h1 className="text-slate-500">Order address:</h1>
+                <span className="text-slate-400">Order address:</span>
                 {currentPage === "/admin/orders/pending" && (
                   <button
                     className="text-red-500 hover:line-through text-[18px]"
@@ -190,17 +226,17 @@ const Order = () => {
               <div
                 className={
                   currentPage === "/admin/orders/pending"
-                    ? "text-end"
-                    : "text-end w-3/4"
+                    ? "text-end flex flex-col"
+                    : "text-end w-3/4 flex flex-col"
                 }
               >
-                <h1 className="mt-1">{order.addressOrder.orderName}</h1>
-                <h1 className="mt-1">{order.addressOrder.address}</h1>
-                <h1 className="mt-1">{order.addressOrder.city}</h1>
-                <h1 className="mt-1">{order.addressOrder.country}</h1>
-                <h1 className="mt-1">{order.addressOrder.state}</h1>
-                <h1 className="mt-1">{order.addressOrder.zipcode}</h1>
-                <h1 className="mt-1">{order.addressOrder.phone}</h1>
+                <span className="mt-1">{order.addressOrder.orderName}</span>
+                <span className="mt-1">{order.addressOrder.address}</span>
+                <span className="mt-1">{order.addressOrder.city}</span>
+                <span className="mt-1">{order.addressOrder.country}</span>
+                <span className="mt-1">{order.addressOrder.state}</span>
+                <span className="mt-1">{order.addressOrder.zipcode}</span>
+                <span className="mt-1">{order.addressOrder.phone}</span>
               </div>
             </div>
           </div>
