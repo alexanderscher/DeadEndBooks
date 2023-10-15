@@ -107,6 +107,11 @@ const CurrentRentals = () => {
     }
   };
 
+  const [error, setError] = useState({
+    id: 0,
+    isError: false,
+  });
+
   const lateFee = async (userId: number, bookId: number) => {
     const res = await fetch(`/api/user/${userId}`);
     const data = await res.json();
@@ -114,6 +119,7 @@ const CurrentRentals = () => {
     const res1 = await fetch(
       `/api/admin/stripe/getcustomer/${stripeCustomerId}`
     );
+
     const data1 = await res1.json();
     const paymentMethodId = data1.invoice_settings.default_payment_method;
     try {
@@ -128,16 +134,21 @@ const CurrentRentals = () => {
           "Content-Type": "application/json",
         },
       });
-      setCharge({
-        bookId,
-        charged: true,
-      });
-      setTimeout(() => {
+      if (res2.status === 500) {
+        setError({ isError: true, id: userId });
+      } else {
         setCharge({
-          bookId: 0,
-          charged: false,
+          bookId,
+          charged: true,
         });
-      }, 3000);
+        setError({ isError: false, id: 0 });
+        setTimeout(() => {
+          setCharge({
+            bookId: 0,
+            charged: false,
+          });
+        }, 3000);
+      }
     } catch (err) {
       console.error(err);
     }
@@ -266,14 +277,25 @@ const CurrentRentals = () => {
                   lateFeeModal.bookId == rental.bookId &&
                   lateFeeModal.userId == rental.userId && (
                     <div className="fixed inset-0 flex items-center justify-center z-40">
-                      <div className="p-8 z-50 max-w-[400px] w-3/4 bg-red-100 h-[160px] rounded-md border-black border-[2px] shadow-xl">
-                        <h1>
-                          Charging $5.00 to {rental.user_email} for{" "}
-                          {rental.title}
-                        </h1>
-                        <div className="flex justify-between mt-6">
+                      <div className="p-8 z-50 max-w-[400px] w-3/4 bg-red-100 min-h-[200px] rounded-md border-black border-[2px] shadow-xl flex flex-col">
+                        {/* Content Area - Can Expand */}
+                        <div className="flex-grow flex flex-col">
+                          <h1>
+                            Charging $5.00 to {rental.user_email} for{" "}
+                            {rental.title}
+                          </h1>
+                          {error.isError && error.id === rental.userId && (
+                            <p className="text-sm text-red-800 mt-2">
+                              Error: Please add default credit card in stripe
+                              dashboard
+                            </p>
+                          )}
+                        </div>
+
+                        {/* Button Area - Remains at the Bottom */}
+                        <div className="mt-4 flex justify-between">
                           <button
-                            className="text-red-500 hover:line-through "
+                            className="text-red-500 hover:line-through"
                             onClick={() => {
                               lateFee(rental.userId, rental.bookId);
                             }}
@@ -283,7 +305,7 @@ const CurrentRentals = () => {
                               : "Confirm"}
                           </button>
                           <button
-                            className="text-red-500 hover:line-through "
+                            className="text-red-500 hover:line-through"
                             onClick={() => {
                               setLateFeeModal({
                                 bookId: 0,
@@ -315,21 +337,32 @@ const CurrentRentals = () => {
                   chargeBookInput.bookId == rental.bookId &&
                   chargeBookInput.bookId == rental.bookId && (
                     <div className="fixed inset-0 flex items-center justify-center z-40">
-                      <div className="p-8 z-50 max-w-[400px] w-3/4 bg-red-100 h-[260px] rounded-md border-black border-[2px] shadow-xl">
-                        <h1>Input late fee amount</h1>
-                        <input
-                          type="text"
-                          className="border-b-[2px] border-black mt-4 bg-red-100 focus:outline-none"
-                          placeholder="$0.00"
-                          onChange={amountChange}
-                        />
-                        <h1 className="mt-2">
-                          Charging to {amountBook} {rental.user_email} for{" "}
-                          {rental.title}
-                        </h1>
-                        <div className="flex justify-between mt-[70px]">
+                      <div className="p-8 z-50 max-w-[400px] w-3/4 bg-red-100 min-h-[260px] rounded-md border-black border-[2px] shadow-xl flex flex-col">
+                        {/* Content Area - Can Expand */}
+                        <div className="flex-grow flex flex-col">
+                          <h1>Input late fee amount</h1>
+                          <input
+                            type="text"
+                            className="border-b-[2px] border-black mt-4 bg-red-100 focus:outline-none"
+                            placeholder="$0.00"
+                            onChange={amountChange}
+                          />
+                          <h1 className="mt-2">
+                            Charging to {amountBook} {rental.user_email} for{" "}
+                            {rental.title}
+                          </h1>
+                          {error.isError && error.id === rental.userId && (
+                            <p className="text-sm text-red-800 mt-2">
+                              Error: Please add default credit card in stripe
+                              dashboard
+                            </p>
+                          )}
+                        </div>
+
+                        {/* Button Area - Remains at the Bottom */}
+                        <div className="mt-4 flex justify-between">
                           <button
-                            className="text-red-500 hover:line-through "
+                            className="text-red-500 hover:line-through"
                             onClick={() => {
                               bookAmount(rental.userId, rental.bookId);
                             }}
@@ -339,7 +372,7 @@ const CurrentRentals = () => {
                               : "Confirm"}
                           </button>
                           <button
-                            className="text-red-500 hover:line-through "
+                            className="text-red-500 hover:line-through"
                             onClick={() => {
                               setChargeBookInput({
                                 bookId: 0,

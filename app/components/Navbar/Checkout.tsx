@@ -227,7 +227,7 @@ const Checkout = () => {
           ))}
         {address.length === 0 ? (
           <div>
-            <h1 className="text-red-500 text-[30px]">
+            <h1 className="text-red-300 text-[26px]">
               Please add a shipping address
             </h1>
           </div>

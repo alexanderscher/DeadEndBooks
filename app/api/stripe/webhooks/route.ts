@@ -59,7 +59,7 @@ const webhookHandler = async (req: NextRequest): Promise<NextResponse> => {
           data: {
             isActive: true,
             subscriptionID: subscriptionId,
-            subscriptionType: null,
+            subscriptionType: planNickname,
           },
         });
         break;
@@ -68,6 +68,7 @@ const webhookHandler = async (req: NextRequest): Promise<NextResponse> => {
           where: {
             stripeCustomerId: subscription.customer as string,
           },
+
           data: {
             isActive: false,
             subscriptionType: null,

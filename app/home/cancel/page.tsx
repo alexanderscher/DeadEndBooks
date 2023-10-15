@@ -27,20 +27,16 @@ const page = () => {
               isSmallDevice ? "page-margin-small" : " page-margin w-full"
             }
           >
-            <div
-              className={
-                isSmallDevice
-                  ? "mt-10 flex justify-center"
-                  : "flex justify-center"
-              }
-            >
+            <div className={"flex justify-center"}>
               <div className="flex flex-col items-center ">
                 <img
-                  src="/Screenshot 2023-09-18 at 4.38.04 PM.png"
-                  className="max-w-[500px] w-3/4"
+                  src="/dead-end-stripe.png"
+                  className="max-w-[500px] w-full"
                   alt=""
                 />
-                <h1 className="text-[26px] ">Subscription cancelled</h1>
+                <h1 className="text-[26px] text-red-500">
+                  Subscription cancelled
+                </h1>
               </div>
             </div>
           </div>

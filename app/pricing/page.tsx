@@ -40,7 +40,7 @@ const page = () => {
             <div className="w-full ">
               {prices &&
                 prices.map((price: any) => (
-                  <PricingCard price={price} key={price.id} />
+                  <PricingCard price={price} key={price.id} session={session} />
                 ))}
             </div>
           </div>
