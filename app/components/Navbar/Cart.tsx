@@ -116,7 +116,7 @@ const Cart = ({}) => {
   }
   if (pageData.length === 0) {
     return (
-      <div className="text-[30px]">
+      <div className="text-[26px]">
         <h1>Your cart is empty</h1>
       </div>
     );
@@ -140,7 +140,7 @@ const Cart = ({}) => {
             <div className="max-w-[200px] mr-[50px]">
               <img className="max-w-[200px]" src={book.photo_front} />
             </div>
-            <div className="w-3/4 text-[30px]">
+            <div className="w-3/4 text-[26px]">
               <h1 className="hover:line-through">
                 <Link href={`/book/${book.title}`}>{book.title}</Link>
               </h1>

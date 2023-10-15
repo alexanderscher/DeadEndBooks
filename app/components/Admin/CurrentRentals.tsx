@@ -159,7 +159,8 @@ const CurrentRentals = () => {
     userId: number,
     start_date: string,
     return_date: string,
-    id: number
+    id: number,
+    orderId: number
   ) => {
     setIsReturned(false);
     const res = await fetch(`/api/admin/rentals/return`, {
@@ -170,6 +171,7 @@ const CurrentRentals = () => {
         start_date,
         return_date,
         id,
+        orderId,
       }),
       headers: {
         "Content-Type": "application/json",
@@ -253,7 +255,8 @@ const CurrentRentals = () => {
                     rental.userId,
                     rental.start_date,
                     rental.return_date,
-                    rental.id
+                    rental.id,
+                    rental.orderId
                   )
                 }
               >

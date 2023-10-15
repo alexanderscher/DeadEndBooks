@@ -90,7 +90,7 @@ export async function POST(request: Request): Promise<NextResponse> {
         });
       });
     }
-    return new NextResponse(JSON.stringify({ success: true }), {
+    return new NextResponse(JSON.stringify({ order }), {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });

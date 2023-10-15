@@ -22,8 +22,6 @@ const Checkout = () => {
   const { data: session } = useSession();
   const router = useRouter();
   const [pageData, setPageData] = useState<Book[]>([]);
-
-  const [reload, setReload] = useState(false);
   const [userId, setUserId] = useState("");
   const [address, setAddress] = useState([
     {
@@ -67,19 +65,9 @@ const Checkout = () => {
       setisLoading(false);
     };
     getCart();
-  }, [session, reload]);
+  }, [session]);
 
   const [checkedId, setCheckedId] = useState(0);
-
-  const [orderAddy, setOrderAddy] = useState({
-    name: "",
-    address: "",
-    city: "",
-    state: "",
-    country: "",
-    zipcode: "",
-    phone: "",
-  });
 
   const [modalCheckout, setModalCheckout] = useState({
     first: false,
@@ -116,7 +104,6 @@ const Checkout = () => {
     }
     const resAddy = await fetch(`/api/user/address/${checkedId}`);
     const data = await resAddy.json();
-    setOrderAddy(data);
     checkout(data);
   };
 
@@ -139,8 +126,13 @@ const Checkout = () => {
         phone: addyData.phone,
       }),
     });
-
-    // ... handle the response or errors from this fetch request
+    if (res.ok) {
+      const data = await res.json();
+      console.log(data.order.id);
+      if (data.order.id !== undefined) {
+        router.push(`/checkout/success/${data.order.id}`);
+      }
+    }
   };
 
   const addressDelete = async (id: number) => {
@@ -166,7 +158,7 @@ const Checkout = () => {
   return (
     <div className="relative">
       <div className="w-full ">
-        <h1 className="text-[30px] ">Checkout</h1>
+        <h1 className="text-[26px] ">Checkout</h1>
       </div>
       <div className="mt-10 max-w-[840px]">
         <div className="flex justify-between">

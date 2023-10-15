@@ -16,7 +16,6 @@ const formatDate = (input: string) => {
 const daysLate = (input: string) => {
   const dueDate = new Date(input);
   const today = new Date();
-  // const today = new Date("2023-10-13");
 
   dueDate.setHours(0, 0, 0, 0);
   today.setHours(0, 0, 0, 0);
@@ -33,7 +32,6 @@ const daysLate = (input: string) => {
 const daysLeft = (input: string) => {
   const date = new Date(input);
   const today = new Date();
-  // const today = new Date("2023-10-13");
 
   today.setHours(0, 0, 0, 0);
   date.setHours(0, 0, 0, 0);
@@ -56,6 +54,7 @@ const Rentals = () => {
       isLate: 0,
       daysLeft: 0,
       orderId: 0,
+      shipped: false,
     },
   ]);
 
@@ -77,6 +76,12 @@ const Rentals = () => {
           const res = await fetch(`/api/book/${data.Current[rental].bookId}`);
           const dataBook = await res.json();
 
+          const order = await fetch(
+            `/api/order/${data.Current[rental].orderId}`
+          );
+          const dataOrder = await order.json();
+          console.log(dataOrder.shipped);
+
           if (res.ok) {
             rentals.push({
               title: dataBook.title,
@@ -85,6 +90,7 @@ const Rentals = () => {
               isLate: daysLate(data.Current[rental].return_date),
               daysLeft: daysLeft(data.Current[rental].return_date),
               orderId: data.Current[rental].orderId,
+              shipped: dataOrder.shipped,
             });
           }
         }
@@ -129,6 +135,12 @@ const Rentals = () => {
             <h1>Return Date:</h1>
             <h1 className=" text-md ">{rental.return_date}</h1>
           </div>
+          <div className="flex mt-2 items-center justify-between border-b-[1.5px] border-slate-300">
+            <h1>Shipped:</h1>
+            <h1 className=" text-md ">
+              {rental.shipped ? "Shipped" : "Not Shipped"}
+            </h1>
+          </div>
           {rental.isLate >= 0 && rental.daysLeft <= 0 ? (
             <>
               {}
@@ -144,7 +156,7 @@ const Rentals = () => {
               </div>
             </>
           ) : (
-            <div className="flex mt-2 items-center justify-between relative text-red-500 ">
+            <div className="flex mt-2 items-center justify-between relative ">
               <div
                 className="flex items-center cursor-pointer"
                 onClick={() => setModal(true)}

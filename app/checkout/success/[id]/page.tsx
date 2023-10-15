@@ -15,7 +15,12 @@ const Page = () => {
   const [yourOrder, setYourOrder] = useState<boolean | null>(null);
   const currentPage = usePathname();
   const [loading, setLoading] = useState<boolean>(true);
-  // const [bookId, setBookId] = useState<string | null>(null);
+  const [orderBooks, setOrderBooks] = useState([
+    {
+      orderId: 0,
+      bookId: 0,
+    },
+  ]);
 
   useEffect(() => {
     setIsSmallDevice(isSmallDeviceQuery);
@@ -26,21 +31,22 @@ const Page = () => {
 
     if (session) {
       const orderId = currentPage.split("success/")[1];
+
       const getOrder = async () => {
-        const res = await fetch(`/api/admin/order/${orderId}`);
-        console.log(res.status);
+        const res = await fetch(`/api/order/${orderId}`);
+
         if (res.status === 404) {
           router.push("/not-found");
           return;
         }
         const data = await res.json();
-        console.log(data);
+
+        setOrderBooks(data.books);
 
         if (data.userId !== parseInt((session as ExtendedSession)?.user?.id)) {
           router.push("/not-found");
         } else {
           setYourOrder(true);
-          // setBookId(data.bookId);
         }
       };
       getOrder();
@@ -67,7 +73,7 @@ const Page = () => {
                   isSmallDevice ? "page-margin-small" : "page-margin w-full"
                 }
               >
-                <CheckoutSuccess />
+                <CheckoutSuccess orderBooks={orderBooks} />
               </div>
             )}
           </>

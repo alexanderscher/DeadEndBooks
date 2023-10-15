@@ -22,6 +22,7 @@ model Book {
   Cart        Cart[]
   Saved       Saved[]
   orderBooks  OrderBook[]
+  Returned    Returned[]
 }
 
 model Current {
@@ -118,6 +119,16 @@ model OrderAddress {
   order   Orders @relation(fields: [orderId], references: [id])
 }
 
+model Returned {
+  orderId  Int
+  order    Orders  @relation(fields: [orderId], references: [id])
+  bookId   Int
+  book     Book    @relation(fields: [bookId], references: [id])
+  returned Boolean @default(false)
+
+  @@id([orderId, bookId])
+}
+
 model Orders {
   id          Int           @id @default(autoincrement())
   userId      Int
@@ -125,7 +136,7 @@ model Orders {
   books       OrderBook[]
   address     OrderAddress?
   shipped     Boolean
-  returned    Boolean
+  returned    Returned[]
   order_date  DateTime
   start_date  DateTime
   return_date DateTime

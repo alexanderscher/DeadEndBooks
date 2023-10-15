@@ -52,7 +52,7 @@ const Order = () => {
 
   const markasShipped = async (id: number) => {
     console.log(id);
-    const res = await fetch(`/api/admin/order`, {
+    const res = await fetch(`/api/order`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -72,10 +72,9 @@ const Order = () => {
       setIsLoaded(true);
       setReload(false);
 
-      const res = await fetch(`/api/admin/order/${currentPage.split("/")[3]}`);
+      const res = await fetch(`/api/order/${currentPage.split("/")[3]}`);
       const data = await res.json();
       for (const order of data) {
-        console.log(order.books);
         const bookTitles = await Promise.all(
           order.books.map(async (book: OrderBook) => {
             const res = await fetch(`/api/book/${book.bookId}`);
@@ -157,13 +156,21 @@ const Order = () => {
             </div>
             <div className="flex justify-between text-md border-b-[2px] border-slate-300 mt-1">
               <h1 className="text-slate-500">Status:</h1>
-              <h1>{order.shipped ? "Shipped" : "Not shipped"}</h1>
+              <h1>
+                {!order.shipped
+                  ? "Not shipped"
+                  : order.returned
+                  ? "Returned"
+                  : "Shipped"}
+              </h1>
             </div>
             <div className="flex justify-between text-md border-b-[2px] border-slate-300 mt-1">
               <h1 className="text-slate-500">Order items:</h1>
               <div className="flex flex-col">
                 {order.title.map((title) => (
-                  <h1 className="">{title}</h1>
+                  <h1 key={title} className="">
+                    {title}
+                  </h1>
                 ))}
               </div>
             </div>

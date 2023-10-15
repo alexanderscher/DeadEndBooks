@@ -176,7 +176,7 @@ const Saved = () => {
 
   if (pageData.length === 0) {
     return (
-      <div className="text-[30px] ">
+      <div className="text-[26px] ">
         <h1>books saved</h1>
       </div>
     );

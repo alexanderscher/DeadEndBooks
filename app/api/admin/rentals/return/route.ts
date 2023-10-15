@@ -4,7 +4,7 @@ import prisma from "@/prisma/client";
 export async function POST(request: Request) {
   try {
     const json = await request.json();
-    const { userId, bookId, start_date, return_date, id } = json;
+    const { userId, bookId, start_date, return_date, id, orderId } = json;
 
     console.log(json);
 
@@ -24,6 +24,12 @@ export async function POST(request: Request) {
       },
     });
 
+    await prisma.returned.update({
+      where: { id: parseInt(orderId) },
+      data: {
+        returned: true,
+      },
+    });
     await prisma.current.delete({
       where: { id: parseInt(id) },
     });

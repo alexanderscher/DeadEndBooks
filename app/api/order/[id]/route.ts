@@ -30,6 +30,9 @@ export async function GET(
   try {
     const order = await prisma.orders.findUnique({
       where: { id: parseInt(id) },
+      include: {
+        books: true,
+      },
     });
     if (order === null) {
       return new NextResponse(JSON.stringify({}), {
@@ -37,7 +40,6 @@ export async function GET(
         headers: { "Content-Type": "application/json" },
       });
     }
-    console.log(order);
 
     return new NextResponse(JSON.stringify(order), {
       status: 200,
