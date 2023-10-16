@@ -4,17 +4,33 @@ import Navbar from "../../components/Navbar/Navbar";
 import Loader from "../../components/Loader";
 import { useMediaQuery } from "react-responsive";
 import { usePathname, useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { ExtendedSession } from "@/types";
 
 const page = () => {
   const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
   const isSmallDeviceQuery = useMediaQuery({ maxWidth: 700 });
+  const { data: session, status } = useSession();
   const router = useRouter();
-  const currentPage = usePathname();
+  const [sessionLoaded, setSessionLoaded] = useState(false);
 
   useEffect(() => {
-    setIsSmallDevice(isSmallDeviceQuery);
-  }, [isSmallDeviceQuery]);
+    if (session && (session as ExtendedSession)?.user?.id) {
+      setSessionLoaded(true);
+      setIsSmallDevice(isSmallDeviceQuery);
+    }
+  }, [isSmallDeviceQuery, session, (session as ExtendedSession)?.user?.id]);
 
+  if (status === "loading") {
+    return <Loader />;
+  }
+  if (
+    status === "unauthenticated" ||
+    (!(session as ExtendedSession)?.user?.id && sessionLoaded)
+  ) {
+    router.replace("/not-found");
+    return null;
+  }
   return (
     <main className={isSmallDevice ? "page-small" : "page"}>
       {isSmallDevice === null ? (

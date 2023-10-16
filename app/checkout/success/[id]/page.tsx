@@ -29,16 +29,6 @@ const Page = () => {
   }, [isSmallDeviceQuery]);
 
   useEffect(() => {
-    if (status !== "authenticated") {
-      router.push("/not-found");
-      return;
-    }
-
-    if (!session) {
-      router.push("/not-found");
-      return;
-    }
-
     const orderId = currentPage.split("success/")[1];
 
     const fetchOrder = async () => {
@@ -47,7 +37,7 @@ const Page = () => {
         console.log(res.status);
 
         if (res.status === 404) {
-          console.log(res.status); // Set error to true
+          console.log(res.status);
           router.push("/not-found");
           return;
         }
@@ -55,7 +45,7 @@ const Page = () => {
         const data = await res.json();
 
         if (data.userId !== parseInt((session as ExtendedSession)?.user?.id)) {
-          setError(true); // Set error to true
+          setError(true);
           router.push("/not-found");
           return;
         }
@@ -63,24 +53,21 @@ const Page = () => {
         setOrderBooks(data.books);
         setYourOrder(true);
       } catch (error) {
-        setError(true); // Set error to true
+        setError(true);
         console.error("Failed to fetch order:", error);
         router.push("/not-found"); // Redirect to an error page if you prefer
       } finally {
         setLoading(false);
       }
     };
-
-    fetchOrder();
+    if (session) {
+      fetchOrder();
+    }
   }, [session, status]);
 
-  if (loading) {
+  if (status === "loading") {
     return <Loader />;
   }
-  if (error) {
-    return null; // or return an <ErrorComponent /> if you have one
-  }
-
   if (!loading) {
     return (
       <main className={isSmallDevice ? "page-small" : "page"}>

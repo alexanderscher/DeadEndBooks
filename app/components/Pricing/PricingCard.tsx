@@ -13,6 +13,7 @@ interface priceProps {
 
 const PricingCard = ({ price, session }: priceProps) => {
   const sessionId = (session as ExtendedSession)?.user?.id;
+  const subscriptionID = (session as ExtendedSession)?.user?.subscriptionID;
   const [noSession, setNoSession] = useState(false);
   const [isLoading, setisLoading] = useState(true);
   const currentPage = usePathname();
@@ -29,6 +30,7 @@ const PricingCard = ({ price, session }: priceProps) => {
           const { data } = await axios.post(
             "/api/stripe/subscription-change",
             {
+              subscriptionID: subscriptionID,
               priceId: price.id,
             },
             {
@@ -53,8 +55,6 @@ const PricingCard = ({ price, session }: priceProps) => {
         `/api/user/${(session as ExtendedSession)?.user?.id}`
       );
       const data = await res.json();
-      console.log(data);
-      setUserSub(data.subscriptionType);
     };
     if (sessionId) {
       setisLoading(true);
@@ -73,6 +73,7 @@ const PricingCard = ({ price, session }: priceProps) => {
         "/api/stripe/payment",
         {
           priceId: price.id,
+          subscriptionID: subscriptionID,
         },
         {
           headers: {

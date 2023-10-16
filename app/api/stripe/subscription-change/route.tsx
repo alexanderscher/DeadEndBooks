@@ -36,6 +36,8 @@ export async function POST(request: NextRequest) {
 
   const json = await request.json();
   const priceId = json.priceId;
+  const subscriptionID = json.subscriptionID;
+
   const stripeSession = await stripe.checkout.sessions.create({
     customer: sessionId,
     line_items: [
@@ -45,8 +47,8 @@ export async function POST(request: NextRequest) {
       },
     ],
     mode: "subscription",
-    success_url: "http://localhost:3000/home/success",
-    cancel_url: "http://localhost:3000/home/cancel",
+    success_url: `http://localhost:3000/home/success/${subscriptionID}`,
+    cancel_url: `http://localhost:3000/home/cancel/${subscriptionID}`,
   });
 
   return NextResponse.json(stripeSession.url);
