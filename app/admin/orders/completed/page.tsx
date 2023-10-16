@@ -24,14 +24,17 @@ const page = () => {
     }
   }, [isSmallDeviceQuery, isMediumDeviceQuery, session, status]);
 
-  if (
-    status === "loading" ||
-    status === "unauthenticated" ||
-    !(session as ExtendedSession)?.user?.admin
-  ) {
+  if (status === "loading") {
     return <Loader />;
   }
 
+  if (
+    status === "unauthenticated" ||
+    !(session as ExtendedSession)?.user?.admin
+  ) {
+    router.replace("/not-found");
+    return null;
+  }
   return (
     <main className={isSmallDevice ? "page-small" : "page"}>
       {isSmallDevice === null ? (

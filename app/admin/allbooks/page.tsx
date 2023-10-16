@@ -26,12 +26,16 @@ const page = () => {
     }
   }, [isSmallDeviceQuery, isMediumDeviceQuery, session, status]);
 
+  if (status === "loading") {
+    return <Loader />;
+  }
+
   if (
-    status === "loading" ||
     status === "unauthenticated" ||
     !(session as ExtendedSession)?.user?.admin
   ) {
-    return <Loader />;
+    router.replace("/not-found");
+    return null;
   }
 
   return (

@@ -15,6 +15,8 @@ const Page = () => {
   const [yourOrder, setYourOrder] = useState<boolean | null>(null);
   const currentPage = usePathname();
   const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState(false);
+
   const [orderBooks, setOrderBooks] = useState([
     {
       orderId: 0,
@@ -27,35 +29,56 @@ const Page = () => {
   }, [isSmallDeviceQuery]);
 
   useEffect(() => {
-    if (status !== "authenticated") return;
+    if (status !== "authenticated") {
+      router.push("/not-found");
+      return;
+    }
 
-    if (session) {
-      const orderId = currentPage.split("success/")[1];
+    if (!session) {
+      router.push("/not-found");
+      return;
+    }
 
-      const getOrder = async () => {
+    const orderId = currentPage.split("success/")[1];
+
+    const fetchOrder = async () => {
+      try {
         const res = await fetch(`/api/order/${orderId}`);
+        console.log(res.status);
 
         if (res.status === 404) {
+          console.log(res.status); // Set error to true
           router.push("/not-found");
           return;
         }
+
         const data = await res.json();
 
-        setOrderBooks(data.books);
-
         if (data.userId !== parseInt((session as ExtendedSession)?.user?.id)) {
+          setError(true); // Set error to true
           router.push("/not-found");
-        } else {
-          setYourOrder(true);
+          return;
         }
-      };
-      getOrder();
-      setLoading(false);
-    }
+
+        setOrderBooks(data.books);
+        setYourOrder(true);
+      } catch (error) {
+        setError(true); // Set error to true
+        console.error("Failed to fetch order:", error);
+        router.push("/not-found"); // Redirect to an error page if you prefer
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrder();
   }, [session, status]);
 
   if (loading) {
     return <Loader />;
+  }
+  if (error) {
+    return null; // or return an <ErrorComponent /> if you have one
   }
 
   if (!loading) {

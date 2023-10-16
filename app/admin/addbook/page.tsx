@@ -15,6 +15,7 @@ const page = () => {
   const [isMediumDevice, setIsMediumDevice] = useState<any>(null);
   const { data: session, status } = useSession();
   const router = useRouter();
+  const [sessionLoading, setSessionLoading] = useState(true);
 
   useEffect(() => {
     if (session && !(session as ExtendedSession)?.user?.admin) {
@@ -25,12 +26,16 @@ const page = () => {
     }
   }, [isSmallDeviceQuery, isMediumDeviceQuery, session, status]);
 
+  if (status === "loading") {
+    return <Loader />;
+  }
+
   if (
-    status === "loading" ||
     status === "unauthenticated" ||
     !(session as ExtendedSession)?.user?.admin
   ) {
-    return <Loader />;
+    router.replace("/not-found");
+    return null;
   }
 
   return (
