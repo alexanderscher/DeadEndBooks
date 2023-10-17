@@ -7,6 +7,10 @@ import prisma from "@/prisma/client";
 import { JWT } from "next-auth/jwt";
 import { ExtendedSession } from "@/types";
 
+interface MyUser extends User {
+  admin: boolean;
+}
+
 async function getDatabaseId(user: JWT) {
   try {
     if (user.email) {
@@ -76,6 +80,13 @@ export const authOptions: NextAuthOptions = {
           where: {
             email: credentials.email,
           },
+          select: {
+            id: true,
+            email: true,
+            name: true,
+            admin: true,
+            password: true,
+          },
         });
 
         if (!user) {
@@ -97,12 +108,21 @@ export const authOptions: NextAuthOptions = {
           id: user.id + "",
           email: user.email,
           name: user.name,
+          admin: user.admin,
         };
       },
     }),
   ],
 
   callbacks: {
+    jwt: ({ token, user }) => {
+      if (user) {
+        const myUser: MyUser = user as MyUser;
+
+        return { ...token, id: user.id, admin: myUser.admin };
+      }
+      return token;
+    },
     session: async ({ session, token }) => {
       const databaseId = await getDatabaseId(token);
 
@@ -124,13 +144,6 @@ export const authOptions: NextAuthOptions = {
       }
     },
 
-    jwt: ({ token, user }) => {
-      if (user) {
-        const u = user as any;
-        return { ...token, id: user.id };
-      }
-      return token;
-    },
     async signIn({ user, account }) {
       if (account?.provider === "google") {
         const data = {

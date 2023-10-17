@@ -25,17 +25,5 @@ export async function GET(req: NextRequest) {
 
   const subscription = await stripe.subscriptions.cancel(stripeSubscriptionId);
 
-  // const subscription = await stripe.subscriptions.update(stripeSubscriptionId, {
-  //   cancel_at_period_end: true,
-  // });
-
-  // const user = await prisma.user.update({
-  //   where: { id: parseInt((session as ExtendedSession)?.user?.id) },
-  //   data: {
-  //     isActive: false,
-  //     subscriptionType: null,
-  //   },
-  // });
-
   return NextResponse.json({ subscription }, { status: 200 });
 }

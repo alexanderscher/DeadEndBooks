@@ -1,25 +1,19 @@
 import { NextResponse } from "next/server";
-import { getSession } from "next-auth/react";
-import { ExtendedSession } from "./types";
+import { withAuth } from "next-auth/middleware";
 
-export async function middleware(req: any) {
-  const session = await getSession({ req });
-  const signinUrl = new URL("/not-found", req.url);
+export default withAuth(function middleware(req) {
+  const token = req.nextauth.token;
+  const isAdminRoute = req.url.includes("/admin");
+  console.log(token);
 
-  if (!session || !session.user || !(session as ExtendedSession)?.user?.admin) {
-    return NextResponse.redirect(signinUrl);
-  }
-  const supplied_token = req.nextUrl.searchParams.get("token");
-  const valid_token = process.env.AUTH_TOKEN;
-
-  if (supplied_token !== valid_token) {
-    const signinUrl = new URL("/not-found", req.url);
-    return NextResponse.redirect(signinUrl);
+  if (isAdminRoute && (!token || token?.admin !== true)) {
+    const notFoundUrl = "http://localhost:3000/not-found";
+    return NextResponse.redirect(notFoundUrl);
   }
 
   return NextResponse.next();
-}
+});
 
 export const config = {
-  matcher: ["/api/admin/:path*", "/admin/:path*"],
+  matcher: ["/admin/:path*", "/api/admin/:path*"],
 };
