@@ -91,6 +91,9 @@ const Profile = () => {
         <h1 className="text-[26px] text-red-500 hover:line-through cursor-pointer mb- ">
           <Link href="/profile/editprofile"> Edit profile</Link>
         </h1>
+        <h1 className="text-[26px] text-red-500 hover:line-through cursor-pointer mb- ">
+          <Link href="/newsletter">Manage Newsletter</Link>
+        </h1>
 
         {active ? (
           <button className="text-red-500 hover:line-through text-[26px]">

@@ -104,6 +104,7 @@ model User {
   subscriptionID   String?
   subscriptionType String?
   Orders           Orders[]
+  newsletter       Boolean   @default(true)
 }
 
 model OrderAddress {

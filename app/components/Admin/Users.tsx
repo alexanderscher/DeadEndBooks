@@ -9,8 +9,10 @@ const Users = () => {
       email: "",
       isActive: false,
       admin: false,
+      newsletter: false,
     },
   ]);
+  console.log(users);
 
   const [count, setCount] = useState(0);
 
@@ -32,7 +34,10 @@ const Users = () => {
   const [copiedEmails, setCopiedEmails] = useState(false);
 
   const copyEmails = () => {
-    const emails = users.map((user) => user.email).join(", ");
+    const emails = users
+      .filter((user) => user.newsletter)
+      .map((user) => user.email)
+      .join(", ");
     navigator.clipboard.writeText(emails);
     setCopiedEmails(true);
     setTimeout(() => {
@@ -65,8 +70,13 @@ const Users = () => {
             <p className="mt-2 text-[18px] ml-2">{user.name}</p>
           </div>
           <div className="flex">
-            <p className="mt-2 text-[18px] mb-4 text-red-500">
+            <p className="mt-2 text-[18px]  text-red-500">
               {user.isActive ? "Subcribed" : "Not subcribed"}
+            </p>
+          </div>
+          <div className="flex">
+            <p className="mt-2 text-[18px] mb-4 text-red-300">
+              {user.newsletter && "Newsletter"}
             </p>
           </div>
         </div>

@@ -214,6 +214,9 @@ const Navbar = ({ isSmallDevice }: Props) => {
                     <Link href="/queue">Queue</Link>
                   </button>
                 </div>
+                <button className="hover:line-through text-md mr-2">
+                  <Link href="/others">Other's reads</Link>
+                </button>
               </div>
 
               <div className="mt-5 flex flex-col items-start text-md">
@@ -223,9 +226,6 @@ const Navbar = ({ isSmallDevice }: Props) => {
 
                 <button className="hover:line-through text-md">
                   <Link href="/about">About</Link>
-                </button>
-                <button className="hover:line-through text-md mr-2">
-                  <Link href="/others">Other's reads</Link>
                 </button>
               </div>
               <div className="mt-5 flex flex-col items-start text-md">
