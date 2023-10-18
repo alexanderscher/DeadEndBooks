@@ -7,6 +7,10 @@ import { stripe } from "@/stripe/stripe";
 
 export async function POST(request: NextRequest) {
   const session = await getServerSession(authOptions);
+  const isProduction = process.env.NEXT_PUBLIC_NODE_ENV === "production";
+  const url = isProduction
+    ? "https://deadendbooks.org/home"
+    : "http://localhost:3000/home";
 
   if (!session?.user) {
     return NextResponse.json(
@@ -47,8 +51,8 @@ export async function POST(request: NextRequest) {
       },
     ],
     mode: "subscription",
-    success_url: `http://localhost:3000/home/success/${subscriptionID}`,
-    cancel_url: `http://localhost:3000/home/cancel/${subscriptionID}`,
+    success_url: `${url}/success/${subscriptionID}`,
+    cancel_url: `${url}/cancel/${subscriptionID}`,
   });
 
   return NextResponse.json(stripeSession.url);

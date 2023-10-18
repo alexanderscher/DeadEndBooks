@@ -145,6 +145,11 @@ export const authOptions: NextAuthOptions = {
     },
 
     async signIn({ user, account }) {
+      const isProduction = process.env.NEXT_PUBLIC_NODE_ENV === "production";
+      const url = isProduction
+        ? "https://deadendbooks.org/api/signup"
+        : "http://localhost:3000/api/signup";
+
       if (account?.provider === "google") {
         const data = {
           name: user.name,
@@ -154,7 +159,7 @@ export const authOptions: NextAuthOptions = {
         };
 
         try {
-          const response = await fetch("http://localhost:3000/api/signup", {
+          const response = await fetch(url, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ data }),

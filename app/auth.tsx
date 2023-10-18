@@ -7,9 +7,13 @@ interface Props {
 }
 export const LogOutButton = ({ isSmallDevice }: Props) => {
   const router = useRouter();
+  const isProduction = process.env.NEXT_PUBLIC_NODE_ENV === "production";
+  const url = isProduction
+    ? "https://deadendbooks.org"
+    : "http://localhost:3000/";
 
   const signout = async () => {
-    await signOut({ callbackUrl: "http://localhost:3000/" });
+    await signOut({ callbackUrl: url });
     location.reload();
   };
   return (
