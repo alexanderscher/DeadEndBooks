@@ -19,11 +19,7 @@ const page = () => {
       ) : (
         <>
           <Navbar isSmallDevice={isSmallDevice} />
-          <div
-            className={
-              isSmallDevice ? "page-margin-small" : "info w-full page-margin"
-            }
-          >
+          <div className={isSmallDevice ? "-small" : "info w-full "}>
             <p className={isSmallDevice ? "text-[20px] mt-10" : "text-end"}>
               Dead End Books is a subscription-based art book library. The
               barrier to entry for art books is uniquely expensive and

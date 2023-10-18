@@ -2,8 +2,11 @@
 
 import React, { useEffect, useState } from "react";
 import { PricingCard } from "..";
+import { useSession } from "next-auth/react";
 
-const ChangeSub = ({ session }: any) => {
+const ChangeSub = () => {
+  const { data: session } = useSession();
+
   const [prices, setPrices] = useState<any>([]);
 
   useEffect(() => {
@@ -18,7 +21,7 @@ const ChangeSub = ({ session }: any) => {
 
   return (
     <div>
-      <div className="w-full ">
+      <div className="w-full mt-10">
         {prices &&
           prices.map((price: any) => (
             <PricingCard price={price} key={price.id} session={session} />

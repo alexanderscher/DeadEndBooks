@@ -35,8 +35,6 @@ const Manage = () => {
     setisLoading(false);
   }, [session]);
 
-  const [change, setChange] = useState(false);
-
   const cancelSubscription = async () => {
     try {
       const res = await fetch("/api/stripe/subscription-cancel");
@@ -59,22 +57,14 @@ const Manage = () => {
 
       {active ? (
         <div className="flex flex-col mt-10 items-start">
-          {change && (
-            <div className="mb-10">
-              <ChangeSub session={session} />
-            </div>
-          )}
           <button
             className="text-red-500 hover:line-through text-[26px] "
             onClick={cancelSubscription}
           >
             Cancel Subscription
           </button>
-          <button
-            className="text-red-500 hover:line-through text-[26px]"
-            onClick={() => setChange(!change)}
-          >
-            Change Subscription
+          <button className="text-red-500 hover:line-through text-[26px]">
+            <Link href="/profile/subscription/change">Change Subscription</Link>
           </button>
         </div>
       ) : (

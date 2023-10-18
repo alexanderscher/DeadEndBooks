@@ -35,11 +35,7 @@ const page = () => {
           {isLoading && session !== null ? (
             <Loader />
           ) : (
-            <div
-              className={
-                isSmallDevice ? "page-margin-small" : "page-margin w-full"
-              }
-            >
+            <div className={isSmallDevice ? "-small" : " w-full"}>
               <SingleBook isSmallDevice={isSmallDevice} />
             </div>
           )}

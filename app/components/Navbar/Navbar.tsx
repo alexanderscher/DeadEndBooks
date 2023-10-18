@@ -19,7 +19,7 @@ const Navbar = ({ isSmallDevice }: Props) => {
   return (
     <>
       {isSmallDevice ? (
-        <div className="flex-col page-margin-small bg-white">
+        <div className="flex-col -small bg-white">
           <div
             className={`w-full flex justify-between  ${
               currentPage === "/home" ? "items-center" : "items-end"
@@ -88,12 +88,16 @@ const Navbar = ({ isSmallDevice }: Props) => {
                 <button className="hover:line-through text-md mr-2">
                   <Link href="/about">About,</Link>
                 </button>
+                {session && (session as ExtendedSession)?.user?.admin && (
+                  <button className="hover:line-through text-md mr-2">
+                    <Link href="/admin/addbook">Admin,</Link>
+                  </button>
+                )}
 
                 {session ? (
                   <LogOutButton isSmallDevice={isSmallDevice} />
                 ) : (
                   <>
-                    {" "}
                     <button className="hover:line-through text-md mr-2">
                       <Link href="/home">Sign up,</Link>
                     </button>
@@ -108,7 +112,7 @@ const Navbar = ({ isSmallDevice }: Props) => {
           {sort && (
             <div className="flex w-full flex-wrap mt-4 0">
               <button className="hover:line-through text-md mr-2">
-                <Link href={`/`}>All,</Link>
+                <Link href={`/home`}>All,</Link>
               </button>
               <button className="hover:line-through text-md mr-2">
                 <Link href={`/library/painting`}>Painting,</Link>
@@ -138,7 +142,7 @@ const Navbar = ({ isSmallDevice }: Props) => {
           )}
         </div>
       ) : (
-        <div className="w-1/4 min-w-[200px] max-w-[200px]  page-margin ">
+        <div className="w-1/4 min-w-[200px] max-w-[200px]   ">
           <div className="fixed bg-white">
             <div className="">
               <div className="">
@@ -165,7 +169,7 @@ const Navbar = ({ isSmallDevice }: Props) => {
                     {sort && (
                       <div className="flex flex-col items-start text-md text-red-500">
                         <button className="hover:line-through ">
-                          <Link href={`/`}>All</Link>
+                          <Link href={`/home`}>All</Link>
                         </button>
                         <button className="hover:line-through">
                           <Link href={`/library/painting`}>Painting</Link>
@@ -227,6 +231,11 @@ const Navbar = ({ isSmallDevice }: Props) => {
                 <button className="hover:line-through text-md">
                   <Link href="/about">About</Link>
                 </button>
+                {session && (session as ExtendedSession)?.user?.admin && (
+                  <button className="hover:line-through text-md">
+                    <Link href="/admin/addbook">Admin</Link>
+                  </button>
+                )}
               </div>
               <div className="mt-5 flex flex-col items-start text-md">
                 <a

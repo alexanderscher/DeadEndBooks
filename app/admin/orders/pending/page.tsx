@@ -43,11 +43,7 @@ const page = () => {
       ) : (
         <>
           <Navbar isSmallDevice={isSmallDevice} />
-          <div
-            className={
-              isSmallDevice ? "page-margin-small " : "page-margin w-full"
-            }
-          >
+          <div className={isSmallDevice ? "-small " : " w-full"}>
             <AdminNav
               isSmallDevice={isSmallDevice}
               isMediumDevice={isMediumDevice}

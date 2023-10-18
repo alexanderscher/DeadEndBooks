@@ -35,19 +35,11 @@ const page = () => {
           {isLoading && session !== null ? (
             <Loader /> // Show loader while session is being checked
           ) : session ? (
-            <div
-              className={
-                isSmallDevice ? "page-margin-small" : "page-margin w-full"
-              }
-            >
+            <div className={isSmallDevice ? "-small" : " w-full"}>
               <Cart />
             </div>
           ) : (
-            <div
-              className={
-                isSmallDevice ? "page-margin-small" : "page-margin w-full"
-              }
-            >
+            <div className={isSmallDevice ? "-small" : " w-full"}>
               <h1 className="text-[26px]">
                 Login or sign up to view your cart
               </h1>

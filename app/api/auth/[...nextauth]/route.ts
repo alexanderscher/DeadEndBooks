@@ -113,6 +113,9 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
+  pages: {
+    signIn: "/not-found",
+  },
 
   callbacks: {
     jwt: ({ token, user }) => {

@@ -94,19 +94,6 @@ const Profile = () => {
         <h1 className="text-[26px] text-red-500 hover:line-through cursor-pointer mb- ">
           <Link href="/newsletter">Manage Newsletter</Link>
         </h1>
-
-        {active ? (
-          <button className="text-red-500 hover:line-through text-[26px]">
-            <Link href="/profile/subscription"> Manage subscription</Link>
-          </button>
-        ) : (
-          <button
-            className="text-red-500 hover:line-through text-[26px]"
-            onClick={() => router.push("/pricing")}
-          >
-            Subscribe
-          </button>
-        )}
       </div>
     </div>
   );

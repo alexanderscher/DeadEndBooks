@@ -38,11 +38,7 @@ const page = () => {
       ) : (
         <>
           <Navbar isSmallDevice={isSmallDevice} />
-          <div
-            className={
-              isSmallDevice ? "page-margin-small" : " page-margin w-full"
-            }
-          >
+          <div className={isSmallDevice ? "-small" : "  w-full"}>
             <div className={"flex justify-center"}>
               <div className="flex flex-col items-center ">
                 <img

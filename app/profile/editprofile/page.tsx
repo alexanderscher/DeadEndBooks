@@ -31,21 +31,13 @@ const page = () => {
           <Navbar isSmallDevice={isSmallDevice} />
 
           {session ? (
-            <div
-              className={
-                isSmallDevice ? "page-margin-small" : "page-margin w-full"
-              }
-            >
+            <div className={isSmallDevice ? "-small" : " w-full"}>
               <ProfileNav isSmallDevice={isSmallDevice} />
 
               <EditProfile />
             </div>
           ) : (
-            <div
-              className={
-                isSmallDevice ? "page-margin-small" : "page-margin w-full"
-              }
-            >
+            <div className={isSmallDevice ? "-small" : " w-full"}>
               <h1 className="text-[26px]">
                 Login or sign up to view your profile
               </h1>

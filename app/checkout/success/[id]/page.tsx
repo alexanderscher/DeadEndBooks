@@ -78,11 +78,7 @@ const Page = () => {
             <Navbar isSmallDevice={isSmallDevice} />
 
             {session && yourOrder && (
-              <div
-                className={
-                  isSmallDevice ? "page-margin-small" : "page-margin w-full"
-                }
-              >
+              <div className={isSmallDevice ? "-small" : " w-full"}>
                 <CheckoutSuccess orderBooks={orderBooks} />
               </div>
             )}

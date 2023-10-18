@@ -36,7 +36,7 @@ const page = () => {
       ) : (
         <>
           <Navbar isSmallDevice={isSmallDevice} />
-          <div className={isSmallDevice ? "page-margin-small" : "page-margin"}>
+          <div className={isSmallDevice ? "-small" : ""}>
             <div className="w-full ">
               {prices &&
                 prices.map((price: any) => (

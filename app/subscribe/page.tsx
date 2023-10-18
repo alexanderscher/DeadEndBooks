@@ -20,11 +20,7 @@ const page = () => {
       ) : (
         <>
           <Navbar isSmallDevice={isSmallDevice} />
-          <div
-            className={
-              isSmallDevice ? "page-margin-small" : "info text-end page-margin"
-            }
-          >
+          <div className={isSmallDevice ? "-small" : "info text-end "}>
             <div className={isSmallDevice && "mt-10"}>
               <button className={isSmallDevice ? " text-[25px]" : ""}>
                 How it works

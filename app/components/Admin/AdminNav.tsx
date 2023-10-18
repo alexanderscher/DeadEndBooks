@@ -16,42 +16,42 @@ const AdminNav = ({ isSmallDevice, isMediumDevice }: Props) => {
       }
     >
       <h1
-        className={`mr-4 ${
+        className={`mr-3 ${
           isSmallDevice ? "text-slate-500 text-[20px]" : "text-[24px]"
         } hover:line-through cursor-pointer`}
       >
         <Link href="/admin/addbook">Add Book,</Link>
       </h1>
       <h1
-        className={`mr-4 ${
+        className={`mr-3 ${
           isSmallDevice ? "text-slate-500 text-[20px]" : "text-[24px]"
         } hover:line-through cursor-pointer `}
       >
         <Link href="/admin/allbooks">See All Books,</Link>
       </h1>
       <h1
-        className={`mr-4 ${
+        className={`mr-3 ${
           isSmallDevice ? "text-slate-500 text-[20px]" : "text-[24px]"
         } hover:line-through cursor-pointer`}
       >
         <Link href="/admin/current-rentals">Current Rentals,</Link>
       </h1>
       <h1
-        className={`mr-4 ${
+        className={`mr-3 ${
           isSmallDevice ? "text-slate-500 text-[20px]" : "text-[24px]"
         } hover:line-through cursor-pointer`}
       >
         <Link href="/admin/past-rentals">Past Rentals,</Link>
       </h1>
       <h1
-        className={`mr-4 ${
+        className={`mr-3 ${
           isSmallDevice ? "text-slate-500 text-[20px]" : "text-[24px]"
         } hover:line-through cursor-pointer`}
       >
         <Link href="/admin/users">Users, </Link>
       </h1>
       <h1
-        className={`mr-4 ${
+        className={`mr-3 ${
           isSmallDevice ? "text-slate-500 text-[20px]" : "text-[24px]"
         } hover:line-through cursor-pointer`}
       >

@@ -9,6 +9,7 @@ interface Props {
 
 const ProfileNav = ({ isSmallDevice }: Props) => {
   const { data: session } = useSession();
+  const active = (session as ExtendedSession)?.user?.isActive;
 
   const [admin, setAdmin] = useState(false);
   useEffect(() => {
@@ -18,36 +19,45 @@ const ProfileNav = ({ isSmallDevice }: Props) => {
   }, []);
   return (
     <div className={isSmallDevice ? "flex mt-10  border-black" : "flex w-full"}>
-      <h1
-        className={`mr-6 ${
+      <button
+        className={`mr-4 ${
           isSmallDevice ? "text-[24px]" : "text-[26px]"
-        } hover:line-through cursor-pointer`}
+        } hover:line-through `}
       >
         <Link href="/profile">Profile</Link>
-      </h1>
-      <h1
-        className={`mr-6 ${
+      </button>
+      <button
+        className={`mr-4 ${
           isSmallDevice ? "text-[24px]" : "text-[26px]"
-        } hover:line-through cursor-pointer `}
+        } hover:line-through  `}
       >
         <Link href="/profile/current-rentals">Rentals</Link>
-      </h1>
-      <h1
-        className={`mr-6 ${
+      </button>
+      <button
+        className={`mr-4 ${
           isSmallDevice ? "text-[24px]" : "text-[26px]"
-        } hover:line-through cursor-pointer`}
+        } hover:line-through `}
       >
         <Link href="/profile/history">History</Link>
-      </h1>
-      {admin && (
-        <h1
-          className={`mr-6 ${
+      </button>
+      {active ? (
+        <button className="hover:line-through text-[26px]">
+          <Link href="/profile/subscription">Subscription</Link>
+        </button>
+      ) : (
+        <button className="hover:line-through text-[26px]">
+          <Link href="/pricing"> Subscribe</Link>
+        </button>
+      )}
+      {/* {admin && (
+        <button
+          className={`mr-4 ${
             isSmallDevice ? "text-[24px]" : "text-[26px]"
-          } hover:line-through cursor-pointer`}
+          } hover:line-through `}
         >
           <Link href="/admin/addbook">Admin</Link>
-        </h1>
-      )}
+        </button>
+      )} */}
     </div>
   );
 };

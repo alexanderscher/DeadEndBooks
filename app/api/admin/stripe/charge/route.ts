@@ -23,7 +23,6 @@ export async function POST(request: NextRequest) {
       customer: json.stripeCustomerId,
       payment_method: json.paymentMethodId,
       confirm: true,
-
       return_url: url,
     });
 

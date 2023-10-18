@@ -55,6 +55,7 @@ const PricingCard = ({ price, session }: priceProps) => {
         `/api/user/${(session as ExtendedSession)?.user?.id}`
       );
       const data = await res.json();
+      setUserSub(data.subscriptionType);
     };
     if (sessionId) {
       setisLoading(true);
