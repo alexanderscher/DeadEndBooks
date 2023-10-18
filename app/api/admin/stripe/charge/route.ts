@@ -4,6 +4,10 @@ import { stripe } from "@/stripe/stripe";
 export async function POST(request: NextRequest) {
   const json = await request.json();
   const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
+  const isProduction = process.env.NEXT_PUBLIC_NODE_ENV === "production";
+  const url = isProduction
+    ? "https://deadendbooks.org"
+    : "http://localhost:3000";
 
   if (!stripeSecretKey) {
     throw new Error(
@@ -20,7 +24,7 @@ export async function POST(request: NextRequest) {
       payment_method: json.paymentMethodId,
       confirm: true,
 
-      return_url: "http://localhost:3001/",
+      return_url: url,
     });
 
     return NextResponse.json(charge);
