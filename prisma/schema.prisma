@@ -130,7 +130,7 @@ model Returned {
   @@id([orderId, bookId])
 }
 
-model Orders {
+model Orders {s
   id          Int           @id @default(autoincrement())
   userId      Int
   User        User          @relation(fields: [userId], references: [id])
