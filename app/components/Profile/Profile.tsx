@@ -61,16 +61,6 @@ const Profile = () => {
     setisLoading(false);
   }, [session]);
 
-  const cancelSubscription = async () => {
-    try {
-      const res = await fetch("/api/stripe/subscription-cancel");
-      const { subscription } = await res.json();
-      router.push("/home/cancel");
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   if (isLoading) {
     return <Loader />;
   }

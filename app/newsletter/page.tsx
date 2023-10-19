@@ -5,7 +5,8 @@ import { Loader, Navbar } from "@/app/components";
 import { useSession } from "next-auth/react";
 import { ExtendedSession } from "@/types";
 
-const Newsletter = () => {
+type Props = { isSmallDevice: boolean };
+const Newsletter = ({ isSmallDevice }: Props) => {
   const { data: session } = useSession();
   const [newsletter, setNewsletter] = useState(true);
   const [reload, setReload] = useState(false);
@@ -54,7 +55,7 @@ const Newsletter = () => {
   }, [session, reload]);
 
   return (
-    <div>
+    <div className={isSmallDevice ? "mt-10" : ""}>
       {newsletter ? (
         <div className="flex">
           <div>
@@ -80,8 +81,16 @@ const Newsletter = () => {
 };
 
 const page = () => {
-  const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
   const isSmallDeviceQuery = useMediaQuery({ maxWidth: 700 });
+
+  const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
+
+  const isMediumDeviceQuery = useMediaQuery({ maxWidth: 900 });
+  const [isMediumDevice, setIsMediumDevice] = useState<any>(null);
+
+  const isMobileDeviceQuery = useMediaQuery({ maxWidth: 470 });
+  const [isMobileDevice, setIsMobileDevice] = useState<any>(null);
+
   const { data: session, status } = useSession();
 
   const [isLoading, setisLoading] = useState(true);
@@ -94,21 +103,26 @@ const page = () => {
 
   useEffect(() => {
     setIsSmallDevice(isSmallDeviceQuery);
-  }, [isSmallDeviceQuery]);
+    setIsMediumDevice(isMediumDeviceQuery);
+    setIsMobileDevice(isMobileDeviceQuery);
+  }, [isSmallDeviceQuery, isMediumDeviceQuery, isMobileDeviceQuery]);
 
   return (
-    <main className={isSmallDevice ? "page-small" : "page"}>
+    <main className={isSmallDevice ? "" : "page"}>
       {isSmallDevice === null ? (
         <Loader />
       ) : (
         <>
-          <Navbar isSmallDevice={isSmallDevice} />
+          <Navbar
+            isSmallDevice={isSmallDevice}
+            isMobileDevice={isMobileDevice}
+          />
 
           {isLoading && session !== null ? (
             <Loader />
           ) : (
             <div className={isSmallDevice ? "-small" : " w-full"}>
-              <Newsletter />
+              <Newsletter isSmallDevice={isSmallDevice} />
             </div>
           )}
         </>

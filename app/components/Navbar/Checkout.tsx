@@ -18,7 +18,12 @@ type AddyData = {
   phone: string;
 };
 
-const Checkout = () => {
+type Props = {
+  isSmallDevice: boolean;
+  isMobileDevice: boolean;
+};
+
+const Checkout = ({ isSmallDevice, isMobileDevice }: Props) => {
   const { data: session } = useSession();
   const router = useRouter();
   const [pageData, setPageData] = useState<Book[]>([]);
@@ -157,17 +162,18 @@ const Checkout = () => {
   }
   return (
     <div className="relative">
-      <div className="w-full ">
-        <h1 className="text-[26px] ">Checkout</h1>
+      <div className={`w-full ${isSmallDevice && "mt-10"}`}>
+        <h1 className="text-[26px]">Checkout</h1>
       </div>
-      <div className="mt-10 max-w-[840px]">
-        <div className="flex justify-between">
-          <div>
-            <h2 className="text-[20px]">Shipping</h2>
-            <p className="mb-6 text-slate-400">Choose a shipping address</p>
+      <div className={`${isSmallDevice ? "mt-6" : "mt-10"} max-w-[840px]`}>
+        <div className="flex justify-between items-end mb-6">
+          <div className="">
+            <h2 className="text-[20px] text-slate-500">Shipping</h2>
+            <p className=" text-slate-400">Choose a shipping address</p>
           </div>
           <button
-            className="text-red-500 hover:line-through text-[20px]"
+            className={`text-red-500 hover:line-through  
+            ${isMobileDevice ? "text-[15px]" : "text-[18px]"}`}
             onClick={() => {
               setModal(true);
             }}

@@ -87,6 +87,7 @@ const Order = () => {
             return bookOrder.title;
           })
         );
+        console.log(order);
 
         const bookReturnStatus = order.books.map(
           (book: OrderBook, index: number) => {

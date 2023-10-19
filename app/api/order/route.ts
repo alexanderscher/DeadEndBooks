@@ -8,6 +8,7 @@ export async function PUT(request: Request) {
     where: { id: parseInt(json.id) },
     data: {
       shipped: true,
+      returned: true,
     },
   });
 

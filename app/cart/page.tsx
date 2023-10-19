@@ -9,8 +9,9 @@ import { useSession } from "next-auth/react";
 const page = () => {
   const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
   const isSmallDeviceQuery = useMediaQuery({ maxWidth: 700 });
+  const isMobileDeviceQuery = useMediaQuery({ maxWidth: 470 });
+  const [isMobileDevice, setIsMobileDevice] = useState<any>(null);
   const { data: session, status } = useSession();
-  console.log(session);
 
   const [isLoading, setisLoading] = useState(true);
 
@@ -22,21 +23,25 @@ const page = () => {
 
   useEffect(() => {
     setIsSmallDevice(isSmallDeviceQuery);
-  }, [isSmallDeviceQuery]);
 
+    setIsMobileDevice(isMobileDeviceQuery);
+  }, [isSmallDeviceQuery, isMobileDeviceQuery]);
   return (
-    <main className={isSmallDevice ? "page-small" : "page"}>
+    <main className={isSmallDevice ? "" : "page"}>
       {isSmallDevice === null ? (
         <Loader />
       ) : (
         <>
-          <Navbar isSmallDevice={isSmallDevice} />
+          <Navbar
+            isSmallDevice={isSmallDevice}
+            isMobileDevice={isMobileDevice}
+          />
 
           {isLoading && session !== null ? (
             <Loader /> // Show loader while session is being checked
           ) : session ? (
             <div className={isSmallDevice ? "-small" : " w-full"}>
-              <Cart />
+              <Cart isMobileDevice={isMobileDevice} />
             </div>
           ) : (
             <div className={isSmallDevice ? "-small" : " w-full"}>

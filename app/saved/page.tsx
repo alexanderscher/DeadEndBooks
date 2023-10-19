@@ -7,8 +7,15 @@ import { Loader, Navbar, Saved } from "@/app/components";
 import { useSession } from "next-auth/react";
 
 const page = () => {
-  const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
   const isSmallDeviceQuery = useMediaQuery({ maxWidth: 700 });
+
+  const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
+
+  const isMediumDeviceQuery = useMediaQuery({ maxWidth: 900 });
+  const [isMediumDevice, setIsMediumDevice] = useState<any>(null);
+
+  const isMobileDeviceQuery = useMediaQuery({ maxWidth: 470 });
+  const [isMobileDevice, setIsMobileDevice] = useState<any>(null);
   const { data: session, status } = useSession();
 
   const [isLoading, setisLoading] = useState(true);
@@ -21,15 +28,20 @@ const page = () => {
 
   useEffect(() => {
     setIsSmallDevice(isSmallDeviceQuery);
-  }, [isSmallDeviceQuery]);
+    setIsMediumDevice(isMediumDeviceQuery);
+    setIsMobileDevice(isMobileDeviceQuery);
+  }, [isSmallDeviceQuery, isMediumDeviceQuery, isMobileDeviceQuery]);
 
   return (
-    <main className={isSmallDevice ? "page-small" : "page"}>
+    <main className={isSmallDevice ? "" : "page"}>
       {isSmallDevice === null ? (
         <Loader />
       ) : (
         <>
-          <Navbar isSmallDevice={isSmallDevice} />
+          <Navbar
+            isSmallDevice={isSmallDevice}
+            isMobileDevice={isMobileDevice}
+          />
 
           {isLoading && session !== null ? (
             <Loader />

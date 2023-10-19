@@ -6,27 +6,39 @@ import { useMediaQuery } from "react-responsive";
 import Link from "next/link";
 
 const page = () => {
-  const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
   const isSmallDeviceQuery = useMediaQuery({ maxWidth: 700 });
+
+  const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
+
+  const isMediumDeviceQuery = useMediaQuery({ maxWidth: 900 });
+  const [isMediumDevice, setIsMediumDevice] = useState<any>(null);
+
+  const isMobileDeviceQuery = useMediaQuery({ maxWidth: 470 });
+  const [isMobileDevice, setIsMobileDevice] = useState<any>(null);
 
   useEffect(() => {
     setIsSmallDevice(isSmallDeviceQuery);
-  }, [isSmallDeviceQuery]);
-
+    setIsMediumDevice(isMediumDeviceQuery);
+    setIsMobileDevice(isMobileDeviceQuery);
+  }, [isSmallDeviceQuery, isMediumDeviceQuery, isMobileDeviceQuery]);
   return (
-    <main className={isSmallDevice ? "page-small" : "page"}>
+    <main className={isSmallDevice ? "" : "page"}>
       {isSmallDevice === null ? (
         <Loader />
       ) : (
         <>
-          <Navbar isSmallDevice={isSmallDevice} />
+          <Navbar
+            isSmallDevice={isSmallDevice}
+            isMobileDevice={isMobileDevice}
+          />
+
           <div className={isSmallDevice ? "-small" : "info text-end "}>
             <div className={isSmallDevice && "mt-10"}>
-              <button className={isSmallDevice ? " text-[25px]" : ""}>
+              <button className={isSmallDevice ? " text-[20px]" : ""}>
                 How it works
               </button>
               <p
-                className={isSmallDevice ? "text-[20px] mt-6" : "w-full mt-10"}
+                className={isSmallDevice ? "text-[18px] mt-6" : "w-full mt-10"}
               >
                 Subscribing to Deadend Books gives you access to a diverse
                 collection of art books on painting, sculpture, photography,
@@ -46,7 +58,7 @@ const page = () => {
               <button
                 className={
                   isSmallDevice
-                    ? "hover:line-through mt-6 text-[25px] text-red-500"
+                    ? "hover:line-through mt-6 text-[20px] text-red-500"
                     : "hover:line-through mt-10 text-red-500"
                 }
               >

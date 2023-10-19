@@ -14,6 +14,8 @@ const page = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [isLoading, setisLoading] = useState(true);
+  const isMobileDeviceQuery = useMediaQuery({ maxWidth: 470 });
+  const [isMobileDevice, setIsMobileDevice] = useState<any>(null);
 
   useEffect(() => {
     if (session) {
@@ -26,21 +28,28 @@ const page = () => {
 
   useEffect(() => {
     setIsSmallDevice(isSmallDeviceQuery);
-  }, [isSmallDeviceQuery]);
+    setIsMobileDevice(isMobileDeviceQuery);
+  }, [isSmallDeviceQuery, isMobileDeviceQuery]);
 
   return (
-    <main className={isSmallDevice ? "page-small" : "page"}>
+    <main className={isSmallDevice ? "" : "page"}>
       {isSmallDevice === null ? (
         <Loader />
       ) : (
         <>
-          <Navbar isSmallDevice={isSmallDevice} />
+          <Navbar
+            isSmallDevice={isSmallDevice}
+            isMobileDevice={isMobileDevice}
+          />
 
           {isLoading && session !== null ? (
             <Loader /> // Show loader while session is being checked
           ) : session ? (
             <div className={isSmallDevice ? "-small" : " w-full"}>
-              <Checkout />
+              <Checkout
+                isSmallDevice={isSmallDevice}
+                isMobileDevice={isMobileDevice}
+              />
             </div>
           ) : (
             <div className={isSmallDevice ? "-small" : " w-full"}>

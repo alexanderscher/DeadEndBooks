@@ -5,22 +5,34 @@ import Loader from "../components/Loader";
 import { useMediaQuery } from "react-responsive";
 
 const page = () => {
-  const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
   const isSmallDeviceQuery = useMediaQuery({ maxWidth: 700 });
+
+  const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
+
+  const isMediumDeviceQuery = useMediaQuery({ maxWidth: 900 });
+  const [isMediumDevice, setIsMediumDevice] = useState<any>(null);
+
+  const isMobileDeviceQuery = useMediaQuery({ maxWidth: 470 });
+  const [isMobileDevice, setIsMobileDevice] = useState<any>(null);
 
   useEffect(() => {
     setIsSmallDevice(isSmallDeviceQuery);
-  }, [isSmallDeviceQuery]);
-
+    setIsMediumDevice(isMediumDeviceQuery);
+    setIsMobileDevice(isMobileDeviceQuery);
+  }, [isSmallDeviceQuery, isMediumDeviceQuery, isMobileDeviceQuery]);
   return (
-    <main className={isSmallDevice ? "page-small" : "page"}>
+    <main className={"page"}>
       {isSmallDevice === null ? (
         <Loader />
       ) : (
         <>
-          <Navbar isSmallDevice={isSmallDevice} />
-          <div className={isSmallDevice ? "-small" : "info w-full "}>
-            <p className={isSmallDevice ? "text-[20px] mt-10" : "text-end"}>
+          <Navbar
+            isSmallDevice={isSmallDevice}
+            isMobileDevice={isMobileDevice}
+          />
+
+          <div className={"info w-full "}>
+            <p className={isSmallDevice ? "text-[18px] mt-10" : "text-end"}>
               Dead End Books is a subscription-based art book library. The
               barrier to entry for art books is uniquely expensive and
               exclusive, requiring either great resources or prior education and
@@ -44,7 +56,7 @@ const page = () => {
               {/* <span>Email</span> */}
               <button
                 className={`hover:line-through ${
-                  isSmallDevice && "text-[25px]"
+                  isSmallDevice && "text-[20px]"
                 } text-red-500`}
               >
                 <a target="_blank" href="mailto:deadendbooks@gmail.com">
@@ -54,7 +66,7 @@ const page = () => {
               {/* <span>Instagram</span> */}
               <button
                 className={`hover:line-through ${
-                  isSmallDevice && "text-[25px]"
+                  isSmallDevice && "text-[20px]"
                 } text-red-500`}
               >
                 <a

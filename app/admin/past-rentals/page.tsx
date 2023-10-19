@@ -37,12 +37,16 @@ const page = () => {
   }
 
   return (
-    <main className={isSmallDevice ? "page-small" : "page"}>
+    <main className={isSmallDevice ? "" : "page"}>
       {isSmallDevice === null ? (
         <Loader />
       ) : (
         <>
-          <Navbar isSmallDevice={isSmallDevice} />
+          <Navbar
+            isSmallDevice={isSmallDevice}
+            isMobileDevice={isMobileDevice}
+          />
+
           <div className={isSmallDevice ? "-small " : " w-full"}>
             <AdminNav
               isSmallDevice={isSmallDevice}

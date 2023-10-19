@@ -8,9 +8,10 @@ import { ExtendedSession } from "@/types";
 
 interface Props {
   isSmallDevice: boolean;
+  isMobileDevice: boolean;
 }
 
-const Navbar = ({ isSmallDevice }: Props) => {
+const Navbar = ({ isSmallDevice, isMobileDevice }: Props) => {
   const currentPage = usePathname();
   const [sort, setSort] = useState(false);
   const [menu, setMenu] = useState(false);
@@ -25,14 +26,20 @@ const Navbar = ({ isSmallDevice }: Props) => {
               currentPage === "/home" ? "items-center" : "items-end"
             }`}
           >
-            <h1 className="font-bold text-[40px]">
+            <h1
+              className={`font-bold ${
+                isMobileDevice ? "text-[32px]" : "text-[40px]"
+              }`}
+            >
               <Link href="/home">DEAD END BOOKS</Link>
             </h1>
 
             {currentPage === "/home" || currentPage.includes("/library") ? (
               <div className="mt-2">
                 <h1
-                  className="text-lg cursor-pointer text-end hover:line-through"
+                  className={`${
+                    isMobileDevice ? "text-[14px]" : "text-xl"
+                  } cursor-pointer text-end hover:line-through`}
                   onClick={() => {
                     setMenu(!menu), setSort(false);
                   }}
@@ -41,7 +48,9 @@ const Navbar = ({ isSmallDevice }: Props) => {
                 </h1>
 
                 <h1
-                  className="text-lg cursor-pointer text-end hover:line-through"
+                  className={`${
+                    isMobileDevice ? "text-[14px]" : "text-xl"
+                  } cursor-pointer text-end hover:line-through`}
                   onClick={() => {
                     setSort(!sort), setMenu(false);
                   }}
@@ -51,7 +60,9 @@ const Navbar = ({ isSmallDevice }: Props) => {
               </div>
             ) : (
               <h1
-                className="text-lg cursor-pointer text-end mb-2 hover:line-through"
+                className={`${
+                  isMobileDevice ? "text-[16px]" : "text-xl"
+                } mb-2 cursor-pointer text-end hover:line-through`}
                 onClick={() => setMenu(!menu)}
               >
                 Menu
@@ -59,37 +70,77 @@ const Navbar = ({ isSmallDevice }: Props) => {
             )}
           </div>
           {menu && (
-            <div className="flex mt-4 flex-col">
+            <div
+              className={`flex mt-4 flex-col ${
+                isMobileDevice ? "mt-2" : "mt-4"
+              }`}
+            >
               <div>
-                <button className="hover:line-through text-md mr-2">
+                <button
+                  className={`hover:line-through ${
+                    isMobileDevice ? "text-sm" : "text-md"
+                  } mr-2`}
+                >
                   <Link href="/home">Library,</Link>
                 </button>
-                <button className="hover:line-through text-md mr-2">
+                <button
+                  className={`hover:line-through ${
+                    isMobileDevice ? "text-sm" : "text-md"
+                  } mr-2`}
+                >
                   <Link href="/profile">Profile,</Link>
                 </button>
 
-                <button className="hover:line-through text-md ">
+                <button
+                  className={`hover:line-through ${
+                    isMobileDevice ? "text-sm" : "text-md"
+                  }`}
+                >
                   <Link href="/cart">Cart/</Link>
                 </button>
-                <button className="hover:line-through text-md">
+                <button
+                  className={`hover:line-through ${
+                    isMobileDevice ? "text-sm" : "text-md"
+                  }`}
+                >
                   <Link href="/saved">Saved/</Link>
                 </button>
-                <button className="hover:line-through text-md mr-2">
+                <button
+                  className={`hover:line-through ${
+                    isMobileDevice ? "text-sm" : "text-md"
+                  } mr-2`}
+                >
                   <Link href="/queue">Queue,</Link>
                 </button>
 
-                <button className="hover:line-through text-md mr-2">
+                <button
+                  className={`hover:line-through ${
+                    isMobileDevice ? "text-sm" : "text-md"
+                  } mr-2`}
+                >
                   <Link href="/others">Other's reads, </Link>
                 </button>
 
-                <button className="hover:line-through text-md mr-2">
+                <button
+                  className={`hover:line-through ${
+                    isMobileDevice ? "text-sm" : "text-md"
+                  } mr-2`}
+                >
                   <Link href="/subscribe">Subscribe,</Link>
                 </button>
-                <button className="hover:line-through text-md mr-2">
+                <button
+                  className={`hover:line-through ${
+                    isMobileDevice ? "text-sm" : "text-md"
+                  } mr-2`}
+                >
                   <Link href="/about">About,</Link>
                 </button>
                 {session && (session as ExtendedSession)?.user?.admin && (
-                  <button className="hover:line-through text-md mr-2">
+                  <button
+                    className={`hover:line-through ${
+                      isMobileDevice ? "text-sm" : "text-md"
+                    } mr-2`}
+                  >
                     <Link href="/admin/addbook">Admin,</Link>
                   </button>
                 )}
@@ -98,10 +149,18 @@ const Navbar = ({ isSmallDevice }: Props) => {
                   <LogOutButton isSmallDevice={isSmallDevice} />
                 ) : (
                   <>
-                    <button className="hover:line-through text-md mr-2">
+                    <button
+                      className={`hover:line-through ${
+                        isMobileDevice ? "text-sm" : "text-md"
+                      } mr-2`}
+                    >
                       <Link href="/home">Sign up,</Link>
                     </button>
-                    <button className="hover:line-through text-md mr-2">
+                    <button
+                      className={`hover:line-through ${
+                        isMobileDevice ? "text-sm" : "text-md"
+                      } mr-2`}
+                    >
                       <Link href="/subscribe">Login</Link>
                     </button>
                   </>
@@ -111,31 +170,59 @@ const Navbar = ({ isSmallDevice }: Props) => {
           )}
           {sort && (
             <div className="flex w-full flex-wrap mt-4 0">
-              <button className="hover:line-through text-md mr-2">
+              <button
+                className={`hover:line-through ${
+                  isMobileDevice ? "text-sm" : "text-md"
+                } mr-2`}
+              >
                 <Link href={`/home`}>All,</Link>
               </button>
-              <button className="hover:line-through text-md mr-2">
+              <button
+                className={`hover:line-through ${
+                  isMobileDevice ? "text-sm" : "text-md"
+                } mr-2`}
+              >
                 <Link href={`/library/painting`}>Painting,</Link>
               </button>
-              <button className="hover:line-through text-md mr-2">
+              <button
+                className={`hover:line-through ${
+                  isMobileDevice ? "text-sm" : "text-md"
+                } mr-2`}
+              >
                 <Link href={`/library/sculpture`}>Scultpure,</Link>
               </button>
-              <button className="hover:line-through text-md mr-2">
+              <button
+                className={`hover:line-through ${
+                  isMobileDevice ? "text-sm" : "text-md"
+                } mr-2`}
+              >
                 <Link href={`/library/photography_film`}>
                   Photography/film,
                 </Link>
               </button>
-              <button className="hover:line-through text-md mr-2">
+              <button
+                className={`hover:line-through ${
+                  isMobileDevice ? "text-sm" : "text-md"
+                } mr-2`}
+              >
                 <Link href={`/library/catalogs_magazines`}>
                   Catalogs and Magazines,
                 </Link>
               </button>
-              <button className="hover:line-through text-md mr-2">
+              <button
+                className={`hover:line-through ${
+                  isMobileDevice ? "text-sm" : "text-md"
+                } mr-2`}
+              >
                 <Link href={`/library/anthologies_miscellaneous`}>
                   Anthologies/miscellaneous,
                 </Link>
               </button>
-              <button className="hover:line-through text-md mr-2">
+              <button
+                className={`hover:line-through ${
+                  isMobileDevice ? "text-sm" : "text-md"
+                } mr-2`}
+              >
                 <Link href={`/library/stock`}>In stock</Link>
               </button>
             </div>
@@ -218,7 +305,11 @@ const Navbar = ({ isSmallDevice }: Props) => {
                     <Link href="/queue">Queue</Link>
                   </button>
                 </div>
-                <button className="hover:line-through text-md mr-2">
+                <button
+                  className={`hover:line-through ${
+                    isMobileDevice ? "text-sm" : "text-md"
+                  } mr-2`}
+                >
                   <Link href="/others">Other's reads</Link>
                 </button>
               </div>
@@ -258,10 +349,18 @@ const Navbar = ({ isSmallDevice }: Props) => {
                   <LogOutButton isSmallDevice={isSmallDevice} />
                 ) : (
                   <>
-                    <button className="hover:line-through text-md mr-2">
+                    <button
+                      className={`hover:line-through ${
+                        isMobileDevice ? "text-sm" : "text-md"
+                      } mr-2`}
+                    >
                       <Link href="/signup">Sign up</Link>
                     </button>
-                    <button className="hover:line-through text-md mr-2">
+                    <button
+                      className={`hover:line-through ${
+                        isMobileDevice ? "text-sm" : "text-md"
+                      } mr-2`}
+                    >
                       <Link href="/login">Log in</Link>
                     </button>
                   </>

@@ -30,12 +30,16 @@ const page = () => {
   }, [isSmallDeviceQuery, session]);
 
   return (
-    <main className={isSmallDevice ? "page-small" : "page"}>
+    <main className={isSmallDevice ? "" : "page"}>
       {isSmallDevice === null ? (
         <Loader />
       ) : (
         <>
-          <Navbar isSmallDevice={isSmallDevice} />
+          <Navbar
+            isSmallDevice={isSmallDevice}
+            isMobileDevice={isMobileDevice}
+          />
+
           <div className={isSmallDevice ? "-small" : ""}>
             <div className="w-full ">
               {prices &&

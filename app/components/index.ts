@@ -20,6 +20,7 @@ import PricingCard from "./Pricing/PricingCard";
 import Checkout from "./Navbar/Checkout";
 import Order from "./Admin/Order";
 import CheckoutSuccess from "./Navbar/CheckoutSuccess";
+import useIsMobileDevice from "./RootLayoutClient";
 
 export {
   Books,
@@ -44,4 +45,5 @@ export {
   Checkout,
   Order,
   CheckoutSuccess,
+  useIsMobileDevice,
 };

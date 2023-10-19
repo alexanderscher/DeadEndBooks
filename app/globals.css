@@ -9,9 +9,13 @@ body {
 .page-margin {
   margin: 26px;
 }
-.page-margin-small {
-  margin: 20px;
+
+@media screen and (max-width: 500px) {
+  .page-margin {
+    margin: 20px;
+  }
 }
+
 .hover-line-through:hover {
   text-decoration: line-through;
 }

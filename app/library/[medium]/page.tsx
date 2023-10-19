@@ -16,12 +16,15 @@ const page = () => {
   }, [isSmallDeviceQuery, isMediumDeviceQuery]);
 
   return (
-    <main className={isSmallDevice ? "page-small" : "page"}>
+    <main className={isSmallDevice ? "" : "page"}>
       {isSmallDevice === null ? (
         <Loader />
       ) : (
         <>
-          <Navbar isSmallDevice={isSmallDevice} />
+          <Navbar
+            isSmallDevice={isSmallDevice}
+            isMobileDevice={isMobileDevice}
+          />
 
           <Books
             isSmallDevice={isSmallDevice}

@@ -1,6 +1,8 @@
 "use client";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useMediaQuery } from "react-responsive";
 
 interface Props {
   isSmallDevice: boolean;
@@ -16,9 +18,19 @@ export const LogOutButton = ({ isSmallDevice }: Props) => {
     await signOut({ callbackUrl: url });
     location.reload();
   };
+
+  const isMobileDeviceQuery = useMediaQuery({ maxWidth: 470 });
+  const [isMobileDevice, setIsMobileDevice] = useState<any>(null);
+
+  useEffect(() => {
+    setIsMobileDevice(isMobileDeviceQuery);
+  }, [isMobileDeviceQuery]);
+
   return (
     <button
-      className="hover:line-through text-md mr-2"
+      className={`hover:line-through ${
+        isMobileDevice ? "text-sm" : "text-md"
+      } mr-2`}
       onClick={() => signout()}
     >
       {isSmallDevice ? "Log Out" : "Log Out"}

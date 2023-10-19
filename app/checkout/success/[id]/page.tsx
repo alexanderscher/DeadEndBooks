@@ -70,12 +70,15 @@ const Page = () => {
   }
   if (!loading) {
     return (
-      <main className={isSmallDevice ? "page-small" : "page"}>
+      <main className={isSmallDevice ? "" : "page"}>
         {isSmallDevice === null ? (
           <Loader />
         ) : (
           <>
-            <Navbar isSmallDevice={isSmallDevice} />
+            <Navbar
+              isSmallDevice={isSmallDevice}
+              isMobileDevice={isMobileDevice}
+            />
 
             {session && yourOrder && (
               <div className={isSmallDevice ? "-small" : " w-full"}>

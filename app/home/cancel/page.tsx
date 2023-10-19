@@ -32,12 +32,16 @@ const page = () => {
     return null;
   }
   return (
-    <main className={isSmallDevice ? "page-small" : "page"}>
+    <main className={isSmallDevice ? "" : "page"}>
       {isSmallDevice === null ? (
         <Loader />
       ) : (
         <>
-          <Navbar isSmallDevice={isSmallDevice} />
+          <Navbar
+            isSmallDevice={isSmallDevice}
+            isMobileDevice={isMobileDevice}
+          />
+
           <div className={isSmallDevice ? "-small" : "  w-full"}>
             <div className={"flex justify-center"}>
               <div className="flex flex-col items-center ">

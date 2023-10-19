@@ -6,7 +6,10 @@ import React, { useEffect, useState } from "react";
 import { Loader } from "..";
 import { useRouter } from "next/navigation";
 
-const Cart = ({}) => {
+type Props = {
+  isMobileDevice: boolean;
+};
+const Cart = ({ isMobileDevice }: Props) => {
   const { data: session } = useSession();
   const router = useRouter();
   const [pageData, setPageData] = useState<Book[]>([]);
@@ -137,10 +140,21 @@ const Cart = ({}) => {
           }`}
         >
           <div className="mt-4 flex justify-start w-full">
-            <div className="max-w-[200px] mr-[50px]">
-              <img className="max-w-[200px]" src={book.photo_front} />
+            <div
+              className={
+                isMobileDevice ? "max-w-[150px]" : "max-w-[200px] mr-[50px]"
+              }
+            >
+              <img
+                className={isMobileDevice ? "max-w-[150px]" : "max-w-[200px] "}
+                src={book.photo_front}
+              />
             </div>
-            <div className="w-3/4 text-[26px]">
+            <div
+              className={`w-3/4 ${
+                isMobileDevice ? "text-[18px] ml-4" : "text-[26px]"
+              } `}
+            >
               <h1 className="hover:line-through">
                 <Link href={`/book/${book.title}`}>{book.title}</Link>
               </h1>

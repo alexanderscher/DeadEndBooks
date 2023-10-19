@@ -8,8 +8,9 @@ import { useRouter } from "next/navigation";
 
 interface Props {
   isSmallDevice: boolean;
+  isMobileDevice: boolean;
 }
-const SingleBook = ({ isSmallDevice }: Props) => {
+const SingleBook = ({ isSmallDevice, isMobileDevice }: Props) => {
   const currentPage = usePathname();
   const title = currentPage.split("/")[2];
   const router = useRouter();
@@ -42,6 +43,8 @@ const SingleBook = ({ isSmallDevice }: Props) => {
     photo_back: "",
     inStock: false,
   });
+
+  const text = isMobileDevice ? "text-[20px]" : "text-[24px]";
 
   useEffect(() => {
     const sessionId = (session as ExtendedSession)?.user?.id;
@@ -184,15 +187,23 @@ const SingleBook = ({ isSmallDevice }: Props) => {
     <div className={`flex w-full ${isSmallDevice && "mt-10"}`}>
       <div className="w-1/2 flex flex-col ">
         <img
-          className={`mb-6 ${
-            isSmallDevice ? "w-[85%]" : "w-[80%]"
-          } min-w-[200px]`}
+          className={
+            isMobileDevice
+              ? "w-[85%] mb-6 min-w-[100px]"
+              : isSmallDevice
+              ? "w-[85%] min-w-[200px] mb-6"
+              : "w-[80%] min-w-[200px] mb-6"
+          }
           src={pageData.photo_front}
         />
         <img
-          className={`mb-6 ${
-            isSmallDevice ? "w-[85%]" : "w-[80%]"
-          } min-w-[200px]`}
+          className={
+            isMobileDevice
+              ? "w-[85%] mb-6 min-w-[100px]"
+              : isSmallDevice
+              ? "w-[85%] min-w-[200px] mb-6"
+              : "w-[80%] min-w-[200px] mb-6"
+          }
           src={pageData.photo_back}
         />
       </div>
@@ -200,37 +211,37 @@ const SingleBook = ({ isSmallDevice }: Props) => {
         <h1
           className={
             isSmallDevice
-              ? "text-[24px]  text-slate-400 "
-              : "book-text  text-slate-400 "
+              ? `${text}  text-slate-400`
+              : "book-text  text-slate-400"
           }
         >
           Title
         </h1>
-        <h1 className={isSmallDevice ? "text-[25px] " : "book-text "}>
+        <h1 className={isSmallDevice ? `${text}` : "book-text "}>
           {pageData.title}
         </h1>
         <h1
           className={
             isSmallDevice
-              ? "text-[24px]  text-slate-400 mt-4"
+              ? `${text}  text-slate-400 mt-4`
               : "book-text  text-slate-400 mt-4"
           }
         >
           Author
         </h1>
-        <h1 className={isSmallDevice ? "text-[24px]  " : "book-text  "}>
+        <h1 className={isSmallDevice ? `${text}` : "book-text"}>
           {pageData.author}
         </h1>
         <h1
           className={
             isSmallDevice
-              ? "text-[24px]  text-slate-400 mt-4"
+              ? `${text}  text-slate-400 mt-4`
               : "book-text  text-slate-400 mt-4"
           }
         >
           Publisher
         </h1>
-        <h1 className={isSmallDevice ? "text-[24px]" : "book-text"}>
+        <h1 className={isSmallDevice ? `${text}` : "book-text"}>
           {pageData.publisher}
         </h1>
 
@@ -238,7 +249,7 @@ const SingleBook = ({ isSmallDevice }: Props) => {
           <>
             <h1
               className={`${
-                isSmallDevice ? "text-[24px]" : "book-text mt-10"
+                isSmallDevice ? `${text}` : "book-text mt-10"
               }  cursor-pointer hover:line-through text-red-500 mt-10`}
             >
               You must have an account to checkout books
@@ -246,7 +257,7 @@ const SingleBook = ({ isSmallDevice }: Props) => {
             <Link href="/login">
               <h1
                 className={`${
-                  isSmallDevice ? "text-[24px]" : "book-text mt-8"
+                  isSmallDevice ? `${text}` : "book-text mt-8"
                 }  cursor-pointer hover:line-through text-red-500 mt-8`}
               >
                 Login
@@ -256,7 +267,7 @@ const SingleBook = ({ isSmallDevice }: Props) => {
             <Link href="/signup">
               <h1
                 className={`${
-                  isSmallDevice ? "text-[24px]" : "book-text "
+                  isSmallDevice ? `${text}` : "book-text "
                 }  cursor-pointer hover:line-through text-red-500 `}
               >
                 {" "}
@@ -270,7 +281,7 @@ const SingleBook = ({ isSmallDevice }: Props) => {
               <div>
                 <h1
                   className={`${
-                    isSmallDevice ? "text-[24px]" : "book-text mt-10"
+                    isSmallDevice ? `${text}` : "book-text mt-10"
                   }  cursor-pointer hover:line-through text-red-500 mt-10`}
                   onClick={handleSave}
                 >
@@ -278,7 +289,7 @@ const SingleBook = ({ isSmallDevice }: Props) => {
                 </h1>
                 <h1
                   className={`${
-                    isSmallDevice ? "text-[24px]" : "book-text"
+                    isSmallDevice ? `${text}` : "book-text"
                   }   text-red-500`}
                 >
                   In your possesion
@@ -289,7 +300,7 @@ const SingleBook = ({ isSmallDevice }: Props) => {
                 <h1
                   className={
                     isSmallDevice
-                      ? "text-[24px] text-red-500 mt-10"
+                      ? `${text} text-red-500 mt-10`
                       : "book-text text-red-500 mt-10"
                   }
                 >
@@ -303,7 +314,7 @@ const SingleBook = ({ isSmallDevice }: Props) => {
                 </h1>
                 <h1
                   className={`${
-                    isSmallDevice ? "text-[24px]" : "book-text"
+                    isSmallDevice ? `${text}` : "book-text"
                   }  cursor-pointer hover:line-through text-red-500`}
                   onClick={handleSave}
                 >
@@ -312,7 +323,7 @@ const SingleBook = ({ isSmallDevice }: Props) => {
                 {pageData.inStock && stock.yours && (
                   <h1
                     className={`${
-                      isSmallDevice ? "text-[24px]" : "book-text"
+                      isSmallDevice ? `${text}` : "book-text"
                     }  cursor-pointer hover:line-through text-red-500`}
                     onClick={handleCart}
                   >
@@ -324,7 +335,7 @@ const SingleBook = ({ isSmallDevice }: Props) => {
                 {pageData.inStock && stock.upForGrabs && (
                   <h1
                     className={`${
-                      isSmallDevice ? "text-[24px]" : "book-text"
+                      isSmallDevice ? `${text}` : "book-text"
                     }  cursor-pointer hover:line-through text-red-500`}
                     onClick={handleCart}
                   >
@@ -336,7 +347,7 @@ const SingleBook = ({ isSmallDevice }: Props) => {
                 {pageData.inStock && stock.notYours && (
                   <h1
                     className={`${
-                      isSmallDevice ? "text-[24px]" : "book-text"
+                      isSmallDevice ? `${text}` : "book-text"
                     }  cursor-pointer hover:line-through text-red-500`}
                     onClick={() => getInLine(parseInt(pageData.id))}
                   >
@@ -348,7 +359,7 @@ const SingleBook = ({ isSmallDevice }: Props) => {
                 {!pageData.inStock && (
                   <h1
                     className={`${
-                      isSmallDevice ? "text-[24px]" : "book-text"
+                      isSmallDevice ? `${text}` : "book-text"
                     }  cursor-pointer hover:line-through text-red-500`}
                     onClick={() => getInLine(parseInt(pageData.id))}
                   >

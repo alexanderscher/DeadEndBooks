@@ -8,21 +8,30 @@ import { useRouter } from "next/navigation";
 import { ExtendedSession } from "@/types";
 
 const page = () => {
-  const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
   const isSmallDeviceQuery = useMediaQuery({ maxWidth: 700 });
-  const isMediumDeviceQuery = useMediaQuery({ maxWidth: 1200 });
+
+  const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
+
+  const isMediumDeviceQuery = useMediaQuery({ maxWidth: 900 });
   const [isMediumDevice, setIsMediumDevice] = useState<any>(null);
+
+  const isMobileDeviceQuery = useMediaQuery({ maxWidth: 470 });
+  const [isMobileDevice, setIsMobileDevice] = useState<any>(null);
+
+  useEffect(() => {
+    setIsSmallDevice(isSmallDeviceQuery);
+    setIsMediumDevice(isMediumDeviceQuery);
+    setIsMobileDevice(isMobileDeviceQuery);
+  }, [isSmallDeviceQuery, isMediumDeviceQuery, isMobileDeviceQuery]);
+
   const { data: session, status } = useSession();
   const router = useRouter();
 
   useEffect(() => {
     if (session && !(session as ExtendedSession)?.user?.admin) {
       router.push("/not-found");
-    } else {
-      setIsSmallDevice(isSmallDeviceQuery);
-      setIsMediumDevice(isMediumDeviceQuery);
     }
-  }, [isSmallDeviceQuery, isMediumDeviceQuery, session, status]);
+  }, [session, status]);
 
   if (status === "loading") {
     return <Loader />;
@@ -37,12 +46,16 @@ const page = () => {
   }
 
   return (
-    <main className={isSmallDevice ? "page-small" : "page"}>
+    <main className={isSmallDevice ? "" : "page"}>
       {isSmallDevice === null ? (
         <Loader />
       ) : (
         <>
-          <Navbar isSmallDevice={isSmallDevice} />
+          <Navbar
+            isSmallDevice={isSmallDevice}
+            isMobileDevice={isMobileDevice}
+          />
+
           <div className={isSmallDevice ? "-small " : " w-full"}>
             <AdminNav
               isSmallDevice={isSmallDevice}
