@@ -140,7 +140,9 @@ const Cart = ({ isMobileDevice }: Props) => {
           <div className="mt-4 flex justify-start w-full">
             <div
               className={
-                isMobileDevice ? "max-w-[150px]" : "max-w-[200px] mr-[50px]"
+                isMobileDevice
+                  ? "max-w-[150px] mr-6"
+                  : "max-w-[200px] mr-[50px]"
               }
             >
               <img
@@ -150,7 +152,7 @@ const Cart = ({ isMobileDevice }: Props) => {
             </div>
             <div
               className={`w-3/4 ${
-                isMobileDevice ? "text-[18px] ml-4" : "text-[26px]"
+                isMobileDevice ? "text-[18px] ml-4" : "text-[24px]"
               } `}
             >
               <h1 className="hover:line-through">

@@ -6,7 +6,10 @@ import React, { useEffect, useState } from "react";
 import { Loader } from "..";
 import page from "@/app/page";
 
-const Saved = () => {
+type Props = {
+  isMobileDevice: boolean;
+};
+const Saved = ({ isMobileDevice }: Props) => {
   const { data: session } = useSession();
   const [pageData, setPageData] = useState<Book[]>([]);
   const [userId, setUserId] = useState("");
@@ -175,7 +178,7 @@ const Saved = () => {
   if (pageData.length === 0) {
     return (
       <div className="text-[26px] ">
-        <h1>books saved</h1>
+        <h1>No books saved</h1>
       </div>
     );
   }
@@ -185,11 +188,23 @@ const Saved = () => {
       {pageData.map((book) => (
         <div key={book.id} className="border-t-[2px] border-slate-400 mb-6">
           <div key={book.id} className="mt-4 flex justify-start w-full">
-            <div className="max-w-[200px] mr-[50px]">
-              <img className="" src={book.photo_front} />
+            <div
+              className={
+                isMobileDevice
+                  ? "max-w-[150px] mr-6"
+                  : "max-w-[200px] mr-[50px]"
+              }
+            >
+              <img
+                className={isMobileDevice ? "max-w-[150px]" : "max-w-[200px] "}
+                src={book.photo_front}
+              />
             </div>
-
-            <div className="w-3/4 text-[24px]">
+            <div
+              className={`w-3/4 ${
+                isMobileDevice ? "text-[18px] ml-4" : "text-[24px]"
+              } `}
+            >
               <h1 className="hover:line-through">
                 <Link href={`/book/${book.title}`}>{book.title}</Link>
               </h1>

@@ -40,7 +40,7 @@ const page = () => {
           {isLoading && session !== null ? (
             <Loader /> // Show loader while session is being checked
           ) : session ? (
-            <div className={isSmallDevice ? "mt-10" : " w-full"}>
+            <div className={isSmallDevice ? "mt-8" : " w-full"}>
               <Cart isMobileDevice={isMobileDevice} />
             </div>
           ) : (

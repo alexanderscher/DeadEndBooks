@@ -4,7 +4,10 @@ import React, { useEffect, useState } from "react";
 import { Loader } from "..";
 import Link from "next/link";
 
-const Queue = () => {
+type Props = {
+  isMobileDevice: boolean;
+};
+const Queue = ({ isMobileDevice }: Props) => {
   const { data: session } = useSession();
   const [pageData, setPageData] = useState<Book[]>([]);
   const [userId, setUserId] = useState("");
@@ -118,11 +121,21 @@ const Queue = () => {
       {pageData.map((book) => (
         <div key={book.id} className="border-t-[2px] border-slate-400 mb-6">
           <div key={book.id} className="mt-4 flex justify-start w-full">
-            <div className="max-w-[200px] mr-[50px]">
+            <div
+              className={
+                isMobileDevice
+                  ? "max-w-[150px] mr-6"
+                  : "max-w-[200px] mr-[50px]"
+              }
+            >
               <img className="" src={book.photo_front} />
             </div>
 
-            <div className="w-3/4 text-[24px]">
+            <div
+              className={`w-3/4 ${
+                isMobileDevice ? "text-[18px] ml-4" : "text-[26px]"
+              } `}
+            >
               <h1 className="hover:line-through">
                 <Link href={`/book/${book.title}`}>{book.title}</Link>
               </h1>

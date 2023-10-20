@@ -46,8 +46,8 @@ const page = () => {
           {isLoading && session !== null ? (
             <Loader />
           ) : session ? (
-            <div className={isSmallDevice ? "mt-10" : " w-full"}>
-              <Saved />
+            <div className={isSmallDevice ? "mt-8" : " w-full"}>
+              <Saved isMobileDevice={isMobileDevice} />
             </div>
           ) : (
             <div className={isSmallDevice ? "mt-10" : " w-full"}>

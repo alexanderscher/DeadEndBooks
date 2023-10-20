@@ -55,13 +55,17 @@ const page = () => {
             isMobileDevice={isMobileDevice}
           />
 
-          <div className={isSmallDevice ? "mt-10" : "  w-full"}>
-            <div className={"flex justify-center "}>
+          <div
+            className={
+              isSmallDevice ? "mt-10 w-full flex justify-center" : "w-full"
+            }
+          >
+            <div className={"flex justify-center w-full"}>
               <div className={"flex justify-center"}>
                 <div className="flex flex-col items-center ">
                   <img
                     src="/dead-end-stripe.png"
-                    className="max-w-[500px] w-full"
+                    className="max-w-[500px] w-[80%]"
                     alt=""
                   />
                   <h1 className="text-[26px] text-red-500">

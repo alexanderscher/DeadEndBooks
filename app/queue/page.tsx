@@ -36,8 +36,8 @@ const page = () => {
           />
 
           {session ? (
-            <div className={isSmallDevice ? "mt-10" : " w-full"}>
-              <Queue />
+            <div className={isSmallDevice ? "mt-8" : " w-full"}>
+              <Queue isMobileDevice={isMobileDevice} />
             </div>
           ) : (
             <div className={isSmallDevice ? "mt-10" : " w-full"}>
