@@ -27,7 +27,6 @@ export async function POST(request: Request) {
 export async function DELETE(request: Request) {
   const json = await request.json();
   const { cartId } = json;
-  console.log(cartId);
   try {
     const cart = await prisma.cart.delete({
       where: {
