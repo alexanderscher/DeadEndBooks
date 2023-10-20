@@ -64,7 +64,7 @@ export default function Login() {
     <div className="w-full h-screen">
       <div className=" flex flex-col w-full h-full items-center justify-center">
         <Link href="/home">
-          <h1 className="text-[36px] text-red-500 mb-10 font-bold">
+          <h1 className="text-[30px] text-red-500 mb-10 font-bold">
             DEAD END BOOKS
           </h1>
         </Link>

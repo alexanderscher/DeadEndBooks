@@ -28,7 +28,7 @@ const Navbar = ({ isSmallDevice, isMobileDevice }: Props) => {
           >
             <h1
               className={`font-bold ${
-                isMobileDevice ? "text-[30px]" : "text-[40px]"
+                isMobileDevice ? "text-[32px]" : "text-[40px]"
               }`}
             >
               <Link href="/home">DEAD END BOOKS</Link>
@@ -78,14 +78,14 @@ const Navbar = ({ isSmallDevice, isMobileDevice }: Props) => {
               <div>
                 <button
                   className={`hover:line-through ${
-                    isMobileDevice ? "text-sm" : "text-md"
+                    isMobileDevice ? "text-md" : "text-md"
                   } mr-2`}
                 >
                   <Link href="/home">Library,</Link>
                 </button>
                 <button
                   className={`hover:line-through ${
-                    isMobileDevice ? "text-sm" : "text-md"
+                    isMobileDevice ? "text-md" : "text-md"
                   } mr-2`}
                 >
                   <Link href="/profile">Profile,</Link>
@@ -93,21 +93,21 @@ const Navbar = ({ isSmallDevice, isMobileDevice }: Props) => {
 
                 <button
                   className={`hover:line-through ${
-                    isMobileDevice ? "text-sm" : "text-md"
+                    isMobileDevice ? "text-md" : "text-md"
                   }`}
                 >
                   <Link href="/cart">Cart/</Link>
                 </button>
                 <button
                   className={`hover:line-through ${
-                    isMobileDevice ? "text-sm" : "text-md"
+                    isMobileDevice ? "text-md" : "text-md"
                   }`}
                 >
                   <Link href="/saved">Saved/</Link>
                 </button>
                 <button
                   className={`hover:line-through ${
-                    isMobileDevice ? "text-sm" : "text-md"
+                    isMobileDevice ? "text-md" : "text-md"
                   } mr-2`}
                 >
                   <Link href="/queue">Queue,</Link>
@@ -115,7 +115,7 @@ const Navbar = ({ isSmallDevice, isMobileDevice }: Props) => {
 
                 <button
                   className={`hover:line-through ${
-                    isMobileDevice ? "text-sm" : "text-md"
+                    isMobileDevice ? "text-md" : "text-md"
                   } mr-2`}
                 >
                   <Link href="/others">Other's reads, </Link>
@@ -123,14 +123,14 @@ const Navbar = ({ isSmallDevice, isMobileDevice }: Props) => {
 
                 <button
                   className={`hover:line-through ${
-                    isMobileDevice ? "text-sm" : "text-md"
+                    isMobileDevice ? "text-md" : "text-md"
                   } mr-2`}
                 >
                   <Link href="/subscribe">Subscribe,</Link>
                 </button>
                 <button
                   className={`hover:line-through ${
-                    isMobileDevice ? "text-sm" : "text-md"
+                    isMobileDevice ? "text-md" : "text-md"
                   } mr-2`}
                 >
                   <Link href="/about">About,</Link>
@@ -138,7 +138,7 @@ const Navbar = ({ isSmallDevice, isMobileDevice }: Props) => {
                 {session && (session as ExtendedSession)?.user?.admin && (
                   <button
                     className={`hover:line-through ${
-                      isMobileDevice ? "text-sm" : "text-md"
+                      isMobileDevice ? "text-md" : "text-md"
                     } mr-2`}
                   >
                     <Link href="/admin/addbook">Admin,</Link>
@@ -151,14 +151,14 @@ const Navbar = ({ isSmallDevice, isMobileDevice }: Props) => {
                   <>
                     <button
                       className={`hover:line-through ${
-                        isMobileDevice ? "text-sm" : "text-md"
+                        isMobileDevice ? "text-md" : "text-md"
                       } mr-2`}
                     >
                       <Link href="/home">Sign up,</Link>
                     </button>
                     <button
                       className={`hover:line-through ${
-                        isMobileDevice ? "text-sm" : "text-md"
+                        isMobileDevice ? "text-md" : "text-md"
                       } mr-2`}
                     >
                       <Link href="/login">Log in</Link>
@@ -172,28 +172,28 @@ const Navbar = ({ isSmallDevice, isMobileDevice }: Props) => {
             <div className="flex w-full flex-wrap mt-4 0">
               <button
                 className={`hover:line-through ${
-                  isMobileDevice ? "text-sm" : "text-md"
+                  isMobileDevice ? "text-md" : "text-md"
                 } mr-2`}
               >
                 <Link href={`/home`}>All,</Link>
               </button>
               <button
                 className={`hover:line-through ${
-                  isMobileDevice ? "text-sm" : "text-md"
+                  isMobileDevice ? "text-md" : "text-md"
                 } mr-2`}
               >
                 <Link href={`/library/painting`}>Painting,</Link>
               </button>
               <button
                 className={`hover:line-through ${
-                  isMobileDevice ? "text-sm" : "text-md"
+                  isMobileDevice ? "text-md" : "text-md"
                 } mr-2`}
               >
                 <Link href={`/library/sculpture`}>Scultpure,</Link>
               </button>
               <button
                 className={`hover:line-through ${
-                  isMobileDevice ? "text-sm" : "text-md"
+                  isMobileDevice ? "text-md" : "text-md"
                 } mr-2`}
               >
                 <Link href={`/library/photography_film`}>
@@ -202,7 +202,7 @@ const Navbar = ({ isSmallDevice, isMobileDevice }: Props) => {
               </button>
               <button
                 className={`hover:line-through ${
-                  isMobileDevice ? "text-sm" : "text-md"
+                  isMobileDevice ? "text-md" : "text-md"
                 } mr-2`}
               >
                 <Link href={`/library/catalogs_magazines`}>
@@ -211,7 +211,7 @@ const Navbar = ({ isSmallDevice, isMobileDevice }: Props) => {
               </button>
               <button
                 className={`hover:line-through ${
-                  isMobileDevice ? "text-sm" : "text-md"
+                  isMobileDevice ? "text-md" : "text-md"
                 } mr-2`}
               >
                 <Link href={`/library/anthologies_miscellaneous`}>
@@ -220,7 +220,7 @@ const Navbar = ({ isSmallDevice, isMobileDevice }: Props) => {
               </button>
               <button
                 className={`hover:line-through ${
-                  isMobileDevice ? "text-sm" : "text-md"
+                  isMobileDevice ? "text-md" : "text-md"
                 } mr-2`}
               >
                 <Link href={`/library/stock`}>In stock</Link>
@@ -307,7 +307,7 @@ const Navbar = ({ isSmallDevice, isMobileDevice }: Props) => {
                 </div>
                 <button
                   className={`hover:line-through ${
-                    isMobileDevice ? "text-sm" : "text-md"
+                    isMobileDevice ? "text-md" : "text-md"
                   } mr-2`}
                 >
                   <Link href="/others">Other's reads</Link>
@@ -351,14 +351,14 @@ const Navbar = ({ isSmallDevice, isMobileDevice }: Props) => {
                   <>
                     <button
                       className={`hover:line-through ${
-                        isMobileDevice ? "text-sm" : "text-md"
+                        isMobileDevice ? "text-md" : "text-md"
                       } mr-2`}
                     >
                       <Link href="/signup">Sign up</Link>
                     </button>
                     <button
                       className={`hover:line-through ${
-                        isMobileDevice ? "text-sm" : "text-md"
+                        isMobileDevice ? "text-md" : "text-md"
                       } mr-2`}
                     >
                       <Link href="/login">Log in</Link>

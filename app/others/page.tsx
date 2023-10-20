@@ -13,7 +13,7 @@ const page = () => {
   const isMediumDeviceQuery = useMediaQuery({ maxWidth: 900 });
   const [isMediumDevice, setIsMediumDevice] = useState<any>(null);
 
-  const isMobileDeviceQuery = useMediaQuery({ maxWidth: 470 });
+  const isMobileDeviceQuery = useMediaQuery({ maxWidth: 500 });
   const [isMobileDevice, setIsMobileDevice] = useState<any>(null);
 
   useEffect(() => {

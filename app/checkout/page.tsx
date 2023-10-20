@@ -14,7 +14,7 @@ const page = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [isLoading, setisLoading] = useState(true);
-  const isMobileDeviceQuery = useMediaQuery({ maxWidth: 470 });
+  const isMobileDeviceQuery = useMediaQuery({ maxWidth: 500 });
   const [isMobileDevice, setIsMobileDevice] = useState<any>(null);
 
   useEffect(() => {

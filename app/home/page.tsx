@@ -12,7 +12,7 @@ const page = () => {
   const isMediumDeviceQuery = useMediaQuery({ maxWidth: 900 });
   const [isMediumDevice, setIsMediumDevice] = useState<any>(null);
 
-  const isMobileDeviceQuery = useMediaQuery({ maxWidth: 400 });
+  const isMobileDeviceQuery = useMediaQuery({ maxWidth: 500 });
   const [isMobileDevice, setIsMobileDevice] = useState<any>(null);
 
   useEffect(() => {
@@ -31,11 +31,12 @@ const page = () => {
             isSmallDevice={isSmallDevice}
             isMobileDevice={isMobileDevice}
           />
-
-          <Books
-            isSmallDevice={isSmallDevice}
-            isMediumDevice={isMediumDevice}
-          />
+          <div className={isSmallDevice ? "mt-6" : " w-full"}>
+            <Books
+              isSmallDevice={isSmallDevice}
+              isMediumDevice={isMediumDevice}
+            />
+          </div>
         </>
       )}
     </main>

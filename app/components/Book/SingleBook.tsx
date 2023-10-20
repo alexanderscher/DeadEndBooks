@@ -46,6 +46,8 @@ const SingleBook = ({ isSmallDevice, isMobileDevice }: Props) => {
 
   const text = isMobileDevice ? "text-[20px]" : "text-[24px]";
 
+  const smtext = isMobileDevice ? "text-[16px]" : "text-[24px]";
+
   useEffect(() => {
     const sessionId = (session as ExtendedSession)?.user?.id;
     setuserId(sessionId);
@@ -249,7 +251,7 @@ const SingleBook = ({ isSmallDevice, isMobileDevice }: Props) => {
           <>
             <h1
               className={`${
-                isSmallDevice ? `${text}` : "book-text mt-10"
+                isSmallDevice ? `${smtext}` : "book-text mt-10"
               }  cursor-pointer hover:line-through text-red-500 mt-10`}
             >
               You must have an account to checkout books
@@ -257,7 +259,7 @@ const SingleBook = ({ isSmallDevice, isMobileDevice }: Props) => {
             <Link href="/login">
               <h1
                 className={`${
-                  isSmallDevice ? `${text}` : "book-text mt-8"
+                  isSmallDevice ? `${smtext}` : "book-text mt-8"
                 }  cursor-pointer hover:line-through text-red-500 mt-8`}
               >
                 Login
@@ -267,7 +269,7 @@ const SingleBook = ({ isSmallDevice, isMobileDevice }: Props) => {
             <Link href="/signup">
               <h1
                 className={`${
-                  isSmallDevice ? `${text}` : "book-text "
+                  isSmallDevice ? `${smtext}` : "book-text "
                 }  cursor-pointer hover:line-through text-red-500 `}
               >
                 {" "}

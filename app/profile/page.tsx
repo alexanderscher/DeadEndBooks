@@ -16,7 +16,7 @@ const page = () => {
   const isMediumDeviceQuery = useMediaQuery({ maxWidth: 900 });
   const [isMediumDevice, setIsMediumDevice] = useState<any>(null);
 
-  const isMobileDeviceQuery = useMediaQuery({ maxWidth: 470 });
+  const isMobileDeviceQuery = useMediaQuery({ maxWidth: 500 });
   const [isMobileDevice, setIsMobileDevice] = useState<any>(null);
 
   useEffect(() => {
@@ -48,7 +48,7 @@ const page = () => {
               <Profile />
             </div>
           ) : (
-            <div className={" w-full"}>
+            <div className={isSmallDevice ? "mt-10" : " w-full"}>
               <h1 className="text-[26px]">
                 Login or sign up to view your profile
               </h1>
