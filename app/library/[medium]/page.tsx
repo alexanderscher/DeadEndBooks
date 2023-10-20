@@ -5,16 +5,21 @@ import React, { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 
 const page = () => {
-  const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
   const isSmallDeviceQuery = useMediaQuery({ maxWidth: 700 });
-  const isMediumDeviceQuery = useMediaQuery({ maxWidth: 1200 });
+
+  const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
+
+  const isMediumDeviceQuery = useMediaQuery({ maxWidth: 900 });
   const [isMediumDevice, setIsMediumDevice] = useState<any>(null);
+
+  const isMobileDeviceQuery = useMediaQuery({ maxWidth: 470 });
+  const [isMobileDevice, setIsMobileDevice] = useState<any>(null);
 
   useEffect(() => {
     setIsSmallDevice(isSmallDeviceQuery);
     setIsMediumDevice(isMediumDeviceQuery);
-  }, [isSmallDeviceQuery, isMediumDeviceQuery]);
-
+    setIsMobileDevice(isMobileDeviceQuery);
+  }, [isSmallDeviceQuery, isMediumDeviceQuery, isMobileDeviceQuery]);
   return (
     <main className={isSmallDevice ? "" : "page"}>
       {isSmallDevice === null ? (

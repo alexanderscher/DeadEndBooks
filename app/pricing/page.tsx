@@ -9,8 +9,21 @@ import { ExtendedSession } from "@/types";
 import { useSession } from "next-auth/react";
 
 const page = () => {
-  const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
   const isSmallDeviceQuery = useMediaQuery({ maxWidth: 700 });
+
+  const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
+
+  const isMediumDeviceQuery = useMediaQuery({ maxWidth: 900 });
+  const [isMediumDevice, setIsMediumDevice] = useState<any>(null);
+
+  const isMobileDeviceQuery = useMediaQuery({ maxWidth: 470 });
+  const [isMobileDevice, setIsMobileDevice] = useState<any>(null);
+
+  useEffect(() => {
+    setIsSmallDevice(isSmallDeviceQuery);
+    setIsMediumDevice(isMediumDeviceQuery);
+    setIsMobileDevice(isMobileDeviceQuery);
+  }, [isSmallDeviceQuery, isMediumDeviceQuery, isMobileDeviceQuery]);
   const [prices, setPrices] = useState<any>([]);
   const { data: session } = useSession();
 
@@ -24,10 +37,6 @@ const page = () => {
     const data = await res.json();
     setPrices(data);
   };
-
-  useEffect(() => {
-    setIsSmallDevice(isSmallDeviceQuery);
-  }, [isSmallDeviceQuery, session]);
 
   return (
     <main className={isSmallDevice ? "" : "page"}>
