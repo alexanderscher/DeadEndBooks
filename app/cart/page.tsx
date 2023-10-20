@@ -9,7 +9,7 @@ import { useSession } from "next-auth/react";
 const page = () => {
   const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
   const isSmallDeviceQuery = useMediaQuery({ maxWidth: 700 });
-  const isMobileDeviceQuery = useMediaQuery({ maxWidth: 439 });
+  const isMobileDeviceQuery = useMediaQuery({ maxWidth: 460 });
   const [isMobileDevice, setIsMobileDevice] = useState<any>(null);
   const { data: session, status } = useSession();
 

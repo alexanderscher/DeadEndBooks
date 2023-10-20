@@ -19,7 +19,7 @@ export const LogOutButton = ({ isSmallDevice }: Props) => {
     location.reload();
   };
 
-  const isMobileDeviceQuery = useMediaQuery({ maxWidth: 439 });
+  const isMobileDeviceQuery = useMediaQuery({ maxWidth: 460 });
   const [isMobileDevice, setIsMobileDevice] = useState<any>(null);
 
   useEffect(() => {

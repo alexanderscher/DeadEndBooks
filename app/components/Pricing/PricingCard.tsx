@@ -55,13 +55,15 @@ const PricingCard = ({ price, session }: priceProps) => {
         `/api/user/${(session as ExtendedSession)?.user?.id}`
       );
       const data = await res.json();
-      setUserSub(data.subscriptionType);
+      if (data.subscriptionType) {
+        setUserSub(data.subscriptionType);
+      } else {
+        setUserSub("");
+      }
     };
-    if (sessionId) {
-      setisLoading(true);
-      getUser();
-      setisLoading(false);
-    }
+
+    getUser();
+    setisLoading(false);
   }, [session]);
 
   const handleSubscription = async (e: React.MouseEvent<HTMLButtonElement>) => {

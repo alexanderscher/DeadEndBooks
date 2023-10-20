@@ -232,17 +232,13 @@ const SingleBook = ({ isSmallDevice, isMobileDevice }: Props) => {
               <div className="w-1/2">
                 {!userId ? (
                   <div className="text-end">
-                    <h1
-                      className={
-                        "cursor-pointer hover:line-through text-red-500 text-end"
-                      }
-                    >
+                    <h1 className={` text-red-500 text-end ${text} `}>
                       You must have an account to checkout books
                     </h1>
                     <Link href="/login">
                       <h1
                         className={`${
-                          isSmallDevice ? `${smtext}` : "book-text mt-8"
+                          isSmallDevice ? `${text}` : "book-text mt-8"
                         }  cursor-pointer hover:line-through text-red-500 mt-8`}
                       >
                         Login
@@ -252,7 +248,7 @@ const SingleBook = ({ isSmallDevice, isMobileDevice }: Props) => {
                     <Link href="/signup">
                       <h1
                         className={`${
-                          isSmallDevice ? `${smtext}` : "book-text "
+                          isSmallDevice ? `${text}` : "book-text "
                         }  cursor-pointer hover:line-through text-red-500 `}
                       >
                         {" "}
