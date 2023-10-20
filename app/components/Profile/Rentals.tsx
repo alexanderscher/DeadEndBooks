@@ -4,43 +4,6 @@ import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { Loader } from "..";
 
-const formatDate = (input: string) => {
-  const date = new Date(input);
-  const day = String(date.getDate()).padStart(2, "0");
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const year = String(date.getFullYear()).slice(-2);
-
-  return `${month}/${day}/${year}`;
-};
-
-const daysLate = (input: string) => {
-  const dueDate = new Date(input);
-  const today = new Date();
-
-  dueDate.setHours(0, 0, 0, 0);
-  today.setHours(0, 0, 0, 0);
-
-  const diff = today.getTime() - dueDate.getTime();
-
-  if (diff <= 0) {
-    return 0;
-  }
-
-  return Math.round(diff / (1000 * 60 * 60 * 24));
-};
-
-const daysLeft = (input: string) => {
-  const date = new Date(input);
-  const today = new Date();
-
-  today.setHours(0, 0, 0, 0);
-  date.setHours(0, 0, 0, 0);
-
-  const diff = date.getTime() - today.getTime();
-
-  return Math.round(diff / (1000 * 60 * 60 * 24));
-};
-
 const Rentals = () => {
   const [isLoading, setisLoading] = useState(true);
   const [modal, setModal] = useState(false);
@@ -60,40 +23,20 @@ const Rentals = () => {
 
   useEffect(() => {
     const getUser = async () => {
-      setisLoading(true);
+      // setisLoading(true);
+      const res = await fetch("/api/user/current-rental", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify((session as ExtendedSession)?.user?.id),
+      });
 
-      const res = await fetch(
-        `/api/user/${(session as ExtendedSession)?.user?.id}`
-      );
       const data = await res.json();
+      console.log(data);
 
-      const rentals = [];
-
-      if (res.ok) {
-        for (const rental in data.Current) {
-          const res = await fetch(`/api/book/${data.Current[rental].bookId}`);
-          const dataBook = await res.json();
-
-          const order = await fetch(
-            `/api/order/${data.Current[rental].orderId}`
-          );
-          const dataOrder = await order.json();
-
-          if (res.ok) {
-            rentals.push({
-              title: dataBook.title,
-              start_date: formatDate(data.Current[rental].start_date),
-              return_date: formatDate(data.Current[rental].return_date),
-              isLate: daysLate(data.Current[rental].return_date),
-              daysLeft: daysLeft(data.Current[rental].return_date),
-              orderId: data.Current[rental].orderId,
-              shipped: dataOrder.shipped,
-            });
-          }
-        }
-        setRentals(rentals);
-        setisLoading(false);
-      }
+      setRentals(data);
+      setisLoading(false);
     };
     getUser();
   }, [session]);

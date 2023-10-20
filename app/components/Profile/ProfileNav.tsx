@@ -21,58 +21,58 @@ const ProfileNav = ({ isSmallDevice, isMobileDevice }: Props) => {
       }
     >
       <button
-        className={`mr-4 ${
+        className={` ${
           isMobileDevice
-            ? "text-[18px]"
+            ? "text-[20px] mr-2"
             : isSmallDevice
-            ? "text-[24px]"
-            : "text-[26px]"
+            ? "text-[24px] mr-4"
+            : "text-[26px] mr-4"
         } hover:line-through `}
       >
         <Link href="/profile">Profile</Link>
       </button>
       <button
-        className={`mr-4 ${
+        className={` ${
           isMobileDevice
-            ? "text-[18px]"
+            ? "text-[20px] mr-2"
             : isSmallDevice
-            ? "text-[24px]"
-            : "text-[26px]"
+            ? "text-[24px] mr-4"
+            : "text-[26px] mr-4"
         } hover:line-through  `}
       >
         <Link href="/profile/current-rentals">Rentals</Link>
       </button>
       <button
-        className={`mr-4 ${
+        className={` ${
           isMobileDevice
-            ? "text-[18px]"
+            ? "text-[20px] mr-2"
             : isSmallDevice
-            ? "text-[24px]"
-            : "text-[26px]"
+            ? "text-[24px] mr-4"
+            : "text-[26px] mr-4"
         } hover:line-through `}
       >
         <Link href="/profile/history">History</Link>
       </button>
       {active ? (
         <button
-          className={`mr-4 ${
+          className={` ${
             isMobileDevice
-              ? "text-[18px]"
+              ? "text-[20px] mr-2"
               : isSmallDevice
-              ? "text-[24px]"
-              : "text-[26px]"
+              ? "text-[24px] mr-4"
+              : "text-[26px] mr-4"
           } hover:line-through `}
         >
           <Link href="/profile/subscription">Subscription</Link>
         </button>
       ) : (
         <button
-          className={`mr-4 ${
+          className={` ${
             isMobileDevice
-              ? "text-[18px]"
+              ? "text-[20px] mr-2"
               : isSmallDevice
-              ? "text-[24px]"
-              : "text-[26px]"
+              ? "text-[24px] mr-4"
+              : "text-[26px] mr-4"
           } hover:line-through `}
         >
           <Link href="/pricing"> Subscribe</Link>
