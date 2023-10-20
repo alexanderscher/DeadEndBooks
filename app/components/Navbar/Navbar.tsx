@@ -28,7 +28,7 @@ const Navbar = ({ isSmallDevice, isMobileDevice }: Props) => {
           >
             <h1
               className={`font-bold ${
-                isMobileDevice ? "text-[32px]" : "text-[40px]"
+                isMobileDevice ? "text-[26px]" : "text-[40px]"
               }`}
             >
               <Link href="/home">DEAD END BOOKS</Link>
