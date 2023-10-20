@@ -69,7 +69,7 @@ export default function Login() {
           </h1>
         </Link>
 
-        <div className="w-3/4 min-w-[400px] max-w-[500px] ">
+        <div className="w-3/4 min-w-[300px] max-w-[500px] ">
           <form noValidate onSubmit={loginUser} className={"flex flex-col "}>
             <input
               className={` specific-input w-full h-[50px] px-3 focus:outline-none border-[3.5px] text-red-500  ${

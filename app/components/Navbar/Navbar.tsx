@@ -161,7 +161,7 @@ const Navbar = ({ isSmallDevice, isMobileDevice }: Props) => {
                         isMobileDevice ? "text-sm" : "text-md"
                       } mr-2`}
                     >
-                      <Link href="/subscribe">Login</Link>
+                      <Link href="/login">Log in</Link>
                     </button>
                   </>
                 )}

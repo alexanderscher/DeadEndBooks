@@ -9,6 +9,7 @@ export async function GET() {
       include: {
         address: true,
         books: true,
+        returned: true,
       },
       where: {
         shipped: true,
