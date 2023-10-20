@@ -8,8 +8,22 @@ import { ExtendedSession } from "@/types";
 import { usePathname, useRouter } from "next/navigation";
 
 const Page = () => {
-  const [isSmallDevice, setIsSmallDevice] = useState<boolean | null>(null);
   const isSmallDeviceQuery = useMediaQuery({ maxWidth: 700 });
+
+  const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
+
+  const isMediumDeviceQuery = useMediaQuery({ maxWidth: 900 });
+  const [isMediumDevice, setIsMediumDevice] = useState<any>(null);
+
+  const isMobileDeviceQuery = useMediaQuery({ maxWidth: 470 });
+  const [isMobileDevice, setIsMobileDevice] = useState<any>(null);
+
+  useEffect(() => {
+    setIsSmallDevice(isSmallDeviceQuery);
+    setIsMediumDevice(isMediumDeviceQuery);
+    setIsMobileDevice(isMobileDeviceQuery);
+  }, [isSmallDeviceQuery, isMediumDeviceQuery, isMobileDeviceQuery]);
+
   const { data: session, status } = useSession();
   const router = useRouter();
   const [yourOrder, setYourOrder] = useState<boolean | null>(null);
@@ -23,10 +37,6 @@ const Page = () => {
       bookId: 0,
     },
   ]);
-
-  useEffect(() => {
-    setIsSmallDevice(isSmallDeviceQuery);
-  }, [isSmallDeviceQuery]);
 
   useEffect(() => {
     const orderId = currentPage.split("success/")[1];
