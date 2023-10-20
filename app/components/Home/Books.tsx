@@ -160,7 +160,7 @@ const Books = ({ isSmallDevice, isMediumDevice }: Props) => {
           ))}
         </div>
       ) : (
-        <div className="flex flex-col -small">
+        <div className="flex flex-col ">
           <div className="flex justify-center">
             {columnsData.map((column, columnIndex) => (
               <div

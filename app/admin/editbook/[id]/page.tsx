@@ -55,7 +55,7 @@ const page = () => {
             isMobileDevice={isMobileDevice}
           />
 
-          <div className={isSmallDevice ? "-small " : " w-full"}>
+          <div className={" w-full"}>
             <EditBook isSmallDevice={isSmallDevice} />
           </div>
         </>

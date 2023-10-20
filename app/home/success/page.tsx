@@ -8,24 +8,30 @@ import { ExtendedSession } from "@/types";
 import { useSession } from "next-auth/react";
 
 const page = () => {
-  const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
   const isSmallDeviceQuery = useMediaQuery({ maxWidth: 700 });
+
+  const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
+
+  const isMediumDeviceQuery = useMediaQuery({ maxWidth: 900 });
+  const [isMediumDevice, setIsMediumDevice] = useState<any>(null);
+
+  const isMobileDeviceQuery = useMediaQuery({ maxWidth: 470 });
+  const [isMobileDevice, setIsMobileDevice] = useState<any>(null);
+
   const { data: session, status } = useSession();
   const router = useRouter();
-  const currentPath = usePathname();
   const [sessionLoaded, setSessionLoaded] = useState(false);
+  useEffect(() => {
+    setIsSmallDevice(isSmallDeviceQuery);
+    setIsMediumDevice(isMediumDeviceQuery);
+    setIsMobileDevice(isMobileDeviceQuery);
+  }, [isSmallDeviceQuery, isMediumDeviceQuery, isMobileDeviceQuery]);
 
   useEffect(() => {
     if (session && (session as ExtendedSession)?.user?.isActive) {
       setSessionLoaded(true);
-      setIsSmallDevice(isSmallDeviceQuery);
     }
-  }, [
-    isSmallDeviceQuery,
-    session,
-
-    (session as ExtendedSession)?.user?.isActive,
-  ]);
+  }, [session, (session as ExtendedSession)?.user?.isActive]);
 
   if (status === "loading") {
     return <Loader />;

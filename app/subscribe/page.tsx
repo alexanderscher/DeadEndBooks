@@ -32,7 +32,7 @@ const page = () => {
             isMobileDevice={isMobileDevice}
           />
 
-          <div className={isSmallDevice ? "-small" : "info text-end "}>
+          <div className={isSmallDevice ? "" : "info text-end "}>
             <div className={isSmallDevice && "mt-10"}>
               <button className={isSmallDevice ? " text-[20px]" : ""}>
                 How it works

@@ -36,11 +36,11 @@ const page = () => {
           />
 
           {session ? (
-            <div className={isSmallDevice ? "-small" : " w-full"}>
+            <div className={isSmallDevice ? "mt-10" : " w-full"}>
               <Queue />
             </div>
           ) : (
-            <div className={isSmallDevice ? "-small" : " w-full"}>
+            <div className={isSmallDevice ? "mt-10" : " w-full"}>
               <h1 className="text-[26px]">
                 Login or sign up to view your queued books
               </h1>

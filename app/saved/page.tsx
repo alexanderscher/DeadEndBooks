@@ -46,11 +46,11 @@ const page = () => {
           {isLoading && session !== null ? (
             <Loader />
           ) : session ? (
-            <div className={isSmallDevice ? "-small" : " w-full"}>
+            <div className={isSmallDevice ? "mt-10" : " w-full"}>
               <Saved />
             </div>
           ) : (
-            <div className={isSmallDevice ? "-small" : " w-full"}>
+            <div className={isSmallDevice ? "mt-10" : " w-full"}>
               <h1 className="text-[26px]">
                 Login or sign up to view your saved books
               </h1>

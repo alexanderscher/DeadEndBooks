@@ -49,7 +49,7 @@ const page = () => {
             isMobileDevice={isMobileDevice}
           />
 
-          <div className={isSmallDevice ? "-small" : ""}>
+          <div className={isSmallDevice && "mt-10"}>
             <div className="w-full ">
               {prices &&
                 prices.map((price: any) => (

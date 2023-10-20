@@ -44,7 +44,7 @@ const page = () => {
     return null;
   }
   return (
-    <main className={isSmallDevice ? "" : "page"}>
+    <main className={isSmallDevice ? "mt-10" : "page"}>
       {isSmallDevice === null ? (
         <Loader />
       ) : (
@@ -54,7 +54,7 @@ const page = () => {
             isMobileDevice={isMobileDevice}
           />
 
-          <div className={isSmallDevice ? "-small" : "  w-full"}>
+          <div className={isSmallDevice ? "mt-10" : "  w-full"}>
             <div className={"flex justify-center"}>
               <div className="flex flex-col items-center ">
                 <img

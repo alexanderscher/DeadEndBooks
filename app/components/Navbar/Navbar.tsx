@@ -20,7 +20,7 @@ const Navbar = ({ isSmallDevice, isMobileDevice }: Props) => {
   return (
     <>
       {isSmallDevice ? (
-        <div className="flex-col -small bg-white">
+        <div className="flex-col bg-white">
           <div
             className={`w-full flex justify-between  ${
               currentPage === "/home" ? "items-center" : "items-end"

@@ -43,7 +43,7 @@ const page = () => {
           />
 
           {session ? (
-            <div className={isSmallDevice ? "-small" : " w-full"}>
+            <div className={" w-full"}>
               <ProfileNav
                 isSmallDevice={isSmallDevice}
                 isMobileDevice={isMobileDevice}
@@ -52,7 +52,7 @@ const page = () => {
               <EditProfile />
             </div>
           ) : (
-            <div className={isSmallDevice ? "-small" : " w-full"}>
+            <div className={" w-full"}>
               <h1 className="text-[26px]">
                 Login or sign up to view your profile
               </h1>

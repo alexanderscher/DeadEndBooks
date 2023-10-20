@@ -121,7 +121,7 @@ const page = () => {
           {isLoading && session !== null ? (
             <Loader />
           ) : (
-            <div className={isSmallDevice ? "-small" : " w-full"}>
+            <div className={" w-full"}>
               <Newsletter isSmallDevice={isSmallDevice} />
             </div>
           )}

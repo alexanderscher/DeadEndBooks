@@ -45,14 +45,14 @@ const page = () => {
           {isLoading && session !== null ? (
             <Loader /> // Show loader while session is being checked
           ) : session ? (
-            <div className={isSmallDevice ? "-small" : " w-full"}>
+            <div className={" w-full"}>
               <Checkout
                 isSmallDevice={isSmallDevice}
                 isMobileDevice={isMobileDevice}
               />
             </div>
           ) : (
-            <div className={isSmallDevice ? "-small" : " w-full"}>
+            <div className={isSmallDevice ? "mt-10" : " w-full"}>
               <h1 className="text-[26px]">
                 Login or sign up to view your cart
               </h1>

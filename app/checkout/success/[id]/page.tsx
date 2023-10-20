@@ -65,7 +65,7 @@ const Page = () => {
       } catch (error) {
         setError(true);
         console.error("Failed to fetch order:", error);
-        router.push("/not-found"); // Redirect to an error page if you prefer
+        router.push("/not-found");
       } finally {
         setLoading(false);
       }
@@ -91,7 +91,7 @@ const Page = () => {
             />
 
             {session && yourOrder && (
-              <div className={isSmallDevice ? "-small" : " w-full"}>
+              <div className={isSmallDevice ? "mt-10" : "w-full"}>
                 <CheckoutSuccess orderBooks={orderBooks} />
               </div>
             )}
