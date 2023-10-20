@@ -61,7 +61,6 @@ const page = () => {
             <AdminNav
               isSmallDevice={isSmallDevice}
               isMediumDevice={isMediumDevice}
-              isMobileDevice={isMobileDevice}
             />
             <AllBooks />
           </div>
