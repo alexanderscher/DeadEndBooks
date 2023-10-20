@@ -23,7 +23,6 @@ const Rentals = () => {
 
   useEffect(() => {
     const getUser = async () => {
-      // setisLoading(true);
       const res = await fetch("/api/user/current-rental", {
         method: "POST",
         headers: {
@@ -33,7 +32,6 @@ const Rentals = () => {
       });
 
       const data = await res.json();
-      console.log(data);
 
       setRentals(data);
       setisLoading(false);

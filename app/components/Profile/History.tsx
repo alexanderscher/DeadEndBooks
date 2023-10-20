@@ -28,29 +28,18 @@ const History = () => {
     const getUser = async () => {
       setisLoading(true);
 
-      const res = await fetch(
-        `/api/user/${(session as ExtendedSession)?.user?.id}`
-      );
+      const res = await fetch("/api/user/history", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify((session as ExtendedSession)?.user?.id),
+      });
+
       const data = await res.json();
 
-      const rentals = [];
-
-      if (res.ok) {
-        for (const rental in data.History) {
-          const res = await fetch(`/api/book/${data.History[rental].bookId}`);
-          const dataBook = await res.json();
-
-          if (res.ok) {
-            rentals.push({
-              title: dataBook.title,
-              start_date: formatDate(data.History[rental].start_date),
-              return_date: formatDate(data.History[rental].return_date),
-            });
-          }
-        }
-        setRentals(rentals);
-        setisLoading(false);
-      }
+      setRentals(data);
+      setisLoading(false);
     };
     getUser();
   }, [session]);

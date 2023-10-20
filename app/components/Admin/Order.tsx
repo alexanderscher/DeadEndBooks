@@ -96,7 +96,7 @@ const Order = ({ isMobileDevice }: Props) => {
     return (
       <div className="w-full  mt-10  max-w-[840px]">
         <OrderNav isMobileDevice={isMobileDevice} />
-        <div className="w-full flex justify-end mt-10">
+        <div className="w-full flex mt-10">
           <span className="text-[26px]">No orders</span>
         </div>
       </div>
