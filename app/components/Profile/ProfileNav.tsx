@@ -17,7 +17,7 @@ const ProfileNav = ({ isSmallDevice, isMobileDevice }: Props) => {
       <button
         className={`mr-4 ${
           isMobileDevice
-            ? "text-[20px]"
+            ? "text-[16px]"
             : isSmallDevice
             ? "text-[24px]"
             : "text-[26px]"
@@ -28,7 +28,7 @@ const ProfileNav = ({ isSmallDevice, isMobileDevice }: Props) => {
       <button
         className={`mr-4 ${
           isMobileDevice
-            ? "text-[20px]"
+            ? "text-[16px]"
             : isSmallDevice
             ? "text-[24px]"
             : "text-[26px]"
@@ -39,7 +39,7 @@ const ProfileNav = ({ isSmallDevice, isMobileDevice }: Props) => {
       <button
         className={`mr-4 ${
           isMobileDevice
-            ? "text-[20px]"
+            ? "text-[16px]"
             : isSmallDevice
             ? "text-[24px]"
             : "text-[26px]"
@@ -51,7 +51,7 @@ const ProfileNav = ({ isSmallDevice, isMobileDevice }: Props) => {
         <button
           className={`mr-4 ${
             isMobileDevice
-              ? "text-[20px]"
+              ? "text-[16px]"
               : isSmallDevice
               ? "text-[24px]"
               : "text-[26px]"
@@ -63,7 +63,7 @@ const ProfileNav = ({ isSmallDevice, isMobileDevice }: Props) => {
         <button
           className={`mr-4 ${
             isMobileDevice
-              ? "text-[20px]"
+              ? "text-[16px]"
               : isSmallDevice
               ? "text-[24px]"
               : "text-[26px]"
