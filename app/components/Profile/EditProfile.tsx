@@ -17,7 +17,7 @@ interface ChangeEventState {
 
 const Profile = () => {
   const { data: session } = useSession();
-  console.log(session);
+
   const [isLoading, setisLoading] = useState(true);
   const [user, setUser] = useState({
     id: null,
@@ -44,8 +44,6 @@ const Profile = () => {
     userId: "",
   });
 
-  console.log(changeEvent);
-
   const [passwordPrompt, setPasswordPrompt] = useState(false);
   const [emailPrompt, setEmailPrompt] = useState(false);
   const [errorText, setErrorText] = useState({
@@ -69,7 +67,6 @@ const Profile = () => {
   });
 
   const changeSubmit = async (name: string) => {
-    console.log(changeEvent[name]);
     if (!changeEvent[name]) {
       return;
     }
@@ -84,7 +81,6 @@ const Profile = () => {
       },
     });
 
-    console.log(`/api/user/${name}`);
     const data = await res.json();
 
     if (res.ok) {

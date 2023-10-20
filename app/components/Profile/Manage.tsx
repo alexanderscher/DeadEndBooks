@@ -12,7 +12,6 @@ const Manage = () => {
   const router = useRouter();
   const active = (session as ExtendedSession)?.user?.isActive;
   const stripeId = (session as ExtendedSession)?.user?.stripeCustomerId;
-  console.log(session);
 
   const [isLoading, setisLoading] = useState(true);
   const [userSub, setUserSub] = useState("");
@@ -20,13 +19,11 @@ const Manage = () => {
   useEffect(() => {
     const getUser = async () => {
       setisLoading(true);
-      console.log((session as ExtendedSession)?.user?.id);
 
       const res = await fetch(
         `/api/user/${(session as ExtendedSession)?.user?.id}`
       );
       const data = await res.json();
-      console.log(data);
       setUserSub(data.subscriptionType);
     };
 

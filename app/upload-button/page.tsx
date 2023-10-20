@@ -46,11 +46,9 @@ export default function UploadButtonPage() {
           if (res) {
             setImages(res);
             const json = JSON.stringify(res);
-            console.log(json);
           }
         }}
         onUploadError={(error: Error) => {
-          // Do something with the error.
           alert(`ERROR! ${error.message}`);
         }}
       />

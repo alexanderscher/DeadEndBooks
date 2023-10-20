@@ -12,7 +12,6 @@ const Users = () => {
       newsletter: false,
     },
   ]);
-  console.log(users);
 
   const [count, setCount] = useState(0);
 
@@ -20,7 +19,7 @@ const Users = () => {
     const getUsers = async () => {
       const res = await fetch(`/api/user`);
       const data = await res.json();
-      console.log(data);
+
       setUsers(data);
     };
     getUsers();

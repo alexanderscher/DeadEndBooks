@@ -14,10 +14,8 @@ const Saved = () => {
   const [queuedLists, setQueuedLists] = useState<number[]>([]);
   const [reload, setReload] = useState(false);
   const [isLoaded, setIsLoaded] = useState(true);
-  console.log(pageData);
   const [cartStatuses, setCartStatuses] = useState<Record<number, string>>({});
   const [lineStatuses, setLineStatuses] = useState<Record<number, string>>({});
-  console.log(pageData);
 
   useEffect(() => {
     setReload(false);

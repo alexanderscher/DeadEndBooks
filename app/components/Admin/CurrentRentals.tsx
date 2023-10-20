@@ -185,7 +185,6 @@ const CurrentRentals = () => {
       setIsLoaded(true);
       const res = await fetch(`/api/admin/rentals/current-rentals`);
       const data = await res.json();
-      console.log(data);
 
       setRentals(data);
       setIsLoaded(false);

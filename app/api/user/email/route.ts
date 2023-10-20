@@ -7,7 +7,7 @@ export async function PUT(request: Request) {
     const json = await request.json();
     console.log(json);
     const userId = json.userId;
-    const newEmail = json.email;
+    const newEmail = json.email.toLowerCase();
     const currentPasswordEmail = json.currentPasswordEmail;
 
     const user = await prisma.user.findUnique({
@@ -100,7 +100,6 @@ export async function PUT(request: Request) {
       }
     }
 
-    // This is a catch-all return for any case that hasn't been explicitly handled:
     return new NextResponse(
       JSON.stringify({
         message: "Unexpected scenario encountered.",

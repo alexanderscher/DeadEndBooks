@@ -44,10 +44,8 @@ const Page = () => {
     const fetchOrder = async () => {
       try {
         const res = await fetch(`/api/order/${orderId}`);
-        console.log(res.status);
 
         if (res.status === 404) {
-          console.log(res.status);
           router.push("/not-found");
           return;
         }

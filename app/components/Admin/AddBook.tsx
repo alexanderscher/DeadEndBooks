@@ -145,7 +145,7 @@ const AddBook = () => {
   };
 
   return (
-    <div className="mt-6">
+    <div className="mt-2">
       <form ref={formRef} onSubmit={submitBook}>
         <div className="flex flex-col w-full max-w-[840px]">
           <input

@@ -36,7 +36,6 @@ const Books = ({ isSmallDevice, isMediumDevice }: Props) => {
   const [isLoading, setisLoading] = useState(true);
   const { data: session } = useSession();
   const sessionId = (session as ExtendedSession)?.user?.id;
-  console.log(sessionId);
 
   const [columns, setColumns] = useState(isMediumDevice ? 3 : 2);
   const [columnsData, setColumnsData] = useState<BookImage[][]>([]);
@@ -65,7 +64,6 @@ const Books = ({ isSmallDevice, isMediumDevice }: Props) => {
       setisLoading(true);
       const res = await fetch("/api/book");
       const data = await res.json();
-      console.log(data);
       const booktoPush = [];
 
       for (const d in data) {
@@ -80,17 +78,14 @@ const Books = ({ isSmallDevice, isMediumDevice }: Props) => {
               data[d].inStock &&
               data[d].Queue.length > 0
             ) {
-              console.log("notYours");
               stockStatus = "notYours";
             } else if (
               data[d].Queue[0]?.userId === parseInt(sessionId) &&
               data[d].inStock
             ) {
-              console.log("yours");
               stockStatus = "yours";
             } else if (data[d].Queue.length === 0 && data[d].inStock) {
               stockStatus = "upForGrabs";
-              console.log("upForGrabs");
             }
             if (stockStatus !== "notYours") {
               booktoPush.push({

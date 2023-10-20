@@ -38,14 +38,12 @@ const PastRentals = ({ isSmallDevice }: PastRentalsProps) => {
   ]);
 
   const [isLoaded, setIsLoaded] = useState(true);
-  console.log(isLoaded);
 
   useEffect(() => {
     const getPastRentals = async () => {
       const res = await fetch(`/api/admin/rentals/past-rentals`);
       const data = await res.json();
       setRentals(data);
-      console.log(data);
 
       setIsLoaded(false);
     };

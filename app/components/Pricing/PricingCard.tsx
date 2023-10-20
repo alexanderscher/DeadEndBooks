@@ -49,8 +49,6 @@ const PricingCard = ({ price, session }: priceProps) => {
 
   useEffect(() => {
     const getUser = async () => {
-      console.log((session as ExtendedSession)?.user?.id);
-
       const res = await fetch(
         `/api/user/${(session as ExtendedSession)?.user?.id}`
       );

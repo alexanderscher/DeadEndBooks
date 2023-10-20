@@ -17,7 +17,7 @@ const AddressModal = ({ setModal, userId }: Props) => {
     phone: "",
     userId,
   });
-  console.log(formData);
+
   const [errorText, setErrorText] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

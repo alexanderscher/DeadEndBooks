@@ -60,7 +60,7 @@ const page = () => {
               isSmallDevice={isSmallDevice}
               isMediumDevice={isMediumDevice}
             />
-            <Order />
+            <Order isMobileDevice={isMobileDevice} />
           </div>
         </>
       )}

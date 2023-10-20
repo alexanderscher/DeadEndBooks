@@ -53,13 +53,11 @@ const Others = () => {
       email: "",
     },
   ]);
-  console.log(users);
 
   useEffect(() => {
     const getUsers = async () => {
       const res = await fetch("/api/user/other");
       const data: User[] = await res.json();
-      console.log(data);
 
       const filteredData = data.filter(
         (user) =>

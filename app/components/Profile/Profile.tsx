@@ -10,7 +10,6 @@ const Profile = () => {
   const { data: session } = useSession();
   const router = useRouter();
   const active = (session as ExtendedSession)?.user?.isActive;
-  console.log(session);
 
   const [isLoading, setisLoading] = useState(true);
   const [user, setUser] = useState({
@@ -42,7 +41,6 @@ const Profile = () => {
   useEffect(() => {
     const getUser = async () => {
       setisLoading(true);
-      console.log((session as ExtendedSession)?.user?.id);
 
       const res = await fetch(
         `/api/user/${(session as ExtendedSession)?.user?.id}`

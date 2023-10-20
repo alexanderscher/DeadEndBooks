@@ -9,7 +9,7 @@ const stripeId = async (user: any, email: string, name: string) => {
   });
 
   const customer = await stripe.customers.create({
-    email: user.email!,
+    email: user.email.toLowerCase()!,
     name: user.name!,
   });
 
@@ -29,7 +29,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     if (provider && provider === "Google") {
       const existingUser = await prisma.user.findUnique({
         where: {
-          email: email,
+          email: email.toLowerCase(),
         },
       });
 
@@ -40,28 +40,13 @@ export async function POST(request: Request): Promise<NextResponse> {
         const user = await prisma.user.create({
           data: {
             name: name,
-            email: email,
+            email: email.toLowerCase(),
             password: "",
             admin: false,
           },
         });
 
         stripeId(user, email, name);
-        // const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-        //   apiVersion: "2023-08-16",
-        // });
-
-        // const customer = await stripe.customers.create({
-        //   email: user.email!,
-        //   name: user.name!,
-        // });
-
-        // await prisma.user.update({
-        //   where: { id: user.id },
-        //   data: {
-        //     stripeCustomerId: customer.id,
-        //   },
-        // });
       }
       return new NextResponse(JSON.stringify(user), {
         status: 201,
@@ -92,7 +77,7 @@ export async function POST(request: Request): Promise<NextResponse> {
 
       const existingUser = await prisma.user.findUnique({
         where: {
-          email: email,
+          email: email.toLowerCase(),
         },
       });
       if (existingUser) {
@@ -111,7 +96,7 @@ export async function POST(request: Request): Promise<NextResponse> {
       const user = await prisma.user.create({
         data: {
           name: name,
-          email: email,
+          email: email.toLowerCase(),
           password: hashedPassword,
           admin: false,
         },

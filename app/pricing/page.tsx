@@ -27,7 +27,6 @@ const page = () => {
   const [prices, setPrices] = useState<any>([]);
   const { data: session } = useSession();
 
-  console.log(prices);
   useEffect(() => {
     fetchPrices();
   }, []);

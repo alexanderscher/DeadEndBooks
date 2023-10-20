@@ -33,7 +33,7 @@ const page = () => {
           />
 
           <div className={isSmallDevice ? "" : "info text-end "}>
-            <div className={isSmallDevice && "mt-10"}>
+            <div className={isSmallDevice && "mt-6"}>
               <button className={isSmallDevice ? " text-[20px]" : ""}>
                 How it works
               </button>
@@ -58,7 +58,7 @@ const page = () => {
               <button
                 className={
                   isSmallDevice
-                    ? "hover:line-through mt-6 text-[20px] text-red-500"
+                    ? "hover:line-through mt-5 text-[20px] text-red-500"
                     : "hover:line-through mt-10 text-red-500"
                 }
               >

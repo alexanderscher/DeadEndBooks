@@ -13,7 +13,13 @@ const ProfileNav = ({ isSmallDevice, isMobileDevice }: Props) => {
   const active = (session as ExtendedSession)?.user?.isActive;
 
   return (
-    <div className={isSmallDevice ? "flex mt-6  border-black" : "flex w-full"}>
+    <div
+      className={
+        isSmallDevice
+          ? "flex mt-6  border-black text-slate-500"
+          : "flex w-full text-slate-500"
+      }
+    >
       <button
         className={`mr-4 ${
           isMobileDevice

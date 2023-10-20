@@ -46,16 +46,18 @@ type Order = {
   returned: { bookTitle: string; returned: boolean }[];
 };
 
-const Order = () => {
+type Props = {
+  isMobileDevice: boolean;
+};
+
+const Order = ({ isMobileDevice }: Props) => {
   const [isLoaded, setIsLoaded] = useState(true);
   const [orders, setOrders] = useState<Order[]>([]);
-  console.log(orders);
 
   const [reload, setReload] = useState(false);
   const currentPage = usePathname();
 
   const markasShipped = async (id: number) => {
-    console.log(id);
     const res = await fetch(`/api/order`, {
       method: "PUT",
       headers: {
@@ -79,56 +81,8 @@ const Order = () => {
       const res = await fetch(`/api/order/${currentPage.split("/")[3]}`);
       const data = await res.json();
       console.log(data);
-      for (const order of data) {
-        const bookTitles = await Promise.all(
-          order.books.map(async (book: OrderBook) => {
-            const res = await fetch(`/api/book/${book.bookId}`);
-            const bookOrder = await res.json();
-            return bookOrder.title;
-          })
-        );
-        console.log(order);
 
-        const bookReturnStatus = order.books.map(
-          (book: OrderBook, index: number) => {
-            const returnStatus = order.returned.find(
-              (ret: OrderBook) =>
-                ret.bookId === book.bookId && ret.orderId === book.orderId
-            );
-            return {
-              bookTitle: bookTitles[index],
-              returned: returnStatus?.returned || false,
-            };
-          }
-        );
-
-        const userres = await fetch(`/api/user/${order.userId}`);
-        const user = await userres.json();
-
-        setOrders((prevOrders) => [
-          ...prevOrders,
-          {
-            addressOrder: {
-              address: order.address.address,
-              city: order.address.city,
-              country: order.address.country,
-              state: order.address.state,
-              zipcode: order.address.zipcode,
-              phone: order.address.phone,
-              orderName: order.address.name,
-            },
-            id: order.id,
-            title: bookTitles,
-            email: user.email,
-            name: user.name,
-            order_date: formatDate(order.order_date) as string,
-            start_date: formatDate(order.start_date) as string,
-            return_date: formatDate(order.return_date) as string,
-            shipped: order.shipped,
-            returned: bookReturnStatus,
-          },
-        ]);
-      }
+      setOrders(data);
       setIsLoaded(false);
     };
     getOrders();
@@ -141,7 +95,7 @@ const Order = () => {
   if (orders.length === 0) {
     return (
       <div className="w-full  mt-10  max-w-[840px]">
-        <OrderNav />
+        <OrderNav isMobileDevice={isMobileDevice} />
         <div className="w-full flex justify-end mt-10">
           <span className="text-[26px]">No orders</span>
         </div>
@@ -151,7 +105,7 @@ const Order = () => {
 
   return (
     <div className="mt-10 max-w-[840px]">
-      <OrderNav />
+      <OrderNav isMobileDevice={isMobileDevice} />
       {orders.map((order) => (
         <div
           key={order.id}

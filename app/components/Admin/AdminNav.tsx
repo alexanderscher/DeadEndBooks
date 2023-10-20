@@ -11,7 +11,7 @@ const AdminNav = ({ isSmallDevice, isMediumDevice }: Props) => {
     <div
       className={
         isSmallDevice
-          ? "flex flex-wrap mt-6 border-t-[2px] border-black"
+          ? "flex flex-wrap mt-6 border-t-[2px] border-slate-500 "
           : "flex flex-wrap w-full "
       }
     >

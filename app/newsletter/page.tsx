@@ -42,14 +42,11 @@ const Newsletter = ({ isSmallDevice }: Props) => {
   useEffect(() => {
     setReload(false);
     const getUser = async () => {
-      console.log((session as ExtendedSession)?.user?.id);
-
       const res = await fetch(
         `/api/user/${(session as ExtendedSession)?.user?.id}`
       );
       const data = await res.json();
       setNewsletter(data.newsletter);
-      console.log(data);
     };
     getUser();
   }, [session, reload]);

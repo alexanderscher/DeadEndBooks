@@ -133,7 +133,7 @@ const Checkout = ({ isSmallDevice, isMobileDevice }: Props) => {
     });
     if (res.ok) {
       const data = await res.json();
-      console.log(data.order.id);
+
       if (data.order.id !== undefined) {
         router.push(`/checkout/success/${data.order.id}`);
       }

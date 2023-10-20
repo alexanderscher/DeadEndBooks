@@ -90,8 +90,6 @@ const Cart = ({ isMobileDevice }: Props) => {
     second: false,
   });
 
-  console.log(modalCheckout);
-
   const [userCurrentLength, setUserCurrentLength] = useState(0);
 
   const checkoutSubmit = async () => {

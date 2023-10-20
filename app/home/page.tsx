@@ -31,7 +31,7 @@ const page = () => {
             isSmallDevice={isSmallDevice}
             isMobileDevice={isMobileDevice}
           />
-          <div className={isSmallDevice ? "mt-6" : " w-full"}>
+          <div className={isSmallDevice ? "" : " w-full"}>
             <Books
               isSmallDevice={isSmallDevice}
               isMediumDevice={isMediumDevice}

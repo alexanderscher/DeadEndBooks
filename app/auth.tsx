@@ -28,9 +28,8 @@ export const LogOutButton = ({ isSmallDevice }: Props) => {
 
   return (
     <button
-      className={`hover:line-through ${
-        isMobileDevice ? "text-sm" : "text-md"
-      } mr-2`}
+      className={`hover:line-through text-md
+     mr-2`}
       onClick={() => signout()}
     >
       {isSmallDevice ? "Log Out" : "Log Out"}

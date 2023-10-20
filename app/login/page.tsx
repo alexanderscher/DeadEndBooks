@@ -2,8 +2,7 @@
 import React, { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
-import Image from "next/image";
-import { useMediaQuery } from "react-responsive";
+
 import Link from "next/link";
 
 export default function Login() {
@@ -13,7 +12,6 @@ export default function Login() {
     password: "",
   });
 
-  console.log(data);
   const [google, setGoogle] = useState(false);
   const [missingEmail, setMissingEmail] = useState(false);
   const [missingPassword, setMissingPassowrd] = useState(false);

@@ -35,8 +35,6 @@ const EditBook = ({ isSmallDevice }: Props) => {
     photo_back: "",
   });
 
-  console.log(bookPlaceHolder);
-
   const currentPage = usePathname();
   useEffect(() => {
     const getBooks = async () => {

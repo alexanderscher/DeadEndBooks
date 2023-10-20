@@ -46,7 +46,6 @@ export default function UploadDND() {
           if (res) {
             setImages(res);
             const json = JSON.stringify(res);
-            console.log(json);
           }
         }}
         onUploadError={(error: Error) => {

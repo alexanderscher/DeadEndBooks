@@ -32,7 +32,7 @@ const page = () => {
           />
 
           <div className={"info w-full "}>
-            <p className={isSmallDevice ? "text-[18px] mt-10" : "text-end"}>
+            <p className={isSmallDevice ? "text-[18px] mt-5" : "text-end"}>
               Dead End Books is a subscription-based art book library. The
               barrier to entry for art books is uniquely expensive and
               exclusive, requiring either great resources or prior education and

@@ -190,56 +190,31 @@ const SingleBook = ({ isSmallDevice, isMobileDevice }: Props) => {
       {isMobileDevice ? (
         <>
           <div className="w-full">
-            <div className="flex items-start flex-wrap">
-              <div className="w-1/2">
-                <h1
-                  className={
-                    isSmallDevice
-                      ? `${text}  text-slate-400`
-                      : "book-text  text-slate-400"
-                  }
-                >
-                  Title
-                </h1>
-                <h1 className={isSmallDevice ? `${text}` : "book-text "}>
+            <div className="flex flex-col ">
+              <div className="w-full">
+                <h1 className={`${text}  text-slate-400`}>Title</h1>
+                <h1 className={`${text} border-b-[2px] border-slate-300`}>
                   {pageData.title}
                 </h1>
-                <h1
-                  className={
-                    isSmallDevice
-                      ? `${text}  text-slate-400 mt-4`
-                      : "book-text  text-slate-400 mt-4"
-                  }
-                >
-                  Author
-                </h1>
-                <h1 className={isSmallDevice ? `${text}` : "book-text"}>
+                <h1 className={`${text}  text-slate-400 mt-4`}>Author</h1>
+                <h1 className={`${text} border-b-[2px] border-slate-300`}>
                   {pageData.author}
                 </h1>
-                <h1
-                  className={
-                    isSmallDevice
-                      ? `${text}  text-slate-400 mt-4`
-                      : "book-text  text-slate-400 mt-4"
-                  }
-                >
-                  Publisher
-                </h1>
-                <h1 className={isSmallDevice ? `${text}` : "book-text"}>
+                <h1 className={`${text}  text-slate-400 mt-4`}>Publisher</h1>
+                <h1 className={`${text} border-b-[2px] border-slate-300`}>
                   {pageData.publisher}
                 </h1>
               </div>
               <div className="w-1/2">
                 {!userId ? (
-                  <div className="text-end">
-                    <h1 className={` text-red-500 text-end ${text} `}>
-                      You must have an account to checkout books
+                  <div className="mt-4">
+                    <h1 className={` text-red-300 ${text} `}>
+                      Login to checkout books
                     </h1>
                     <Link href="/login">
                       <h1
-                        className={`${
-                          isSmallDevice ? `${text}` : "book-text mt-8"
-                        }  cursor-pointer hover:line-through text-red-500 mt-8`}
+                        className={`book-text mt-4 ${text}
+                        }  cursor-pointer hover:line-through text-red-500 mt-4`}
                       >
                         Login
                       </h1>
@@ -247,11 +222,9 @@ const SingleBook = ({ isSmallDevice, isMobileDevice }: Props) => {
 
                     <Link href="/signup">
                       <h1
-                        className={`${
-                          isSmallDevice ? `${text}` : "book-text "
-                        }  cursor-pointer hover:line-through text-red-500 `}
+                        className={`${text}
+                     cursor-pointer hover:line-through text-red-500 `}
                       >
-                        {" "}
                         Signup
                       </h1>
                     </Link>
@@ -259,7 +232,7 @@ const SingleBook = ({ isSmallDevice, isMobileDevice }: Props) => {
                 ) : (
                   <>
                     {stock.inYourPossesion ? (
-                      <div className="text-end">
+                      <div className="mt-4">
                         <h1
                           className={`${text}
                   
@@ -271,15 +244,14 @@ const SingleBook = ({ isSmallDevice, isMobileDevice }: Props) => {
                             : savedStatuses[parseInt(userId)] || "Save"}
                         </h1>
                         <h1
-                          className={`${
-                            isSmallDevice ? `${text}` : "book-text"
-                          }   text-red-500`}
+                          className={`${text}
+                        text-red-500`}
                         >
                           In your possesion
                         </h1>
                       </div>
                     ) : (
-                      <div className="text-end">
+                      <div className="mt-4">
                         <h1 className={`${text} text-red-500 `}>
                           {pageData.inStock && stock.yours
                             ? "In stock"
@@ -290,9 +262,8 @@ const SingleBook = ({ isSmallDevice, isMobileDevice }: Props) => {
                             : !pageData.inStock && "Out of stock"}
                         </h1>
                         <h1
-                          className={`${
-                            isSmallDevice ? `${text}` : "book-text"
-                          }  cursor-pointer hover:line-through text-red-500`}
+                          className={`${text}
+                       cursor-pointer hover:line-through text-red-500`}
                           onClick={handleSave}
                         >
                           {saved
@@ -301,8 +272,7 @@ const SingleBook = ({ isSmallDevice, isMobileDevice }: Props) => {
                         </h1>
                         {pageData.inStock && stock.yours && (
                           <h1
-                            className={`${
-                              isSmallDevice ? `${text}` : "book-text"
+                            className={`${text} 
                             }  cursor-pointer hover:line-through text-red-500`}
                             onClick={handleCart}
                           >
@@ -313,8 +283,7 @@ const SingleBook = ({ isSmallDevice, isMobileDevice }: Props) => {
                         )}
                         {pageData.inStock && stock.upForGrabs && (
                           <h1
-                            className={`${
-                              isSmallDevice ? `${text}` : "book-text"
+                            className={`${text}
                             }  cursor-pointer hover:line-through text-red-500`}
                             onClick={handleCart}
                           >
@@ -325,8 +294,7 @@ const SingleBook = ({ isSmallDevice, isMobileDevice }: Props) => {
                         )}
                         {pageData.inStock && stock.notYours && (
                           <h1
-                            className={`${
-                              isSmallDevice ? `${text}` : "book-text"
+                            className={`${text}
                             }  cursor-pointer hover:line-through text-red-500`}
                             onClick={() => getInLine(parseInt(pageData.id))}
                           >
@@ -337,8 +305,7 @@ const SingleBook = ({ isSmallDevice, isMobileDevice }: Props) => {
                         )}
                         {!pageData.inStock && (
                           <h1
-                            className={`${
-                              isSmallDevice ? `${text}` : "book-text"
+                            className={`${text}
                             }  cursor-pointer hover:line-through text-red-500`}
                             onClick={() => getInLine(parseInt(pageData.id))}
                           >
@@ -429,7 +396,7 @@ const SingleBook = ({ isSmallDevice, isMobileDevice }: Props) => {
                     isSmallDevice ? `${smtext}` : "book-text mt-10"
                   }  cursor-pointer hover:line-through text-red-500 mt-10`}
                 >
-                  You must have an account to checkout books
+                  Login to checkout books
                 </h1>
                 <Link href="/login">
                   <h1

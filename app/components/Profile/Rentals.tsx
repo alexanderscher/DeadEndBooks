@@ -58,8 +58,6 @@ const Rentals = () => {
     },
   ]);
 
-  console.log(rentals);
-
   useEffect(() => {
     const getUser = async () => {
       setisLoading(true);
@@ -80,7 +78,6 @@ const Rentals = () => {
             `/api/order/${data.Current[rental].orderId}`
           );
           const dataOrder = await order.json();
-          console.log(dataOrder.shipped);
 
           if (res.ok) {
             rentals.push({

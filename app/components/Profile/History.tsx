@@ -32,7 +32,6 @@ const History = () => {
         `/api/user/${(session as ExtendedSession)?.user?.id}`
       );
       const data = await res.json();
-      console.log(data);
 
       const rentals = [];
 

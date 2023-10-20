@@ -16,7 +16,7 @@ async function getDatabaseId(user: JWT) {
     if (user.email) {
       const queryResult = await prisma.user.findUnique({
         where: {
-          email: user.email,
+          email: user.email.toLowerCase(),
         },
         select: {
           id: true,
@@ -78,7 +78,7 @@ export const authOptions: NextAuthOptions = {
 
         const user = await prisma.user.findUnique({
           where: {
-            email: credentials.email,
+            email: credentials.email.toLowerCase(),
           },
           select: {
             id: true,
@@ -106,7 +106,7 @@ export const authOptions: NextAuthOptions = {
 
         return {
           id: user.id + "",
-          email: user.email,
+          email: user.email.toLowerCase(),
           name: user.name,
           admin: user.admin,
         };
