@@ -150,7 +150,7 @@ export const authOptions: NextAuthOptions = {
     async signIn({ user, account }) {
       const isProduction = process.env.NEXT_PUBLIC_NODE_ENV === "production";
       const url = isProduction
-        ? "https://deadendbooks.org/api/signup"
+        ? "http://deadendbooks.org/api/signup"
         : "http://localhost:3000/api/signup";
 
       if (account?.provider === "google") {
