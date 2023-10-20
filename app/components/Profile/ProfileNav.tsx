@@ -13,11 +13,11 @@ const ProfileNav = ({ isSmallDevice, isMobileDevice }: Props) => {
   const active = (session as ExtendedSession)?.user?.isActive;
 
   return (
-    <div className={isSmallDevice ? "flex mt-10  border-black" : "flex w-full"}>
+    <div className={isSmallDevice ? "flex mt-6  border-black" : "flex w-full"}>
       <button
         className={`mr-4 ${
           isMobileDevice
-            ? "text-[16px]"
+            ? "text-[18px]"
             : isSmallDevice
             ? "text-[24px]"
             : "text-[26px]"
@@ -28,7 +28,7 @@ const ProfileNav = ({ isSmallDevice, isMobileDevice }: Props) => {
       <button
         className={`mr-4 ${
           isMobileDevice
-            ? "text-[16px]"
+            ? "text-[18px]"
             : isSmallDevice
             ? "text-[24px]"
             : "text-[26px]"
@@ -39,7 +39,7 @@ const ProfileNav = ({ isSmallDevice, isMobileDevice }: Props) => {
       <button
         className={`mr-4 ${
           isMobileDevice
-            ? "text-[16px]"
+            ? "text-[18px]"
             : isSmallDevice
             ? "text-[24px]"
             : "text-[26px]"
@@ -51,7 +51,7 @@ const ProfileNav = ({ isSmallDevice, isMobileDevice }: Props) => {
         <button
           className={`mr-4 ${
             isMobileDevice
-              ? "text-[16px]"
+              ? "text-[18px]"
               : isSmallDevice
               ? "text-[24px]"
               : "text-[26px]"
@@ -63,7 +63,7 @@ const ProfileNav = ({ isSmallDevice, isMobileDevice }: Props) => {
         <button
           className={`mr-4 ${
             isMobileDevice
-              ? "text-[16px]"
+              ? "text-[18px]"
               : isSmallDevice
               ? "text-[24px]"
               : "text-[26px]"
