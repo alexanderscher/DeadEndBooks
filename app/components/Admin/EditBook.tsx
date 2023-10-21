@@ -4,7 +4,6 @@ import "@uploadthing/react/styles.css";
 import { UploadButton } from "@uploadthing/react";
 import { OurFileRouter } from "../../api/uploadthing/core";
 import { useState } from "react";
-import { Book } from "@/types";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
 

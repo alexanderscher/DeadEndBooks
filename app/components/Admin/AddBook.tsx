@@ -4,7 +4,6 @@ import "@uploadthing/react/styles.css";
 import { UploadButton } from "@uploadthing/react";
 import { OurFileRouter } from "../../api/uploadthing/core";
 import { useState } from "react";
-import { Book } from "@/types";
 
 const AddBook = () => {
   const formRef = useRef<HTMLFormElement>(null);
@@ -221,8 +220,8 @@ const AddBook = () => {
                       const json = JSON.stringify(res);
                     }
                   }}
-                  onUploadError={(error: Error) => {
-                    alert(`ERROR! ${error.message}`);
+                  onUploadError={(error) => {
+                    console.log("Error: ", error);
                   }}
                 />
               </div>
@@ -255,8 +254,8 @@ const AddBook = () => {
                       const json = JSON.stringify(res);
                     }
                   }}
-                  onUploadError={(error: Error) => {
-                    alert(`ERROR! ${error.message}`);
+                  onUploadError={(error) => {
+                    console.log("Error: ", error);
                   }}
                 />
               </div>
