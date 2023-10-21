@@ -13,7 +13,8 @@ export const resetPassword = async (email: string) => {
   });
 
   if (!user) {
-    throw new Error("User not found");
+    return "User not found";
+    // throw new Error("User not found");
   }
 
   const resetPasswordToken = crypto.randomBytes(32).toString("base64url");
@@ -40,5 +41,5 @@ export const resetPassword = async (email: string) => {
     }) as React.ReactElement,
   });
 
-  return "Password reset email sent";
+  return "Please check email to reset password";
 };

@@ -1,7 +1,7 @@
 "use server";
 
 import prisma from "@/prisma/client";
-import bcrypt from "bcryptjs";
+import bcrypt from "bcrypt";
 
 export const changePassword = async (
   resetPasswordToken: string,
@@ -13,19 +13,19 @@ export const changePassword = async (
     },
   });
   if (!user) {
-    throw new Error("Invalid reset token");
+    return "Invalid reset token";
   }
 
   const resetPasswordTokenExpiry = user.resetPasswordTokenExpiry;
 
   if (!resetPasswordTokenExpiry) {
-    throw new Error("Token expired");
+    return "Invalid reset token";
   }
 
   const today = new Date();
 
   if (today > resetPasswordTokenExpiry) {
-    throw new Error("Token expired");
+    return "Token expired";
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);

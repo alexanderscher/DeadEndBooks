@@ -121,10 +121,10 @@ export default function Login() {
               </button>
 
               <p className="text-[22px] text-red-300 hover:line-through cursor-pointer">
-                <Link href="\signup"> Create an account</Link>
+                <Link href="/signup"> Create an account</Link>
               </p>
               <p className="text-[22px] text-red-300 hover:line-through cursor-pointer">
-                Forgot password
+                <Link href="/auth/reset-password">Forgot password</Link>
               </p>
             </div>
           </form>
