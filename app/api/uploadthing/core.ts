@@ -15,29 +15,18 @@ const auth = async (req: Request) => {
 };
 
 export const ourFileRouter = {
-  imageUploader: f({ image: { maxFileSize: "4MB", maxFileCount: 10 } })
+  imageUploader: f({ image: { maxFileSize: "4MB", maxFileCount: 1 } })
     .middleware(async ({ req }) => {
-      const user = await auth(req);
+      // const user = await auth(req);
 
-      if (!user) throw new Error("Unauthorized");
+      // if (!user) throw new Error("Unauthorized");
 
-      return { userId: user.id };
+      // return { userId: user.id };
+      return {};
     })
     .onUploadComplete(async ({ metadata, file }) => {
-      console.log("Upload complete for userId:", metadata.userId);
-
       console.log("file url", file.url);
     }),
-  mediaPost: f({
-    image: { maxFileSize: "2MB", maxFileCount: 4 },
-    video: { maxFileSize: "256MB", maxFileCount: 1 },
-  })
-    .middleware(async ({ req }) => {
-      const user = await auth(req);
-      if (!user) throw new Error("Unauthorized");
-      return { userId: user.id };
-    })
-    .onUploadComplete((data) => console.log("file", data)),
 } satisfies FileRouter;
 
 export type OurFileRouter = typeof ourFileRouter;

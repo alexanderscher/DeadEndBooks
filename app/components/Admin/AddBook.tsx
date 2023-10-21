@@ -196,22 +196,6 @@ const AddBook = () => {
             <div className="mr-6">
               <div className="">
                 <UploadButton<OurFileRouter>
-                  endpoint="imageUploader"
-                  onClientUploadComplete={(res) => {
-                    if (res) {
-                      setFrontImage(res);
-                      const json = JSON.stringify(res);
-                      // Do something with the response
-                      console.log(json);
-                    }
-                    //alert("Upload Completed");
-                  }}
-                  onUploadError={(error: Error) => {
-                    // Do something with the error.
-                    alert(`ERROR! ${error.message}`);
-                  }}
-                />
-                {/* <UploadButton<OurFileRouter>
                   appearance={{
                     button:
                       "ut-ready:bg-slate-400  ut-uploading:cursor-not-allowed rounded-r-none bg-slate-400  bg-none after:bg-orange-400",
@@ -239,7 +223,7 @@ const AddBook = () => {
                   onUploadError={(error) => {
                     console.log("Error: ", error);
                   }}
-                /> */}
+                />
               </div>
             </div>
 
