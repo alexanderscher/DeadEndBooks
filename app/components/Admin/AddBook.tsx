@@ -2,8 +2,8 @@
 import React, { useEffect, useRef } from "react";
 import "@uploadthing/react/styles.css";
 import { UploadButton } from "@uploadthing/react";
-import { OurFileRouter } from "../../api/uploadthing/core";
 import { useState } from "react";
+import { OurFileRouter } from "@/app/api/uploadthing/core";
 
 const AddBook = () => {
   const formRef = useRef<HTMLFormElement>(null);
@@ -216,7 +216,6 @@ const AddBook = () => {
                   endpoint="imageUploader"
                   onClientUploadComplete={(res) => {
                     if (res) {
-                      console.log(res);
                       setFrontImage(res);
                       const json = JSON.stringify(res);
                     }

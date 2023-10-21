@@ -2,7 +2,7 @@
 import React, { useEffect, useRef } from "react";
 import "@uploadthing/react/styles.css";
 import { UploadButton } from "@uploadthing/react";
-import { OurFileRouter } from "../../api/uploadthing/core";
+import { OurFileRouter } from "@/app/api/uploadthing/core";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";

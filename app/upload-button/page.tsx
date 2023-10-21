@@ -1,11 +1,10 @@
 "use client";
 
 import "@uploadthing/react/styles.css";
-
 import { UploadButton } from "@uploadthing/react";
-import { OurFileRouter } from "../api/uploadthing/core";
 import { useState } from "react";
 import Link from "next/link";
+import { OurFileRouter } from "../api/uploadthing/core";
 
 export default function UploadButtonPage() {
   const [images, setImages] = useState<
