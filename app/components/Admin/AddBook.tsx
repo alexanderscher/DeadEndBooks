@@ -216,6 +216,7 @@ const AddBook = () => {
                   endpoint="imageUploader"
                   onClientUploadComplete={(res) => {
                     if (res) {
+                      console.log(res);
                       setFrontImage(res);
                       const json = JSON.stringify(res);
                     }
