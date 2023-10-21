@@ -105,6 +105,8 @@ model User {
   subscriptionType String?
   Orders           Orders[]
   newsletter       Boolean   @default(true)
+  resetPasswordToken String? @unique
+  resetPasswordTokenExpiry DateTime?
 }
 
 model OrderAddress {

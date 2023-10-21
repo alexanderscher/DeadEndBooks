@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { use, useEffect, useState } from "react";
 import { LogOutButton } from "../../auth";
 import { ExtendedSession } from "@/types";
+import TestEmailButton from "../TestEmailButton";
 
 interface Props {
   isSmallDevice: boolean;
@@ -322,6 +323,7 @@ const Navbar = ({ isSmallDevice, isMobileDevice }: Props) => {
                 <button className="hover:line-through text-md">
                   <Link href="/about">About</Link>
                 </button>
+
                 {session && (session as ExtendedSession)?.user?.admin && (
                   <button className="hover:line-through text-md">
                     <Link href="/admin/addbook">Admin</Link>
