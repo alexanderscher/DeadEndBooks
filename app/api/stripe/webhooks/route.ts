@@ -34,7 +34,6 @@ const webhookHandler = async (req: NextRequest): Promise<NextResponse> => {
 
     const subscription = event.data.object as Stripe.Subscription;
     const planNickname = subscription.items.data[0].plan.nickname;
-    console.log("planNickname", planNickname);
 
     const subscriptionId = subscription.id;
 

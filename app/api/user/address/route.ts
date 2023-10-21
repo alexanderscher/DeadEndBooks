@@ -63,7 +63,6 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   const json = await request.json();
-  console.log(json);
 
   const requiredFields = [
     "name",

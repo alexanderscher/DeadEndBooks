@@ -7,11 +7,9 @@ import prisma from "@/prisma/client";
 export async function PUT(request: Request) {
   try {
     const json = await request.json();
-    console.log(json);
     const userId = json.userId;
     const newPassword = json.newPassword;
     const oldPassword = json.currentPasswordPassword;
-    console.log(newPassword, oldPassword);
 
     if (
       (newPassword === "" && oldPassword === "") ||

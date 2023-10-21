@@ -6,8 +6,6 @@ export async function POST(request: Request) {
     const json = await request.json();
     const { userId, bookId, start_date, return_date, id, orderId } = json;
 
-    console.log(json);
-
     await prisma.book.update({
       where: { id: bookId },
       data: {

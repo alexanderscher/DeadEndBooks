@@ -4,7 +4,6 @@ import prisma from "@/prisma/client";
 export async function PUT(request: Request): Promise<NextResponse> {
   try {
     const json = await request.json();
-    console.log(json);
     const userId = json.userId;
     const newsletter = json.newsletter;
 

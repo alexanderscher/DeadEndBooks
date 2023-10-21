@@ -9,7 +9,7 @@ interface Props {
 }
 export const LogOutButton = ({ isSmallDevice }: Props) => {
   const router = useRouter();
-  const isProduction = process.env.NEXT_PUBLIC_NODE_ENV === "production";
+  const isProduction = process.env.NODE_ENV === "production";
   const url = isProduction
     ? "https://deadendbooks.org/home"
     : "http://localhost:3000/home";

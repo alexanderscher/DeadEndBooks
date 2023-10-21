@@ -80,7 +80,6 @@ const Order = ({ isMobileDevice }: Props) => {
 
       const res = await fetch(`/api/order/${currentPage.split("/")[3]}`);
       const data = await res.json();
-      console.log(data);
 
       setOrders(data);
       setIsLoaded(false);

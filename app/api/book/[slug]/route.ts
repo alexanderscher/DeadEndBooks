@@ -54,7 +54,6 @@ export async function GET(
       },
     });
   }
-  console.log(book);
 
   if (book === null) {
     return new NextResponse(JSON.stringify({ error: "Book not found" }), {

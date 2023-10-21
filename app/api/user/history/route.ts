@@ -54,7 +54,6 @@ export async function POST(request: Request) {
     const json = await request.json();
 
     const id = json;
-    console.log(id);
 
     if (!id) {
       return new NextResponse("Missing name. Cannot find user.", {

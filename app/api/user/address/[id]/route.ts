@@ -10,7 +10,6 @@ export async function GET(
   const address = await prisma.address.findUnique({
     where: { id: parseInt(id) },
   });
-  console.log(address);
 
   return NextResponse.json(address);
 }

@@ -7,8 +7,6 @@ export async function GET() {
       orderBy: { start_date: "asc" },
     });
 
-    console.log(rentals);
-
     const apiRentals = [];
 
     for (const key in rentals) {
