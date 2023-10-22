@@ -119,7 +119,7 @@ const Navbar = ({ isSmallDevice, isMobileDevice }: Props) => {
                     isMobileDevice ? "text-md" : "text-md"
                   } mr-2`}
                 >
-                  <Link href="/others">Other's reads, </Link>
+                  <Link href="/others">Other users, </Link>
                 </button>
 
                 <button
@@ -311,7 +311,7 @@ const Navbar = ({ isSmallDevice, isMobileDevice }: Props) => {
                     isMobileDevice ? "text-md" : "text-md"
                   } mr-2`}
                 >
-                  <Link href="/others">Other's reads</Link>
+                  <Link href="/others">Other users</Link>
                 </button>
               </div>
 

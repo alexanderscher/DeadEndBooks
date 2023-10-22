@@ -5,14 +5,14 @@ import { ExtendedSession } from "@/types";
 
 const f = createUploadthing();
 
-const auth = async (req: Request) => {
-  const serverSession = await getServerSession(authOptions);
-  const sessionadmin = (serverSession as ExtendedSession)?.user?.admin;
+// const auth = async (req: Request) => {
+//   const serverSession = await getServerSession(authOptions);
+//   const sessionadmin = (serverSession as ExtendedSession)?.user?.admin;
 
-  if (!sessionadmin) return null;
+//   if (!sessionadmin) return null;
 
-  return { id: (serverSession as ExtendedSession)?.user?.id };
-};
+//   return { id: (serverSession as ExtendedSession)?.user?.id };
+// };
 
 export const ourFileRouter = {
   imageUploader: f({ image: { maxFileSize: "4MB", maxFileCount: 1 } })
