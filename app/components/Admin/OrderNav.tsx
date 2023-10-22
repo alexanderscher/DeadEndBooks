@@ -6,7 +6,7 @@ type Props = {
 const OrderNav = ({ isMobileDevice }: Props) => {
   return (
     <div
-      className={`text-[18px] mb-2 ${
+      className={`text-[18px] mb-2 border-b-[2px] border-black ${
         isMobileDevice ? "text-start" : "text-end"
       }`}
     >

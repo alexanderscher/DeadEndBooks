@@ -64,6 +64,8 @@ export async function POST(request: Request) {
         medium: json.medium,
         photo_front: json.frontCover,
         photo_back: json.backCover,
+        pf_fileKey: json.frontCoverKey,
+        pb_fileKey: json.backCoverKey,
         inStock: true,
       },
     });

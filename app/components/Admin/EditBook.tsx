@@ -6,6 +6,11 @@ import { OurFileRouter } from "@/app/api/uploadthing/core";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
+import { deleteUploadThingImage } from "@/app/actions/photo/delete";
+
+interface Delete {
+  setDeleteError: (error: boolean) => void;
+}
 
 interface Props {
   isSmallDevice: boolean;
@@ -34,6 +39,8 @@ const EditBook = ({ isSmallDevice }: Props) => {
     photo_back: "",
   });
 
+  console.log(book);
+
   const currentPage = usePathname();
   useEffect(() => {
     const getBooks = async () => {
@@ -61,6 +68,7 @@ const EditBook = ({ isSmallDevice }: Props) => {
       fileKey: string;
     }[]
   >([]);
+  const [deleteError, setDeleteError] = useState(false);
 
   const [errorText, setErrorText] = useState("");
   const [uploaded, setUploaded] = useState(false);
@@ -88,7 +96,7 @@ const EditBook = ({ isSmallDevice }: Props) => {
     setFrontImage([]);
     setBook((prevBook) => ({
       ...prevBook,
-      photo_front: "",
+      photo_front: bookPlaceHolder.photo_front,
     }));
   };
 
@@ -96,7 +104,7 @@ const EditBook = ({ isSmallDevice }: Props) => {
     setBackImage([]);
     setBook((prevBook) => ({
       ...prevBook,
-      photo_back: "",
+      photo_back: bookPlaceHolder.photo_back,
     }));
   };
 
@@ -148,7 +156,7 @@ const EditBook = ({ isSmallDevice }: Props) => {
 
       if (!response.ok) {
         const errorText = await response.text();
-        setErrorText(errorText);
+        setDeleteError(true);
         throw new Error(errorText);
       } else {
         router.push("/admin/allbooks");
@@ -175,7 +183,30 @@ const EditBook = ({ isSmallDevice }: Props) => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(book),
+          body: JSON.stringify({
+            title:
+              book.title && book.title.length > 0
+                ? book.title
+                : bookPlaceHolder.title,
+            author:
+              book.author && book.author.length > 0
+                ? book.author
+                : bookPlaceHolder.author,
+            publisher:
+              book.publisher && book.publisher.length > 0
+                ? book.publisher
+                : bookPlaceHolder.publisher,
+            medium:
+              book.medium && book.medium.length > 0
+                ? book.medium
+                : bookPlaceHolder.medium,
+            photo_front: book.photo_front
+              ? book.photo_front
+              : bookPlaceHolder.photo_front,
+            photo_back: book.photo_back
+              ? book.photo_back
+              : bookPlaceHolder.photo_back,
+          }),
         });
 
         if (!response.ok) {
@@ -201,185 +232,225 @@ const EditBook = ({ isSmallDevice }: Props) => {
       }
     }
   };
-
-  return (
-    <div>
-      <div className="">
-        <form ref={formRef} onSubmit={submitBook}>
-          <div className="flex flex-col max-w-[800px]">
-            <h1 className="text-[26px] mb-10">{bookPlaceHolder.title}</h1>
-            <input
-              type="text"
-              placeholder={bookPlaceHolder.title}
-              className="border-black text-[18px] border-b-[3px] placeholder:text-black  w-full focus:outline-none"
-              onChange={handleTitleChange}
-            />
-            {errorText.includes("title") && (
-              <p className="text-red-500">Missing title field</p>
-            )}
-            <input
-              type="text"
-              placeholder={bookPlaceHolder.author}
-              className="border-black text-[18px] border-b-[3px] placeholder:text-black mt-6 w-full focus:outline-none"
-              onChange={handleAuthorChange}
-            />
-            {errorText.includes("author") && (
-              <p className="text-red-500">Missing author field</p>
-            )}
-            <input
-              type="text"
-              placeholder={bookPlaceHolder.publisher}
-              className="border-black text-[18px] border-b-[3px] placeholder:text-black mt-6 w-full focus:outline-none"
-              onChange={handlePublisherChange}
-            />
-            {errorText.includes("publisher") && (
-              <p className="text-red-500">Missing publisher field</p>
-            )}
-            <select
-              className="border-black text-[18px] border-b-[3px] placeholder:text-black mt-6 w-full focus:outline-none cursor-pointer"
-              onChange={handleMediumChange}
-              value={book.medium}
-            >
-              <option value="" disabled className="text-black">
-                {bookPlaceHolder.medium}
-              </option>
-              <option value="painting">Painting</option>
-              <option value="sculpture">Sculpture</option>
-              <option value="photography_film">Photography/film</option>
-              <option value="catalogs_magazines">Catalogs and Magazines</option>
-              <option value="anthologies_miscellaneous">
-                Anthologies/miscellaneous
-              </option>
-            </select>
-            {errorText.includes("medium") && (
-              <p className="text-red-500">Missing medium field</p>
-            )}
-            <div className="w-full flex justify-start mt-6">
-              <div className="mr-6">
-                <div className="">
-                  <UploadButton<OurFileRouter>
-                    appearance={{
-                      button:
-                        "ut-ready:bg-slate-400  ut-uploading:cursor-not-allowed rounded-r-none bg-slate-400  bg-none after:bg-orange-400",
-                    }}
-                    content={{
-                      allowedContent: (
-                        <div className="text-[12px] mt-2">
-                          Edit front cover photo
-                          {errorText.includes("frontCover") && (
-                            <p className="text-red-500">
-                              Missing front cover field
-                            </p>
-                          )}
-                        </div>
-                      ),
-                    }}
-                    className="mt-4 ut-button:bg-slate-400  ut-button:ut-readying:bg-slate-400 /50"
-                    endpoint="imageUploader"
-                    onClientUploadComplete={(res) => {
-                      if (res) {
-                        setFrontImage(res);
-                        const json = JSON.stringify(res);
-                      }
-                    }}
-                    onUploadError={(error: Error) => {
-                      alert(`ERROR! ${error.message}`);
-                    }}
-                  />
-                </div>
-              </div>
-
-              <div className="mr-6">
-                <div className="">
-                  <UploadButton<OurFileRouter>
-                    appearance={{
-                      button:
-                        "ut-ready:bg-slate-400  ut-uploading:cursor-not-allowed rounded-r-none bg-slate-400  bg-none after:bg-orange-400",
-                    }}
-                    content={{
-                      allowedContent: (
-                        <div className="text-[12px] mt-2">
-                          Edit back cover photo
-                          {errorText.includes("frontCover") && (
-                            <p className="text-red-500">
-                              Missing back cover field
-                            </p>
-                          )}
-                        </div>
-                      ),
-                    }}
-                    className="mt-4 ut-button:bg-slate-400  ut-button:ut-readying:bg-slate-400 /50"
-                    endpoint="imageUploader"
-                    onClientUploadComplete={(res) => {
-                      if (res) {
-                        setBackImage(res);
-                        const json = JSON.stringify(res);
-                      }
-                    }}
-                    onUploadError={(error: Error) => {
-                      alert(`ERROR! ${error.message}`);
-                    }}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="flex mt-10 relative">
-              {frontImage.length > 0 && (
-                <div className="w-[300px] mr-6">
-                  <img src={frontImage[0].fileUrl} alt="" />
-                  <div className="flex justify-between">
-                    <p className="text-cente text-slate-400">Front Cover</p>
-                    <p
-                      className="text-center cursor-pointer text-slate-400"
-                      onClick={frontDelete}
-                    >
-                      Undo
-                    </p>
-                  </div>
-                </div>
+  if (bookPlaceHolder.title !== "") {
+    return (
+      <div>
+        <div className="">
+          <form ref={formRef} onSubmit={submitBook}>
+            <div className="flex flex-col max-w-[800px]">
+              <h1 className="text-[26px] mb-10">{bookPlaceHolder.title}</h1>
+              <input
+                type="text"
+                placeholder={bookPlaceHolder.title}
+                className="border-black text-[18px] border-b-[3px] placeholder:text-black  w-full focus:outline-none"
+                onChange={handleTitleChange}
+              />
+              {errorText.includes("title") && (
+                <p className="text-red-500">Missing title field</p>
               )}
-
-              {backImage.length > 0 && (
-                <div className="w-[300px] relative">
-                  <img src={backImage[0].fileUrl} alt="" />
-                  <div className="flex justify-between">
-                    <p className="text-cente text-slate-400">Back Cover</p>
-                    <p
-                      className="text-center cursor-pointer text-slate-400"
-                      onClick={backDelete}
-                    >
-                      Undo
-                    </p>
-                  </div>
-                </div>
+              <input
+                type="text"
+                placeholder={bookPlaceHolder.author}
+                className="border-black text-[18px] border-b-[3px] placeholder:text-black mt-6 w-full focus:outline-none"
+                onChange={handleAuthorChange}
+              />
+              {errorText.includes("author") && (
+                <p className="text-red-500">Missing author field</p>
               )}
-            </div>
-            <div className="flex">
-              {uploaded ? (
-                <p className="text-[26px] text-red-500 text-start mt-4 hover:line-through">
-                  Edited!
-                </p>
-              ) : (
-                <button
-                  type="submit"
-                  className="text-[26px] text-red-500 text-start mt-4 hover:line-through"
-                >
-                  Edit
-                </button>
+              <input
+                type="text"
+                placeholder={bookPlaceHolder.publisher}
+                className="border-black text-[18px] border-b-[3px] placeholder:text-black mt-6 w-full focus:outline-none"
+                onChange={handlePublisherChange}
+              />
+              {errorText.includes("publisher") && (
+                <p className="text-red-500">Missing publisher field</p>
               )}
-
-              <button
-                onClick={deleteBook}
-                className="text-[26px] text-red-500 text-start mt-4 hover:line-through ml-6"
+              <select
+                className="border-black text-[18px] border-b-[3px] placeholder:text-black mt-6 w-full focus:outline-none cursor-pointer"
+                onChange={handleMediumChange}
+                value={book.medium}
               >
-                Delete
-              </button>
+                <option value="" disabled className="text-black">
+                  {bookPlaceHolder.medium}
+                </option>
+                <option value="painting">Painting</option>
+                <option value="sculpture">Sculpture</option>
+                <option value="photography_film">Photography/film</option>
+                <option value="catalogs_magazines">
+                  Catalogs and Magazines
+                </option>
+                <option value="anthologies_miscellaneous">
+                  Anthologies/miscellaneous
+                </option>
+              </select>
+              {errorText.includes("medium") && (
+                <p className="text-red-500">Missing medium field</p>
+              )}
+              <div className="flex mt-10 space-x-4 relative w-full max-w-[840px]">
+                <div className="flex-1 p-4 border border-slate-400 shadow-md bg-white flex flex-col">
+                  <div className="flex-grow mb-2">
+                    <img
+                      src={
+                        frontImage.length > 0
+                          ? frontImage[0].fileUrl
+                          : bookPlaceHolder.photo_front
+                      }
+                      alt=""
+                      className="w-full h-auto rounded-md"
+                    />
+                  </div>
+                  <div>
+                    <div className="">
+                      <UploadButton<OurFileRouter>
+                        appearance={{
+                          button:
+                            "ut-ready:bg-slate-400  ut-uploading:cursor-not-allowed rounded-r-none bg-slate-400  bg-none after:bg-orange-400",
+                        }}
+                        content={{
+                          allowedContent: (
+                            <div className="text-[12px] mt-2">
+                              Edit front cover photo
+                              {errorText.includes("frontCover") && (
+                                <p className="text-red-500">
+                                  Missing front cover field
+                                </p>
+                              )}
+                            </div>
+                          ),
+                        }}
+                        className="mt-4 ut-button:bg-slate-400  ut-button:ut-readying:bg-slate-400 /50"
+                        endpoint="imageUploader"
+                        onClientUploadComplete={(res) => {
+                          if (res) {
+                            setFrontImage(res);
+                            const json = JSON.stringify(res);
+                          }
+                        }}
+                        onUploadError={(error: Error) => {
+                          alert(`ERROR! ${error.message}`);
+                        }}
+                      />
+                    </div>
+                    <div>
+                      <p
+                        className="cursor-pointer text-slate-400 text-center mt-2 text-[12px] hover:line-through"
+                        onClick={frontDelete}
+                      >
+                        Undo
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex-1 p-4 border border-slate-400 shadow-md bg-white flex flex-col">
+                  <div className="flex-grow mb-2">
+                    <img
+                      src={
+                        backImage.length > 0
+                          ? backImage[0].fileUrl
+                          : bookPlaceHolder.photo_back
+                      }
+                      alt=""
+                      className="w-full h-auto rounded-md"
+                    />
+                  </div>
+                  <div>
+                    <div className="">
+                      <UploadButton<OurFileRouter>
+                        appearance={{
+                          button:
+                            "ut-ready:bg-slate-400  ut-uploading:cursor-not-allowed rounded-r-none bg-slate-400  bg-none after:bg-orange-400",
+                        }}
+                        content={{
+                          allowedContent: (
+                            <div className="text-[12px] mt-2">
+                              Edit back photo
+                              {errorText.includes("frontCover") && (
+                                <p className="text-red-500">
+                                  Missing back cover field
+                                </p>
+                              )}
+                            </div>
+                          ),
+                        }}
+                        className="mt-4 ut-button:bg-slate-400  ut-button:ut-readying:bg-slate-400 /50"
+                        endpoint="imageUploader"
+                        onClientUploadComplete={(res) => {
+                          if (res) {
+                            setBackImage(res);
+                            const json = JSON.stringify(res);
+                          }
+                        }}
+                        onUploadError={(error: Error) => {
+                          alert(`ERROR! ${error.message}`);
+                        }}
+                      />
+                    </div>
+                    <div>
+                      <p
+                        className="cursor-pointer text-slate-400 text-center mt-2 text-[12px] hover:line-through"
+                        onClick={backDelete}
+                      >
+                        Undo
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex mt-2">
+                {uploaded ? (
+                  <p className="text-[26px] text-red-500 text-start mt-4 hover:line-through">
+                    Edited!
+                  </p>
+                ) : (
+                  <button
+                    type="submit"
+                    className="text-[26px] text-red-500 text-start mt-4 hover:line-through"
+                  >
+                    Confirm
+                  </button>
+                )}
+
+                <button
+                  // onClick={deleteBook}
+                  onClick={() => {
+                    deleteUploadThingImage(
+                      "Screenshot 2023-10-13 at 5.45.12 PM.png"
+                    );
+                  }}
+                  className="text-[26px] text-red-500 text-start mt-4 hover:line-through ml-6"
+                >
+                  Delete Book
+                </button>
+              </div>
             </div>
-          </div>
-        </form>
+          </form>
+        </div>
+        {deleteError && <Modal setDeleteError={setDeleteError} />}
+      </div>
+    );
+  }
+};
+
+export default EditBook;
+
+const Modal = ({ setDeleteError }: Delete) => {
+  return (
+    <div className="fixed inset-0 flex items-center justify-center z-40">
+      <div className="p-8 z-50 max-w-[400px] w-3/4 bg-red-100 min-h-[100px] rounded-md border-black border-[2px] shadow-xl flex flex-col">
+        <h1 className=""> Cannot delete book. Book is currently in use.</h1>
+
+        <div className="mt-4 flex justify-between">
+          <button
+            type="submit"
+            className="text-start text-red-500 hover:line-through "
+            onClick={() => setDeleteError(false)}
+          >
+            Close
+          </button>
+        </div>
       </div>
     </div>
   );
 };
-
-export default EditBook;

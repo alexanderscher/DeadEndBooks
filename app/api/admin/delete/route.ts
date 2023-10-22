@@ -13,6 +13,12 @@ export async function POST(request: Request) {
 
   const orders = await prisma.orders.deleteMany({});
 
+  const cart = await prisma.cart.deleteMany({});
+
+  const queue = await prisma.queue.deleteMany({});
+
+  const saved = await prisma.saved.deleteMany({});
+
   const books = await prisma.book.updateMany({
     data: {
       inStock: true,

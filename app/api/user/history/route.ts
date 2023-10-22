@@ -79,35 +79,40 @@ export async function POST(request: Request) {
         Orders: true,
       },
     });
-
-    const rentals = [];
-    if (user) {
-      for (const rental in user.Current) {
-        const dataBook = await prisma.book.findUnique({
-          where: {
-            id: user.Current[rental].bookId,
-          },
-        });
-
-        const dataOrder = await prisma.orders.findUnique({
-          where: {
-            id: user.Current[rental].orderId,
-          },
-        });
-
-        if (dataOrder) {
-          rentals.push({
-            title: dataBook?.title,
-            start_date: formatDate(user.History[rental].start_date),
-            return_date: formatDate(user.History[rental].return_date),
+    if (user?.History.length === 0) {
+      return new NextResponse(JSON.stringify([]), {
+        status: 200,
+      });
+    } else {
+      const rentals = [];
+      if (user) {
+        for (const rental in user.Current) {
+          const dataBook = await prisma.book.findUnique({
+            where: {
+              id: user.Current[rental].bookId,
+            },
           });
+
+          const dataOrder = await prisma.orders.findUnique({
+            where: {
+              id: user.Current[rental].orderId,
+            },
+          });
+
+          if (dataOrder) {
+            rentals.push({
+              title: dataBook?.title,
+              start_date: formatDate(user.History[rental].start_date),
+              return_date: formatDate(user.History[rental].return_date),
+            });
+          }
         }
       }
-    }
 
-    return new NextResponse(JSON.stringify(rentals), {
-      status: 200,
-    });
+      return new NextResponse(JSON.stringify(rentals), {
+        status: 200,
+      });
+    }
   } catch (error) {
     console.error(error);
     return new NextResponse("Failed to find user", { status: 500 });

@@ -14,7 +14,9 @@ model Book {
   publisher   String
   medium      String
   photo_front String
+  pf_fileKey  String
   photo_back  String
+  pb_fileKey  String
   inStock     Boolean
   Queue       Queue[]
   Current     Current[]
@@ -88,24 +90,24 @@ model Address {
 }
 
 model User {
-  id               Int       @id @default(autoincrement())
-  email            String    @unique
-  password         String
-  name             String
-  admin            Boolean
-  address          Address[]
-  Current          Current[]
-  History          History[]
-  Queue            Queue[]
-  Cart             Cart[]
-  Saved            Saved[]
-  stripeCustomerId String?   @unique
-  isActive         Boolean   @default(false)
-  subscriptionID   String?
-  subscriptionType String?
-  Orders           Orders[]
-  newsletter       Boolean   @default(true)
-  resetPasswordToken String? @unique
+  id                       Int       @id @default(autoincrement())
+  email                    String    @unique
+  password                 String
+  name                     String
+  admin                    Boolean
+  address                  Address[]
+  Current                  Current[]
+  History                  History[]
+  Queue                    Queue[]
+  Cart                     Cart[]
+  Saved                    Saved[]
+  stripeCustomerId         String?   @unique
+  isActive                 Boolean   @default(false)
+  subscriptionID           String?
+  subscriptionType         String?
+  Orders                   Orders[]
+  newsletter               Boolean   @default(true)
+  resetPasswordToken       String?   @unique
   resetPasswordTokenExpiry DateTime?
 }
 
@@ -132,7 +134,7 @@ model Returned {
   @@id([orderId, bookId])
 }
 
-model Orders {s
+model Orders {
   id          Int           @id @default(autoincrement())
   userId      Int
   User        User          @relation(fields: [userId], references: [id])

@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import prisma from "@/prisma/client";
+import { deleteUploadThingImage } from "@/app/actions/photo/delete";
+import { utapi } from "uploadthing/server";
 
 export async function PUT(
   request: Request,
@@ -17,6 +19,8 @@ export async function PUT(
   }
 
   const book = await request.json();
+
+  console.log(book);
 
   if (
     !book.title ||
@@ -74,14 +78,42 @@ export async function DELETE(
     });
   }
   try {
-    const updatedBook = await prisma.book.delete({
+    const updatedBook = await prisma.book.findUnique({
       where: { id: bookId },
+      include: {
+        Current: true,
+      },
     });
 
-    return new NextResponse(JSON.stringify(updatedBook), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
+    console.log(updatedBook);
+
+    if (!updatedBook) {
+      return new NextResponse(JSON.stringify({ error: "No book found" }), {
+        status: 404,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    if (updatedBook.Current.length > 0) {
+      return new NextResponse(
+        JSON.stringify({ error: "Book is currently in use" }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+    } else {
+      await utapi.deleteFiles(updatedBook.photo_front);
+      await utapi.deleteFiles(updatedBook.photo_back);
+
+      const deletedBook = await prisma.book.delete({
+        where: { id: bookId },
+      });
+      return new NextResponse(JSON.stringify(deletedBook), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
   } catch (err) {
     return new NextResponse(JSON.stringify({ error: "Database error" }), {
       status: 500,

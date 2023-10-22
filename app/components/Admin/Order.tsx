@@ -108,7 +108,7 @@ const Order = ({ isMobileDevice }: Props) => {
       {orders.map((order) => (
         <div
           key={order.id}
-          className="border-t-[2px] border-black flex  justify-between "
+          className="border-b-[2px] border-black flex  justify-between "
         >
           <div className="mt-2 w-full mb-2">
             <div className="flex justify-between text-md border-b-[2px] border-slate-300 mt-1">

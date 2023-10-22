@@ -4,6 +4,8 @@ import "@uploadthing/react/styles.css";
 import { UploadButton } from "@uploadthing/react";
 import { useState } from "react";
 import { OurFileRouter } from "@/app/api/uploadthing/core";
+import { utapi } from "uploadthing/server";
+import { deleteUploadThingImage } from "@/app/actions/photo/delete";
 
 const AddBook = () => {
   const formRef = useRef<HTMLFormElement>(null);
@@ -13,7 +15,9 @@ const AddBook = () => {
     publisher: "",
     medium: "",
     frontCover: "",
+    frontCoverKey: "",
     backCover: "",
+    backCoverKey: "",
   });
 
   const [frontImage, setFrontImage] = useState<
@@ -38,12 +42,14 @@ const AddBook = () => {
       setBook((prevBook) => ({
         ...prevBook,
         frontCover: frontImage[0].fileUrl,
+        frontCoverKey: frontImage[0].fileKey,
         backCover: backImage[0].fileUrl,
+        backCoverKey: backImage[0].fileKey,
       }));
     }
   }, [frontImage, backImage]);
 
-  const frontDelete = () => {
+  const frontDelete = async () => {
     setFrontImage([]);
     setBook((prevBook) => ({
       ...prevBook,
@@ -99,7 +105,9 @@ const AddBook = () => {
       publisher: book.publisher,
       medium: book.medium,
       frontCover: book.frontCover,
+      frontCoverKey: book.frontCoverKey,
       backCover: book.backCover,
+      backCoverKey: book.backCoverKey,
     };
 
     try {
@@ -116,6 +124,8 @@ const AddBook = () => {
           medium: thebook.medium,
           frontCover: thebook.frontCover,
           backCover: thebook.backCover,
+          frontCoverKey: thebook.frontCoverKey,
+          backCoverKey: thebook.backCoverKey,
         }),
       });
       if (!response.ok) {
@@ -261,14 +271,20 @@ const AddBook = () => {
               </div>
             </div>
           </div>
-          <div className="flex mt-10 relative w-full max-w-[840px]">
+          <div className="flex mt-10 space-x-4 relative w-full max-w-[840px]">
             {frontImage.length > 0 && (
-              <div className="w-full max-w-[840px] mr-4">
-                <img src={frontImage[0].fileUrl} alt="" />
-                <div className="flex flex-col items-start">
-                  <p className=" text-slate-400 ">Front Cover</p>
+              <div className="flex-1 p-4 border border-slate-400 shadow-md bg-white flex flex-col">
+                <div className="flex-grow mb-2">
+                  <img
+                    src={frontImage[0].fileUrl}
+                    alt=""
+                    className="w-full h-auto rounded-md"
+                  />
+                </div>
+                <div>
+                  <p className="text-slate-400 mb-1">Front Cover</p>
                   <p
-                    className=" cursor-pointer text-slate-400 "
+                    className="cursor-pointer text-slate-400"
                     onClick={frontDelete}
                   >
                     Undo
@@ -278,12 +294,18 @@ const AddBook = () => {
             )}
 
             {backImage.length > 0 && (
-              <div className="w-full max-w-[840px] relative">
-                <img src={backImage[0].fileUrl} alt="" />
-                <div className="flex flex-col items-start">
-                  <p className=" text-slate-400 ">Front Cover</p>
+              <div className="flex-1 p-4 border border-slate-400 shadow-md bg-white flex flex-col">
+                <div className="flex-grow mb-2">
+                  <img
+                    src={backImage[0].fileUrl}
+                    alt=""
+                    className="w-full h-auto rounded-md"
+                  />
+                </div>
+                <div>
+                  <p className="text-slate-400 mb-1">Back Cover</p>
                   <p
-                    className=" cursor-pointer text-slate-400 "
+                    className="cursor-pointer text-slate-400"
                     onClick={backDelete}
                   >
                     Undo
