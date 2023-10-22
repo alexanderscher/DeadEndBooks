@@ -42,6 +42,7 @@ export default function UploadButtonPage() {
         endpoint="imageUploader"
         onClientUploadComplete={(res) => {
           if (res) {
+            console.log(res);
             setImages(res);
             const json = JSON.stringify(res);
           }
