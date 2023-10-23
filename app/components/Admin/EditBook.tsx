@@ -28,6 +28,8 @@ const EditBook = ({ isSmallDevice }: Props) => {
     medium: "",
     photo_front: "",
     photo_back: "",
+    pb_fileKey: "",
+    pf_fileKey: "",
   });
 
   const [book, setBook] = useState({
@@ -37,6 +39,8 @@ const EditBook = ({ isSmallDevice }: Props) => {
     medium: "",
     photo_front: "",
     photo_back: "",
+    pb_fileKey: "",
+    pf_fileKey: "",
   });
 
   console.log(book);
@@ -413,12 +417,7 @@ const EditBook = ({ isSmallDevice }: Props) => {
                 )}
 
                 <button
-                  // onClick={deleteBook}
-                  onClick={() => {
-                    deleteUploadThingImage(
-                      "Screenshot 2023-10-13 at 5.45.12 PM.png"
-                    );
-                  }}
+                  onClick={deleteBook}
                   className="text-[26px] text-red-500 text-start mt-4 hover:line-through ml-6"
                 >
                   Delete Book
