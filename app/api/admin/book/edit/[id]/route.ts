@@ -20,8 +20,6 @@ export async function PUT(
 
   const book = await request.json();
 
-  console.log(book);
-
   if (
     !book.title ||
     !book.author ||
@@ -36,6 +34,24 @@ export async function PUT(
       status: 400,
       headers: { "Content-Type": "application/json" },
     });
+  }
+
+  const oldImage = await prisma.book.findUnique({
+    where: { id: bookId },
+    select: {
+      photo_front: true,
+      photo_back: true,
+      pb_fileKey: true,
+      pf_fileKey: true,
+    },
+  });
+
+  if (oldImage && oldImage.photo_front !== book.photo_front) {
+    await deleteUploadThingImage(oldImage.pf_fileKey);
+  }
+
+  if (oldImage && oldImage.photo_back !== book.photo_back) {
+    await deleteUploadThingImage(oldImage.pb_fileKey);
   }
 
   const thebook = {
@@ -54,7 +70,6 @@ export async function PUT(
       where: { id: bookId },
       data: thebook,
     });
-
     return new NextResponse(JSON.stringify(updatedBook), {
       status: 200,
       headers: { "Content-Type": "application/json" },
@@ -88,8 +103,6 @@ export async function DELETE(
         Current: true,
       },
     });
-
-    console.log(updatedBook);
 
     if (!updatedBook) {
       return new NextResponse(JSON.stringify({ error: "No book found" }), {

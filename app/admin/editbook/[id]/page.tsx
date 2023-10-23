@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 
 import { useMediaQuery } from "react-responsive";
-import { EditBook, Loader, Navbar } from "@/app/components";
+import { AdminNav, EditBook, Loader, Navbar } from "@/app/components";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { ExtendedSession } from "@/types";
@@ -56,7 +56,14 @@ const page = () => {
           />
 
           <div className={" w-full"}>
-            <EditBook isSmallDevice={isSmallDevice} />
+            <AdminNav
+              isSmallDevice={isSmallDevice}
+              isMediumDevice={isMediumDevice}
+            />
+            <EditBook
+              isSmallDevice={isSmallDevice}
+              isMobileDevice={isMobileDevice}
+            />
           </div>
         </>
       )}

@@ -14,8 +14,9 @@ interface Delete {
 
 interface Props {
   isSmallDevice: boolean;
+  isMobileDevice: boolean;
 }
-const EditBook = ({ isSmallDevice }: Props) => {
+const EditBook = ({ isSmallDevice, isMobileDevice }: Props) => {
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
   const [bookId, setBookId] = useState<number | null>(null);
@@ -42,8 +43,6 @@ const EditBook = ({ isSmallDevice }: Props) => {
     pb_fileKey: "",
     pf_fileKey: "",
   });
-
-  console.log(book);
 
   const currentPage = usePathname();
   useEffect(() => {
@@ -72,6 +71,7 @@ const EditBook = ({ isSmallDevice }: Props) => {
       fileKey: string;
     }[]
   >([]);
+
   const [deleteError, setDeleteError] = useState(false);
 
   const [errorText, setErrorText] = useState("");
@@ -82,6 +82,7 @@ const EditBook = ({ isSmallDevice }: Props) => {
       setBook((prevBook) => ({
         ...prevBook,
         photo_front: frontImage[0].fileUrl,
+        pf_fileKey: frontImage[0].fileKey,
       }));
     }
   }, [frontImage]);
@@ -90,13 +91,14 @@ const EditBook = ({ isSmallDevice }: Props) => {
     if (backImage.length) {
       setBook((prevBook) => ({
         ...prevBook,
-
         photo_back: backImage[0].fileUrl,
+        pb_fileKey: backImage[0].fileKey,
       }));
     }
   }, [backImage]);
 
   const frontDelete = () => {
+    deleteUploadThingImage(frontImage[0].fileKey);
     setFrontImage([]);
     setBook((prevBook) => ({
       ...prevBook,
@@ -105,6 +107,7 @@ const EditBook = ({ isSmallDevice }: Props) => {
   };
 
   const backDelete = () => {
+    deleteUploadThingImage(backImage[0].fileKey);
     setBackImage([]);
     setBook((prevBook) => ({
       ...prevBook,
@@ -210,6 +213,12 @@ const EditBook = ({ isSmallDevice }: Props) => {
             photo_back: book.photo_back
               ? book.photo_back
               : bookPlaceHolder.photo_back,
+            pf_fileKey: book.pf_fileKey
+              ? book.pf_fileKey
+              : bookPlaceHolder.pf_fileKey,
+            pb_fileKey: book.pb_fileKey
+              ? book.pb_fileKey
+              : bookPlaceHolder.pb_fileKey,
           }),
         });
 
@@ -226,8 +235,16 @@ const EditBook = ({ isSmallDevice }: Props) => {
 
           if (formRef.current) {
             formRef.current.reset();
-            frontDelete();
-            backDelete();
+            setFrontImage([]);
+            setBook((prevBook) => ({
+              ...prevBook,
+              photo_front: bookPlaceHolder.photo_front,
+            }));
+            setBackImage([]);
+            setBook((prevBook) => ({
+              ...prevBook,
+              photo_back: bookPlaceHolder.photo_back,
+            }));
           }
         }
         router.push(`/admin/editbook/${book.title}`);
@@ -239,10 +256,10 @@ const EditBook = ({ isSmallDevice }: Props) => {
   if (bookPlaceHolder.title !== "") {
     return (
       <div>
-        <div className="">
+        <div className="mt-6">
           <form ref={formRef} onSubmit={submitBook}>
             <div className="flex flex-col max-w-[800px]">
-              <h1 className="text-[26px] mb-10">{bookPlaceHolder.title}</h1>
+              <h1 className="text-[26px] mb-6">{bookPlaceHolder.title}</h1>
               <input
                 type="text"
                 placeholder={bookPlaceHolder.title}
@@ -291,9 +308,15 @@ const EditBook = ({ isSmallDevice }: Props) => {
               {errorText.includes("medium") && (
                 <p className="text-red-500">Missing medium field</p>
               )}
-              <div className="flex mt-10 space-x-4 relative w-full max-w-[840px]">
-                <div className="flex-1 p-4 border-[2px] border-slate-400  bg-white flex flex-col">
-                  <div className="flex-grow mb-2">
+              <div
+                className={
+                  isMobileDevice
+                    ? "flex flex-col mt-10 relative w-full "
+                    : "flex mt-10 space-x-4 relative w-full "
+                }
+              >
+                <div className="flex-1 p-4 border-[2px] border-slate-400 bg-white flex flex-col justify-between">
+                  <div className="mb-2">
                     <img
                       src={
                         frontImage.length > 0
@@ -301,7 +324,7 @@ const EditBook = ({ isSmallDevice }: Props) => {
                           : bookPlaceHolder.photo_front
                       }
                       alt=""
-                      className="w-full h-auto rounded-md"
+                      className=""
                     />
                   </div>
                   <div>
@@ -346,8 +369,13 @@ const EditBook = ({ isSmallDevice }: Props) => {
                     </div>
                   </div>
                 </div>
-                <div className="flex-1 p-4 border-[2px] border-slate-400  bg-white flex flex-col">
-                  <div className="flex-grow mb-2">
+                <div
+                  className={`${
+                    isMobileDevice && "mt-4 "
+                  } flex-1 p-4 border-[2px] border-slate-400 bg-white flex flex-col justify-between">
+`}
+                >
+                  <div className="mb-2">
                     <img
                       src={
                         backImage.length > 0
@@ -355,7 +383,7 @@ const EditBook = ({ isSmallDevice }: Props) => {
                           : bookPlaceHolder.photo_back
                       }
                       alt=""
-                      className="w-full h-auto rounded-md"
+                      className="w-full h-auto"
                     />
                   </div>
                   <div>
@@ -402,19 +430,13 @@ const EditBook = ({ isSmallDevice }: Props) => {
                 </div>
               </div>
 
-              <div className="flex flex-col w-full mt-6">
-                {uploaded ? (
-                  <p className="w-full text-[26px] text-red-500 mt-4 hover:line-through text-center">
-                    Edited!
-                  </p>
-                ) : (
-                  <button
-                    type="submit"
-                    className="w-full text-[22px] p-1 hover:line-through text-red-500 border-red-500 border-[3px] text-center"
-                  >
-                    Confirm
-                  </button>
-                )}
+              <div className="flex flex-col w-full mt-8">
+                <button
+                  type="submit"
+                  className="w-full text-[22px] p-1 hover:line-through text-red-500 border-red-500 border-[3px] text-center"
+                >
+                  Confirm
+                </button>
 
                 <button
                   onClick={deleteBook}

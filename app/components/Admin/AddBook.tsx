@@ -4,10 +4,12 @@ import "@uploadthing/react/styles.css";
 import { UploadButton } from "@uploadthing/react";
 import { useState } from "react";
 import { OurFileRouter } from "@/app/api/uploadthing/core";
-import { utapi } from "uploadthing/server";
 import { deleteUploadThingImage } from "@/app/actions/photo/delete";
 
-const AddBook = () => {
+type AddBookProps = {
+  isSmallDevice: boolean;
+};
+const AddBook = ({ isSmallDevice }: AddBookProps) => {
   const formRef = useRef<HTMLFormElement>(null);
   const [book, setBook] = useState({
     title: "",
@@ -50,6 +52,7 @@ const AddBook = () => {
   }, [frontImage, backImage]);
 
   const frontDelete = async () => {
+    deleteUploadThingImage(frontImage[0].fileKey);
     setFrontImage([]);
     setBook((prevBook) => ({
       ...prevBook,
@@ -58,7 +61,9 @@ const AddBook = () => {
   };
 
   const backDelete = () => {
+    deleteUploadThingImage(backImage[0].fileKey);
     setBackImage([]);
+
     setBook((prevBook) => ({
       ...prevBook,
       backCover: "",
@@ -147,8 +152,14 @@ const AddBook = () => {
 
         if (formRef.current) {
           formRef.current.reset();
-          frontDelete();
-          backDelete();
+          setBook((prevBook) => ({
+            ...prevBook,
+            frontCover: "",
+          }));
+          setBook((prevBook) => ({
+            ...prevBook,
+            backCover: "",
+          }));
         }
       }
     } catch (error) {
@@ -207,7 +218,13 @@ const AddBook = () => {
           {errorText.includes("medium") && (
             <p className="text-red-500">Missing medium field</p>
           )}
-          <div className="w-full max-w-[840px] flex justify-start mt-6">
+          <div
+            className={
+              isSmallDevice
+                ? "w-full max-w-[840px] flex justify-center mt-6"
+                : "w-full max-w-[840px] flex justify-start mt-6"
+            }
+          >
             <div className="mr-6">
               <div className="">
                 <UploadButton<OurFileRouter>
@@ -283,7 +300,7 @@ const AddBook = () => {
                   <img
                     src={frontImage[0].fileUrl}
                     alt=""
-                    className="w-full h-auto rounded-md"
+                    className="w-full h-auto "
                   />
                 </div>
                 <div className="text-center">
@@ -304,7 +321,7 @@ const AddBook = () => {
                   <img
                     src={backImage[0].fileUrl}
                     alt=""
-                    className="w-full h-auto rounded-md"
+                    className="w-full h-auto "
                   />
                 </div>
                 <div className="text-center">
@@ -321,14 +338,13 @@ const AddBook = () => {
           </div>
 
           {uploaded ? (
-            <p className="text-[32px] text-red-500 text-start mt-4 hover:line-through">
-              Uploaded!
-            </p>
+            <button className="text-[22px] text-red-500 border-red-500 border-[3px] hover:line-through mt-6 p-2">
+              Uploaded
+            </button>
           ) : (
             <button
               type="submit"
-              // className="text-[26px] text-red-500 text-start mt-4 hover:line-through"
-              className="text-[22px] text-red-500 border-red-500 border-[3px] hover:line-through mt-6 p-1"
+              className="text-[22px] text-red-500 border-red-500 border-[3px] hover:line-through mt-6 p-2"
             >
               Upload
             </button>

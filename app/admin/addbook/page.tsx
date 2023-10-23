@@ -55,7 +55,7 @@ const page = () => {
             isSmallDevice={isSmallDevice}
             isMediumDevice={isMediumDevice}
           />
-          <AddBook />
+          <AddBook isSmallDevice={isMobileDevice} />
         </div>
       </>
     </main>
