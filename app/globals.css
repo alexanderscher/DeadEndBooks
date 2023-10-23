@@ -178,3 +178,9 @@ input:-webkit-autofill::first-line {
 .specific-input:-ms-input-placeholder {
   color: rgb(239 68 68);
 }
+
+select {
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 0;
+}

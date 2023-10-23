@@ -292,7 +292,7 @@ const EditBook = ({ isSmallDevice }: Props) => {
                 <p className="text-red-500">Missing medium field</p>
               )}
               <div className="flex mt-10 space-x-4 relative w-full max-w-[840px]">
-                <div className="flex-1 p-4 border border-slate-400 shadow-md bg-white flex flex-col">
+                <div className="flex-1 p-4 border-[2px] border-slate-400  bg-white flex flex-col">
                   <div className="flex-grow mb-2">
                     <img
                       src={
@@ -346,7 +346,7 @@ const EditBook = ({ isSmallDevice }: Props) => {
                     </div>
                   </div>
                 </div>
-                <div className="flex-1 p-4 border border-slate-400 shadow-md bg-white flex flex-col">
+                <div className="flex-1 p-4 border-[2px] border-slate-400  bg-white flex flex-col">
                   <div className="flex-grow mb-2">
                     <img
                       src={
@@ -402,15 +402,15 @@ const EditBook = ({ isSmallDevice }: Props) => {
                 </div>
               </div>
 
-              <div className="flex mt-2">
+              <div className="flex flex-col w-full mt-6">
                 {uploaded ? (
-                  <p className="text-[26px] text-red-500 text-start mt-4 hover:line-through">
+                  <p className="w-full text-[26px] text-red-500 mt-4 hover:line-through text-center">
                     Edited!
                   </p>
                 ) : (
                   <button
                     type="submit"
-                    className="text-[26px] text-red-500 text-start mt-4 hover:line-through"
+                    className="w-full text-[22px] p-1 hover:line-through text-red-500 border-red-500 border-[3px] text-center"
                   >
                     Confirm
                   </button>
@@ -418,7 +418,7 @@ const EditBook = ({ isSmallDevice }: Props) => {
 
                 <button
                   onClick={deleteBook}
-                  className="text-[26px] text-red-500 text-start mt-4 hover:line-through ml-6"
+                  className="mt-4 w-full text-[22px] p-1 text-red-500 hover:line-through border-red-500 border-[3px] text-center"
                 >
                   Delete Book
                 </button>

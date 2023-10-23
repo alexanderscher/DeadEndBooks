@@ -88,8 +88,12 @@ const AddBook = () => {
       publisher: value,
     }));
   };
+
+  const [selectedMedium, setSelectedMedium] = React.useState("");
+
   const handleMediumChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = e.target;
+    setSelectedMedium(e.target.value);
     setBook((prevBook) => ({
       ...prevBook,
       medium: value,
@@ -186,9 +190,10 @@ const AddBook = () => {
           )}
           <select
             className="border-black text-[18px] border-[3px] p-2 placeholder:text-black mt-6 w-full max-w-[840px] focus:outline-none cursor-pointer h-[50px]"
+            value={selectedMedium}
             onChange={handleMediumChange}
           >
-            <option value="" disabled selected>
+            <option value="" disabled>
               Select a medium
             </option>
             <option value="painting">Painting</option>
@@ -273,7 +278,7 @@ const AddBook = () => {
           </div>
           <div className="flex mt-10 space-x-4 relative w-full max-w-[840px]">
             {frontImage.length > 0 && (
-              <div className="flex-1 p-4 border border-slate-400 shadow-md bg-white flex flex-col">
+              <div className="flex-1 p-4 border-[2px] border-slate-400  bg-white flex flex-col">
                 <div className="flex-grow mb-2">
                   <img
                     src={frontImage[0].fileUrl}
@@ -281,7 +286,7 @@ const AddBook = () => {
                     className="w-full h-auto rounded-md"
                   />
                 </div>
-                <div>
+                <div className="text-center">
                   <p className="text-slate-400 mb-1">Front Cover</p>
                   <p
                     className="cursor-pointer text-slate-400"
@@ -294,7 +299,7 @@ const AddBook = () => {
             )}
 
             {backImage.length > 0 && (
-              <div className="flex-1 p-4 border border-slate-400 shadow-md bg-white flex flex-col">
+              <div className="flex-1 p-4 border-[2px] border-slate-400  bg-white flex flex-col">
                 <div className="flex-grow mb-2">
                   <img
                     src={backImage[0].fileUrl}
@@ -302,7 +307,7 @@ const AddBook = () => {
                     className="w-full h-auto rounded-md"
                   />
                 </div>
-                <div>
+                <div className="text-center">
                   <p className="text-slate-400 mb-1">Back Cover</p>
                   <p
                     className="cursor-pointer text-slate-400"
@@ -322,7 +327,8 @@ const AddBook = () => {
           ) : (
             <button
               type="submit"
-              className="text-[26px] text-red-500 text-start mt-4 hover:line-through"
+              // className="text-[26px] text-red-500 text-start mt-4 hover:line-through"
+              className="text-[22px] text-red-500 border-red-500 border-[3px] hover:line-through mt-6 p-1"
             >
               Upload
             </button>
