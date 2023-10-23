@@ -28,7 +28,9 @@ export async function PUT(
     !book.publisher ||
     !book.medium ||
     !book.photo_front ||
-    !book.photo_back
+    !book.photo_back ||
+    !book.pf_fileKey ||
+    !book.pb_fileKey
   ) {
     return new NextResponse(JSON.stringify({ error: "Missing book details" }), {
       status: 400,
@@ -43,6 +45,8 @@ export async function PUT(
     medium: book.medium,
     photo_front: book.photo_front,
     photo_back: book.photo_back,
+    pf_fileKey: book.pf_fileKey,
+    pb_fileKey: book.pb_fileKey,
   };
 
   try {

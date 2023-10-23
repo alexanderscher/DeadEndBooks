@@ -33,6 +33,8 @@ export async function POST(request: Request) {
     "medium",
     "frontCover",
     "backCover",
+    "frontCoverKey",
+    "backCoverKey",
   ];
 
   const missingFields: string[] = [];
