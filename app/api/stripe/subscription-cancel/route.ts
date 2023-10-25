@@ -6,6 +6,7 @@ import { ExtendedSession } from "@/types";
 import { stripe } from "@/stripe/stripe";
 import prisma from "@/prisma/client";
 
+export const dynamic = "force-dynamic";
 export async function GET(req: NextRequest) {
   const session = await getServerSession(authOptions);
 
