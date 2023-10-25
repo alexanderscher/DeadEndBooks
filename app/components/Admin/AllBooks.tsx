@@ -18,6 +18,7 @@ const AllBooks = ({ isMobileDevice }: Props) => {
       const data = await res.json();
       setBooks(data);
       setIsLoaded(false);
+      console.log(books);
     };
     getBooks();
   }, []);
