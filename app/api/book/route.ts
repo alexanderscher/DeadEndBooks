@@ -13,7 +13,10 @@ export async function GET() {
     });
     return new NextResponse(JSON.stringify(books), {
       status: 200,
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "Cache-Control": "no-store",
+      },
     });
   } catch (err) {
     return new NextResponse(JSON.stringify({ error: "Database error" }), {
