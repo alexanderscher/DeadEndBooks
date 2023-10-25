@@ -150,6 +150,7 @@ const AddBook = ({ isSmallDevice }: AddBookProps) => {
 
         setTimeout(() => {
           setUploaded(false);
+          location.reload();
         }, 2000);
 
         if (formRef.current) {
