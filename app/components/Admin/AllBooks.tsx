@@ -10,6 +10,7 @@ type Props = {
 const AllBooks = ({ isMobileDevice }: Props) => {
   const [books, setBooks] = useState<Book[]>([]);
   const [isLoaded, setIsLoaded] = useState(true);
+  console.log(books);
 
   useEffect(() => {
     const getBooks = async () => {

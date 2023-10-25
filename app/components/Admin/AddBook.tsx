@@ -119,6 +119,8 @@ const AddBook = ({ isSmallDevice }: AddBookProps) => {
       backCoverKey: book.backCoverKey,
     };
 
+    console.log(thebook);
+
     try {
       const response = await fetch("/api/admin/book", {
         method: "POST",
