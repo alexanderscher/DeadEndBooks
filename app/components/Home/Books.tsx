@@ -73,28 +73,7 @@ const Books = ({ isSmallDevice, isMediumDevice }: Props) => {
         if (expectedMedium === "stock") {
           if (data[d].inStock) {
             let stockStatus = "";
-            if (
-              data[d].Queue[0]?.userId !== parseInt(sessionId) &&
-              data[d].inStock &&
-              data[d].Queue.length > 0
-            ) {
-              stockStatus = "notYours";
-            } else if (
-              data[d].Queue[0]?.userId === parseInt(sessionId) &&
-              data[d].inStock
-            ) {
-              stockStatus = "yours";
-            } else if (data[d].Queue.length === 0 && data[d].inStock) {
-              stockStatus = "upForGrabs";
-            }
-            if (stockStatus !== "notYours") {
-              booktoPush.push({
-                photo_front: data[d].photo_front,
-                id: data[d].id,
-                title: data[d].title,
-                medium: data[d].medium,
-              });
-            } else if (sessionId === undefined) {
+            if (data[d].inStock) {
               booktoPush.push({
                 photo_front: data[d].photo_front,
                 id: data[d].id,

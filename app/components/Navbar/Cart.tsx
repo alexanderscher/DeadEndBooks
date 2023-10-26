@@ -16,8 +16,6 @@ const Cart = ({ isMobileDevice }: Props) => {
   const [reload, setReload] = useState(false);
   const [userId, setUserId] = useState("");
   const [isLoading, setisLoading] = useState(true);
-  const [queuedLists, setQueuedLists] = useState<number[]>([]);
-  const [lineStatuses, setLineStatuses] = useState<Record<number, string>>({});
   const [notActive, setNotActive] = useState(false);
   useEffect(() => {
     setisLoading(true);
@@ -26,11 +24,6 @@ const Cart = ({ isMobileDevice }: Props) => {
     const getCart = async () => {
       const res = await fetch(`/api/user/${sessionId}`);
       const data = await res.json();
-      const queuedIds = [];
-
-      for (const key in data.Queue) {
-        queuedIds.push(data.Queue[key].bookId);
-      }
 
       const cartBooks = [];
       const bookIds = [];
@@ -45,7 +38,6 @@ const Cart = ({ isMobileDevice }: Props) => {
       }
 
       setPageData(cartBooks);
-      setQueuedLists(queuedIds);
       setisLoading(false);
     };
     getCart();
@@ -65,26 +57,6 @@ const Cart = ({ isMobileDevice }: Props) => {
     setReload(true);
   };
 
-  const getInLine = async (bookId: number) => {
-    if (queuedLists.includes(bookId)) {
-      setLineStatuses((prev) => ({ ...prev, [bookId]: "Already in queue" }));
-      setTimeout(() => {
-        setLineStatuses((prev) => ({ ...prev, [bookId]: "" }));
-      }, 2000);
-      return;
-    }
-    if (bookId === undefined) return;
-    const res = await fetch(`/api/queue`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        bookId,
-        userId: userId,
-      }),
-    });
-  };
   const [modalCheckout, setModalCheckout] = useState({
     first: false,
     second: false,
@@ -158,10 +130,10 @@ const Cart = ({ isMobileDevice }: Props) => {
               <h1 className="hover:line-through">
                 <Link href={`/book/${book.title}`}>{book.title}</Link>
               </h1>
-              <h1 className="mt-4">{book.author}</h1>
+              <h1 className="mt-2">{book.author}</h1>
               {book.inStock ? (
                 <>
-                  <h1 className="text-slate-400 mt-4">In Stock</h1>
+                  <h1 className="text-slate-400 mt-2">In Stock</h1>
                   <h1
                     className="text-slate-400 cursor-pointer hover:line-through"
                     onClick={() => removeCart(book.cartId as number)}
@@ -171,19 +143,13 @@ const Cart = ({ isMobileDevice }: Props) => {
                 </>
               ) : (
                 <>
-                  <h1 className="text-slate-400 mt-4">Out of stock</h1>
+                  <h1 className="text-slate-400 mt-2">Out of stock</h1>
 
                   <h1
                     className="text-slate-400 cursor-pointer hover:line-through"
                     onClick={() => removeCart(book.cartId as number)}
                   >
                     Remove
-                  </h1>
-                  <h1
-                    className="text-red-500 cursor-pointer hover:line-through"
-                    onClick={() => getInLine(book.id as number)}
-                  >
-                    {lineStatuses[book.id as number] || "Get in line"}
                   </h1>
                 </>
               )}

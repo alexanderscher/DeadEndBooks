@@ -28,7 +28,6 @@ export async function GET(
         Saved: true,
         Cart: true,
         Current: true,
-        Queue: true,
         History: true,
         Orders: true,
       },

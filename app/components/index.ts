@@ -6,7 +6,7 @@ import Rentals from "./Profile/Rentals";
 import ProfileNav from "./Profile/ProfileNav";
 import History from "./Profile/History";
 import Cart from "./Navbar/Cart";
-import Queue from "./Navbar/Queue";
+
 import Saved from "./Navbar/Saved";
 import AdminNav from "./Admin/AdminNav";
 import AddBook from "./Admin/AddBook";
@@ -32,7 +32,6 @@ export {
   History,
   Cart,
   Saved,
-  Queue,
   AdminNav,
   AddBook,
   EditBook,

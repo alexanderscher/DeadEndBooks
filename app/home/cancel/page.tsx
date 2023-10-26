@@ -44,7 +44,7 @@ const page = () => {
     return null;
   }
   return (
-    <main className={isSmallDevice ? "mt-10" : "page"}>
+    <main className={"page"}>
       {isSmallDevice === null ? (
         <Loader />
       ) : (
@@ -54,15 +54,15 @@ const page = () => {
             isMobileDevice={isMobileDevice}
           />
 
-          <div className={"flex justify-center w-full"}>
+          <div className={"flex justify-center w-full mt-10"}>
             <div className={"flex justify-center"}>
               <div className="flex flex-col items-center ">
                 <img
-                  src="/dead-end-stripe.png"
+                  src="/deadendbooks.png"
                   className="max-w-[500px] w-[80%]"
                   alt=""
                 />
-                <h1 className="text-[26px] text-red-500">
+                <h1 className="text-[26px] text-red-500 mt-10">
                   Subscription cancelled
                 </h1>
               </div>

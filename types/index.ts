@@ -13,20 +13,10 @@ export interface Book {
   photo_back?: string;
   savedId?: number;
   cartId?: number;
-  queuedId?: number;
   people?: number;
   current?: boolean;
   userId?: number;
   stockStatus?: string;
-  Queue?: [
-    {
-      id: number;
-      bookId: number;
-      userId: number;
-      createdAt: string;
-      updatedAt: string;
-    }
-  ];
 }
 
 export type UserType = {

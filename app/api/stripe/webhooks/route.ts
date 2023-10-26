@@ -5,6 +5,7 @@ import prisma from "@/prisma/client";
 import { stripe } from "@/stripe/stripe";
 
 const webhookSecret: string = process.env.STRIPE_WEBHOOK_SECRET!;
+const today = new Date();
 
 const webhookHandler = async (req: NextRequest): Promise<NextResponse> => {
   try {
@@ -47,6 +48,7 @@ const webhookHandler = async (req: NextRequest): Promise<NextResponse> => {
             isActive: true,
             subscriptionID: subscriptionId,
             subscriptionType: planNickname,
+            subscriptionDate: today,
           },
         });
         break;
@@ -59,6 +61,7 @@ const webhookHandler = async (req: NextRequest): Promise<NextResponse> => {
             isActive: true,
             subscriptionID: subscriptionId,
             subscriptionType: planNickname,
+            subscriptionDate: today,
           },
         });
         break;
@@ -71,6 +74,7 @@ const webhookHandler = async (req: NextRequest): Promise<NextResponse> => {
           data: {
             isActive: false,
             subscriptionType: null,
+            subscriptionDate: null,
           },
         });
         console.log("Updated User (deleted):", updateed);

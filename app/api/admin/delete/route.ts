@@ -15,8 +15,6 @@ export async function POST(request: Request) {
 
   const cart = await prisma.cart.deleteMany({});
 
-  const queue = await prisma.queue.deleteMany({});
-
   const saved = await prisma.saved.deleteMany({});
 
   const books = await prisma.book.updateMany({

@@ -93,25 +93,18 @@ const Navbar = ({ isSmallDevice, isMobileDevice }: Props) => {
                 </button>
 
                 <button
-                  className={`hover:line-through ${
+                  className={`hover:line-through mr-2 ${
                     isMobileDevice ? "text-md" : "text-md"
                   }`}
                 >
-                  <Link href="/cart">Cart/</Link>
+                  <Link href="/cart ">Cart,</Link>
                 </button>
                 <button
-                  className={`hover:line-through ${
+                  className={`hover:line-through mr-2 ${
                     isMobileDevice ? "text-md" : "text-md"
                   }`}
                 >
-                  <Link href="/saved">Saved/</Link>
-                </button>
-                <button
-                  className={`hover:line-through ${
-                    isMobileDevice ? "text-md" : "text-md"
-                  } mr-2`}
-                >
-                  <Link href="/queue">Queue,</Link>
+                  <Link href="/saved">Saved,</Link>
                 </button>
 
                 <button
@@ -295,17 +288,13 @@ const Navbar = ({ isSmallDevice, isMobileDevice }: Props) => {
                   <Link href="/profile">Profile</Link>
                 </button>
 
-                <div className="flex items-start">
-                  <button className="hover:line-through text-md">
-                    <Link href="/cart">Cart/</Link>
-                  </button>
-                  <button className="hover:line-through text-md">
-                    <Link href="/saved">Saved/</Link>
-                  </button>
-                  <button className="hover:line-through text-md">
-                    <Link href="/queue">Queue</Link>
-                  </button>
-                </div>
+                <button className="hover:line-through text-md">
+                  <Link href="/cart">Cart</Link>
+                </button>
+                <button className="hover:line-through text-md">
+                  <Link href="/saved">Saved</Link>
+                </button>
+
                 <button
                   className={`hover:line-through ${
                     isMobileDevice ? "text-md" : "text-md"

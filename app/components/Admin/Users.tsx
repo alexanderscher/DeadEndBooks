@@ -70,7 +70,7 @@ const Users = () => {
           </div>
           <div className="flex">
             <p className="mt-2 text-[18px]  text-red-500">
-              {user.isActive ? "Subcribed" : "Not subcribed"}
+              {user.isActive ? "Subscribed" : "Not subscribed"}
             </p>
           </div>
           <div className="flex">

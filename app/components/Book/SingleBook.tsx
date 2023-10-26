@@ -16,7 +16,6 @@ const SingleBook = ({ isSmallDevice, isMobileDevice }: Props) => {
   const router = useRouter();
   const { data: session } = useSession();
   const [userId, setuserId] = useState("");
-  const [queuedLists, setQueuedLists] = useState<number[]>([]);
   const [savedLists, setSavedLists] = useState<number[]>([]);
   const [cartLists, setCartLists] = useState<number[]>([]);
   const [savedStatuses, setSavedStatuses] = useState<Record<number, string>>(
@@ -55,7 +54,6 @@ const SingleBook = ({ isSmallDevice, isMobileDevice }: Props) => {
     const getBook = async () => {
       const res = await fetch(`/api/book/${title}`);
       const data = await res.json();
-      const queuedIds = [];
       const savedIds = [];
       const cartIds = [];
       if (res.status === 404) {
@@ -67,27 +65,10 @@ const SingleBook = ({ isSmallDevice, isMobileDevice }: Props) => {
         savedIds.push(data.Saved[key].userId);
       }
 
-      for (const key in data.Queue) {
-        queuedIds.push(data.Queue[key].userId);
-      }
-
       for (const key in data.Cart) {
         cartIds.push(data.Cart[key].userId);
       }
 
-      if (
-        data.Queue[0]?.userId !== parseInt(sessionId) &&
-        data.inStock &&
-        data.Queue.length > 0
-      ) {
-        setStock((prev) => ({ ...prev, notYours: true }));
-      }
-      if (data.Queue[0]?.userId === parseInt(sessionId) && data.inStock) {
-        setStock((prev) => ({ ...prev, yours: true }));
-      }
-      if (data.Queue.length === 0 && data.inStock) {
-        setStock((prev) => ({ ...prev, upForGrabs: true }));
-      }
       if (
         data.Current[0]?.userId &&
         data.Current[0]?.userId === parseInt(sessionId)
@@ -96,7 +77,6 @@ const SingleBook = ({ isSmallDevice, isMobileDevice }: Props) => {
       }
 
       setPageData(data);
-      setQueuedLists(queuedIds);
       setSavedLists(savedIds);
       setCartLists(cartIds);
     };
@@ -152,36 +132,6 @@ const SingleBook = ({ isSmallDevice, isMobileDevice }: Props) => {
     setCart(true);
     setTimeout(() => {
       setCart(false);
-    }, 2000);
-  };
-
-  const [queued, setQueued] = useState(false);
-
-  const getInLine = async (bookId: number) => {
-    const uId = parseInt(userId);
-
-    if (queuedLists.includes(uId)) {
-      setLinetatuses((prev) => ({ ...prev, [uId]: "Already in queue" }));
-      setTimeout(() => {
-        setLinetatuses((prev) => ({ ...prev, [uId]: "" }));
-      }, 2000);
-      return;
-    }
-    if (bookId === undefined) return;
-    const res = await fetch(`/api/queue`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        userId,
-        bookId,
-      }),
-    });
-
-    setQueued(true);
-    setTimeout(() => {
-      setQueued(false);
     }, 2000);
   };
 
@@ -270,7 +220,7 @@ const SingleBook = ({ isSmallDevice, isMobileDevice }: Props) => {
                             ? "Saved"
                             : savedStatuses[parseInt(userId)] || "Save"}
                         </h1>
-                        {pageData.inStock && stock.yours && (
+                        {pageData.inStock && (
                           <h1
                             className={`${text} 
                             }  cursor-pointer hover:line-through text-red-500`}
@@ -281,37 +231,13 @@ const SingleBook = ({ isSmallDevice, isMobileDevice }: Props) => {
                               : cartStatuses[parseInt(userId)] || "Add to cart"}
                           </h1>
                         )}
-                        {pageData.inStock && stock.upForGrabs && (
-                          <h1
-                            className={`${text}
-                            }  cursor-pointer hover:line-through text-red-500`}
-                            onClick={handleCart}
-                          >
-                            {cart
-                              ? "Added to cart"
-                              : cartStatuses[parseInt(userId)] || "Add to cart"}
-                          </h1>
-                        )}
-                        {pageData.inStock && stock.notYours && (
-                          <h1
-                            className={`${text}
-                            }  cursor-pointer hover:line-through text-red-500`}
-                            onClick={() => getInLine(parseInt(pageData.id))}
-                          >
-                            {queued
-                              ? "In queue"
-                              : linetatuses[parseInt(userId)] || "Get in line"}
-                          </h1>
-                        )}
+
                         {!pageData.inStock && (
                           <h1
                             className={`${text}
                             }  cursor-pointer hover:line-through text-red-500`}
-                            onClick={() => getInLine(parseInt(pageData.id))}
                           >
-                            {queued
-                              ? "In queue"
-                              : linetatuses[parseInt(userId)] || "Get in line"}
+                            Out of stock
                           </h1>
                         )}
                       </div>
@@ -468,7 +394,7 @@ const SingleBook = ({ isSmallDevice, isMobileDevice }: Props) => {
                         ? "Saved"
                         : savedStatuses[parseInt(userId)] || "Save"}
                     </h1>
-                    {pageData.inStock && stock.yours && (
+                    {pageData.inStock && (
                       <h1
                         className={`${
                           isSmallDevice ? `${text}` : "book-text"
@@ -480,40 +406,14 @@ const SingleBook = ({ isSmallDevice, isMobileDevice }: Props) => {
                           : cartStatuses[parseInt(userId)] || "Add to cart"}
                       </h1>
                     )}
-                    {pageData.inStock && stock.upForGrabs && (
-                      <h1
-                        className={`${
-                          isSmallDevice ? `${text}` : "book-text"
-                        }  cursor-pointer hover:line-through text-red-500`}
-                        onClick={handleCart}
-                      >
-                        {cart
-                          ? "Added to cart"
-                          : cartStatuses[parseInt(userId)] || "Add to cart"}
-                      </h1>
-                    )}
-                    {pageData.inStock && stock.notYours && (
-                      <h1
-                        className={`${
-                          isSmallDevice ? `${text}` : "book-text"
-                        }  cursor-pointer hover:line-through text-red-500`}
-                        onClick={() => getInLine(parseInt(pageData.id))}
-                      >
-                        {queued
-                          ? "In queue"
-                          : linetatuses[parseInt(userId)] || "Get in line"}
-                      </h1>
-                    )}
+
                     {!pageData.inStock && (
                       <h1
                         className={`${
                           isSmallDevice ? `${text}` : "book-text"
                         }  cursor-pointer hover:line-through text-red-500`}
-                        onClick={() => getInLine(parseInt(pageData.id))}
                       >
-                        {queued
-                          ? "In queue"
-                          : linetatuses[parseInt(userId)] || "Get in line"}
+                        Out of stock
                       </h1>
                     )}
                   </div>

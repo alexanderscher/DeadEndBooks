@@ -32,9 +32,6 @@ export async function GET(
     book = await prisma.book.findUnique({
       where: { id: parseInt(slug) },
       include: {
-        Queue: {
-          orderBy: { date: "asc" },
-        },
         Current: true,
         Saved: true,
         Cart: true,
@@ -45,9 +42,6 @@ export async function GET(
     book = await prisma.book.findFirst({
       where: { title: decodedTitle },
       include: {
-        Queue: {
-          orderBy: { date: "asc" },
-        },
         Current: true,
         Saved: true,
         Cart: true,

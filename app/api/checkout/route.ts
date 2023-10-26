@@ -88,14 +88,6 @@ export async function POST(request: Request): Promise<NextResponse> {
           },
         });
       });
-      book.Queue.map(async (QueueItem: any) => {
-        await prisma.cart.delete({
-          where: {
-            id: QueueItem.id,
-            userId: parseInt(userId),
-          },
-        });
-      });
     }
     return new NextResponse(JSON.stringify({ order }), {
       status: 200,

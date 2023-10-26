@@ -75,7 +75,7 @@ export async function POST(request: Request) {
         Saved: true,
         Cart: true,
         Current: true,
-        Queue: true,
+
         History: true,
         Orders: true,
       },
