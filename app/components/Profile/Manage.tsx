@@ -5,8 +5,26 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { Loader } from "..";
 import { useRouter } from "next/navigation";
-import ChangeSub from "./ChangeSub";
 
+const formatDate = (input: Date | string) => {
+  if (!input) {
+    return;
+  }
+
+  let date: Date;
+
+  if (typeof input === "string") {
+    date = new Date(input);
+  } else {
+    date = input;
+  }
+
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = String(date.getFullYear()).slice(-2);
+
+  return `${month}/${day}/${year}` as string;
+};
 const Manage = () => {
   const { data: session } = useSession();
   const router = useRouter();
@@ -15,6 +33,8 @@ const Manage = () => {
 
   const [isLoading, setisLoading] = useState(true);
   const [userSub, setUserSub] = useState("");
+  const [subscriptionDate, setSubscriptionDate] = useState("");
+  const [errorCode, setErrorCode] = useState(false);
 
   useEffect(() => {
     const getUser = async () => {
@@ -25,6 +45,7 @@ const Manage = () => {
       );
       const data = await res.json();
       setUserSub(data.subscriptionType);
+      setSubscriptionDate(data.subscriptionDate);
     };
 
     getUser();
@@ -36,7 +57,12 @@ const Manage = () => {
     try {
       const res = await fetch("/api/stripe/subscription-cancel");
       const { subscription } = await res.json();
-      router.push("/home/cancel");
+
+      if (res.status === 200) {
+        router.push("/home/cancel");
+      } else if (res.status === 403) {
+        setErrorCode(true);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -71,6 +97,24 @@ const Manage = () => {
         >
           Subscribe
         </button>
+      )}
+
+      {errorCode && (
+        <div className="fixed top-0 right-0 bottom-0 left-0 flex items-center justify-center">
+          <div className="bg-red-200 text-red-500 m-10 p-8 rounded-md text-[20px] border-[2px] border-red-500 shadow-lg max-w-[500px]">
+            <p>
+              Subsciption cancelation is available after three months of your
+              subscription date. You are able to cancel on
+              {formatDate(subscriptionDate)}
+            </p>
+            <button
+              onClick={() => setErrorCode(false)}
+              className="hover:line-through text-md mt-4 text-end"
+            >
+              Close
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );

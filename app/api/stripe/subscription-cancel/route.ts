@@ -6,25 +6,82 @@ import { ExtendedSession } from "@/types";
 import { stripe } from "@/stripe/stripe";
 import prisma from "@/prisma/client";
 
+function isNinetyDaysOrMoreSince(givenDateStr: string) {
+  const givenDate = new Date(givenDateStr);
+
+  // Calculate the date 90 days after the given date
+  givenDate.setDate(givenDate.getDate() + 90);
+
+  const currentDate = new Date();
+
+  // Check if the current date is on or after the date 90 days after the given date
+  return currentDate >= givenDate;
+}
+
 export const dynamic = "force-dynamic";
 export async function GET(req: NextRequest) {
   const session = await getServerSession(authOptions);
 
-  if (!session?.user) {
+  try {
+    if (!session?.user) {
+      return NextResponse.json(
+        {
+          error: {
+            code: "no-access",
+            message: "You are not signed in.",
+          },
+        },
+        { status: 401 }
+      );
+    }
+
+    const user = await prisma.user.findUnique({
+      where: {
+        id: parseInt((session as ExtendedSession)?.user?.id),
+      },
+    });
+
+    if (!user) {
+      return NextResponse.json(
+        {
+          error: {
+            code: "no-access",
+            message: "You are not signed in.",
+          },
+        },
+        { status: 401 }
+      );
+    }
+    if (user.subscriptionDate) {
+      if (isNinetyDaysOrMoreSince(user.subscriptionDate.toString())) {
+        const stripeSubscriptionId = (session as ExtendedSession)?.user
+          ?.subscriptionID;
+
+        const subscription = await stripe.subscriptions.cancel(
+          stripeSubscriptionId
+        );
+
+        return NextResponse.json({ user }, { status: 200 });
+      } else {
+        return NextResponse.json(
+          {
+            error: {
+              message: "Has not been 90 days since subscription.",
+            },
+          },
+          { status: 403 }
+        );
+      }
+    }
+  } catch (err) {
+    console.log(err);
     return NextResponse.json(
       {
         error: {
-          code: "no-access",
-          message: "You are not signed in.",
+          message: "Something went wrong.",
         },
       },
-      { status: 401 }
+      { status: 500 }
     );
   }
-  const stripeSubscriptionId = (session as ExtendedSession)?.user
-    ?.subscriptionID;
-
-  const subscription = await stripe.subscriptions.cancel(stripeSubscriptionId);
-
-  return NextResponse.json({ subscription }, { status: 200 });
 }
