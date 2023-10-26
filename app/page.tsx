@@ -4,11 +4,11 @@ import React, { useEffect, useState } from "react";
 
 const page = () => {
   return (
-    <div className="w-full h-screen flex justify-center ">
+    <div className="w-full h-screen flex justify-center items-center">
       <div className="">
         <Link href="/home">
           <img
-            src="/dead-end-stripe.png"
+            src="/deadendbooks.png"
             width={100}
             height={100}
             alt="Logo"
