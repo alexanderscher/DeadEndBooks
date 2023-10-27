@@ -32,7 +32,7 @@ const Navbar = ({ isSmallDevice, isMobileDevice }: Props) => {
               }`}
             >
               <Link href="/home">
-                <img src="" alt="" />
+                <h1>DEAD END BOOKS</h1>
               </Link>
             </h1>
 
@@ -224,13 +224,13 @@ const Navbar = ({ isSmallDevice, isMobileDevice }: Props) => {
           )}
         </div>
       ) : (
-        <div className="w-1/4 min-w-[200px] max-w-[200px]   ">
+        <div className="w-1/4 min-w-[200px] max-w-[200px]">
           <div className="fixed bg-white">
             <div className="">
-              <div className="">
-                <h1 className="font-bold text-md">
-                  <Link href="/home">DEAD END BOOKS</Link>
-                </h1>
+              <div className="w-[155px]">
+                <Link href="/home">
+                  <img src="/title.png" alt="" className="w-full" />
+                </Link>
               </div>
               <div className="mt-5 flex flex-col items-start">
                 <button className={`hover:line-through text-md`}>

@@ -21,7 +21,7 @@ export async function POST(request: Request): Promise<NextResponse> {
   startDate.setDate(startDate.getDate() + 3);
 
   const returnDate = new Date(startDate);
-  returnDate.setDate(returnDate.getDate() + 38);
+  returnDate.setDate(returnDate.getDate() + 34);
 
   try {
     const order = await prisma.orders.create({
