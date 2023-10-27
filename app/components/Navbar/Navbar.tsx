@@ -31,7 +31,9 @@ const Navbar = ({ isSmallDevice, isMobileDevice }: Props) => {
                 isMobileDevice ? "text-[26px]" : "text-[40px]"
               }`}
             >
-              <Link href="/home">DEAD END BOOKS</Link>
+              <Link href="/home">
+                <img src="" alt="" />
+              </Link>
             </h1>
 
             {currentPage === "/home" || currentPage.includes("/library") ? (
