@@ -10,7 +10,10 @@ export async function POST(request: NextRequest) {
   const url = isProduction
     ? "https://deadendbooks.org/home"
     : "http://localhost:3000/home";
-  const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
+
+  const stripeSecretKey = isProduction
+    ? process.env.STRIPE_SERCRET_KEY_LIVE
+    : process.env.STRIPE_SECRET_KEY;
   const serverSession = await getServerSession(authOptions);
   const sessionId = (serverSession as ExtendedSession)?.user?.stripeCustomerId;
 

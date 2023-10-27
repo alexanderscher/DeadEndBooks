@@ -3,8 +3,12 @@ import { stripe } from "@/stripe/stripe";
 
 export async function POST(request: NextRequest) {
   const json = await request.json();
-  const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
+
   const isProduction = process.env.NODE_ENV === "production";
+
+  const stripeSecretKey = isProduction
+    ? process.env.STRIPE_SERCRET_KEY_LIVE
+    : process.env.STRIPE_SECRET_KEY;
 
   const url = isProduction
     ? "https://deadendbooks.org"

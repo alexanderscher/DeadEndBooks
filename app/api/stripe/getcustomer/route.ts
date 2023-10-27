@@ -2,7 +2,11 @@ import { stripe } from "@/stripe/stripe";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
-  const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
+  const isProduction = process.env.NODE_ENV === "production";
+
+  const stripeSecretKey = isProduction
+    ? process.env.STRIPE_SERCRET_KEY_LIVE
+    : process.env.STRIPE_SECRET_KEY;
 
   if (!stripeSecretKey) {
     throw new Error(
