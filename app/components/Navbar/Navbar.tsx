@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 import { use, useEffect, useState } from "react";
 import { LogOutButton } from "../../auth";
 import { ExtendedSession } from "@/types";
-import TestEmailButton from "../TestEmailButton";
 
 interface Props {
   isSmallDevice: boolean;
