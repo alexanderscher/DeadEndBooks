@@ -1,4 +1,3 @@
-import Stripe from "stripe";
 import { NextResponse, NextRequest } from "next/server";
 import { getServerSession } from "next-auth";
 import { ExtendedSession } from "@/types";

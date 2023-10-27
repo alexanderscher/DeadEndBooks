@@ -3,8 +3,14 @@ import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import prisma from "@/prisma/client";
 
+const isProduction = process.env.NODE_ENV === "production";
+
+const stripeSecretKey = isProduction
+  ? process.env.STRIPE_SECRET_KEY_LIVE
+  : process.env.STRIPE_SECRET_KEY;
+
 const stripeId = async (user: any, email: string, name: string) => {
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  const stripe = new Stripe(stripeSecretKey!, {
     apiVersion: "2023-10-16",
   });
 
