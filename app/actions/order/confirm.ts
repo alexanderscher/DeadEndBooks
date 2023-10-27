@@ -13,7 +13,7 @@ type OrderData = {
 
 export const confirmation = async (data: OrderData) => {
   sendEmail({
-    from: "Deadendbooks <admin@deadendbooks.org>",
+    from: "Dead End Books <admin@deadendbooks.org>",
     to: [data.email],
     subject: "Order " + data.orderId + " confirmation",
     react: OrderTemplate({
