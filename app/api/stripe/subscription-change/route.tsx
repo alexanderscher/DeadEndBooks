@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
   const cancel = await stripe.subscriptions.cancel(stripeSubscriptionId);
 
   const stripeSecretKey = isProduction
-    ? process.env.STRIPE_SERCRET_KEY_LIVE
+    ? process.env.STRIPE_SECRET_KEY_LIVE
     : process.env.STRIPE_SECRET_KEY;
   const serverSession = await getServerSession(authOptions);
   const sessionId = (serverSession as ExtendedSession)?.user?.stripeCustomerId;

@@ -7,7 +7,7 @@ export async function POST(request: NextRequest) {
   const isProduction = process.env.NODE_ENV === "production";
 
   const stripeSecretKey = isProduction
-    ? process.env.STRIPE_SERCRET_KEY_LIVE
+    ? process.env.STRIPE_SECRET_KEY_LIVE
     : process.env.STRIPE_SECRET_KEY;
 
   const url = isProduction

@@ -5,7 +5,7 @@ export async function GET(request: Request) {
   const isProduction = process.env.NODE_ENV === "production";
 
   const stripeSecretKey = isProduction
-    ? process.env.STRIPE_SERCRET_KEY_LIVE
+    ? process.env.STRIPE_SECRET_KEY_LIVE
     : process.env.STRIPE_SECRET_KEY;
 
   if (!stripeSecretKey) {
