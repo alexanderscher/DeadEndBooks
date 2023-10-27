@@ -4,6 +4,9 @@ import React, { useEffect, useState } from "react";
 import { Loader } from "..";
 import AddressModal from "./AddressModal";
 import { useRouter } from "next/navigation";
+import { sendEmail } from "@/app/actions/emails/sendEmail";
+import { OrderTemplate } from "@/app/email-templates/order";
+import { confirmation } from "@/app/actions/order/confirm";
 
 type AddyData = {
   userId: number;
@@ -112,7 +115,10 @@ const Checkout = ({ isSmallDevice, isMobileDevice }: Props) => {
     checkout(data);
   };
 
+  const [orderLoading, setOrderLoading] = useState(false);
+
   const checkout = async (addyData: AddyData) => {
+    setOrderLoading(true);
     const res = await fetch(`/api/checkout`, {
       method: "POST",
       headers: {
@@ -133,9 +139,10 @@ const Checkout = ({ isSmallDevice, isMobileDevice }: Props) => {
     });
     if (res.ok) {
       const data = await res.json();
-
-      if (data.order.id !== undefined) {
-        router.push(`/checkout/success/${data.order.id}`);
+      console.log(data);
+      if (data.orderId !== undefined) {
+        const email = await confirmation(data);
+        router.push(`/checkout/success/${data.orderId}`);
       }
     }
   };
@@ -158,6 +165,9 @@ const Checkout = ({ isSmallDevice, isMobileDevice }: Props) => {
   const [modal, setModal] = useState(false);
 
   if (isLoading) {
+    return <Loader />;
+  }
+  if (orderLoading) {
     return <Loader />;
   }
   return (

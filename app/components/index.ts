@@ -21,6 +21,7 @@ import Checkout from "./Navbar/Checkout";
 import Order from "./Admin/Order";
 import CheckoutSuccess from "./Navbar/CheckoutSuccess";
 import useIsMobileDevice from "./RootLayoutClient";
+import User from "./User/User";
 
 export {
   Books,
@@ -45,4 +46,5 @@ export {
   Order,
   CheckoutSuccess,
   useIsMobileDevice,
+  User,
 };

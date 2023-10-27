@@ -15,6 +15,7 @@ const formatDate = (input: Date | string) => {
 
   if (typeof input === "string") {
     date = new Date(input);
+    date.setDate(date.getDate() + 90);
   } else {
     date = input;
   }
@@ -104,7 +105,7 @@ const Manage = () => {
           <div className="bg-red-200 text-red-500 m-10 p-8 rounded-md text-[20px] border-[2px] border-red-500 shadow-lg max-w-[500px]">
             <p>
               Subsciption cancelation is available after three months of your
-              subscription date. You are able to cancel on
+              subscription date. You are able to cancel on{" "}
               {formatDate(subscriptionDate)}
             </p>
             <button

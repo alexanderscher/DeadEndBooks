@@ -1,7 +1,6 @@
 import { stripe } from "@/stripe/stripe";
 import { NextResponse } from "next/server";
 
-export const dynamic = "force-dynamic";
 export async function GET(request: Request) {
   const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
 

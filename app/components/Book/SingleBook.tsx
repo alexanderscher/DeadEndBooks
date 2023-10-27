@@ -5,6 +5,7 @@ import { ExtendedSession } from "@/types";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Loader } from "..";
 
 interface Props {
   isSmallDevice: boolean;
@@ -22,14 +23,10 @@ const SingleBook = ({ isSmallDevice, isMobileDevice }: Props) => {
     {}
   );
   const [cartStatuses, setCartStatuses] = useState<Record<number, string>>({});
-  const [linetatuses, setLinetatuses] = useState<Record<number, string>>({});
   const [saved, setSaved] = useState(false);
   const [cart, setCart] = useState(false);
 
   const [stock, setStock] = useState({
-    upForGrabs: false,
-    yours: false,
-    notYours: false,
     inYourPossesion: false,
   });
 
@@ -46,6 +43,7 @@ const SingleBook = ({ isSmallDevice, isMobileDevice }: Props) => {
   const text = isMobileDevice ? "text-[20px]" : "text-[24px]";
 
   const smtext = isMobileDevice ? "text-[16px]" : "text-[24px]";
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const sessionId = (session as ExtendedSession)?.user?.id;
@@ -79,6 +77,7 @@ const SingleBook = ({ isSmallDevice, isMobileDevice }: Props) => {
       setPageData(data);
       setSavedLists(savedIds);
       setCartLists(cartIds);
+      setLoading(false);
     };
     getBook();
   }, [sessionStorage, saved, cart]);
@@ -134,7 +133,9 @@ const SingleBook = ({ isSmallDevice, isMobileDevice }: Props) => {
       setCart(false);
     }, 2000);
   };
-
+  if (loading) {
+    return <Loader />;
+  }
   return (
     <div className={`flex w-full ${isSmallDevice && "mt-10"}`}>
       {isMobileDevice ? (
@@ -203,13 +204,7 @@ const SingleBook = ({ isSmallDevice, isMobileDevice }: Props) => {
                     ) : (
                       <div className="mt-4">
                         <h1 className={`${text} text-red-500 `}>
-                          {pageData.inStock && stock.yours
-                            ? "In stock"
-                            : pageData.inStock && stock.upForGrabs
-                            ? "In stock"
-                            : pageData.inStock && stock.notYours
-                            ? "Out of stock"
-                            : !pageData.inStock && "Out of stock"}
+                          {pageData.inStock && "In stock"}
                         </h1>
                         <h1
                           className={`${text}
@@ -376,13 +371,7 @@ const SingleBook = ({ isSmallDevice, isMobileDevice }: Props) => {
                           : "book-text text-red-500 mt-10"
                       }
                     >
-                      {pageData.inStock && stock.yours
-                        ? "In stock"
-                        : pageData.inStock && stock.upForGrabs
-                        ? "In stock"
-                        : pageData.inStock && stock.notYours
-                        ? "Out of stock"
-                        : !pageData.inStock && "Out of stock"}
+                      {pageData.inStock && "In stock"}
                     </h1>
                     <h1
                       className={`${

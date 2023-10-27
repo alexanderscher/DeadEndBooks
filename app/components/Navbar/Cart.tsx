@@ -160,14 +160,16 @@ const Cart = ({ isMobileDevice }: Props) => {
 
       <div className="flex justify-center items-center">
         {notActive && (
-          <div className="bg-red-200 text-red-500 m-10 p-8 rounded-md text-[20px] border-[2px] border-red-500 shadow-lg">
-            <p>Please subscribe to checkout books</p>
-            <button
-              onClick={() => setNotActive(false)}
-              className="hover:line-through text-md mt-4 text-end"
-            >
-              Close
-            </button>
+          <div className="fixed top-0 right-0 bottom-0 left-0 flex items-center justify-center">
+            <div className="bg-red-200 text-red-500 m-10 p-8 rounded-md text-[20px] border-[2px] border-red-500 shadow-lg">
+              <p>Please subscribe to checkout books</p>
+              <button
+                onClick={() => setNotActive(false)}
+                className="hover:line-through text-md mt-4 text-end"
+              >
+                Close
+              </button>
+            </div>
           </div>
         )}
       </div>

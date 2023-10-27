@@ -9,12 +9,10 @@ import prisma from "@/prisma/client";
 function isNinetyDaysOrMoreSince(givenDateStr: string) {
   const givenDate = new Date(givenDateStr);
 
-  // Calculate the date 90 days after the given date
   givenDate.setDate(givenDate.getDate() + 90);
 
   const currentDate = new Date();
 
-  // Check if the current date is on or after the date 90 days after the given date
   return currentDate >= givenDate;
 }
 

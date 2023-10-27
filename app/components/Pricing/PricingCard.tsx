@@ -91,12 +91,8 @@ const PricingCard = ({ price, session }: priceProps) => {
   }
 
   return (
-    <div>
-      <h1
-        className={`text-[30px] ${price.nickname === "Yearly Plan" && "mt-10"}`}
-      >
-        {price.nickname}
-      </h1>
+    <div className="mb-10">
+      <h1 className={`text-[30px]`}>{price.nickname}</h1>
       <p className="text-[30px] text-slate-500">
         {(price.unit_amount / 100).toLocaleString("en-US", {
           style: "currency",

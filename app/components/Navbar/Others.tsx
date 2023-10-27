@@ -97,7 +97,9 @@ const Others = () => {
     <div>
       {users.map((user) => (
         <div key={user.id} className="mb-10 border-t-[2px] border-black">
-          <h1 className="text-[24px] mt-2">{user.name}</h1>
+          <h1 className="text-[24px] mt-2 hover:line-through">
+            <Link href={`/user/${user.id}`}>{user.name}</Link>
+          </h1>
           {user.current_books.length === 0 ? (
             <>
               <p className="text-slate-500 text-[18px]">Recent rentals</p>
