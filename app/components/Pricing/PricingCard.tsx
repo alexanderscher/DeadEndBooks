@@ -1,6 +1,6 @@
 "use client";
 import { ExtendedSession } from "@/types";
-
+import axios from "axios";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { Loader } from "..";
@@ -27,22 +27,18 @@ const PricingCard = ({ price, session }: priceProps) => {
         if (!sessionId) {
           setNoSession(true);
         } else {
-          const response = await fetch("/api/stripe/subscription-change", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
+          const { data } = await axios.post(
+            "/api/stripe/subscription-change",
+            {
               subscriptionID: subscriptionID,
               priceId: price.id,
-            }),
-          });
-
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-
-          const data = await response.json();
+            },
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
           window.location.assign(data);
         }
       }
@@ -74,27 +70,19 @@ const PricingCard = ({ price, session }: priceProps) => {
     if (!sessionId) {
       setNoSession(true);
     } else {
-      try {
-        const response = await fetch("/api/stripe/payment", {
-          method: "POST",
+      const { data } = await axios.post(
+        "/api/stripe/payment",
+        {
+          priceId: price.id,
+          subscriptionID: subscriptionID,
+        },
+        {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            priceId: price.id,
-            subscriptionID: subscriptionID,
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
         }
-
-        const data = await response.json();
-        window.location.assign(data);
-      } catch (error) {
-        console.error("There was a problem with the fetch operation:", error);
-      }
+      );
+      window.location.assign(data);
     }
   };
 
@@ -114,7 +102,7 @@ const PricingCard = ({ price, session }: priceProps) => {
       </p>
 
       {userSub === price.nickname && sessionId ? (
-        <h1 className="text-[30px]  text-red-300">Current subscription</h1>
+        <h1 className="text-[30px] text-red-300">Current subscription</h1>
       ) : currentPage === "/profile/subscription" ? (
         <button
           className="text-[30px] hover:line-through text-red-500"
