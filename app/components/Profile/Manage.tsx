@@ -62,12 +62,15 @@ const Manage = () => {
       if (res.status === 200) {
         router.push("/home/cancel");
       } else if (res.status === 403) {
+        console.log("error");
         setErrorCode(true);
       }
     } catch (error) {
       console.log(error);
     }
   };
+
+  const [cancelModal, setCancelModal] = useState(false);
 
   if (isLoading) {
     return <Loader />;
@@ -83,7 +86,7 @@ const Manage = () => {
         <div className="flex flex-col mt-10 items-start">
           <button
             className="text-red-500 hover:line-through text-[26px] "
-            onClick={cancelSubscription}
+            onClick={() => setCancelModal(true)}
           >
             Cancel Subscription
           </button>
@@ -110,10 +113,37 @@ const Manage = () => {
             </p>
             <button
               onClick={() => setErrorCode(false)}
-              className="hover:line-through text-md mt-4 text-end"
+              className="hover:line-through text-md mt-4 text-end w-full"
             >
               Close
             </button>
+          </div>
+        </div>
+      )}
+      {cancelModal && (
+        <div className="fixed top-0 right-0 bottom-0 left-0 flex items-center justify-center">
+          <div className="bg-red-200 text-red-500 m-10 p-8 rounded-md text-[20px] border-[2px] border-red-500 shadow-lg max-w-[500px]">
+            <p>
+              Are you sure you want to cancel your subscription? Your
+              subscribption will end immediately.
+            </p>
+            <div className="flex justify-between">
+              <button
+                onClick={() => {
+                  setCancelModal(false);
+                  cancelSubscription();
+                }}
+                className="hover:line-through text-md mt-4 text-end"
+              >
+                Confirm
+              </button>
+              <button
+                onClick={() => setCancelModal(false)}
+                className="hover:line-through text-md mt-4 text-end"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       )}
