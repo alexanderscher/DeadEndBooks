@@ -4,7 +4,12 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/prisma/client";
 import { stripe } from "@/stripe/stripe";
 
-const webhookSecret: string = process.env.STRIPE_WEBHOOK_SECRET!;
+const isProduction = process.env.NODE_ENV === "production";
+
+const webhookSecret: string = isProduction
+  ? process.env.STRIPE_WEBHOOK_SECRET_PRODUCTION!
+  : process.env.STRIPE_WEBHOOK_SECRET!;
+
 const today = new Date();
 
 const webhookHandler = async (req: NextRequest): Promise<NextResponse> => {
