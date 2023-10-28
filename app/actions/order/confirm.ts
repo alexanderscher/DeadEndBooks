@@ -15,7 +15,7 @@ export const confirmation = async (data: OrderData) => {
   sendEmail({
     from: "Dead End Books <admin@deadendbooks.org>",
     to: [data.email],
-    subject: "Order " + data.orderId + " confirmation",
+    subject: "Order confirmation",
     react: OrderTemplate({
       name: data.name,
       orderId: data.orderId,

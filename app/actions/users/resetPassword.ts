@@ -14,7 +14,6 @@ export const resetPassword = async (email: string) => {
 
   if (!user) {
     return "User not found";
-    // throw new Error("User not found");
   }
 
   const resetPasswordToken = crypto.randomBytes(32).toString("base64url");

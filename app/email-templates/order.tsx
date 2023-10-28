@@ -8,6 +8,14 @@ interface EmailTemplateProps {
   returnDate: string;
 }
 
+function extractDate(inputString: string) {
+  const match = inputString.match(/^([a-zA-Z]{3} [a-zA-Z]{3} \d{2} \d{4})/);
+  if (match) {
+    return match[1];
+  }
+  return null;
+}
+
 export const OrderTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
   name,
   orderId,
@@ -16,10 +24,9 @@ export const OrderTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
   returnDate,
 }) => (
   <div>
-    <h1>{name}</h1>
     <h2>Order #{orderId}</h2>
-    <h3>Order Date: {orderDate}</h3>
-    <h3>Return Date: {returnDate}</h3>
+    <h3>Order Date: {extractDate(orderDate)}</h3>
+    <h3>Return Date: {extractDate(returnDate)}</h3>
     <h3>Books:</h3>
 
     {titles.length > 0 && titles.map((title) => <li key={title}>{title}</li>)}

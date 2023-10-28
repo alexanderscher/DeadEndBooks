@@ -232,7 +232,7 @@ const Navbar = ({ isSmallDevice, isMobileDevice }: Props) => {
                   <img src="/title.png" alt="" className="w-full" />
                 </Link>
               </div>
-              <div className="mt-5 flex flex-col items-start">
+              <div className="flex flex-col items-start">
                 <button className={`hover:line-through text-md`}>
                   <Link href="/home">Library</Link>
                 </button>

@@ -49,7 +49,7 @@ const page = () => {
             <Loader />
           ) : (
             <div className={"w-full"}>
-              <User />
+              <User isSmallDevice={isSmallDevice} />
             </div>
           )}
         </>
