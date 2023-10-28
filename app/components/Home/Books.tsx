@@ -117,7 +117,7 @@ const Books = ({ isSmallDevice, isMediumDevice }: Props) => {
   return (
     <>
       {!isSmallDevice ? (
-        <div className="flex  w-full">
+        <div className="flex w-full">
           {columnsData.map((column, columnIndex) => (
             <div key={columnIndex} className={`flex flex-col w-full`}>
               {column.map((item, index) => (
