@@ -32,3 +32,21 @@ export const OrderTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
     {titles.length > 0 && titles.map((title) => <li key={title}>{title}</li>)}
   </div>
 );
+
+export const NewOrderTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
+  name,
+  orderId,
+  orderDate,
+  titles,
+  returnDate,
+}) => (
+  <div>
+    <h2>User: {name}</h2>
+    <h2>Order #{orderId}</h2>
+    <h3>Order Date: {extractDate(orderDate)}</h3>
+    <h3>Return Date: {extractDate(returnDate)}</h3>
+    <h3>Books:</h3>
+
+    {titles.length > 0 && titles.map((title) => <li key={title}>{title}</li>)}
+  </div>
+);

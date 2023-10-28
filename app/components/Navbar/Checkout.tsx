@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { sendEmail } from "@/app/actions/emails/sendEmail";
 import { OrderTemplate } from "@/app/email-templates/order";
 import { confirmation } from "@/app/actions/order/confirm";
+import { newOrder } from "@/app/actions/order/admin";
 
 type AddyData = {
   userId: number;
@@ -142,6 +143,7 @@ const Checkout = ({ isSmallDevice, isMobileDevice }: Props) => {
       console.log(data);
       if (data.orderId !== undefined) {
         const email = await confirmation(data);
+        const orderemail = await newOrder(data);
         router.push(`/checkout/success/${data.orderId}`);
       }
     }
