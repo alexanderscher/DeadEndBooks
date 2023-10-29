@@ -3,6 +3,7 @@ import prisma from "@/prisma/client";
 
 export async function POST(request: Request) {
   // Delete other records first...
+
   const current = await prisma.current.deleteMany({});
   const history = await prisma.history.deleteMany({});
   const orderAddress = await prisma.orderAddress.deleteMany({});
@@ -22,6 +23,8 @@ export async function POST(request: Request) {
       inStock: true,
     },
   });
+
+  const booksD = await prisma.book.deleteMany({});
 
   return new NextResponse(JSON.stringify({ message: "Success" }), {
     status: 200,
