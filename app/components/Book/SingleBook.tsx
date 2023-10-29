@@ -317,7 +317,7 @@ const SingleBook = ({ isSmallDevice, isMobileDevice }: Props) => {
                     isSmallDevice ? `${smtext}` : "book-text mt-10"
                   }  cursor-pointer  text-red-500 mt-10`}
                 >
-                  Please Log in to checkout books
+                  Please log in to checkout books
                 </h1>
                 <Link href="/login">
                   <h1
