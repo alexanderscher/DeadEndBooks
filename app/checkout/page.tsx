@@ -58,7 +58,7 @@ const page = () => {
               </h1>
               <div className="mt-10">
                 <h1 className="text-red-500  hover:line-through text-[26px]">
-                  <Link href="/login">Login</Link>
+                  <Link href="/login">Log in</Link>
                 </h1>
                 <h1 className="text-red-500  hover:line-through text-[26px]">
                   <Link href="/signup">Sign up</Link>

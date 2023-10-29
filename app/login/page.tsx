@@ -117,7 +117,7 @@ export default function Login() {
                 type="submit"
                 className=" text-red-500 font-bold text-[22px] hover:line-through"
               >
-                Login
+                Log in
               </button>
 
               <p className="text-[22px] text-red-300 hover:line-through cursor-pointer">
@@ -134,7 +134,7 @@ export default function Login() {
               onClick={loginUserGoogle}
             >
               <p className="hover:line-through text-[22px] text-red-800">
-                Login with Google
+                Log in with Google
               </p>
             </button>
           </div>

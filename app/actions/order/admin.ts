@@ -14,7 +14,11 @@ type OrderData = {
 export const newOrder = async (data: OrderData) => {
   sendEmail({
     from: "Dead End Books <admin@deadendbooks.org>",
-    to: ["alexcscher@gmail.com"],
+    to: [
+      "deadendbooks@gmail.com",
+      "shawster4@gmail.com",
+      "nathalieannmartin@gmail.com",
+    ],
     subject: "New Order",
     react: NewOrderTemplate({
       name: data.name,

@@ -160,14 +160,14 @@ const SingleBook = ({ isSmallDevice, isMobileDevice }: Props) => {
                 {!userId ? (
                   <div className="mt-4">
                     <h1 className={` text-red-300 ${text} `}>
-                      Login to checkout books
+                      Log in to checkout books
                     </h1>
                     <Link href="/login">
                       <h1
                         className={`book-text mt-4 ${text}
                         }  cursor-pointer hover:line-through text-red-500 mt-4`}
                       >
-                        Login
+                        Log in
                       </h1>
                     </Link>
 
@@ -315,9 +315,9 @@ const SingleBook = ({ isSmallDevice, isMobileDevice }: Props) => {
                 <h1
                   className={`${
                     isSmallDevice ? `${smtext}` : "book-text mt-10"
-                  }  cursor-pointer hover:line-through text-red-500 mt-10`}
+                  }  cursor-pointer  text-red-500 mt-10`}
                 >
-                  Login to checkout books
+                  Please Log in to checkout books
                 </h1>
                 <Link href="/login">
                   <h1
@@ -325,7 +325,7 @@ const SingleBook = ({ isSmallDevice, isMobileDevice }: Props) => {
                       isSmallDevice ? `${smtext}` : "book-text mt-8"
                     }  cursor-pointer hover:line-through text-red-500 mt-8`}
                   >
-                    Login
+                    Log in
                   </h1>
                 </Link>
 

@@ -167,7 +167,7 @@ export default function Signup() {
               onClick={loginUserGoogle}
             >
               <p className="hover:line-through text-[22px] text-red-800">
-                Login with Google
+                Log in with Google
               </p>
             </button>
           </div>
