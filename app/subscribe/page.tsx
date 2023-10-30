@@ -44,16 +44,16 @@ const page = () => {
                 collection of art books on painting, sculpture, photography,
                 film, anthologies, exhibition catalogs, and magazines. After
                 creating an account with your personal information, you will be
-                able to check our up to 3 books for 4 weeks at a time.
-                Subscriptions are $16.85/month or $188.00 for the year. We will
-                cover shipping costs. In your package from Deadend, you will
-                receive a return label, and can send the books back to us in the
-                box they came in. Subscription time starts 3 days after your
-                order (to account for shipping time). Your account will show the
-                subscription end date. Late fees will be charged if books are
-                not returned on time. The fee will be $5 a day. 2 weeks past the
-                return date, your card will automatically be charged the price
-                of the book.
+                able to check out up to 3 books for 4 weeks at a time.
+                subscriptions are 16.85/month with a 3 month minimum or $188.00
+                for the year. We will cover shipping costs. In your package from
+                Deadend, you will receive a return label, and can send the books
+                back to us in the box they came in. Subscription time starts 3
+                days after your order (to account for shipping time). Your
+                account will show the subscription end date. Late fees will be
+                charged if books are not returned on time. The fee will be $5 a
+                day. 2 weeks past the return date, your card will automatically
+                be charged the price of the book.
               </p>
               <button
                 className={
