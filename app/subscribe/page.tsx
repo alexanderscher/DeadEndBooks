@@ -44,7 +44,7 @@ const page = () => {
                 collection of art books on painting, sculpture, photography,
                 film, anthologies, exhibition catalogs, and magazines. After
                 creating an account with your personal information, you will be
-                able to check out up to 3 books for 4 weeks at a time.
+                able to checkout up to 3 books for 4 weeks at a time.
                 subscriptions are 16.85/month with a 3 month minimum or $188.00
                 for the year. We will cover shipping costs. In your package from
                 Deadend, you will receive a return label, and can send the books
