@@ -192,7 +192,7 @@ const Navbar = ({ isSmallDevice, isMobileDevice }: Props) => {
                 } mr-2`}
               >
                 <Link href={`/library/photography_film`}>
-                  Photography/film,
+                  Photography/Film,
                 </Link>
               </button>
               <button
@@ -210,7 +210,7 @@ const Navbar = ({ isSmallDevice, isMobileDevice }: Props) => {
                 } mr-2`}
               >
                 <Link href={`/library/anthologies_miscellaneous`}>
-                  Anthologies/miscellaneous,
+                  Anthologies/Miscellaneous,
                 </Link>
               </button>
               <button
@@ -262,7 +262,7 @@ const Navbar = ({ isSmallDevice, isMobileDevice }: Props) => {
                         </button>
                         <button className="hover:line-through ">
                           <Link href={`/library/photography_film`}>
-                            Photography/film
+                            Photography/Film
                           </Link>
                         </button>
                         <button className="hover:line-through ">
@@ -272,7 +272,7 @@ const Navbar = ({ isSmallDevice, isMobileDevice }: Props) => {
                         </button>
                         <button className="hover:line-through ">
                           <Link href={`/library/anthologies_miscellaneous`}>
-                            Anthologies/miscellaneous
+                            Anthologies/Miscellaneous
                           </Link>
                         </button>
                         <button className="hover:line-through ">
