@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/prisma/client";
 
-export const dynamic = "force-dynamic";
 export async function GET() {
   try {
     const books = await prisma.book.findMany({
@@ -17,6 +16,7 @@ export async function GET() {
   } catch (err) {
     return new NextResponse(JSON.stringify({ error: "Database error" }), {
       status: 500,
+
       headers: { "Content-Type": "application/json" },
     });
   }

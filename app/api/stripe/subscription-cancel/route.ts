@@ -16,7 +16,6 @@ function isNinetyDaysOrMoreSince(givenDateStr: string) {
   return currentDate >= givenDate;
 }
 
-export const dynamic = "force-dynamic";
 export async function GET(req: NextRequest) {
   const session = await getServerSession(authOptions);
 
