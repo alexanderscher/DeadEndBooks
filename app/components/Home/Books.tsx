@@ -63,7 +63,7 @@ const Books = ({ isSmallDevice, isMediumDevice }: Props) => {
     const getBooks = async () => {
       setisLoading(true);
       const res = await fetch("/api/book", {
-        next: { tags: ["book"], revalidate: 60 * 60 * 24 },
+        next: { revalidate: 60 * 60 * 24 },
       });
       const data = await res.json();
       const booktoPush = [];
