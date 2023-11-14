@@ -56,7 +56,9 @@ const Others = () => {
 
   useEffect(() => {
     const getUsers = async () => {
-      const res = await fetch("/api/user/other");
+      const res = await fetch("/api/user/other", {
+        next: { revalidate: 60 * 60 * 24 },
+      });
       const data: User[] = await res.json();
 
       const filteredData = data.filter(

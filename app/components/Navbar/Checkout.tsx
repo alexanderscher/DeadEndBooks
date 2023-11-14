@@ -8,6 +8,7 @@ import { sendEmail } from "@/app/actions/emails/sendEmail";
 import { OrderTemplate } from "@/app/email-templates/order";
 import { confirmation } from "@/app/actions/order/confirm";
 import { newOrder } from "@/app/actions/order/admin";
+import { revalidatePath } from "next/cache";
 
 type AddyData = {
   userId: number;
@@ -125,6 +126,7 @@ const Checkout = ({ isSmallDevice, isMobileDevice }: Props) => {
       headers: {
         "Content-Type": "application/json",
       },
+
       body: JSON.stringify({
         userId,
         name: addyData.name,
@@ -146,6 +148,7 @@ const Checkout = ({ isSmallDevice, isMobileDevice }: Props) => {
         const orderemail = await newOrder(data);
         router.push(`/checkout/success/${data.orderId}`);
       }
+      revalidatePath("/api/user/other");
     }
   };
 
