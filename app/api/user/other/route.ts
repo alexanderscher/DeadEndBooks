@@ -12,7 +12,7 @@ type ExtendedBook = {
   photo_back: string;
   inStock: boolean;
 };
-export const dynamic = "force-dynamic";
+
 export async function GET() {
   try {
     const users = await prisma.user.findMany({

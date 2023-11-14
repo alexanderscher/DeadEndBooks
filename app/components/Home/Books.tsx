@@ -62,7 +62,9 @@ const Books = ({ isSmallDevice, isMediumDevice }: Props) => {
   useEffect(() => {
     const getBooks = async () => {
       setisLoading(true);
-      const res = await fetch("/api/book");
+      const res = await fetch("/api/book", {
+        next: { revalidate: 60 * 60 * 24 },
+      });
       const data = await res.json();
       const booktoPush = [];
 
@@ -97,7 +99,7 @@ const Books = ({ isSmallDevice, isMediumDevice }: Props) => {
       setData(booktoPush);
     };
     getBooks();
-  }, [sessionId]);
+  }, []);
 
   useEffect(() => {
     if (data.length > 0) {

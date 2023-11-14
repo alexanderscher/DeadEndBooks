@@ -33,8 +33,6 @@ interface CurrentRentalsProps {
   isSmallDevice: boolean;
 }
 
-export const dynamic = "force-dynamic";
-
 export async function GET() {
   try {
     const rentals = await prisma.current.findMany({

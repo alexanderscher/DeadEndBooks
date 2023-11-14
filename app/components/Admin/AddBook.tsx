@@ -5,6 +5,7 @@ import { UploadButton } from "@uploadthing/react";
 import { useState } from "react";
 import { OurFileRouter } from "@/app/api/uploadthing/core";
 import { deleteUploadThingImage } from "@/app/actions/photo/delete";
+import { revalidatePath } from "next/cache";
 
 type AddBookProps = {
   isSmallDevice: boolean;
@@ -165,6 +166,7 @@ const AddBook = ({ isSmallDevice }: AddBookProps) => {
           }));
         }
       }
+      revalidatePath("/api/book");
     } catch (error) {
       console.error(error);
       throw error;
