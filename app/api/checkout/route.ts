@@ -140,6 +140,8 @@ export async function POST(request: Request): Promise<NextResponse> {
     revalidatePath("/api/admin/rentals/current-rentals");
     revalidatePath("/api/user/other");
 
+    revalidatePath("/api/user/current-rental");
+
     return new NextResponse(
       JSON.stringify({
         name: user.name,

@@ -39,6 +39,8 @@ export async function POST(request: Request) {
       where: { id: parseInt(id) },
     });
     revalidatePath("/api/admin/rentals/past-rentals");
+    revalidatePath("/api/user/current-rental");
+    revalidatePath("/api/user/history");
 
     return new NextResponse(JSON.stringify({ message: "Success" }), {
       status: 200,

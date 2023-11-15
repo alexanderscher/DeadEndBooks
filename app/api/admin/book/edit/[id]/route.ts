@@ -130,6 +130,7 @@ export async function DELETE(
       const deletedBook = await prisma.book.delete({
         where: { id: bookId },
       });
+      revalidatePath("/api/book");
       return new NextResponse(JSON.stringify(deletedBook), {
         status: 200,
         headers: { "Content-Type": "application/json" },
