@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import prisma from "@/prisma/client";
 import { deleteUploadThingImage } from "@/app/actions/photo/delete";
 import { utapi } from "uploadthing/server";
+import { revalidatePath } from "next/cache";
 
 export async function PUT(
   request: Request,
@@ -70,6 +71,9 @@ export async function PUT(
       where: { id: bookId },
       data: thebook,
     });
+
+    revalidatePath(`/api/book/${thebook.title}`);
+
     return new NextResponse(JSON.stringify(updatedBook), {
       status: 200,
       headers: { "Content-Type": "application/json" },

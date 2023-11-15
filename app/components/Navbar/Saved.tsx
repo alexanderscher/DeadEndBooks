@@ -25,28 +25,12 @@ const Saved = ({ isMobileDevice }: Props) => {
 
     const getSaved = async () => {
       setIsLoaded(true);
-      const res = await fetch(`/api/user/${sessionId}`);
+      const res = await fetch(`/api/saved/${sessionId}`, {
+        next: { revalidate: 60 * 60 * 24 },
+      });
       const data = await res.json();
-      const savedBooks = [];
-      const cartIds = [];
-      for (const key in data.Cart) {
-        cartIds.push(data.Cart[key].bookId);
-      }
 
-      for (const key in data.Saved) {
-        const savedItem = data.Saved[key];
-        const res = await fetch(`/api/book/${savedItem.bookId}`);
-        const book = await res.json();
-
-        savedBooks.push({
-          ...book,
-          savedId: savedItem.id,
-          current: book.Current[0]?.userId === parseInt(sessionId),
-        });
-      }
-
-      setPageData(savedBooks);
-      setCartIdList(cartIds);
+      setPageData(data);
       setIsLoaded(false);
     };
     getSaved();

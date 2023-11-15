@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/prisma/client";
+import { revalidatePath } from "next/cache";
 
 type ExtendedBook = {
   start_date?: Date;

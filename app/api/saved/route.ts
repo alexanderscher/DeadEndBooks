@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/prisma/client";
+import { revalidatePath } from "next/cache";
 
 export async function POST(request: Request) {
   const json = await request.json();
@@ -12,6 +13,7 @@ export async function POST(request: Request) {
       },
     });
 
+    revalidatePath(`/api/cart/${userId}`);
     return new NextResponse(JSON.stringify(saved), {
       status: 201,
       headers: { "Content-Type": "application/json" },

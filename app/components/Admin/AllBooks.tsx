@@ -15,7 +15,9 @@ const AllBooks = ({ isMobileDevice }: Props) => {
   useEffect(() => {
     const getBooks = async () => {
       setIsLoaded(true);
-      const res = await fetch("/api/book");
+      const res = await fetch("/api/book", {
+        next: { revalidate: 60 * 60 * 24 },
+      });
       const data = await res.json();
       setBooks(data);
       setIsLoaded(false);
@@ -38,10 +40,10 @@ const AllBooks = ({ isMobileDevice }: Props) => {
             className={
               isMobileDevice
                 ? "w-1/2 mt-4 flex flex-col items-start"
-                : "w-[200px] mt-2 "
+                : "w-[300px] mt-2 "
             }
           >
-            <div className="w-full">
+            <div className="w-full ">
               <p className="text-slate-400 ">Title</p>
               <p className="mb-2 hover:line-through">
                 <Link href={`/book/${book.title}`}>{book.title}</Link>

@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import prisma from "@/prisma/client";
+import { revalidatePath } from "next/cache";
 
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -54,6 +55,8 @@ export async function POST(request: Request): Promise<NextResponse> {
 
         stripeId(user, email, name);
       }
+      revalidatePath("/api/user");
+
       return new NextResponse(JSON.stringify(user), {
         status: 201,
         headers: { "Content-Type": "application/json" },

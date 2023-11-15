@@ -183,7 +183,9 @@ const CurrentRentals = () => {
   useEffect(() => {
     const getCurrentRentals = async () => {
       setIsLoaded(true);
-      const res = await fetch(`/api/admin/rentals/current-rentals`);
+      const res = await fetch(`/api/admin/rentals/current-rentals`, {
+        next: { revalidate: 60 * 60 * 24 },
+      });
       const data = await res.json();
 
       setRentals(data);

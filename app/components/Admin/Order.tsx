@@ -78,7 +78,9 @@ const Order = ({ isMobileDevice }: Props) => {
       setIsLoaded(true);
       setReload(false);
 
-      const res = await fetch(`/api/order/${currentPage.split("/")[3]}`);
+      const res = await fetch(`/api/order/${currentPage.split("/")[3]}`, {
+        next: { revalidate: 60 * 60 * 24 },
+      });
       const data = await res.json();
 
       setOrders(data);

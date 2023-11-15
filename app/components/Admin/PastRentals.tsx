@@ -41,7 +41,9 @@ const PastRentals = ({ isSmallDevice }: PastRentalsProps) => {
 
   useEffect(() => {
     const getPastRentals = async () => {
-      const res = await fetch(`/api/admin/rentals/past-rentals`);
+      const res = await fetch(`/api/admin/rentals/past-rentals`, {
+        next: { revalidate: 60 * 60 * 24 },
+      });
       const data = await res.json();
       setRentals(data);
 

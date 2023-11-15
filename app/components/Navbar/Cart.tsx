@@ -13,6 +13,7 @@ const Cart = ({ isMobileDevice }: Props) => {
   const { data: session } = useSession();
   const router = useRouter();
   const [pageData, setPageData] = useState<Book[]>([]);
+  console.log(pageData);
   const [reload, setReload] = useState(false);
   const [userId, setUserId] = useState("");
   const [isLoading, setisLoading] = useState(true);
@@ -22,22 +23,11 @@ const Cart = ({ isMobileDevice }: Props) => {
     const sessionId = (session as ExtendedSession)?.user?.id;
     setUserId(sessionId as string);
     const getCart = async () => {
-      const res = await fetch(`/api/user/${sessionId}`);
+      const res = await fetch(`/api/cart/${sessionId}`, {
+        next: { revalidate: 60 * 60 * 24 },
+      });
       const data = await res.json();
-
-      const cartBooks = [];
-      const bookIds = [];
-      const cartIds = [];
-
-      for (const key in data.Cart) {
-        const res = await fetch(`/api/book/${data.Cart[key].bookId}`);
-        const book = await res.json();
-        bookIds.push(data.Cart[key].bookId);
-        cartIds.push(data.Cart[key].id);
-        cartBooks.push({ ...book, cartId: data.Cart[key].id });
-      }
-
-      setPageData(cartBooks);
+      setPageData(data);
       setisLoading(false);
     };
     getCart();

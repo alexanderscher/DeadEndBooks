@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/prisma/client";
+import { revalidatePath } from "next/cache";
 
 export async function POST(request: Request) {
   const json = await request.json();
@@ -11,6 +12,8 @@ export async function POST(request: Request) {
         bookId,
       },
     });
+
+    revalidatePath(`/api/cart/${cart.userId}`);
 
     return new NextResponse(JSON.stringify(cart), {
       status: 201,

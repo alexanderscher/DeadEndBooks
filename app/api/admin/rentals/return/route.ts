@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/prisma/client";
+import { revalidatePath } from "next/cache";
 
 export async function POST(request: Request) {
   try {
@@ -37,6 +38,7 @@ export async function POST(request: Request) {
     await prisma.current.delete({
       where: { id: parseInt(id) },
     });
+    revalidatePath("/api/admin/rentals/past-rentals");
 
     return new NextResponse(JSON.stringify({ message: "Success" }), {
       status: 200,
