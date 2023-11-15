@@ -33,7 +33,7 @@ interface CurrentRentalsProps {
   isSmallDevice: boolean;
 }
 
-export async function GET() {
+export async function PUT() {
   try {
     const rentals = await prisma.current.findMany({
       orderBy: { start_date: "asc" },

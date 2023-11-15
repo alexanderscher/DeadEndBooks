@@ -148,7 +148,6 @@ const Checkout = ({ isSmallDevice, isMobileDevice }: Props) => {
         const orderemail = await newOrder(data);
         router.push(`/checkout/success/${data.orderId}`);
       }
-      revalidatePath("/api/user/other");
     }
   };
 

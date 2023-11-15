@@ -20,7 +20,7 @@ const formatDate = (input: Date | string) => {
 
   return `${month}/${day}/${year}` as string;
 };
-export async function GET() {
+export async function PUT() {
   try {
     const orders = await prisma.orders.findMany({
       orderBy: { order_date: "desc" },

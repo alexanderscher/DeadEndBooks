@@ -24,8 +24,6 @@ export async function POST(request: Request) {
     },
   });
 
-  const booksD = await prisma.book.deleteMany({});
-
   return new NextResponse(JSON.stringify({ message: "Success" }), {
     status: 200,
     headers: { "Content-Type": "application/json" },

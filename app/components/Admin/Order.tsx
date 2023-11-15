@@ -79,6 +79,7 @@ const Order = ({ isMobileDevice }: Props) => {
       setReload(false);
 
       const res = await fetch(`/api/order/${currentPage.split("/")[3]}`, {
+        method: "PUT",
         next: { revalidate: 60 * 60 * 24 },
       });
       const data = await res.json();
