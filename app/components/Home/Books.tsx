@@ -16,13 +16,13 @@ const splitDataIntoColumns = <T extends BookImage>(
   data: T[],
   columns: number
 ): T[][] => {
-  const result: T[][] = [];
-  for (let i = 0; i < columns; i++) {
-    result.push([]);
-  }
+  const result: T[][] = new Array(columns).fill(null).map(() => []);
+
   data.forEach((item, index) => {
     result[index % columns].push(item);
   });
+  console.log(result);
+
   return result;
 };
 
@@ -63,6 +63,7 @@ const Books = ({ isSmallDevice, isMediumDevice }: Props) => {
     const getBooks = async () => {
       setisLoading(true);
       const res = await fetch("/api/book", {
+        method: "PUT",
         next: { revalidate: 60 * 60 * 24 },
       });
       const data = await res.json();
@@ -72,19 +73,8 @@ const Books = ({ isSmallDevice, isMediumDevice }: Props) => {
         const expectedMedium =
           pageToMediumMap[currentPage as keyof typeof pageToMediumMap];
 
-        if (expectedMedium === "stock") {
-          if (data[d].inStock) {
-            let stockStatus = "";
-            if (data[d].inStock) {
-              booktoPush.push({
-                photo_front: data[d].photo_front,
-                id: data[d].id,
-                title: data[d].title,
-                medium: data[d].medium,
-              });
-            }
-          }
-        } else if (
+        if (
+          (expectedMedium === "stock" && data[d].inStock) ||
           expectedMedium === null ||
           data[d].medium === expectedMedium
         ) {
@@ -97,20 +87,17 @@ const Books = ({ isSmallDevice, isMediumDevice }: Props) => {
         }
       }
       setData(booktoPush);
+      setisLoading(false);
     };
+
     getBooks();
-  }, []);
+  }, [currentPage]);
 
   useEffect(() => {
-    if (data.length > 0) {
-      const newColumns = isMediumDevice ? 2 : 3;
-      if (newColumns !== columns) {
-        setColumns(newColumns);
-        setColumnsData(splitDataIntoColumns(data, newColumns));
-      }
-      setisLoading(false);
-    }
-  }, [isMediumDevice, columns, data]);
+    const newColumns = isMediumDevice ? 2 : 3; // Assume medium devices can fit 3 columns
+    setColumns(newColumns);
+    setColumnsData(splitDataIntoColumns(data, newColumns));
+  }, [isMediumDevice, data]);
 
   if (isLoading) {
     return <Loader />;
