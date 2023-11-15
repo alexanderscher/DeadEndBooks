@@ -16,6 +16,7 @@ const AllBooks = ({ isMobileDevice }: Props) => {
     const getBooks = async () => {
       setIsLoaded(true);
       const res = await fetch("/api/book", {
+        method: "PUT",
         next: { revalidate: 60 * 60 * 24 },
       });
       const data = await res.json();
