@@ -27,8 +27,7 @@ const Saved = ({ isMobileDevice }: Props) => {
     const getSaved = async () => {
       setIsLoaded(true);
       const res = await fetch(`/api/saved/${sessionId}`, {
-        method: "PUT",
-        next: { revalidate: 60 * 60 * 24 },
+        cache: "no-cache",
       });
       const data = await res.json();
       setCartIdList(data.map((book: Book) => book.id));

@@ -50,7 +50,7 @@ const SingleBook = ({ isSmallDevice, isMobileDevice }: Props) => {
     setuserId(sessionId);
 
     const getBook = async () => {
-      const res = await fetch(`/api/book/${title}`, { cache: "force-cache" });
+      const res = await fetch(`/api/book/${title}`, { cache: "no-cache" });
       const data = await res.json();
       const savedIds = [];
       const cartIds = [];

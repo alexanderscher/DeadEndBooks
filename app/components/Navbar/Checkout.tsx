@@ -55,7 +55,10 @@ const Checkout = ({ isSmallDevice, isMobileDevice }: Props) => {
     const sessionId = (session as ExtendedSession)?.user?.id;
     setUserId(sessionId as string);
     const getCart = async () => {
-      const res = await fetch(`/api/user/${sessionId}`);
+      const res = await fetch(`/api/user/${sessionId}`, {
+        cache: "no-cache",
+        method: "PUT",
+      });
       const data = await res.json();
       setAddress(data.address);
 
@@ -99,7 +102,10 @@ const Checkout = ({ isSmallDevice, isMobileDevice }: Props) => {
       return;
     }
 
-    const useres = await fetch(`/api/user/${userId}`);
+    const useres = await fetch(`/api/user/${userId}`, {
+      cache: "no-cache",
+      method: "PUT",
+    });
     const user = await useres.json();
 
     if (user.Cart.length > 3) {

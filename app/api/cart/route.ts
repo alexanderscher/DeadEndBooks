@@ -13,8 +13,6 @@ export async function POST(request: Request) {
       },
     });
 
-    revalidatePath(`/api/cart/${cart.userId}`);
-
     return new NextResponse(JSON.stringify(cart), {
       status: 201,
       headers: { "Content-Type": "application/json" },

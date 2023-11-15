@@ -110,7 +110,7 @@ const Manage = () => {
             <p>
               Subsciption cancelation is available after three months of your
               subscription date. You are able to cancel on{" "}
-              {formatDate(subscriptionDate)}
+              {formatDate(subscriptionDate)}.
             </p>
             <button
               onClick={() => setErrorCode(false)}

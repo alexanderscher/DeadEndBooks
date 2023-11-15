@@ -1,4 +1,8 @@
-import { NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { NextRequest, NextResponse } from "next/server";
+import { authOptions } from "../../auth/[...nextauth]/route";
+import { ExtendedSession } from "@/types";
+import { stripe } from "@/stripe/stripe";
 import prisma from "@/prisma/client";
 import { revalidatePath } from "next/cache";
 
@@ -74,18 +78,41 @@ export async function POST(
   }
 }
 
+function isNinetyDaysOrMoreSince(givenDateStr: string) {
+  const givenDate = new Date(givenDateStr);
+
+  givenDate.setDate(givenDate.getDate() + 90);
+
+  const currentDate = new Date();
+
+  return currentDate >= givenDate;
+}
+
 // export async function DELETE(
 //   request: Request,
 //   { params }: { params: { id: string } }
 // ) {
 //   const { id } = params;
 //   const userId = parseInt(id);
+//   const user = await prisma.user.findUnique({
+//     where: { id: userId },
+//   });
 
-//   await prisma.address.deleteMany({ where: { userId } });
-//   await prisma.current.deleteMany({ where: { userId } });
-//   await prisma.cart.deleteMany({ where: { userId } });
-//   await prisma.saved.deleteMany({ where: { userId } });
-//   await prisma.history.deleteMany({ where: { userId } });
+//   if (user && user.isActive) {
+//     return new NextResponse(JSON.stringify({ error: "Active subsciption" }), {
+//       status: 500,
+//       headers: { "Content-Type": "application/json" },
+//     });
+//   } else {
+//     // await prisma.orders.deleteMany({ where: { userId } });
+//     // await prisma.orderAddress.deleteMany({ where: {} });
+//     // await prisma.address.deleteMany({ where: { userId } });
+//     // await prisma.current.deleteMany({ where: { userId } });
+//     // await prisma.cart.deleteMany({ where: { userId } });
+//     // await prisma.saved.deleteMany({ where: { userId } });
+//     // await prisma.history.deleteMany({ where: { userId } });
+//     // await prisma.user.delete({ where: { id: userId } });
+//   }
 
 //   return new NextResponse(JSON.stringify(id), {
 //     status: 200,

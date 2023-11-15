@@ -1,6 +1,6 @@
 "use client";
 import { ExtendedSession, UserType } from "@/types";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { Loader } from "..";
@@ -54,11 +54,28 @@ const Profile = () => {
   });
 
   const [deletePrompt, setdeletePrompt] = useState(false);
+  const [error, setError] = useState(false);
+  const isProduction = process.env.NODE_ENV === "production";
+  const url = isProduction
+    ? "https://deadendbooks.org/"
+    : "http://localhost:3000/";
+
+  const signout = async () => {
+    await signOut({ callbackUrl: url });
+  };
 
   // const handleDelete = async () => {
   //   const res = await fetch(`/api/user/${user.id}`, {
   //     method: "DELETE",
   //   });
+
+  //   const data = await res.json();
+
+  //   if (!res.ok) {
+  //     setError(true);
+  //   } else {
+  //     signout();
+  //   }
   // };
 
   const [errorMessage, seterrorMessage] = useState("");
@@ -241,42 +258,68 @@ const Profile = () => {
           </div>
         </>
       )}
-      <h2 className="text-red-500 text-lg ">
+      {/* <h2 className="text-red-500 text-lg ">
         <button
           className="hover:line-through"
           onClick={() => setdeletePrompt(true)}
         >
           Delete Account
         </button>
-      </h2>
-      {deletePrompt && (
+      </h2> */}
+      {/* {deletePrompt && (
         <div className="fixed inset-0 flex items-center justify-center z-40">
           <div className="p-8 z-50 max-w-[400px] w-3/4 bg-red-100 min-h-[200px] rounded-md border-black border-[2px] shadow-xl flex flex-col">
-            <div className="flex-grow flex flex-col">
-              <p>
-                Are you sure you want to delete your account? All your data will
-                be lost.
-              </p>
-            </div>
-            <div className="flex  justify-between mt-4">
-              <button
-                type="submit"
-                // onClick={handleDelete}
-                className="text-start text-red-500 hover:line-through text-[20px] "
-              >
-                Confirm
-              </button>
-              <button
-                type="submit"
-                className="text-start text-red-500 hover:line-through text-[20px]"
-                onClick={() => setdeletePrompt(false)}
-              >
-                Cancel
-              </button>
-            </div>
+            {error ? (
+              <>
+                <div className="flex-grow flex flex-col">
+                  {" "}
+                  <p>
+                    Please cancel your active subscription before deleting your
+                    account.
+                  </p>
+                </div>
+
+                <div className="flex  justify-end mt-4">
+                  <button
+                    type="submit"
+                    className="text-start text-red-500 hover:line-through text-[20px]"
+                    onClick={() => {
+                      setdeletePrompt(false), setError(false);
+                    }}
+                  >
+                    Close
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="flex-grow flex flex-col">
+                  <p>
+                    Are you sure you want to delete your account? All your data
+                    will be lost.
+                  </p>
+                </div>
+                <div className="flex  justify-between mt-4">
+                  <button
+                    type="submit"
+                    onClick={handleDelete}
+                    className="text-start text-red-500 hover:line-through text-[20px] "
+                  >
+                    Confirm
+                  </button>
+                  <button
+                    type="submit"
+                    className="text-start text-red-500 hover:line-through text-[20px]"
+                    onClick={() => setdeletePrompt(false)}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

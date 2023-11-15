@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import prisma from "@/prisma/client";
 import { revalidatePath } from "next/cache";
 
-export async function PUT(
+export async function GET(
   request: Request,
   { params }: { params: { id: string } }
 ) {

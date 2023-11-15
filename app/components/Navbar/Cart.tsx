@@ -18,13 +18,14 @@ const Cart = ({ isMobileDevice }: Props) => {
   const [userId, setUserId] = useState("");
   const [isLoading, setisLoading] = useState(true);
   const [notActive, setNotActive] = useState(false);
+  console.log(pageData);
   useEffect(() => {
     setisLoading(true);
     const sessionId = (session as ExtendedSession)?.user?.id;
     setUserId(sessionId as string);
     const getCart = async () => {
       const res = await fetch(`/api/cart/${sessionId}`, {
-        cache: "force-cache",
+        cache: "no-cache",
       });
       const data = await res.json();
       setPageData(data);
@@ -58,7 +59,10 @@ const Cart = ({ isMobileDevice }: Props) => {
     if (!(session as ExtendedSession)?.user?.isActive) {
       setNotActive(true);
     } else {
-      const useres = await fetch(`/api/user/${userId}`);
+      const useres = await fetch(`/api/user/${userId}`, {
+        method: "PUT",
+        cache: "no-cache",
+      });
       const user = await useres.json();
       if (user.Cart.length > 3) {
         setModalCheckout({ second: false, first: true });

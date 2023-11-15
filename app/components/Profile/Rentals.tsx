@@ -28,7 +28,7 @@ const Rentals = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        cache: "force-cache",
+        cache: "no-cache",
         body: JSON.stringify((session as ExtendedSession)?.user?.id),
       });
 
