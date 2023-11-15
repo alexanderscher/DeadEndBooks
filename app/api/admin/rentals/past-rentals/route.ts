@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import prisma from "@/prisma/client";
 
-export async function GET() {
+export async function PUT() {
   try {
     const rentals = await prisma.history.findMany({
       orderBy: { start_date: "asc" },
