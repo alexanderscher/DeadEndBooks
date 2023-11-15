@@ -17,6 +17,7 @@ const Saved = ({ isMobileDevice }: Props) => {
   const [reload, setReload] = useState(false);
   const [isLoaded, setIsLoaded] = useState(true);
   const [cartStatuses, setCartStatuses] = useState<Record<number, string>>({});
+  console.log("pageData", pageData);
 
   useEffect(() => {
     setReload(false);
@@ -29,6 +30,7 @@ const Saved = ({ isMobileDevice }: Props) => {
         next: { revalidate: 60 * 60 * 24 },
       });
       const data = await res.json();
+      setCartIdList(data.map((book: Book) => book.id));
 
       setPageData(data);
       setIsLoaded(false);

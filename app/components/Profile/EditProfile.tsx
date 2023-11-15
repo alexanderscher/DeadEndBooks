@@ -53,6 +53,18 @@ const Profile = () => {
     address: false,
   });
 
+  const [deletePrompt, setdeletePrompt] = useState(false);
+
+  // const handleDelete = async () => {
+  //   const res = await fetch(`/api/user/${user.id}`, {
+  //     method: "DELETE",
+  //   });
+
+  //   if (res.ok) {
+  //     location.reload();
+  //   }
+  // }
+
   const [errorMessage, seterrorMessage] = useState("");
 
   const handleChangeEvent = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -228,6 +240,42 @@ const Profile = () => {
             )}
           </div>
         </>
+      )}
+      <h2 className="text-red-500 text-lg ">
+        <button
+          className="hover:line-through"
+          onClick={() => setdeletePrompt(true)}
+        >
+          {" "}
+          Delete Account
+        </button>
+      </h2>
+      {deletePrompt && (
+        <div className="fixed inset-0 flex items-center justify-center z-40">
+          <div className="p-8 z-50 max-w-[400px] w-3/4 bg-red-100 min-h-[200px] rounded-md border-black border-[2px] shadow-xl flex flex-col">
+            <div className="flex-grow flex flex-col">
+              <p>
+                Are you sure you want to delete your account? All your data will
+                be lost.
+              </p>
+            </div>
+            <div className="flex  justify-between mt-4">
+              <button
+                type="submit"
+                className="text-start text-red-500 hover:line-through text-[20px] "
+              >
+                Confirm
+              </button>
+              <button
+                type="submit"
+                className="text-start text-red-500 hover:line-through text-[20px]"
+                onClick={() => setdeletePrompt(false)}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

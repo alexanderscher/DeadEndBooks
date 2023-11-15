@@ -25,6 +25,7 @@ export async function GET(
           include: {
             Current: true,
             Saved: true,
+            Cart: true,
           },
         });
         books.push({ ...book, savedId: saved.id });
