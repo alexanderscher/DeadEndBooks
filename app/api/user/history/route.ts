@@ -49,7 +49,7 @@ const daysLeft = (input: string | Date) => {
   return Math.round(diff / (1000 * 60 * 60 * 24));
 };
 
-export async function POST(request: Request) {
+export async function PUT(request: Request) {
   try {
     const json = await request.json();
 
@@ -74,11 +74,11 @@ export async function POST(request: Request) {
         Saved: true,
         Cart: true,
         Current: true,
-
         History: true,
         Orders: true,
       },
     });
+    console.log(user?.History);
     if (user?.History.length === 0) {
       return new NextResponse(JSON.stringify([]), {
         status: 200,
@@ -86,20 +86,14 @@ export async function POST(request: Request) {
     } else {
       const rentals = [];
       if (user) {
-        for (const rental in user.Current) {
+        for (const rental in user.History) {
           const dataBook = await prisma.book.findUnique({
             where: {
-              id: user.Current[rental].bookId,
+              id: user.History[rental].bookId,
             },
           });
 
-          const dataOrder = await prisma.orders.findUnique({
-            where: {
-              id: user.Current[rental].orderId,
-            },
-          });
-
-          if (dataOrder) {
+          if (dataBook) {
             rentals.push({
               title: dataBook?.title,
               start_date: formatDate(user.History[rental].start_date),

@@ -29,7 +29,7 @@ const History = () => {
       setisLoading(true);
 
       const res = await fetch("/api/user/history", {
-        method: "POST",
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
