@@ -59,11 +59,7 @@ const Profile = () => {
   //   const res = await fetch(`/api/user/${user.id}`, {
   //     method: "DELETE",
   //   });
-
-  //   if (res.ok) {
-  //     location.reload();
-  //   }
-  // }
+  // };
 
   const [errorMessage, seterrorMessage] = useState("");
 
@@ -117,7 +113,11 @@ const Profile = () => {
       setisLoading(true);
 
       const res = await fetch(
-        `/api/user/${(session as ExtendedSession)?.user?.id}`
+        `/api/user/${(session as ExtendedSession)?.user?.id}`,
+        {
+          method: "PUT",
+          next: { revalidate: 60 * 60 * 24 },
+        }
       );
       const data = await res.json();
       setUser(data);
@@ -246,7 +246,6 @@ const Profile = () => {
           className="hover:line-through"
           onClick={() => setdeletePrompt(true)}
         >
-          {" "}
           Delete Account
         </button>
       </h2>
@@ -262,6 +261,7 @@ const Profile = () => {
             <div className="flex  justify-between mt-4">
               <button
                 type="submit"
+                // onClick={handleDelete}
                 className="text-start text-red-500 hover:line-through text-[20px] "
               >
                 Confirm

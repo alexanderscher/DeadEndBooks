@@ -57,6 +57,7 @@ const Others = () => {
   useEffect(() => {
     const getUsers = async () => {
       const res = await fetch("/api/user/other", {
+        method: "PUT",
         next: { revalidate: 60 * 60 * 24 },
       });
       const data: User[] = await res.json();
@@ -94,6 +95,14 @@ const Others = () => {
 
     getUsers();
   }, [sessionId]);
+
+  if (users.length === 0) {
+    return (
+      <div className="text-[26px]">
+        <h1>There are no current users</h1>
+      </div>
+    );
+  }
 
   return (
     <div>

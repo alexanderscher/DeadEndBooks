@@ -1,6 +1,7 @@
 import { compare } from "bcrypt";
 import { NextResponse } from "next/server";
 import prisma from "@/prisma/client";
+import { revalidatePath } from "next/cache";
 
 export async function PUT(request: Request) {
   try {
@@ -92,6 +93,7 @@ export async function PUT(request: Request) {
             email: newEmail,
           },
         });
+        revalidatePath(`/api/user/${userId}`);
 
         return new NextResponse(JSON.stringify(updatedUser), {
           status: 200,

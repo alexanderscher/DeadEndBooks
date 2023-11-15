@@ -43,7 +43,8 @@ const Profile = () => {
       setisLoading(true);
 
       const res = await fetch(
-        `/api/user/${(session as ExtendedSession)?.user?.id}`
+        `/api/user/${(session as ExtendedSession)?.user?.id}`,
+        { method: "PUT", next: { revalidate: 60 * 60 * 24 } }
       );
       const data = await res.json();
 

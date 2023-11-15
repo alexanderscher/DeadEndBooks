@@ -18,6 +18,7 @@ const Users = () => {
   useEffect(() => {
     const getUsers = async () => {
       const res = await fetch(`/api/user`, {
+        method: "PUT",
         next: { revalidate: 60 * 60 * 24 },
       });
       const data = await res.json();

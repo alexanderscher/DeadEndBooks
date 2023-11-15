@@ -24,7 +24,7 @@ const Cart = ({ isMobileDevice }: Props) => {
     setUserId(sessionId as string);
     const getCart = async () => {
       const res = await fetch(`/api/cart/${sessionId}`, {
-        next: { revalidate: 60 * 60 * 24 },
+        cache: "force-cache",
       });
       const data = await res.json();
       setPageData(data);

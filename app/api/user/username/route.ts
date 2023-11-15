@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 
 import prisma from "@/prisma/client";
+import { revalidatePath } from "next/cache";
 
 export async function PUT(request: Request) {
   try {
@@ -35,6 +36,7 @@ export async function PUT(request: Request) {
       },
     });
     console.log(updatedUser);
+    revalidatePath(`/api/user/${userId}`);
 
     return new NextResponse(JSON.stringify(updatedUser), {
       status: 200,

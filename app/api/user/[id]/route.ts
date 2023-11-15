@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import prisma from "@/prisma/client";
+import { revalidatePath } from "next/cache";
 
-export async function GET(
+export async function PUT(
   request: Request,
   { params }: { params: { id: string } }
 ) {
@@ -39,7 +40,7 @@ export async function GET(
   }
 }
 
-export async function PUT(
+export async function POST(
   request: Request,
   { params }: { params: { id: string } }
 ) {
@@ -64,6 +65,7 @@ export async function PUT(
         isActive: true,
       },
     });
+    revalidatePath(`/api/user/${parsedId}`);
 
     return NextResponse.json(user);
   } catch (error) {
@@ -71,3 +73,22 @@ export async function PUT(
     return new NextResponse("Failed to find user", { status: 500 });
   }
 }
+
+// export async function DELETE(
+//   request: Request,
+//   { params }: { params: { id: string } }
+// ) {
+//   const { id } = params;
+//   const userId = parseInt(id);
+
+//   await prisma.address.deleteMany({ where: { userId } });
+//   await prisma.current.deleteMany({ where: { userId } });
+//   await prisma.cart.deleteMany({ where: { userId } });
+//   await prisma.saved.deleteMany({ where: { userId } });
+//   await prisma.history.deleteMany({ where: { userId } });
+
+//   return new NextResponse(JSON.stringify(id), {
+//     status: 200,
+//     headers: { "Content-Type": "application/json" },
+//   });
+// }

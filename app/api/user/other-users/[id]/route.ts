@@ -33,12 +33,6 @@ export async function GET(
       return new NextResponse("User not found", { status: 404 });
     }
 
-    // const books = {
-    //   name: user.name,
-    //   current: user.Current,
-    //   history: user.History,
-    // };
-
     const books = {
       name: user.name,
       current: <any>[],
