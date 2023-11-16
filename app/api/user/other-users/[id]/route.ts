@@ -30,7 +30,10 @@ export async function GET(
     });
 
     if (!user) {
-      return new NextResponse("User not found", { status: 404 });
+      return new NextResponse(JSON.stringify({ error: "User found" }), {
+        status: 404,
+        headers: { "Content-Type": "application/json" },
+      });
     }
 
     const books = {
