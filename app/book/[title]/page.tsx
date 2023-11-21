@@ -1,62 +1,25 @@
 "use client";
 import React, { useEffect, useState } from "react";
-
-import { useMediaQuery } from "react-responsive";
-import Link from "next/link";
-import { Loader, Navbar, Saved } from "@/app/components";
-import { useSession } from "next-auth/react";
 import SingleBook from "@/app/components/Book/SingleBook";
+import { Navbar } from "@/app/components";
+import { isProduction } from "@/utils/name";
 
-const page = () => {
-  const isSmallDeviceQuery = useMediaQuery({ maxWidth: 700 });
+const page = async ({ params }: { params: { title: string } }) => {
+  const url = isProduction();
+  const title = params.title;
 
-  const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
-
-  const isMediumDeviceQuery = useMediaQuery({ maxWidth: 900 });
-  const [isMediumDevice, setIsMediumDevice] = useState<any>(null);
-
-  const isMobileDeviceQuery = useMediaQuery({ maxWidth: 460 });
-  const [isMobileDevice, setIsMobileDevice] = useState<any>(null);
-
-  useEffect(() => {
-    setIsSmallDevice(isSmallDeviceQuery);
-    setIsMediumDevice(isMediumDeviceQuery);
-    setIsMobileDevice(isMobileDeviceQuery);
-  }, [isSmallDeviceQuery, isMediumDeviceQuery, isMobileDeviceQuery]);
-
-  const { data: session, status } = useSession();
-
-  const [isLoading, setisLoading] = useState(true);
-
-  useEffect(() => {
-    if (session) {
-      setisLoading(false);
-    }
-  }, [session]);
+  const res = await fetch(`${url}/api/book/${title}`, {
+    next: { revalidate: 60 * 60 * 24 },
+  });
+  const data = await res.json();
+  const status = res.status;
 
   return (
-    <main className={isSmallDevice ? "" : "page"}>
-      {isSmallDevice === null ? (
-        <Loader />
-      ) : (
-        <>
-          <Navbar
-            isSmallDevice={isSmallDevice}
-            isMobileDevice={isMobileDevice}
-          />
-
-          {isLoading && session !== null ? (
-            <Loader />
-          ) : (
-            <div className={"w-full"}>
-              <SingleBook
-                isSmallDevice={isSmallDevice}
-                isMobileDevice={isMobileDevice}
-              />
-            </div>
-          )}
-        </>
-      )}
+    <main className="page">
+      <>
+        <Navbar />
+        <SingleBook res={data} status={status} />
+      </>
     </main>
   );
 };

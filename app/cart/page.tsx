@@ -32,10 +32,7 @@ const page = () => {
         <Loader />
       ) : (
         <>
-          <Navbar
-            isSmallDevice={isSmallDevice}
-            isMobileDevice={isMobileDevice}
-          />
+          <Navbar />
 
           {isLoading && session !== null ? (
             <Loader /> // Show loader while session is being checked

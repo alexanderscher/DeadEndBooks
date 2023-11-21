@@ -72,7 +72,7 @@ export async function PUT(
       data: thebook,
     });
 
-    revalidatePath(`/api/book/${thebook.title}`);
+    revalidatePath(`/api/book/${id}`);
 
     return new NextResponse(JSON.stringify(updatedBook), {
       status: 200,

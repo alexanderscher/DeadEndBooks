@@ -49,10 +49,7 @@ const ChangePasswordForm = ({
         <Loader />
       ) : (
         <>
-          <Navbar
-            isSmallDevice={isSmallDevice}
-            isMobileDevice={isMobileDevice}
-          />
+          <Navbar />
 
           <div
             className={`flex flex-col gap-4 w-full ${isSmallDevice && "mt-6"}`}

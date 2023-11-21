@@ -16,7 +16,6 @@ const AllBooks = ({ isMobileDevice }: Props) => {
     const getBooks = async () => {
       setIsLoaded(true);
       const res = await fetch("/api/book", {
-        method: "PUT",
         next: { revalidate: 60 * 60 * 24 },
       });
       const data = await res.json();
@@ -41,7 +40,7 @@ const AllBooks = ({ isMobileDevice }: Props) => {
             className={
               isMobileDevice
                 ? "w-1/2 mt-4 flex flex-col items-start"
-                : "w-[300px] mt-2 "
+                : "w-1/2 mt-2 mr-4"
             }
           >
             <div className="w-full ">
@@ -70,7 +69,7 @@ const AllBooks = ({ isMobileDevice }: Props) => {
                 <img src={book.photo_front} alt="" />
               </div>
               <div className="w-3/4 mr-4 mb-2">
-                <img src={book.photo_front} alt="" />
+                <img src={book.photo_back} alt="" />
               </div>
             </div>
           ) : (

@@ -1,3 +1,4 @@
+"use client";
 import { Book, ExtendedSession } from "@/types";
 
 import { useSession } from "next-auth/react";

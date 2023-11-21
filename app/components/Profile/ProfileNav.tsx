@@ -1,14 +1,16 @@
+"use client";
 import { ExtendedSession } from "@/types";
+import { useDeviceQueries } from "@/utils/deviceQueries";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
 
 interface Props {
   isSmallDevice: boolean;
   isMobileDevice: boolean;
 }
 
-const ProfileNav = ({ isSmallDevice, isMobileDevice }: Props) => {
+const ProfileNav = () => {
+  const { isSmallDevice, isMediumDevice, isMobileDevice } = useDeviceQueries();
   const { data: session } = useSession();
   const active = (session as ExtendedSession)?.user?.isActive;
 

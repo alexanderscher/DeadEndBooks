@@ -37,10 +37,7 @@ const page = () => {
         <Loader />
       ) : (
         <>
-          <Navbar
-            isSmallDevice={isSmallDevice}
-            isMobileDevice={isMobileDevice}
-          />
+          <Navbar />
 
           {session ? (
             <div className={" w-full"}>

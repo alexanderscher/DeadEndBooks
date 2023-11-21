@@ -26,10 +26,7 @@ const page = () => {
         <Loader />
       ) : (
         <>
-          <Navbar
-            isSmallDevice={isSmallDevice}
-            isMobileDevice={isMobileDevice}
-          />
+          <Navbar />
 
           <div className={"info w-full "}>
             <p className={isSmallDevice ? "text-[18px] mt-5" : "text-end"}>

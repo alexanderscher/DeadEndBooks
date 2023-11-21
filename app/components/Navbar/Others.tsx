@@ -3,6 +3,7 @@ import { ExtendedSession } from "@/types";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import React, { use, useEffect, useState } from "react";
+import { Navbar } from "..";
 
 type Book = {
   author: string;
@@ -81,7 +82,7 @@ const Others = () => {
 
         return bRecentDate - aRecentDate;
       });
-
+      <Navbar />;
       setUsers(filteredData);
     };
 

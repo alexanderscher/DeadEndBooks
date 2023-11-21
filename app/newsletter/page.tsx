@@ -111,10 +111,7 @@ const page = () => {
         <Loader />
       ) : (
         <>
-          <Navbar
-            isSmallDevice={isSmallDevice}
-            isMobileDevice={isMobileDevice}
-          />
+          <Navbar />
 
           {isLoading && session !== null ? (
             <Loader />

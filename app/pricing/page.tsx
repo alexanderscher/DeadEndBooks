@@ -43,10 +43,7 @@ const page = () => {
         <Loader />
       ) : (
         <>
-          <Navbar
-            isSmallDevice={isSmallDevice}
-            isMobileDevice={isMobileDevice}
-          />
+          <Navbar />
 
           <div className={isSmallDevice && "mt-10"}>
             <div className="w-full ">
