@@ -138,7 +138,7 @@ const SingleBook = ({ isSmallDevice, isMobileDevice }: Props) => {
   }
   return (
     <div className={`flex w-full ${isSmallDevice && "mt-10"}`}>
-      {isMobileDevice ? (
+      {isSmallDevice ? (
         <>
           <div className="w-full">
             <div className="flex flex-col ">

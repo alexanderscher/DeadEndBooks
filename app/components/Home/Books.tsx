@@ -111,7 +111,7 @@ const Books = ({ isSmallDevice, isMediumDevice }: Props) => {
             <div key={columnIndex} className={`flex flex-col w-full`}>
               {column.map((item, index) => (
                 <div key={index} className="relative ml-6 ">
-                  <Link href={`/book/${item.title}`}>
+                  <Link href={`/book/${item.id}`}>
                     <img
                       className={"mb-6 w-full book-image"}
                       src={item.photo_front}
@@ -134,7 +134,7 @@ const Books = ({ isSmallDevice, isMediumDevice }: Props) => {
               >
                 {column.map((item, index) => (
                   <div key={index} className="relative">
-                    <Link href={`/book/${item.title}`}>
+                    <Link href={`/book/${item.id}`}>
                       <img
                         className={"mb-6 w-full book-image"}
                         src={item.photo_front}
