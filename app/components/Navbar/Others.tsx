@@ -22,7 +22,11 @@ type User = {
   email: string;
 };
 
-const Others = () => {
+type Props = {
+  isSmallDevice: boolean;
+};
+
+const Others = ({ isSmallDevice }: Props) => {
   const { data: session, status } = useSession();
   const sessionId = (session as ExtendedSession)?.user?.id;
 
@@ -98,7 +102,7 @@ const Others = () => {
 
   if (users.length === 0) {
     return (
-      <div className="text-[26px]">
+      <div className={`${isSmallDevice ? "mt-10 text-[26px]" : "text-[26px]"}`}>
         <h1>There are no current users</h1>
       </div>
     );

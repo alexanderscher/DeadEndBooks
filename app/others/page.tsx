@@ -40,7 +40,7 @@ const page = () => {
           />
 
           <div className={isSmallDevice ? "mt-10" : " w-full"}>
-            <Others />
+            <Others isSmallDevice={isSmallDevice} />
           </div>
         </>
       )}
