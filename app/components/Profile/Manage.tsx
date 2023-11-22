@@ -26,7 +26,12 @@ const formatDate = (input: Date | string) => {
 
   return `${month}/${day}/${year}` as string;
 };
-const Manage = () => {
+
+interface Props {
+  res: any;
+}
+
+const Manage = ({ res }: Props) => {
   const { data: session } = useSession();
   const router = useRouter();
   const active = (session as ExtendedSession)?.user?.isActive;
@@ -41,11 +46,7 @@ const Manage = () => {
     const getUser = async () => {
       setisLoading(true);
 
-      const res = await fetch(
-        `/api/user/${(session as ExtendedSession)?.user?.id}`,
-        { method: "PUT", next: { revalidate: 60 * 60 * 24 } }
-      );
-      const data = await res.json();
+      const data = await res;
       setUserSub(data.subscriptionType);
       setSubscriptionDate(data.subscriptionDate);
     };
@@ -53,7 +54,7 @@ const Manage = () => {
     getUser();
 
     setisLoading(false);
-  }, [session]);
+  }, [res]);
 
   const cancelSubscription = async () => {
     try {

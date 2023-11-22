@@ -51,7 +51,7 @@ const PricingCard = ({ price, session }: priceProps) => {
     const getUser = async () => {
       const res = await fetch(
         `/api/user/${(session as ExtendedSession)?.user?.id}`,
-        { method: "PUT", next: { revalidate: 60 * 60 * 24 } }
+        { cache: "no-store" }
       );
       const data = await res.json();
       if (data.subscriptionType) {

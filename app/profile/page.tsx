@@ -13,7 +13,7 @@ const page = async () => {
   const sessionId = (serverSession as ExtendedSession)?.user?.id;
   const url = isProduction();
   const res = await fetch(`${url}/api/user/${sessionId}`, {
-    next: { revalidate: 60 * 60 * 24 },
+    cache: "no-cache",
   });
   const data = await res.json();
 

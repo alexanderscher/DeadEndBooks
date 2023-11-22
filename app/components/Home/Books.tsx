@@ -29,7 +29,6 @@ interface Props {
 }
 
 const Books = ({ res }: Props) => {
-  console.log(res);
   const { isSmallDevice, isMediumDevice, isMobileDevice } = useDeviceQueries();
 
   const currentPage = usePathname();

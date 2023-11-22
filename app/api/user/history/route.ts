@@ -49,7 +49,7 @@ const daysLeft = (input: string | Date) => {
   return Math.round(diff / (1000 * 60 * 60 * 24));
 };
 
-export async function PUT(request: Request) {
+export async function POST(request: Request) {
   try {
     const json = await request.json();
 

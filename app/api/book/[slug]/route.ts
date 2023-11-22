@@ -6,6 +6,7 @@ export async function PUT(
   { params }: { params: { slug: string } }
 ) {
   const { slug } = params;
+  console;
 
   const book = await prisma.book.update({
     where: { id: parseInt(slug) },
@@ -25,6 +26,7 @@ export async function GET(
   { params }: { params: { slug: string } }
 ) {
   const { slug } = params;
+  console.log(slug);
 
   let book;
 

@@ -4,20 +4,17 @@ import React, { useEffect, useState } from "react";
 import { PricingCard } from "..";
 import { useSession } from "next-auth/react";
 
-const ChangeSub = () => {
+interface Props {
+  res: any;
+}
+const ChangeSub = ({ res }: Props) => {
   const { data: session } = useSession();
 
   const [prices, setPrices] = useState<any>([]);
 
   useEffect(() => {
-    fetchPrices();
-  }, []);
-
-  const fetchPrices = async () => {
-    const res = await fetch("/api/stripe/getproducts");
-    const data = await res.json();
-    setPrices(data);
-  };
+    setPrices(res);
+  }, [res]);
 
   return (
     <div>

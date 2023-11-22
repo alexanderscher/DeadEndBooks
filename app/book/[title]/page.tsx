@@ -9,7 +9,7 @@ const page = async ({ params }: { params: { title: string } }) => {
   const title = params.title;
 
   const res = await fetch(`${url}/api/book/${title}`, {
-    next: { revalidate: 60 * 60 * 24 },
+    cache: "no-cache",
   });
   const data = await res.json();
   const status = res.status;

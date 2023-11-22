@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import prisma from "@/prisma/client";
 import { deleteUploadThingImage } from "@/app/actions/photo/delete";
 import { utapi } from "uploadthing/server";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export async function PUT(
   request: Request,
@@ -130,7 +130,8 @@ export async function DELETE(
       const deletedBook = await prisma.book.delete({
         where: { id: bookId },
       });
-      revalidatePath("/api/book");
+
+      revalidateTag("all-books");
       return new NextResponse(JSON.stringify(deletedBook), {
         status: 200,
         headers: { "Content-Type": "application/json" },
