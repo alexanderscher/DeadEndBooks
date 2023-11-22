@@ -72,7 +72,7 @@ export async function PUT(
       data: thebook,
     });
 
-    revalidatePath(`/api/book/${id}`);
+    revalidateTag("all-books");
 
     return new NextResponse(JSON.stringify(updatedBook), {
       status: 200,
@@ -132,6 +132,7 @@ export async function DELETE(
       });
 
       revalidateTag("all-books");
+
       return new NextResponse(JSON.stringify(deletedBook), {
         status: 200,
         headers: { "Content-Type": "application/json" },

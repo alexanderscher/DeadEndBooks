@@ -35,6 +35,7 @@ const Books = ({ res }: Props) => {
   const [isLoading, setisLoading] = useState(true);
   const [columnsData, setColumnsData] = useState<BookImage[][]>([]);
   const [data, setData] = useState<BookImage[]>([]);
+  console.log(data);
 
   type Page =
     | "/home"

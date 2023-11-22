@@ -10,6 +10,9 @@ const page = async ({ params }: { params: { title: string } }) => {
 
   const res = await fetch(`${url}/api/book/${title}`, {
     cache: "no-cache",
+    next: {
+      tags: [`all-books`],
+    },
   });
   const data = await res.json();
   const status = res.status;
