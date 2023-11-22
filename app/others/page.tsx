@@ -1,46 +1,34 @@
-"use client";
-import React, { useEffect, useState } from "react";
+"use server";
 import Navbar from "../components/Navbar/Navbar";
-import Loader from "../components/Loader";
-import { useMediaQuery } from "react-responsive";
-import { Others } from "../components";
+import { Others, ProfileNav } from "../components";
+import { getServerSession } from "next-auth";
+import { ExtendedSession } from "@/types";
+import { authOptions } from "../api/auth/[...nextauth]/route";
+import { isProduction } from "@/utils/name";
 
-const page = () => {
-  const isSmallDeviceQuery = useMediaQuery({ maxWidth: 700 });
+const page = async () => {
+  const serverSession = await getServerSession(authOptions);
+  const sessionId = (serverSession as ExtendedSession)?.user?.id;
 
-  const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
+  let data = null;
 
-  const isMediumDeviceQuery = useMediaQuery({ maxWidth: 900 });
-  const [isMediumDevice, setIsMediumDevice] = useState<any>(null);
-
-  const isMobileDeviceQuery = useMediaQuery({ maxWidth: 460 });
-  const [isMobileDevice, setIsMobileDevice] = useState<any>(null);
-
-  useEffect(() => {
-    setIsSmallDevice(isSmallDeviceQuery);
-    setIsMediumDevice(isMediumDeviceQuery);
-    setIsMobileDevice(isMobileDeviceQuery);
-  }, [isSmallDeviceQuery, isMediumDeviceQuery, isMobileDeviceQuery]);
-
-  useEffect(() => {
-    setIsSmallDevice(isSmallDeviceQuery);
-    setIsMediumDevice(isMediumDeviceQuery);
-    setIsMobileDevice(isMobileDeviceQuery);
-  }, [isSmallDeviceQuery, isMediumDeviceQuery, isMobileDeviceQuery]);
+  if (sessionId) {
+    const url = isProduction();
+    const res = await fetch(`${url}/api/user/other`, {
+      cache: "no-cache",
+    });
+    data = await res.json();
+  } else {
+    data = null;
+  }
 
   return (
-    <main className={isSmallDevice ? "" : "page"}>
-      {isSmallDevice === null ? (
-        <Loader />
-      ) : (
-        <>
-          <Navbar />
+    <main className={"page"}>
+      <>
+        <Navbar />
 
-          <div className={isSmallDevice ? "mt-10" : " w-full"}>
-            <Others />
-          </div>
-        </>
-      )}
+        <Others res={data} sessionId={sessionId} />
+      </>
     </main>
   );
 };

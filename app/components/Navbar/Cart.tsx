@@ -6,33 +6,29 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { Loader } from "..";
 import { useRouter } from "next/navigation";
+import { useDeviceQueries } from "@/utils/deviceQueries";
 
 type Props = {
-  isMobileDevice: boolean;
+  res: any;
 };
-const Cart = ({ isMobileDevice }: Props) => {
+const Cart = ({ res }: Props) => {
+  const { isSmallDevice, isMobileDevice } = useDeviceQueries();
+
   const { data: session } = useSession();
   const router = useRouter();
   const [pageData, setPageData] = useState<Book[]>([]);
-  console.log(pageData);
   const [reload, setReload] = useState(false);
   const [userId, setUserId] = useState("");
   const [isLoading, setisLoading] = useState(true);
   const [notActive, setNotActive] = useState(false);
-  console.log(pageData);
+
   useEffect(() => {
     setisLoading(true);
     const sessionId = (session as ExtendedSession)?.user?.id;
     setUserId(sessionId as string);
-    const getCart = async () => {
-      const res = await fetch(`/api/cart/${sessionId}`, {
-        cache: "no-cache",
-      });
-      const data = await res.json();
-      setPageData(data);
-      setisLoading(false);
-    };
-    getCart();
+    const data = res;
+    setPageData(data);
+    setisLoading(false);
   }, [session, reload]);
 
   const removeCart = async (cartId: number) => {
@@ -78,11 +74,27 @@ const Cart = ({ isMobileDevice }: Props) => {
       }
     }
   };
+  if (res === null) {
+    return (
+      <div className={`${isSmallDevice ? "mt-10 w-full" : "w-full"} `}>
+        <h1 className="text-[26px]">Login or sign up to view your cart</h1>
+        <div className="mt-10">
+          <h1 className="text-red-500  hover:line-through text-[26px]">
+            <Link href="/login">Log in</Link>
+          </h1>
+          <h1 className="text-red-500  hover:line-through text-[26px]">
+            <Link href="/signup">Sign up</Link>
+          </h1>
+        </div>
+      </div>
+    );
+  }
 
   if (isLoading) {
     return <Loader />;
   }
-  if (pageData.length === 0) {
+
+  if (pageData.length === 0 && res !== null) {
     return (
       <div className="text-[26px]">
         <h1>Your cart is empty</h1>

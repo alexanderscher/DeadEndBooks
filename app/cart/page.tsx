@@ -1,62 +1,34 @@
-"use client";
-import React, { useEffect, useState } from "react";
-
-import { useMediaQuery } from "react-responsive";
+"use server";
+import Navbar from "../components/Navbar/Navbar";
+import { Cart } from "../components";
 import Link from "next/link";
-import { Loader, Navbar, Cart } from "@/app/components";
-import { useSession } from "next-auth/react";
+import { getServerSession } from "next-auth";
+import { ExtendedSession } from "@/types";
+import { authOptions } from "../api/auth/[...nextauth]/route";
+import { isProduction } from "@/utils/name";
 
-const page = () => {
-  const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
-  const isSmallDeviceQuery = useMediaQuery({ maxWidth: 700 });
-  const isMobileDeviceQuery = useMediaQuery({ maxWidth: 460 });
-  const [isMobileDevice, setIsMobileDevice] = useState<any>(null);
-  const { data: session, status } = useSession();
+const page = async () => {
+  const serverSession = await getServerSession(authOptions);
+  const sessionId = (serverSession as ExtendedSession)?.user?.id;
+  let data = null;
 
-  const [isLoading, setisLoading] = useState(true);
+  if (sessionId) {
+    const url = isProduction();
+    const res = await fetch(`${url}/api/cart/${sessionId}`, {
+      cache: "no-cache",
+    });
+    data = await res.json();
+  }
 
-  useEffect(() => {
-    if (session) {
-      setisLoading(false);
-    }
-  }, [session]);
-
-  useEffect(() => {
-    setIsSmallDevice(isSmallDeviceQuery);
-
-    setIsMobileDevice(isMobileDeviceQuery);
-  }, [isSmallDeviceQuery, isMobileDeviceQuery]);
   return (
-    <main className={isSmallDevice ? "" : "page"}>
-      {isSmallDevice === null ? (
-        <Loader />
-      ) : (
-        <>
-          <Navbar />
+    <main className={"page"}>
+      <>
+        <Navbar />
 
-          {isLoading && session !== null ? (
-            <Loader /> // Show loader while session is being checked
-          ) : session ? (
-            <div className={isSmallDevice ? "mt-8" : " w-full"}>
-              <Cart isMobileDevice={isMobileDevice} />
-            </div>
-          ) : (
-            <div className={isSmallDevice ? "mt-10" : " w-full"}>
-              <h1 className="text-[26px]">
-                Login or sign up to view your cart
-              </h1>
-              <div className="mt-10">
-                <h1 className="text-red-500  hover:line-through text-[26px]">
-                  <Link href="/login">Log in</Link>
-                </h1>
-                <h1 className="text-red-500  hover:line-through text-[26px]">
-                  <Link href="/signup">Sign up</Link>
-                </h1>
-              </div>
-            </div>
-          )}
-        </>
-      )}
+        <div className={" w-full"}>
+          <Cart res={data} />
+        </div>
+      </>
     </main>
   );
 };

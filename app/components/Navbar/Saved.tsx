@@ -5,11 +5,13 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { Loader } from "..";
 import page from "@/app/page";
+import { useDeviceQueries } from "@/utils/deviceQueries";
 
 type Props = {
-  isMobileDevice: boolean;
+  res: any;
 };
-const Saved = ({ isMobileDevice }: Props) => {
+const Saved = ({ res }: Props) => {
+  const { isSmallDevice, isMobileDevice } = useDeviceQueries();
   const { data: session } = useSession();
   const [pageData, setPageData] = useState<Book[]>([]);
   const [userId, setUserId] = useState("");
@@ -17,7 +19,6 @@ const Saved = ({ isMobileDevice }: Props) => {
   const [reload, setReload] = useState(false);
   const [isLoaded, setIsLoaded] = useState(true);
   const [cartStatuses, setCartStatuses] = useState<Record<number, string>>({});
-  console.log("pageData", pageData);
 
   useEffect(() => {
     setReload(false);
@@ -26,10 +27,9 @@ const Saved = ({ isMobileDevice }: Props) => {
 
     const getSaved = async () => {
       setIsLoaded(true);
-      const res = await fetch(`/api/saved/${sessionId}`, {
-        cache: "no-cache",
-      });
-      const data = await res.json();
+
+      const data = await res;
+      if (data === null) return;
       setCartIdList(data.map((book: Book) => book.id));
 
       setPageData(data);
@@ -88,12 +88,29 @@ const Saved = ({ isMobileDevice }: Props) => {
     });
     setReload(true);
   };
+  if (res === null) {
+    return (
+      <div className={`${isSmallDevice ? "mt-10" : " w-full"}`}>
+        <h1 className="text-[26px]">
+          Log in or sign up to view your saved books
+        </h1>
+        <div className="mt-10">
+          <h1 className="text-red-500  hover:line-through text-[26px]">
+            <Link href="/login">Log in</Link>
+          </h1>
+          <h1 className="text-red-500  hover:line-through text-[26px]">
+            <Link href="/signup">Sign up</Link>
+          </h1>
+        </div>
+      </div>
+    );
+  }
 
   if (isLoaded) {
     return <Loader />;
   }
 
-  if (pageData.length === 0) {
+  if (pageData.length === 0 && res !== null) {
     return (
       <div className="text-[26px] ">
         <h1>No books saved</h1>

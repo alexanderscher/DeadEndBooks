@@ -44,6 +44,22 @@ const Profile = ({ res }: Props) => {
     return <Loader />;
   }
 
+  if (res === null) {
+    return (
+      <div className={`${isSmallDevice ? "mt-10" : ""}`}>
+        <h1 className="text-[26px]">Log in or sign up to view your profile</h1>
+        <div className="mt-10">
+          <h1 className="text-red-500  hover:line-through text-[26px]">
+            <Link href="/login">Log in</Link>
+          </h1>
+          <h1 className="text-red-500  hover:line-through text-[26px]">
+            <Link href="/signup">Sign up</Link>
+          </h1>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={isSmallDevice ? "mt-10" : " w-full"}>
       <div className="mt-10  w-full max-w-[800px]">

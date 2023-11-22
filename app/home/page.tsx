@@ -5,7 +5,7 @@ import { Books, Navbar } from "../components";
 const page = async () => {
   const url = isProduction();
   const res = await fetch(`${url}/api/book`, {
-    cache: "no-store",
+    cache: "no-cache",
     next: {
       tags: ["all-books"],
     },
