@@ -47,7 +47,7 @@ const AllBooks = ({ isMobileDevice }: Props) => {
             <div className="w-full ">
               <p className="text-slate-400 ">Title</p>
               <p className="mb-2 hover:line-through">
-                <Link href={`/book/${book.title}`}>{book.title}</Link>
+                <Link href={`/book/${book.id}`}>{book.title}</Link>
               </p>
 
               <p className="text-slate-400">Author</p>
@@ -60,7 +60,7 @@ const AllBooks = ({ isMobileDevice }: Props) => {
               <p className="mb-2">{book.publisher}</p>
 
               <button className="text-red-500 hover:line-through">
-                <Link href={`/admin/editbook/${book.title}`}>Edit</Link>
+                <Link href={`/admin/editbook/${book.id}`}>Edit</Link>
               </button>
             </div>
           </div>
