@@ -83,10 +83,7 @@ const Page = () => {
           <Loader />
         ) : (
           <>
-            <Navbar
-              isSmallDevice={isSmallDevice}
-              isMobileDevice={isMobileDevice}
-            />
+            <Navbar />
 
             {session && yourOrder && (
               <div className={isSmallDevice ? "mt-10" : "w-full"}>
