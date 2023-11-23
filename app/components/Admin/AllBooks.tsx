@@ -3,25 +3,22 @@ import { Book } from "@/types";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { Loader } from "..";
+import { useDeviceQueries } from "@/utils/deviceQueries";
 
 type Props = {
-  isMobileDevice: boolean;
+  res: any;
 };
-const AllBooks = ({ isMobileDevice }: Props) => {
+const AllBooks = ({ res }: Props) => {
+  const { isMobileDevice } = useDeviceQueries();
   const [books, setBooks] = useState<Book[]>([]);
   const [isLoaded, setIsLoaded] = useState(true);
-  console.log(books);
 
   useEffect(() => {
     const getBooks = async () => {
       setIsLoaded(true);
-      const res = await fetch("/api/book", {
-        next: { revalidate: 60 * 60 * 24, tags: ["all-books"] },
-      });
-      const data = await res.json();
+      const data = res;
       setBooks(data);
       setIsLoaded(false);
-      console.log(books);
     };
     getBooks();
   }, []);

@@ -29,11 +29,7 @@ const daysLeft = (input: string) => {
   return Math.round(diff / (1000 * 60 * 60 * 24));
 };
 
-interface CurrentRentalsProps {
-  isSmallDevice: boolean;
-}
-
-export async function PUT() {
+export async function GET() {
   try {
     const rentals = await prisma.current.findMany({
       orderBy: { start_date: "asc" },
@@ -65,6 +61,7 @@ export async function PUT() {
         ),
       });
     }
+    console.log(apiRentals);
 
     return new NextResponse(JSON.stringify(apiRentals), {
       status: 200,

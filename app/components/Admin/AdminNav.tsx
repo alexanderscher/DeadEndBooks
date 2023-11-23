@@ -1,12 +1,10 @@
+"use client";
+import { useDeviceQueries } from "@/utils/deviceQueries";
 import Link from "next/link";
 import React from "react";
 
-interface Props {
-  isSmallDevice: boolean;
-  isMediumDevice: boolean;
-}
-
-const AdminNav = ({ isSmallDevice, isMediumDevice }: Props) => {
+const AdminNav = () => {
+  const { isSmallDevice } = useDeviceQueries();
   return (
     <div
       className={

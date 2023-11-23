@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Loader } from "..";
 import OrderNav from "./OrderNav";
 import { usePathname } from "next/navigation";
+import { useDeviceQueries } from "@/utils/deviceQueries";
 
 const formatDate = (input: string) => {
   if (input === "") {
@@ -15,12 +16,6 @@ const formatDate = (input: string) => {
 
     return `${month}/${day}/${year}` as string;
   }
-};
-
-type OrderBook = {
-  bookId: number;
-  orderId: number;
-  returned?: boolean;
 };
 
 type Order = {
@@ -47,10 +42,12 @@ type Order = {
 };
 
 type Props = {
-  isMobileDevice: boolean;
+  res: any;
 };
 
-const Order = ({ isMobileDevice }: Props) => {
+const Order = ({ res }: Props) => {
+  const { isMobileDevice } = useDeviceQueries();
+
   const [isLoaded, setIsLoaded] = useState(true);
   const [orders, setOrders] = useState<Order[]>([]);
 
@@ -78,11 +75,7 @@ const Order = ({ isMobileDevice }: Props) => {
       setIsLoaded(true);
       setReload(false);
 
-      const res = await fetch(`/api/order/${currentPage.split("/")[3]}`, {
-        method: "PUT",
-        next: { revalidate: 60 * 60 * 24 },
-      });
-      const data = await res.json();
+      const data = res;
 
       setOrders(data);
       setIsLoaded(false);
@@ -98,7 +91,7 @@ const Order = ({ isMobileDevice }: Props) => {
     return (
       <div className="w-full  mt-10  max-w-[840px]">
         <OrderNav isMobileDevice={isMobileDevice} />
-        <div className="w-full flex mt-10">
+        <div className="w-full flex mt-8">
           <span className="text-[26px]">No orders</span>
         </div>
       </div>

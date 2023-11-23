@@ -28,7 +28,6 @@ const page = async () => {
     <main className={"page"}>
       <>
         <Navbar />
-
         <div className={" w-full"}>
           {data !== null && <ProfileNav />}
 

@@ -1,69 +1,33 @@
-"use client";
-import React, { useEffect, useState } from "react";
-
-import { useMediaQuery } from "react-responsive";
-import { AdminNav, EditBook, Loader, Navbar } from "@/app/components";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+"use server";
+import { AdminNav, EditBook, Navbar } from "@/app/components";
 import { ExtendedSession } from "@/types";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { isProduction } from "@/utils/name";
 
-const page = () => {
-  const isSmallDeviceQuery = useMediaQuery({ maxWidth: 700 });
+const page = async ({ params }: { params: { slug: string } }) => {
+  const serverSession = await getServerSession(authOptions);
+  const admin = (serverSession as ExtendedSession)?.user?.admin;
+  const slug = params.slug;
 
-  const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
+  let data = null;
 
-  const isMediumDeviceQuery = useMediaQuery({ maxWidth: 900 });
-  const [isMediumDevice, setIsMediumDevice] = useState<any>(null);
+  // const url = isProduction();
+  // const res = await fetch(`${url}/api/admin/book/${slug}`);
 
-  const isMobileDeviceQuery = useMediaQuery({ maxWidth: 460 });
-  const [isMobileDevice, setIsMobileDevice] = useState<any>(null);
-
-  useEffect(() => {
-    setIsSmallDevice(isSmallDeviceQuery);
-    setIsMediumDevice(isMediumDeviceQuery);
-    setIsMobileDevice(isMobileDeviceQuery);
-  }, [isSmallDeviceQuery, isMediumDeviceQuery, isMobileDeviceQuery]);
-  const { data: session, status } = useSession();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (session && !(session as ExtendedSession)?.user?.admin) {
-      router.push("/not-found");
-    }
-  }, [session, status]);
-
-  if (status === "loading") {
-    return <Loader />;
-  }
-
-  if (
-    status === "unauthenticated" ||
-    !(session as ExtendedSession)?.user?.admin
-  ) {
-    router.replace("/not-found");
-    return null;
-  }
+  // data = await res.json();
+  // console.log(res);
 
   return (
-    <main className={isSmallDevice ? "" : "page"}>
-      {isSmallDevice === null ? (
-        <Loader />
-      ) : (
-        <>
-          <Navbar />
+    <main className={"page"}>
+      <>
+        <Navbar />
 
-          <div className={" w-full"}>
-            <AdminNav
-              isSmallDevice={isSmallDevice}
-              isMediumDevice={isMediumDevice}
-            />
-            <EditBook
-              isSmallDevice={isSmallDevice}
-              isMobileDevice={isMobileDevice}
-            />
-          </div>
-        </>
-      )}
+        <div className={" w-full"}>
+          <AdminNav />
+          <EditBook />
+        </div>
+      </>
     </main>
   );
 };

@@ -13,8 +13,8 @@ function dollarsToCents(dollarString: string): number {
 const formatDate = (input: string) => {
   const date = new Date(input);
   const day = String(date.getDate()).padStart(2, "0");
-  const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are
-  const year = String(date.getFullYear()).slice(-2); // Get the last two
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = String(date.getFullYear()).slice(-2);
 
   return `${month}/${day}/${year}`;
 };
@@ -184,7 +184,6 @@ const CurrentRentals = () => {
     const getCurrentRentals = async () => {
       setIsLoaded(true);
       const res = await fetch(`/api/admin/rentals/current-rentals`, {
-        method: "PUT",
         next: { revalidate: 60 * 60 * 24 },
       });
       const data = await res.json();

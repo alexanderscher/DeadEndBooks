@@ -24,7 +24,7 @@ interface Rental {
   user_email: string;
   bookId: number;
 }
-const PastRentals = ({ isSmallDevice }: PastRentalsProps) => {
+const PastRentals = () => {
   const [rentals, setRentals] = useState<Rental[]>([
     {
       id: 0,
