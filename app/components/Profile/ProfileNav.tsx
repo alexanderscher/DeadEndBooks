@@ -5,14 +5,11 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 
 interface Props {
-  isSmallDevice: boolean;
-  isMobileDevice: boolean;
+  isActive: boolean;
 }
 
-const ProfileNav = () => {
-  const { isSmallDevice, isMediumDevice, isMobileDevice } = useDeviceQueries();
-  const { data: session } = useSession();
-  const active = (session as ExtendedSession)?.user?.isActive;
+const ProfileNav = ({ isActive }: Props) => {
+  const { isSmallDevice, isMobileDevice } = useDeviceQueries();
 
   return (
     <div
@@ -55,7 +52,7 @@ const ProfileNav = () => {
       >
         <Link href="/profile/history">History</Link>
       </button>
-      {active ? (
+      {isActive ? (
         <button
           className={` ${
             isMobileDevice

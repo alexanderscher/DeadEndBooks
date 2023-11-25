@@ -14,7 +14,7 @@ const page = async () => {
 
   const url = isProduction();
   const res = await fetch(`${url}/api/book`, {
-    cache: "no-cache",
+    next: { tags: ["all-books"], revalidate: 3600 },
   });
   data = await res.json();
 

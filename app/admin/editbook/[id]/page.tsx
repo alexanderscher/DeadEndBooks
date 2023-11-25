@@ -10,8 +10,6 @@ const page = async ({ params }: { params: { slug: string } }) => {
   const admin = (serverSession as ExtendedSession)?.user?.admin;
   const slug = params.slug;
 
-  let data = null;
-
   // const url = isProduction();
   // const res = await fetch(`${url}/api/admin/book/${slug}`);
 

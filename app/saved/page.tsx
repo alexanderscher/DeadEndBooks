@@ -15,7 +15,7 @@ const page = async () => {
   if (sessionId) {
     const url = isProduction();
     const res = await fetch(`${url}/api/saved/${sessionId}`, {
-      cache: "no-cache",
+      next: { revalidate: 60 * 60 * 24, tags: [`saved-${sessionId}`] },
     });
     data = await res.json();
     console.log(data);

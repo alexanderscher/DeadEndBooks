@@ -84,8 +84,15 @@ const Saved = ({ res }: Props) => {
       },
       body: JSON.stringify({
         savedId,
+        userId,
       }),
     });
+    if (res.ok) {
+      window.location.reload();
+    } else {
+      console.error("Error removing cart");
+      // Handle error case here
+    }
     setReload(true);
   };
   if (res === null) {
@@ -141,7 +148,7 @@ const Saved = ({ res }: Props) => {
               } `}
             >
               <h1 className="hover:line-through">
-                <Link href={`/book/${book.title}`}>{book.title}</Link>
+                <Link href={`/book/${book.id}`}>{book.title}</Link>
               </h1>
               <h1 className="mt-4">{book.author}</h1>
               {book.inStock && (

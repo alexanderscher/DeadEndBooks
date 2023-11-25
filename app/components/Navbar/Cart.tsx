@@ -10,11 +10,12 @@ import { useDeviceQueries } from "@/utils/deviceQueries";
 
 type Props = {
   res: any;
+  userData: any;
+  session: any;
 };
-const Cart = ({ res }: Props) => {
+const Cart = ({ res, userData, session }: Props) => {
   const { isSmallDevice, isMobileDevice } = useDeviceQueries();
 
-  const { data: session } = useSession();
   const router = useRouter();
   const [pageData, setPageData] = useState<Book[]>([]);
   const [reload, setReload] = useState(false);
@@ -40,8 +41,17 @@ const Cart = ({ res }: Props) => {
       },
       body: JSON.stringify({
         cartId,
+        userId,
       }),
     });
+
+    // Check if the request was successful before reloading
+    if (res.ok) {
+      window.location.reload();
+    } else {
+      console.error("Error removing cart");
+      // Handle error case here
+    }
     setReload(true);
   };
 
@@ -56,11 +66,7 @@ const Cart = ({ res }: Props) => {
     if (!(session as ExtendedSession)?.user?.isActive) {
       setNotActive(true);
     } else {
-      const useres = await fetch(`/api/user/${userId}`, {
-        method: "PUT",
-        cache: "no-cache",
-      });
-      const user = await useres.json();
+      const user = await userData;
       if (user.Cart.length > 3) {
         setModalCheckout({ second: false, first: true });
         return;
@@ -135,7 +141,7 @@ const Cart = ({ res }: Props) => {
               } `}
             >
               <h1 className="hover:line-through">
-                <Link href={`/book/${book.title}`}>{book.title}</Link>
+                <Link href={`/book/${book.id}`}>{book.title}</Link>
               </h1>
               <h1 className="mt-2">{book.author}</h1>
               {book.inStock ? (

@@ -9,8 +9,6 @@ const page = async () => {
   const serverSession = await getServerSession(authOptions);
   const admin = (serverSession as ExtendedSession)?.user?.admin;
 
-  let data = null;
-
   return (
     <main className={"page"}>
       <>

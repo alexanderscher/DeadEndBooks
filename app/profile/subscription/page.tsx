@@ -9,6 +9,7 @@ import Link from "next/link";
 const page = async () => {
   const serverSession = await getServerSession(authOptions);
   const sessionId = (serverSession as ExtendedSession)?.user?.id;
+  const isActive = (serverSession as ExtendedSession)?.user?.isActive;
   const url = isProduction();
 
   const res = await fetch(`${url}/api/user/${sessionId}`, {
@@ -24,7 +25,7 @@ const page = async () => {
 
         {serverSession ? (
           <div className={" w-full"}>
-            <ProfileNav />
+            <ProfileNav isActive={isActive} />
 
             <Manage res={data} />
           </div>

@@ -13,7 +13,7 @@ const page = async () => {
 
   const url = isProduction();
   const res = await fetch(`${url}/api/order/completed`, {
-    cache: "no-cache",
+    next: { tags: ["all-orders"], revalidate: 3600 },
   });
   data = await res.json();
 

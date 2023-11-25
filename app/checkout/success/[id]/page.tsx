@@ -1,100 +1,49 @@
-"use client";
 import React, { useEffect, useState } from "react";
-import { useMediaQuery } from "react-responsive";
-import Link from "next/link";
 import { Loader, Navbar, CheckoutSuccess } from "@/app/components";
-import { useSession } from "next-auth/react";
 import { ExtendedSession } from "@/types";
 import { usePathname, useRouter } from "next/navigation";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { isProduction } from "@/utils/name";
 
-const Page = () => {
-  const isSmallDeviceQuery = useMediaQuery({ maxWidth: 700 });
-
-  const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
-
-  const isMediumDeviceQuery = useMediaQuery({ maxWidth: 900 });
-  const [isMediumDevice, setIsMediumDevice] = useState<any>(null);
-
-  const isMobileDeviceQuery = useMediaQuery({ maxWidth: 460 });
-  const [isMobileDevice, setIsMobileDevice] = useState<any>(null);
-
-  useEffect(() => {
-    setIsSmallDevice(isSmallDeviceQuery);
-    setIsMediumDevice(isMediumDeviceQuery);
-    setIsMobileDevice(isMobileDeviceQuery);
-  }, [isSmallDeviceQuery, isMediumDeviceQuery, isMobileDeviceQuery]);
-
-  const { data: session, status } = useSession();
-  const router = useRouter();
-  const [yourOrder, setYourOrder] = useState<boolean | null>(null);
-  const currentPage = usePathname();
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState(false);
-
-  const [orderBooks, setOrderBooks] = useState([
+const page = async ({ params }: { params: { id: number } }) => {
+  const serverSession = await getServerSession(authOptions);
+  const sessionId = (serverSession as ExtendedSession)?.user?.id;
+  const url = isProduction();
+  const id = params.id;
+  let orderBooks = [
     {
       orderId: 0,
       bookId: 0,
     },
-  ]);
+  ];
 
-  useEffect(() => {
-    const orderId = currentPage.split("success/")[1];
-
-    const fetchOrder = async () => {
-      try {
-        const res = await fetch(`/api/order/${orderId}`);
-
-        if (res.status === 404) {
-          router.push("/not-found");
-          return;
-        }
-
-        const data = await res.json();
-
-        if (data.userId !== parseInt((session as ExtendedSession)?.user?.id)) {
-          setError(true);
-          router.push("/not-found");
-          return;
-        }
-
-        setOrderBooks(data.books);
-        setYourOrder(true);
-      } catch (error) {
-        setError(true);
-        console.error("Failed to fetch order:", error);
-        router.push("/not-found");
-      } finally {
-        setLoading(false);
-      }
-    };
-    if (session) {
-      fetchOrder();
-    }
-  }, [session, status]);
-
-  if (status === "loading") {
-    return <Loader />;
+  if (sessionId) {
+    const res = await fetch(`${url}/api/order/${id}`);
+    const data = await res.json();
+    orderBooks = data.books;
+    console.log(orderBooks);
   }
-  if (!loading) {
-    return (
-      <main className={isSmallDevice ? "" : "page"}>
-        {isSmallDevice === null ? (
-          <Loader />
-        ) : (
-          <>
-            <Navbar />
 
-            {session && yourOrder && (
-              <div className={isSmallDevice ? "mt-10" : "w-full"}>
-                <CheckoutSuccess orderBooks={orderBooks} />
-              </div>
-            )}
-          </>
+  const bookArray = [];
+
+  for (const book of orderBooks) {
+    const res = await fetch(`${url}/api/book/${book.bookId}`);
+    const data = await res.json();
+    bookArray.push(data);
+  }
+
+  return (
+    <main className="page">
+      <>
+        <Navbar />
+
+        {sessionId && (
+          <CheckoutSuccess bookArray={bookArray} orderNumber={id} />
         )}
-      </main>
-    );
-  }
+      </>
+    </main>
+  );
 };
 
-export default Page;
+export default page;

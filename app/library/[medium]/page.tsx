@@ -1,13 +1,13 @@
 "use server";
-
 import { Books, Navbar } from "@/app/components";
+import { isProduction } from "@/utils/name";
 
 const page = async () => {
-  const res = await fetch("http://localhost:3000/api/book", {
-    next: { revalidate: 60 * 60 * 24 },
+  const url = isProduction();
+  const res = await fetch(`${url}/api/book`, {
+    next: { tags: ["all-books"], revalidate: 60 * 60 * 24 },
   });
   const data = await res.json();
-  console.log(data);
   return (
     <main className={"page"}>
       <>

@@ -112,6 +112,7 @@ export async function POST(request: Request): Promise<NextResponse> {
       });
 
       stripeId(user, email, name);
+      revalidatePath("users");
 
       return new NextResponse(JSON.stringify(user), {
         status: 201,

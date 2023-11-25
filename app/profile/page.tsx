@@ -11,13 +11,14 @@ import { isProduction } from "@/utils/name";
 const page = async () => {
   const serverSession = await getServerSession(authOptions);
   const sessionId = (serverSession as ExtendedSession)?.user?.id;
+  const isActive = (serverSession as ExtendedSession)?.user?.isActive;
 
   let data = null;
 
   if (sessionId) {
     const url = isProduction();
     const res = await fetch(`${url}/api/user/${sessionId}`, {
-      cache: "no-cache",
+      next: { tags: [`user-profile-${sessionId}`], revalidate: 60 * 60 * 24 },
     });
     data = await res.json();
   } else {
@@ -29,7 +30,7 @@ const page = async () => {
       <>
         <Navbar />
         <div className={" w-full"}>
-          {data !== null && <ProfileNav />}
+          {data !== null && <ProfileNav isActive={isActive} />}
 
           <Profile res={data} />
         </div>

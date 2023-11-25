@@ -1,34 +1,28 @@
 "use client";
+import { useDeviceQueries } from "@/utils/deviceQueries";
 import { Book } from "@prisma/client";
 import React, { useEffect, useState } from "react";
 
-type OrderBooks = {
-  orderBooks: {
-    orderId: number;
-    bookId: number;
-  }[];
+type bookArray = {
+  bookArray: any;
+  orderNumber: number;
 };
-const CheckoutSuccess = ({ orderBooks }: OrderBooks) => {
+const CheckoutSuccess = ({ bookArray, orderNumber }: bookArray) => {
+  const { isSmallDevice } = useDeviceQueries();
   const [books, setBooks] = useState<Book[]>([]);
 
   useEffect(() => {
     const getBooks = async () => {
-      const bookArray = [];
-      for (const book of orderBooks) {
-        const res = await fetch(`/api/book/${book.bookId}`);
-        const data = await res.json();
-        bookArray.push(data);
-      }
       setBooks(bookArray);
     };
     getBooks();
   }, []);
   return (
-    <div>
+    <div className={isSmallDevice ? "mt-10" : "w-full"}>
       <h1 className="text-[26px]">Thanks for your order</h1>
       <div className="text-[26px]">
         <span>Order ID: </span>
-        <span className="ml-2 ">{orderBooks[0].orderId} </span>
+        <span className="ml-2 ">{orderNumber} </span>
       </div>
       <div className="mt-8 text-[26px]">
         {books.map((book) => (

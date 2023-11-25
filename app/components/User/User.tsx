@@ -1,5 +1,6 @@
 "use client";
 import { Book } from "@/types";
+import { useDeviceQueries } from "@/utils/deviceQueries";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -11,10 +12,11 @@ type Obj = {
 };
 
 type Props = {
-  isSmallDevice: boolean;
+  res: any;
 };
 
-const User = ({ isSmallDevice }: Props) => {
+const User = ({ res }: Props) => {
+  const { isSmallDevice } = useDeviceQueries();
   const currentPage = usePathname();
   const userId = currentPage.split("/")[2];
 
@@ -23,32 +25,14 @@ const User = ({ isSmallDevice }: Props) => {
     current: [],
     history: [],
   });
-  console.log(user);
-  const [isError, setIsError] = useState(true);
 
   useEffect(() => {
     const getUser = async () => {
-      const response = await fetch(`/api/user/other-users/${userId}`);
-      const data = await response.json();
-      if (response.status === 404) {
-        setIsError(true);
-      }
+      const data = await res;
       setUser(data);
     };
     getUser();
   }, [userId]);
-
-  if (isError) {
-    return (
-      <div>
-        <p className="text-[40px]">User not found</p>
-
-        <button className="text-red-500 text-[40px] hover:line-through">
-          <Link href="/home">Home</Link>
-        </button>
-      </div>
-    );
-  }
 
   return (
     <div>

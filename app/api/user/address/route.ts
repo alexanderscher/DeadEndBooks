@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/prisma/client";
+import { revalidateTag } from "next/cache";
 
 export async function POST(request: Request) {
   const json = await request.json();
@@ -48,6 +49,7 @@ export async function POST(request: Request) {
         userId: parseInt(json.userId),
       },
     });
+    revalidateTag(`user-profile-${parseInt(json.userId)}`);
 
     return new NextResponse(JSON.stringify(address), {
       status: 201,

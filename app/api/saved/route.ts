@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/prisma/client";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export async function POST(request: Request) {
   const json = await request.json();
@@ -13,7 +13,8 @@ export async function POST(request: Request) {
       },
     });
 
-    revalidatePath(`/api/cart/${userId}`);
+    revalidateTag(`saved-${userId}`);
+
     return new NextResponse(JSON.stringify(saved), {
       status: 201,
       headers: { "Content-Type": "application/json" },
@@ -28,13 +29,17 @@ export async function POST(request: Request) {
 
 export async function DELETE(request: Request) {
   const json = await request.json();
-  const { savedId } = json;
+  const { savedId, userId } = json;
+
+  const userid = parseInt(savedId);
   try {
     const saved = await prisma.saved.delete({
       where: {
         id: savedId,
       },
     });
+
+    revalidateTag(`saved-${userId}`);
 
     return new NextResponse(JSON.stringify(saved), {
       status: 201,

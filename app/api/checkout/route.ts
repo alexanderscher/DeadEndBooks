@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/prisma/client";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export async function POST(request: Request): Promise<NextResponse> {
   const json = await request.json();
@@ -137,9 +137,11 @@ export async function POST(request: Request): Promise<NextResponse> {
         headers: { "Content-Type": "application/json" },
       });
     }
-    revalidatePath("/api/admin/rentals/current-rentals");
-    revalidatePath("/api/user/other");
-    revalidatePath("/api/user/current-rental");
+    // revalidatePath("/api/admin/rentals/current-rentals");
+    revalidateTag("other-users");
+    revalidateTag(`user-profile-${userId}`);
+    revalidateTag(`cart-${userId}`);
+    revalidateTag(`all-orders`);
 
     return new NextResponse(
       JSON.stringify({

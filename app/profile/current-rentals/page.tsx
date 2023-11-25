@@ -8,14 +8,16 @@ import Link from "next/link";
 const page = async () => {
   const serverSession = await getServerSession(authOptions);
   const sessionId = (serverSession as ExtendedSession)?.user?.id;
+  const isActive = (serverSession as ExtendedSession)?.user?.isActive;
   const url = isProduction();
 
   const res = await fetch(`${url}/api/user/current-rental`, {
     method: "POST",
+    cache: "no-store",
     headers: {
       "Content-Type": "application/json",
     },
-    cache: "no-cache",
+    next: { tags: [`user-profile-${sessionId}`] },
     body: JSON.stringify(sessionId),
   });
 
@@ -28,7 +30,7 @@ const page = async () => {
 
         {serverSession ? (
           <div className={" w-full"}>
-            <ProfileNav />
+            <ProfileNav isActive={isActive} />
 
             <Rentals res={data} />
           </div>

@@ -64,7 +64,9 @@ const Order = ({ res }: Props) => {
         id,
       }),
     });
-    const data = await res.json();
+    if (res.ok) {
+      window.location.reload();
+    }
     setReload(true);
   };
 

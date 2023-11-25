@@ -9,7 +9,7 @@ const page = async () => {
   const serverSession = await getServerSession(authOptions);
   const admin = (serverSession as ExtendedSession)?.user?.admin;
 
-  let data = null;
+  // let data = null;
 
   // if (admin) {
   //   const url = isProduction();

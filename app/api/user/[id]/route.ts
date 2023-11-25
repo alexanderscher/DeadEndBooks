@@ -4,7 +4,7 @@ import { authOptions } from "../../auth/[...nextauth]/route";
 import { ExtendedSession } from "@/types";
 import { stripe } from "@/stripe/stripe";
 import prisma from "@/prisma/client";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export async function GET(
   request: Request,
@@ -69,7 +69,7 @@ export async function POST(
         isActive: true,
       },
     });
-    revalidatePath(`/api/user/${parsedId}`);
+    revalidateTag(`user-profile-${parsedId}`);
 
     return NextResponse.json(user);
   } catch (error) {

@@ -11,13 +11,19 @@ const page = async () => {
   const serverSession = await getServerSession(authOptions);
   const sessionId = (serverSession as ExtendedSession)?.user?.id;
   let data = null;
+  let userData = null;
 
   if (sessionId) {
     const url = isProduction();
     const res = await fetch(`${url}/api/cart/${sessionId}`, {
-      cache: "no-cache",
+      next: { revalidate: 60 * 60 * 24, tags: [`cart-${sessionId}`] },
     });
     data = await res.json();
+
+    const res1 = await fetch(`${url}/api/user/${sessionId}`, {
+      next: { tags: [`user-profile-${sessionId}`], revalidate: 60 * 60 * 24 },
+    });
+    userData = await res1.json();
   }
 
   return (
@@ -26,7 +32,7 @@ const page = async () => {
         <Navbar />
 
         <div className={" w-full"}>
-          <Cart res={data} />
+          <Cart res={data} userData={userData} session={serverSession} />
         </div>
       </>
     </main>

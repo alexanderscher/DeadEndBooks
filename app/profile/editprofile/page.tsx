@@ -1,7 +1,6 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { EditProfile, History, Navbar, ProfileNav } from "@/app/components";
-import ChangeSub from "@/app/components/Profile/ChangeSub";
-import Manage from "@/app/components/Profile/Manage";
+
 import { ExtendedSession } from "@/types";
 import { isProduction } from "@/utils/name";
 import { getServerSession } from "next-auth";
@@ -9,11 +8,13 @@ import Link from "next/link";
 
 const page = async () => {
   const serverSession = await getServerSession(authOptions);
+  const isActive = (serverSession as ExtendedSession)?.user?.isActive;
+
   const sessionId = (serverSession as ExtendedSession)?.user?.id;
   const url = isProduction();
 
   const res = await fetch(`${url}/api/user/${sessionId}`, {
-    cache: "no-store",
+    next: { tags: [`user-profile-${sessionId}`], revalidate: 60 * 60 * 24 },
   });
 
   const data = await res.json();
@@ -24,7 +25,7 @@ const page = async () => {
 
         {serverSession ? (
           <div className={" w-full"}>
-            <ProfileNav />
+            <ProfileNav isActive={isActive} />
             <EditProfile res={data} />
           </div>
         ) : (

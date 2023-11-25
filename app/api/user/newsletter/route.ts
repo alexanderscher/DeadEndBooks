@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/prisma/client";
+import { revalidateTag } from "next/cache";
 
 export async function PUT(request: Request): Promise<NextResponse> {
   try {
@@ -15,6 +16,7 @@ export async function PUT(request: Request): Promise<NextResponse> {
         newsletter: newsletter,
       },
     });
+    revalidateTag(`user-profile-${userId}`);
 
     return new NextResponse("Success", { status: 200 }); // Return success response
   } catch (error: any) {

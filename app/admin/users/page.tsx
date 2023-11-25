@@ -13,7 +13,7 @@ const page = async () => {
 
   const url = isProduction();
   const res = await fetch(`${url}/api/user`, {
-    cache: "no-cache",
+    next: { tags: ["users"], revalidate: 3600 },
   });
   data = await res.json();
 

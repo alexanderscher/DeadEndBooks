@@ -4,6 +4,7 @@ import { authOptions } from "../../auth/[...nextauth]/route";
 import { ExtendedSession } from "@/types";
 import { stripe } from "@/stripe/stripe";
 import prisma from "@/prisma/client";
+import { revalidateTag } from "next/cache";
 
 function isNinetyDaysOrMoreSince(givenDateStr: string) {
   const givenDate = new Date(givenDateStr);
@@ -17,6 +18,7 @@ function isNinetyDaysOrMoreSince(givenDateStr: string) {
 
 export async function GET(req: NextRequest) {
   const session = await getServerSession(authOptions);
+  const sessionUserId = (session as ExtendedSession)?.user?.id;
 
   try {
     if (!session?.user) {
@@ -79,6 +81,9 @@ export async function GET(req: NextRequest) {
       const subscription = await stripe.subscriptions.cancel(
         stripeSubscriptionId
       );
+
+      revalidateTag(`user-profile-${sessionUserId}`);
+
       return NextResponse.json({ user }, { status: 200 });
     }
   } catch (err) {

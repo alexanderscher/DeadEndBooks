@@ -12,21 +12,16 @@ const page = async () => {
 
   let data = null;
 
-  if (sessionId) {
-    const url = isProduction();
-    const res = await fetch(`${url}/api/user/other`, {
-      cache: "no-cache",
-    });
-    data = await res.json();
-  } else {
-    data = null;
-  }
+  const url = isProduction();
+  const res = await fetch(`${url}/api/user/other`, {
+    next: { tags: [`other-users`], revalidate: 60 * 60 * 24 },
+  });
+  data = await res.json();
 
   return (
     <main className={"page"}>
       <>
         <Navbar />
-
         <Others res={data} sessionId={sessionId} />
       </>
     </main>

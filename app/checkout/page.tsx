@@ -1,70 +1,39 @@
-"use client";
-import React, { useEffect, useState } from "react";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { Checkout, EditProfile, History, Navbar } from "@/app/components";
 
-import { useMediaQuery } from "react-responsive";
-import Link from "next/link";
-import { Loader, Navbar, Cart, Checkout } from "@/app/components";
-import { useSession } from "next-auth/react";
 import { ExtendedSession } from "@/types";
-import { useRouter } from "next/navigation";
+import { isProduction } from "@/utils/name";
+import { getServerSession } from "next-auth";
 
-const page = () => {
-  const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
-  const isSmallDeviceQuery = useMediaQuery({ maxWidth: 700 });
-  const { data: session, status } = useSession();
-  const router = useRouter();
-  const [isLoading, setisLoading] = useState(true);
-  const isMobileDeviceQuery = useMediaQuery({ maxWidth: 460 });
-  const [isMobileDevice, setIsMobileDevice] = useState<any>(null);
+const page = async () => {
+  const serverSession = await getServerSession(authOptions);
+  const sessionId = (serverSession as ExtendedSession)?.user?.id;
 
-  useEffect(() => {
-    if (session) {
-      setisLoading(false);
-      if (!(session as ExtendedSession)?.user?.isActive) {
-        router.push("/subscribe");
-      }
+  let data = null;
+  const cartBooks = [];
+
+  if (serverSession) {
+    const url = isProduction();
+    const res = await fetch(`${url}/api/user/${sessionId}`, {
+      cache: "no-cache",
+    });
+    data = await res.json();
+
+    for (const key in data.Cart) {
+      const res = await fetch(`${url}/api/book/${data.Cart[key].bookId}`);
+      const book = await res.json();
+      cartBooks.push({ ...book, cartId: data.Cart[key].id });
     }
-  }, [session]);
-
-  useEffect(() => {
-    setIsSmallDevice(isSmallDeviceQuery);
-    setIsMobileDevice(isMobileDeviceQuery);
-  }, [isSmallDeviceQuery, isMobileDeviceQuery]);
+  }
 
   return (
-    <main className={isSmallDevice ? "" : "page"}>
-      {isSmallDevice === null ? (
-        <Loader />
-      ) : (
-        <>
-          <Navbar />
-
-          {isLoading && session !== null ? (
-            <Loader /> // Show loader while session is being checked
-          ) : session ? (
-            <div className={" w-full"}>
-              <Checkout
-                isSmallDevice={isSmallDevice}
-                isMobileDevice={isMobileDevice}
-              />
-            </div>
-          ) : (
-            <div className={isSmallDevice ? "mt-10" : " w-full"}>
-              <h1 className="text-[26px]">
-                Login or sign up to view your cart
-              </h1>
-              <div className="mt-10">
-                <h1 className="text-red-500  hover:line-through text-[26px]">
-                  <Link href="/login">Log in</Link>
-                </h1>
-                <h1 className="text-red-500  hover:line-through text-[26px]">
-                  <Link href="/signup">Sign up</Link>
-                </h1>
-              </div>
-            </div>
-          )}
-        </>
-      )}
+    <main className={"page"}>
+      <>
+        <Navbar />
+        <div className={" w-full"}>
+          <Checkout res={data} cartBooks={cartBooks} session={serverSession} />
+        </div>
+      </>
     </main>
   );
 };

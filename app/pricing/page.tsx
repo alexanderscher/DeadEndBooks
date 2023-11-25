@@ -1,60 +1,49 @@
-"use client";
-
 import { PricingCard } from "../components";
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar/Navbar";
-import Loader from "../components/Loader";
-import { useMediaQuery } from "react-responsive";
+
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]/route";
+import { isProduction } from "@/utils/name";
 import { ExtendedSession } from "@/types";
-import { useSession } from "next-auth/react";
 
-const page = () => {
-  const isSmallDeviceQuery = useMediaQuery({ maxWidth: 700 });
+const page = async () => {
+  const serverSession = await getServerSession(authOptions);
+  const sessionId = (serverSession as ExtendedSession)?.user?.id;
 
-  const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
+  let prices: any = [];
+  let userData: any = null;
+  const url = isProduction();
+  const res = await fetch(`${url}/api/stripe/getproducts`);
+  const data = await res.json();
+  prices = data;
 
-  const isMediumDeviceQuery = useMediaQuery({ maxWidth: 900 });
-  const [isMediumDevice, setIsMediumDevice] = useState<any>(null);
-
-  const isMobileDeviceQuery = useMediaQuery({ maxWidth: 460 });
-  const [isMobileDevice, setIsMobileDevice] = useState<any>(null);
-
-  useEffect(() => {
-    setIsSmallDevice(isSmallDeviceQuery);
-    setIsMediumDevice(isMediumDeviceQuery);
-    setIsMobileDevice(isMobileDeviceQuery);
-  }, [isSmallDeviceQuery, isMediumDeviceQuery, isMobileDeviceQuery]);
-  const [prices, setPrices] = useState<any>([]);
-  const { data: session } = useSession();
-
-  useEffect(() => {
-    fetchPrices();
-  }, []);
-
-  const fetchPrices = async () => {
-    const res = await fetch("/api/stripe/getproducts");
-    const data = await res.json();
-    setPrices(data);
-  };
+  if (sessionId) {
+    const res1 = await fetch(`${url}/api/user/${sessionId}`, {
+      next: { tags: [`user-profile-${sessionId}`], revalidate: 60 * 60 * 24 },
+    });
+    userData = await res1.json();
+  }
 
   return (
-    <main className={isSmallDevice ? "" : "page"}>
-      {isSmallDevice === null ? (
-        <Loader />
-      ) : (
-        <>
-          <Navbar />
+    <main className={"page"}>
+      <>
+        <Navbar />
 
-          <div className={isSmallDevice && "mt-10"}>
-            <div className="w-full ">
-              {prices &&
-                prices.map((price: any) => (
-                  <PricingCard price={price} key={price.id} session={session} />
-                ))}
-            </div>
+        <div>
+          <div className="w-full ">
+            {prices &&
+              prices.map((price: any) => (
+                <PricingCard
+                  price={price}
+                  key={price.id}
+                  session={serverSession}
+                  userData={userData}
+                />
+              ))}
           </div>
-        </>
-      )}
+        </div>
+      </>
     </main>
   );
 };

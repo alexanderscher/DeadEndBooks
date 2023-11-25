@@ -1,6 +1,5 @@
 "use client";
 import React, { use, useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
 import { ExtendedSession } from "@/types";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -9,14 +8,14 @@ import { Loader } from "..";
 import { useDeviceQueries } from "@/utils/deviceQueries";
 
 interface Props {
-  res: any;
-  status: any;
+  title: string;
+  session: any;
 }
-const SingleBook = ({ res, status }: Props) => {
+
+const SingleBook = ({ title, session }: Props) => {
   const { isSmallDevice, isMobileDevice } = useDeviceQueries();
   const router = useRouter();
-  const { data: session } = useSession();
-  const sessionId = (session as ExtendedSession)?.user?.id;
+
   const [userId, setuserId] = useState("");
 
   const [savedLists, setSavedLists] = useState<number[]>([]);
@@ -55,7 +54,12 @@ const SingleBook = ({ res, status }: Props) => {
 
   useEffect(() => {
     const getBook = async () => {
-      const data = res;
+      const res = await fetch(`/api/book/${title}`, {
+        method: "GET",
+        cache: "no-store",
+      });
+      const data = await res.json();
+      const status = res.status;
       const savedIds = [];
       const cartIds = [];
       console.log(status);
@@ -74,7 +78,8 @@ const SingleBook = ({ res, status }: Props) => {
 
       if (
         data.Current[0]?.userId &&
-        data.Current[0]?.userId === parseInt(sessionId)
+        data.Current[0]?.userId ===
+          parseInt((session as ExtendedSession).user.id)
       ) {
         setStock((prev) => ({ ...prev, inYourPossesion: true }));
       }
@@ -85,7 +90,7 @@ const SingleBook = ({ res, status }: Props) => {
       setLoading(false);
     };
     getBook();
-  }, [saved, cart, userId, res]);
+  }, [saved, cart, userId]);
 
   const handleSave = async () => {
     const uId = parseInt(userId);

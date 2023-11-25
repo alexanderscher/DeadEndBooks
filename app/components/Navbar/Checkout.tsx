@@ -5,11 +5,10 @@ import React, { useEffect, useState } from "react";
 import { Loader } from "..";
 import AddressModal from "./AddressModal";
 import { useRouter } from "next/navigation";
-import { sendEmail } from "@/app/actions/emails/sendEmail";
-import { OrderTemplate } from "@/app/email-templates/order";
 import { confirmation } from "@/app/actions/order/confirm";
 import { newOrder } from "@/app/actions/order/admin";
-import { revalidatePath } from "next/cache";
+import { useDeviceQueries } from "@/utils/deviceQueries";
+import Link from "next/link";
 
 type AddyData = {
   userId: number;
@@ -25,12 +24,14 @@ type AddyData = {
 };
 
 type Props = {
-  isSmallDevice: boolean;
-  isMobileDevice: boolean;
+  res: any;
+  cartBooks: any;
+  session: any;
 };
 
-const Checkout = ({ isSmallDevice, isMobileDevice }: Props) => {
-  const { data: session } = useSession();
+const Checkout = ({ res, cartBooks, session }: Props) => {
+  const { isSmallDevice, isMobileDevice } = useDeviceQueries();
+
   const router = useRouter();
   const [pageData, setPageData] = useState<Book[]>([]);
   const [userId, setUserId] = useState("");
@@ -48,34 +49,26 @@ const Checkout = ({ isSmallDevice, isMobileDevice }: Props) => {
     },
   ]);
   const [isLoading, setisLoading] = useState(true);
-  const [notActive, setNotActive] = useState(false);
   const [noAddress, setNoAddress] = useState(false);
+  const [notActive, setNotActive] = useState(false);
+
+  useEffect(() => {
+    if (session) {
+      setisLoading(false);
+      if (!(session as ExtendedSession)?.user?.isActive) {
+        router.push("/subscribe");
+      }
+    }
+  }, [session]);
 
   useEffect(() => {
     setisLoading(true);
     const sessionId = (session as ExtendedSession)?.user?.id;
     setUserId(sessionId as string);
     const getCart = async () => {
-      const res = await fetch(`/api/user/${sessionId}`, {
-        cache: "no-cache",
-        method: "PUT",
-      });
-      const data = await res.json();
+      const data = await res;
       setAddress(data.address);
-
-      const cartBooks = [];
-
-      for (const key in data.Cart) {
-        const res = await fetch(`/api/book/${data.Cart[key].bookId}`);
-        const book = await res.json();
-        cartBooks.push({ ...book, cartId: data.Cart[key].id });
-      }
-      if (cartBooks.length === 0) {
-        router.push("/cart");
-      }
-
       setPageData(cartBooks);
-
       setisLoading(false);
     };
     getCart();
@@ -103,11 +96,7 @@ const Checkout = ({ isSmallDevice, isMobileDevice }: Props) => {
       return;
     }
 
-    const useres = await fetch(`/api/user/${userId}`, {
-      cache: "no-cache",
-      method: "PUT",
-    });
-    const user = await useres.json();
+    const user = await res;
 
     if (user.Cart.length > 3) {
       setModalCheckout({ second: false, first: true });
@@ -174,6 +163,22 @@ const Checkout = ({ isSmallDevice, isMobileDevice }: Props) => {
   };
 
   const [modal, setModal] = useState(false);
+
+  if (res === null) {
+    return (
+      <div className={`${isSmallDevice ? "mt-10 w-full" : "w-full"} `}>
+        <h1 className="text-[26px]">Login or sign up to view your cart</h1>
+        <div className="mt-10">
+          <h1 className="text-red-500  hover:line-through text-[26px]">
+            <Link href="/login">Log in</Link>
+          </h1>
+          <h1 className="text-red-500  hover:line-through text-[26px]">
+            <Link href="/signup">Sign up</Link>
+          </h1>
+        </div>
+      </div>
+    );
+  }
 
   if (isLoading) {
     return <Loader />;

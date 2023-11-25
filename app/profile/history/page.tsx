@@ -7,6 +7,7 @@ import Link from "next/link";
 
 const page = async () => {
   const serverSession = await getServerSession(authOptions);
+  const isActive = (serverSession as ExtendedSession)?.user?.isActive;
   const sessionId = (serverSession as ExtendedSession)?.user?.id;
   const url = isProduction();
 
@@ -26,7 +27,7 @@ const page = async () => {
 
         {serverSession ? (
           <div className={" w-full"}>
-            <ProfileNav />
+            <ProfileNav isActive={isActive} />
 
             <History res={data} />
           </div>

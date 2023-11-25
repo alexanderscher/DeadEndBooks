@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/prisma/client";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export async function POST(request: Request) {
   const json = await request.json();
@@ -12,6 +12,7 @@ export async function POST(request: Request) {
         bookId,
       },
     });
+    revalidateTag(`cart-${userId}`);
 
     return new NextResponse(JSON.stringify(cart), {
       status: 201,
@@ -27,13 +28,15 @@ export async function POST(request: Request) {
 
 export async function DELETE(request: Request) {
   const json = await request.json();
-  const { cartId } = json;
+  const { cartId, userId } = json;
   try {
     const cart = await prisma.cart.delete({
       where: {
         id: cartId,
       },
     });
+
+    revalidateTag(`cart-${userId}`);
 
     return new NextResponse(JSON.stringify(cart), {
       status: 201,

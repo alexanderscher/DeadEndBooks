@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/prisma/client";
+import { revalidateTag } from "next/cache";
 
 export async function PUT(request: Request) {
   const json = await request.json();
@@ -23,6 +24,10 @@ export async function PUT(request: Request) {
         },
       },
     });
+
+    revalidateTag(`book-${bookId}`);
+    revalidateTag(`all-books`);
+
     return new NextResponse(JSON.stringify(updatedBook), {
       status: 200,
       headers: { "Content-Type": "application/json" },

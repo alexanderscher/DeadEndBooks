@@ -3,25 +3,17 @@ import React, { useEffect, useState } from "react";
 import SingleBook from "@/app/components/Book/SingleBook";
 import { Navbar } from "@/app/components";
 import { isProduction } from "@/utils/name";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 const page = async ({ params }: { params: { title: string } }) => {
-  const url = isProduction();
+  const serverSession = await getServerSession(authOptions);
   const title = params.title;
-
-  const res = await fetch(`${url}/api/book/${title}`, {
-    cache: "no-cache",
-    next: {
-      tags: [`all-books`],
-    },
-  });
-  const data = await res.json();
-  const status = res.status;
-
   return (
     <main className="page">
       <>
         <Navbar />
-        <SingleBook res={data} status={status} />
+        <SingleBook title={title} session={serverSession} />
       </>
     </main>
   );
