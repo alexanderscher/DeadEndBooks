@@ -26,7 +26,7 @@ const page = async () => {
       <>
         <Navbar />
         <div className={"w-full"}>
-          <Saved res={data} />
+          <Saved res={data} session={serverSession} />
         </div>
       </>
     </main>

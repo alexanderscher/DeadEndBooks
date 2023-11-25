@@ -9,10 +9,11 @@ import { useDeviceQueries } from "@/utils/deviceQueries";
 
 type Props = {
   res: any;
+  session: any;
 };
-const Saved = ({ res }: Props) => {
+const Saved = ({ res, session }: Props) => {
   const { isSmallDevice, isMobileDevice } = useDeviceQueries();
-  const { data: session } = useSession();
+
   const [pageData, setPageData] = useState<Book[]>([]);
   const [userId, setUserId] = useState("");
   const [cartIdList, setCartIdList] = useState<number[]>([]);
