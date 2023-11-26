@@ -260,7 +260,9 @@ const EditBook = () => {
         <div className="mt-6">
           <form ref={formRef} onSubmit={submitBook}>
             <div className="flex flex-col max-w-[800px]">
-              <h1 className="text-[26px] mb-6">{bookPlaceHolder.title}</h1>
+              <h1 className="text-[26px] mb-6 text-red-500">
+                {bookPlaceHolder.title}
+              </h1>
               <input
                 type="text"
                 placeholder={bookPlaceHolder.title}
@@ -293,7 +295,7 @@ const EditBook = () => {
                 onChange={handleMediumChange}
                 value={book.medium}
               >
-                <option value="" disabled className="text-black">
+                <option value="" disabled className="text-slate-500">
                   {bookPlaceHolder.medium}
                 </option>
                 <option value="painting">Painting</option>
