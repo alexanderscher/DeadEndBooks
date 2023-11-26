@@ -1,8 +1,9 @@
 import { NextResponse, NextRequest } from "next/server";
 import { getServerSession } from "next-auth";
 import { ExtendedSession } from "@/types";
-import { authOptions } from "../../auth/[...nextauth]/route";
 import { stripe } from "@/stripe/stripe";
+import { revalidateTag } from "next/cache";
+import { authOptions } from "@/utils/auth";
 
 export async function POST(request: NextRequest) {
   const isProduction = process.env.NODE_ENV === "production";
@@ -15,6 +16,7 @@ export async function POST(request: NextRequest) {
     : process.env.STRIPE_SECRET_KEY;
   const serverSession = await getServerSession(authOptions);
   const sessionId = (serverSession as ExtendedSession)?.user?.stripeCustomerId;
+  const userId = (serverSession as ExtendedSession)?.user?.id;
 
   if (!stripeSecretKey) {
     throw new Error(
@@ -37,6 +39,8 @@ export async function POST(request: NextRequest) {
     success_url: `${url}/success`,
     cancel_url: `${url}/cancel`,
   });
+
+  revalidateTag(`user-profile-${userId}`);
 
   return NextResponse.json(stripeSession.url);
 }

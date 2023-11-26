@@ -3,6 +3,8 @@ import { ExtendedSession } from "@/types";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import React, { use, useEffect, useState } from "react";
+import { Navbar } from "..";
+import { useDeviceQueries } from "@/utils/deviceQueries";
 
 type Book = {
   author: string;
@@ -23,12 +25,15 @@ type User = {
 };
 
 type Props = {
+  res: any;
+  sessionId: string;
+};
+
+const Others = ({ res, sessionId }: Props) => {
+  const { isSmallDevice } = useDeviceQueries();
   isSmallDevice: boolean;
 };
 
-const Others = ({ isSmallDevice }: Props) => {
-  const { data: session, status } = useSession();
-  const sessionId = (session as ExtendedSession)?.user?.id;
 
   const [users, setUsers] = useState([
     {
@@ -60,17 +65,14 @@ const Others = ({ isSmallDevice }: Props) => {
 
   useEffect(() => {
     const getUsers = async () => {
-      const res = await fetch("/api/user/other", {
-        method: "PUT",
-        next: { revalidate: 60 * 60 * 24 },
-      });
-      const data: User[] = await res.json();
+      const data: User[] = await res;
 
       const filteredData = data.filter(
         (user) =>
           (user.current_books.length > 0 || user.past_books.length > 0) &&
           user.id !== parseInt(sessionId)
       );
+      console.log(filteredData);
 
       filteredData.sort((a: User, b: User) => {
         const aRecentDate =
@@ -85,7 +87,7 @@ const Others = ({ isSmallDevice }: Props) => {
 
         return bRecentDate - aRecentDate;
       });
-
+      <Navbar />;
       setUsers(filteredData);
     };
 
@@ -102,14 +104,14 @@ const Others = ({ isSmallDevice }: Props) => {
 
   if (users.length === 0) {
     return (
-      <div className={`${isSmallDevice ? "mt-10 text-[26px]" : "text-[26px]"}`}>
+      <div className={`${isSmallDevice ? "text-[26px] mt-10" : "text-[26px]"}`}>
         <h1>There are no current users</h1>
       </div>
     );
   }
 
   return (
-    <div>
+    <div className={isSmallDevice ? "mt-10" : " w-full"}>
       {users.map((user) => (
         <div key={user.id} className="mb-10 border-t-[2px] border-black">
           <h1 className="text-[24px] mt-2 hover:line-through">

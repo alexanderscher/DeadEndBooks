@@ -1,7 +1,10 @@
 "use client";
 import React, { use, useEffect, useState } from "react";
 
-const Users = () => {
+interface Props {
+  res: any;
+}
+const Users = ({ res }: Props) => {
   const [users, setUsers] = useState([
     {
       id: 0,
@@ -17,11 +20,7 @@ const Users = () => {
 
   useEffect(() => {
     const getUsers = async () => {
-      const res = await fetch(`/api/user`, {
-        method: "PUT",
-        next: { revalidate: 60 * 60 * 24 },
-      });
-      const data = await res.json();
+      const data = res;
 
       setUsers(data);
     };

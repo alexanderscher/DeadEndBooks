@@ -30,7 +30,6 @@ export async function GET(
         books.push({ ...book, cartId: cart.id });
       }
     }
-    console.log(user);
 
     return new NextResponse(JSON.stringify(books), {
       status: 201,

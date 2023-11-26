@@ -7,16 +7,17 @@ import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { deleteUploadThingImage } from "@/app/actions/photo/delete";
+import { useDeviceQueries } from "@/utils/deviceQueries";
 
 interface Delete {
   setDeleteError: (error: boolean) => void;
 }
 
 interface Props {
-  isSmallDevice: boolean;
-  isMobileDevice: boolean;
+  res: any;
 }
-const EditBook = ({ isSmallDevice, isMobileDevice }: Props) => {
+const EditBook = () => {
+  const { isSmallDevice, isMobileDevice } = useDeviceQueries();
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
   const [bookId, setBookId] = useState<number | null>(null);

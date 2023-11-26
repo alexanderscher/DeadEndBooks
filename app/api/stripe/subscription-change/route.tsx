@@ -1,12 +1,14 @@
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
-
-import { authOptions } from "../../auth/[...nextauth]/route";
 import { ExtendedSession } from "@/types";
 import { stripe } from "@/stripe/stripe";
+import { revalidateTag } from "next/cache";
+import { authOptions } from "@/utils/auth";
 
 export async function POST(request: NextRequest) {
   const session = await getServerSession(authOptions);
+
+  const sessionUserId = (session as ExtendedSession)?.user?.id;
   const isProduction = process.env.NODE_ENV === "production";
   const url = isProduction
     ? "https://deadendbooks.org/home"
@@ -56,6 +58,8 @@ export async function POST(request: NextRequest) {
     success_url: `${url}/success/${subscriptionID}`,
     cancel_url: `${url}/cancel/${subscriptionID}`,
   });
+
+  revalidateTag(`user-profile-${sessionUserId}`);
 
   return NextResponse.json(stripeSession.url);
 }

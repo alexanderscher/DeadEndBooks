@@ -4,18 +4,12 @@ import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { Loader } from "..";
 
-const formatDate = (input: string) => {
-  const date = new Date(input);
-  const day = String(date.getDate()).padStart(2, "0");
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const year = String(date.getFullYear()).slice(-2);
+interface Props {
+  res: any;
+}
 
-  return `${month}/${day}/${year}`;
-};
-
-const History = () => {
+const History = ({ res }: Props) => {
   const [isLoading, setisLoading] = useState(true);
-  const { data: session } = useSession();
   const [rentals, setRentals] = useState([
     {
       title: "",
@@ -28,23 +22,14 @@ const History = () => {
     const getUser = async () => {
       setisLoading(true);
 
-      const res = await fetch("/api/user/history", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        next: { revalidate: 60 * 60 * 24 },
-        body: JSON.stringify((session as ExtendedSession)?.user?.id),
-      });
-
-      const data = await res.json();
+      const data = await res;
       console.log(data);
 
       setRentals(data);
       setisLoading(false);
     };
     getUser();
-  }, [session]);
+  }, [res]);
   if (isLoading) {
     return <Loader />;
   }

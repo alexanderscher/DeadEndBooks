@@ -5,13 +5,16 @@ import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { Loader } from "..";
 import { usePathname } from "next/navigation";
+import { useDeviceQueries } from "@/utils/deviceQueries";
 
 interface priceProps {
   price: any;
   session: any;
+  userData: any;
 }
 
-const PricingCard = ({ price, session }: priceProps) => {
+const PricingCard = ({ price, session, userData }: priceProps) => {
+  const { isSmallDevice } = useDeviceQueries();
   const sessionId = (session as ExtendedSession)?.user?.id;
   const subscriptionID = (session as ExtendedSession)?.user?.subscriptionID;
   const [noSession, setNoSession] = useState(false);
@@ -49,11 +52,10 @@ const PricingCard = ({ price, session }: priceProps) => {
 
   useEffect(() => {
     const getUser = async () => {
-      const res = await fetch(
-        `/api/user/${(session as ExtendedSession)?.user?.id}`,
-        { method: "PUT", next: { revalidate: 60 * 60 * 24 } }
-      );
-      const data = await res.json();
+      const data = await userData;
+      if (data === null) {
+        return;
+      }
       if (data.subscriptionType) {
         setUserSub(data.subscriptionType);
       } else {
@@ -92,7 +94,7 @@ const PricingCard = ({ price, session }: priceProps) => {
   }
 
   return (
-    <div className="mb-10">
+    <div className={`${isSmallDevice ? "mt-10" : "mb-10"}`}>
       <h1 className={`text-[30px]`}>{price.nickname}</h1>
       <p className="text-[30px] text-slate-500">
         {(price.unit_amount / 100).toLocaleString("en-US", {

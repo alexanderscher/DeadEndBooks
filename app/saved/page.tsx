@@ -1,71 +1,34 @@
-"use client";
-import React, { useEffect, useState } from "react";
-
-import { useMediaQuery } from "react-responsive";
+"use server";
+import Navbar from "../components/Navbar/Navbar";
 import Link from "next/link";
-import { Loader, Navbar, Saved } from "@/app/components";
-import { useSession } from "next-auth/react";
+import { getServerSession } from "next-auth";
+import { ExtendedSession } from "@/types";
+import { isProduction } from "@/utils/name";
+import { Saved } from "../components";
+import { authOptions } from "@/utils/auth";
 
-const page = () => {
-  const isSmallDeviceQuery = useMediaQuery({ maxWidth: 700 });
+const page = async () => {
+  const serverSession = await getServerSession(authOptions);
+  const sessionId = (serverSession as ExtendedSession)?.user?.id;
+  let data = null;
 
-  const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
-
-  const isMediumDeviceQuery = useMediaQuery({ maxWidth: 900 });
-  const [isMediumDevice, setIsMediumDevice] = useState<any>(null);
-
-  const isMobileDeviceQuery = useMediaQuery({ maxWidth: 460 });
-  const [isMobileDevice, setIsMobileDevice] = useState<any>(null);
-  const { data: session, status } = useSession();
-
-  const [isLoading, setisLoading] = useState(true);
-
-  useEffect(() => {
-    if (session) {
-      setisLoading(false);
-    }
-  }, [session]);
-
-  useEffect(() => {
-    setIsSmallDevice(isSmallDeviceQuery);
-    setIsMediumDevice(isMediumDeviceQuery);
-    setIsMobileDevice(isMobileDeviceQuery);
-  }, [isSmallDeviceQuery, isMediumDeviceQuery, isMobileDeviceQuery]);
+  if (sessionId) {
+    const url = isProduction();
+    const res = await fetch(`${url}/api/saved/${sessionId}`, {
+      next: { revalidate: 60 * 60 * 24, tags: [`saved-${sessionId}`] },
+    });
+    data = await res.json();
+    console.log(data);
+  }
 
   return (
-    <main className={isSmallDevice ? "" : "page"}>
-      {isSmallDevice === null ? (
-        <Loader />
-      ) : (
-        <>
-          <Navbar
-            isSmallDevice={isSmallDevice}
-            isMobileDevice={isMobileDevice}
-          />
-
-          {isLoading && session !== null ? (
-            <Loader />
-          ) : session ? (
-            <div className={isSmallDevice ? "mt-8" : " w-full"}>
-              <Saved isMobileDevice={isMobileDevice} />
-            </div>
-          ) : (
-            <div className={isSmallDevice ? "mt-10" : " w-full"}>
-              <h1 className="text-[26px]">
-                Log in or sign up to view your saved books
-              </h1>
-              <div className="mt-10">
-                <h1 className="text-red-500  hover:line-through text-[26px]">
-                  <Link href="/login">Log in</Link>
-                </h1>
-                <h1 className="text-red-500  hover:line-through text-[26px]">
-                  <Link href="/signup">Sign up</Link>
-                </h1>
-              </div>
-            </div>
-          )}
-        </>
-      )}
+    <main className={"page"}>
+      <>
+        <Navbar />
+        <div className={"w-full"}>
+          <Saved res={data} session={serverSession} />
+        </div>
+      </>
     </main>
   );
 };

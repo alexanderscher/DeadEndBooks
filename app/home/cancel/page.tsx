@@ -49,10 +49,7 @@ const page = () => {
         <Loader />
       ) : (
         <>
-          <Navbar
-            isSmallDevice={isSmallDevice}
-            isMobileDevice={isMobileDevice}
-          />
+          <Navbar />
 
           <div className={"flex justify-center w-full mt-10"}>
             <div className={"flex justify-center"}>

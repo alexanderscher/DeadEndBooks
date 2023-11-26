@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import prisma from "@/prisma/client";
@@ -112,6 +112,7 @@ export async function POST(request: Request): Promise<NextResponse> {
       });
 
       stripeId(user, email, name);
+      revalidatePath("users");
 
       return new NextResponse(JSON.stringify(user), {
         status: 201,

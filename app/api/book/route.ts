@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
 import prisma from "@/prisma/client";
 
-export async function PUT() {
+export async function GET() {
   try {
     const books = await prisma.book.findMany({
       orderBy: { title: "asc" },
     });
+    console.log(books);
     return new NextResponse(JSON.stringify(books), {
       status: 200,
       headers: {

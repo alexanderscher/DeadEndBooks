@@ -1,22 +1,21 @@
+"use client";
 import { ExtendedSession } from "@/types";
+import { useDeviceQueries } from "@/utils/deviceQueries";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
 
 interface Props {
-  isSmallDevice: boolean;
-  isMobileDevice: boolean;
+  isActive: boolean;
 }
 
-const ProfileNav = ({ isSmallDevice, isMobileDevice }: Props) => {
-  const { data: session } = useSession();
-  const active = (session as ExtendedSession)?.user?.isActive;
+const ProfileNav = ({ isActive }: Props) => {
+  const { isSmallDevice, isMobileDevice } = useDeviceQueries();
 
   return (
     <div
       className={
         isSmallDevice
-          ? "flex mt-6  border-black text-slate-500"
+          ? "flex mt-6 border-black text-slate-500"
           : "flex w-full text-slate-500"
       }
     >
@@ -53,7 +52,7 @@ const ProfileNav = ({ isSmallDevice, isMobileDevice }: Props) => {
       >
         <Link href="/profile/history">History</Link>
       </button>
-      {active ? (
+      {isActive ? (
         <button
           className={` ${
             isMobileDevice
@@ -63,7 +62,7 @@ const ProfileNav = ({ isSmallDevice, isMobileDevice }: Props) => {
               : "text-[26px] mr-4"
           } hover:line-through `}
         >
-          <Link href="/profile/subscription">Subscription</Link>
+          <Link href="/pricing">Subscription</Link>
         </button>
       ) : (
         <button

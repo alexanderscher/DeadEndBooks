@@ -11,8 +11,8 @@ export async function PUT(request: Request) {
       shipped: true,
     },
   });
-  revalidatePath("/api/admin/order/completed");
-  revalidatePath("/api/admin/order/pending");
+  revalidatePath("all-orders");
+
   return new NextResponse(JSON.stringify(book), {
     status: 200,
     headers: { "Content-Type": "application/json" },

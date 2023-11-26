@@ -1,11 +1,14 @@
 import { NextResponse } from "next/server";
 import prisma from "@/prisma/client";
+import { revalidateTag } from "next/cache";
+export const dynamic = "force-dynamic";
 
 export async function PUT(
   request: Request,
   { params }: { params: { slug: string } }
 ) {
   const { slug } = params;
+  console;
 
   const book = await prisma.book.update({
     where: { id: parseInt(slug) },
@@ -13,6 +16,7 @@ export async function PUT(
       inStock: true,
     },
   });
+  revalidateTag(`book-${parseInt(slug)}`);
 
   return new NextResponse(JSON.stringify(book), {
     status: 200,
@@ -25,6 +29,7 @@ export async function GET(
   { params }: { params: { slug: string } }
 ) {
   const { slug } = params;
+  console.log(slug);
 
   let book;
 

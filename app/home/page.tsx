@@ -1,44 +1,22 @@
-"use client";
-import React, { useEffect, useState } from "react";
+"use server";
+import { isProduction } from "@/utils/name";
+import { Books, Navbar } from "../components";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/utils/auth";
 
-import { useMediaQuery } from "react-responsive";
-import { Books, Loader, Navbar } from "../components";
-
-const page = () => {
-  const isSmallDeviceQuery = useMediaQuery({ maxWidth: 700 });
-
-  const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
-
-  const isMediumDeviceQuery = useMediaQuery({ maxWidth: 900 });
-  const [isMediumDevice, setIsMediumDevice] = useState<any>(null);
-
-  const isMobileDeviceQuery = useMediaQuery({ maxWidth: 460 });
-  const [isMobileDevice, setIsMobileDevice] = useState<any>(null);
-
-  useEffect(() => {
-    setIsSmallDevice(isSmallDeviceQuery);
-    setIsMediumDevice(isMediumDeviceQuery);
-    setIsMobileDevice(isMobileDeviceQuery);
-  }, [isSmallDeviceQuery, isMediumDeviceQuery, isMobileDeviceQuery]);
-
+const page = async () => {
+  const url = isProduction();
+  const serverSession = await getServerSession(authOptions);
+  const res = await fetch(`${url}/api/book`, {
+    next: { tags: ["all-books"], revalidate: 60 * 60 * 24 },
+  });
+  const data = await res.json();
   return (
     <main className={"page"}>
-      {isSmallDevice === null ? (
-        <Loader />
-      ) : (
-        <>
-          <Navbar
-            isSmallDevice={isSmallDevice}
-            isMobileDevice={isMobileDevice}
-          />
-          <div className={isSmallDevice ? "" : " w-full"}>
-            <Books
-              isSmallDevice={isSmallDevice}
-              isMediumDevice={isMediumDevice}
-            />
-          </div>
-        </>
-      )}
+      <>
+        <Navbar />
+        <Books res={data} />
+      </>
     </main>
   );
 };

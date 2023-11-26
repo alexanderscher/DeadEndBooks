@@ -1,67 +1,50 @@
-"use client";
-import React, { useEffect, useState } from "react";
-
-import { useMediaQuery } from "react-responsive";
-
-import { useSession } from "next-auth/react";
-import Link from "next/link";
-import { Loader, Navbar, Profile, ProfileNav } from "@/app/components";
+import { authOptions } from "@/utils/auth";
+import { History, Navbar, ProfileNav } from "@/app/components";
 import Manage from "@/app/components/Profile/Manage";
+import { ExtendedSession } from "@/types";
+import { isProduction } from "@/utils/name";
+import { getServerSession } from "next-auth";
+import Link from "next/link";
 
-const page = () => {
-  const { data: session } = useSession();
-  const isSmallDeviceQuery = useMediaQuery({ maxWidth: 700 });
+const page = async () => {
+  const serverSession = await getServerSession(authOptions);
+  const sessionId = (serverSession as ExtendedSession)?.user?.id;
+  const isActive = (serverSession as ExtendedSession)?.user?.isActive;
+  const url = isProduction();
 
-  const [isSmallDevice, setIsSmallDevice] = useState<any>(null);
+  const res = await fetch(`${url}/api/user/${sessionId}`, {
+    method: "GET",
+    cache: "no-store",
+  });
 
-  const isMediumDeviceQuery = useMediaQuery({ maxWidth: 900 });
-  const [isMediumDevice, setIsMediumDevice] = useState<any>(null);
-
-  const isMobileDeviceQuery = useMediaQuery({ maxWidth: 460 });
-  const [isMobileDevice, setIsMobileDevice] = useState<any>(null);
-
-  useEffect(() => {
-    setIsSmallDevice(isSmallDeviceQuery);
-    setIsMediumDevice(isMediumDeviceQuery);
-    setIsMobileDevice(isMobileDeviceQuery);
-  }, [isSmallDeviceQuery, isMediumDeviceQuery, isMobileDeviceQuery]);
-
+  const data = await res.json();
   return (
-    <main className={isSmallDevice ? "" : "page"}>
-      {isSmallDevice === null ? (
-        <Loader />
-      ) : (
-        <>
-          <Navbar
-            isSmallDevice={isSmallDevice}
-            isMobileDevice={isMobileDevice}
-          />
+    <main className={"page"}>
+      <>
+        <Navbar />
 
-          {session ? (
-            <div className={" w-full"}>
-              <ProfileNav
-                isSmallDevice={isSmallDevice}
-                isMobileDevice={isMobileDevice}
-              />
-              <Manage />
-            </div>
-          ) : (
-            <div className={" w-full"}>
-              <h1 className="text-[26px]">
-                Log in or sign up to view your subscription
+        {serverSession ? (
+          <div className={" w-full"}>
+            <ProfileNav isActive={isActive} />
+
+            <Manage res={data} />
+          </div>
+        ) : (
+          <div className={" w-full"}>
+            <h1 className="text-[26px]">
+              Log in or sign up to view your subscription
+            </h1>
+            <div className="mt-10">
+              <h1 className="text-red-500  hover:line-through text-[26px]">
+                <Link href="/login">Log in</Link>
               </h1>
-              <div className="mt-10">
-                <h1 className="text-red-500  hover:line-through text-[26px]">
-                  <Link href="/login">Log in</Link>
-                </h1>
-                <h1 className="text-red-500  hover:line-through text-[26px]">
-                  <Link href="/signup">Sign up</Link>
-                </h1>
-              </div>
+              <h1 className="text-red-500  hover:line-through text-[26px]">
+                <Link href="/signup">Sign up</Link>
+              </h1>
             </div>
-          )}
-        </>
-      )}
+          </div>
+        )}
+      </>
     </main>
   );
 };

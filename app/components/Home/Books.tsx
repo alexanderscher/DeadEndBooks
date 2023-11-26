@@ -1,10 +1,9 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Loader } from "..";
-import { ExtendedSession } from "@/types";
-import { useSession } from "next-auth/react";
+import { useDeviceQueries } from "@/utils/deviceQueries";
 
 interface BookImage {
   photo_front: string;
@@ -21,25 +20,23 @@ const splitDataIntoColumns = <T extends BookImage>(
   data.forEach((item, index) => {
     result[index % columns].push(item);
   });
-  console.log(result);
 
   return result;
 };
 
 interface Props {
-  isSmallDevice: boolean;
-  isMediumDevice: boolean;
+  res: any;
 }
 
-const Books = ({ isSmallDevice, isMediumDevice }: Props) => {
+const Books = ({ res }: Props) => {
+  const { isSmallDevice, isMediumDevice, isMobileDevice } = useDeviceQueries();
+
   const currentPage = usePathname();
   const [isLoading, setisLoading] = useState(true);
-  const { data: session } = useSession();
-  const sessionId = (session as ExtendedSession)?.user?.id;
-
-  const [columns, setColumns] = useState(isMediumDevice ? 3 : 2);
   const [columnsData, setColumnsData] = useState<BookImage[][]>([]);
   const [data, setData] = useState<BookImage[]>([]);
+  console.log(data);
+
   type Page =
     | "/home"
     | "/library/painting"
@@ -62,11 +59,8 @@ const Books = ({ isSmallDevice, isMediumDevice }: Props) => {
   useEffect(() => {
     const getBooks = async () => {
       setisLoading(true);
-      const res = await fetch("/api/book", {
-        method: "PUT",
-        next: { revalidate: 60 * 60 * 24 },
-      });
-      const data = await res.json();
+
+      const data = res;
       const booktoPush = [];
 
       for (const d in data) {
@@ -91,11 +85,11 @@ const Books = ({ isSmallDevice, isMediumDevice }: Props) => {
     };
 
     getBooks();
-  }, [currentPage]);
+  }, [currentPage, res]);
 
   useEffect(() => {
-    const newColumns = isMediumDevice ? 2 : 3; // Assume medium devices can fit 3 columns
-    setColumns(newColumns);
+    const newColumns = isMediumDevice ? 2 : 3;
+
     setColumnsData(splitDataIntoColumns(data, newColumns));
   }, [isMediumDevice, data]);
 
@@ -104,7 +98,7 @@ const Books = ({ isSmallDevice, isMediumDevice }: Props) => {
   }
 
   return (
-    <>
+    <div className={isSmallDevice ? "" : " w-full"}>
       {!isSmallDevice ? (
         <div className="flex w-full">
           {columnsData.map((column, columnIndex) => (
@@ -147,7 +141,7 @@ const Books = ({ isSmallDevice, isMediumDevice }: Props) => {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

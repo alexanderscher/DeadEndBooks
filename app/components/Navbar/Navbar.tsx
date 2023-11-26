@@ -5,13 +5,15 @@ import { usePathname } from "next/navigation";
 import { use, useEffect, useState } from "react";
 import { LogOutButton } from "../../auth";
 import { ExtendedSession } from "@/types";
+import { useDeviceQueries } from "@/utils/deviceQueries";
 
 interface Props {
   isSmallDevice: boolean;
   isMobileDevice: boolean;
 }
 
-const Navbar = ({ isSmallDevice, isMobileDevice }: Props) => {
+const Navbar = () => {
+  const { isSmallDevice, isMediumDevice, isMobileDevice } = useDeviceQueries();
   const currentPage = usePathname();
   const [sort, setSort] = useState(false);
   const [menu, setMenu] = useState(false);

@@ -1,14 +1,14 @@
 "use client";
-import { ExtendedSession } from "@/types";
-import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { Loader } from "..";
 
-const Rentals = () => {
+interface Props {
+  res: any;
+}
+
+const Rentals = ({ res }: Props) => {
   const [isLoading, setisLoading] = useState(true);
   const [modal, setModal] = useState(false);
-  const { data: session } = useSession();
-
   const [rentals, setRentals] = useState([
     {
       title: "",
@@ -23,22 +23,13 @@ const Rentals = () => {
 
   useEffect(() => {
     const getUser = async () => {
-      const res = await fetch("/api/user/current-rental", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        cache: "no-cache",
-        body: JSON.stringify((session as ExtendedSession)?.user?.id),
-      });
-
-      const data = await res.json();
+      const data = await res;
 
       setRentals(data);
       setisLoading(false);
     };
     getUser();
-  }, [session]);
+  }, [res]);
 
   if (isLoading) {
     return <Loader />;

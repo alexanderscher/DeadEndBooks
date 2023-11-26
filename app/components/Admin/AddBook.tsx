@@ -5,11 +5,10 @@ import { UploadButton } from "@uploadthing/react";
 import { useState } from "react";
 import { OurFileRouter } from "@/app/api/uploadthing/core";
 import { deleteUploadThingImage } from "@/app/actions/photo/delete";
+import { useDeviceQueries } from "@/utils/deviceQueries";
 
-type AddBookProps = {
-  isSmallDevice: boolean;
-};
-const AddBook = ({ isSmallDevice }: AddBookProps) => {
+const AddBook = () => {
+  const { isSmallDevice } = useDeviceQueries();
   const formRef = useRef<HTMLFormElement>(null);
   const [book, setBook] = useState({
     title: "",

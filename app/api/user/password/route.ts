@@ -1,8 +1,8 @@
-import { compare } from "bcrypt";
+import { hash, compare } from "bcryptjs";
 import { NextResponse } from "next/server";
-import bcrypt from "bcrypt";
 
 import prisma from "@/prisma/client";
+import { revalidateTag } from "next/cache";
 
 export async function PUT(request: Request) {
   try {
@@ -56,7 +56,7 @@ export async function PUT(request: Request) {
           }
         );
       } else {
-        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        const hashedPassword = await hash(newPassword, 10);
 
         const updatedUser = await prisma.user.update({
           where: {
@@ -66,6 +66,7 @@ export async function PUT(request: Request) {
             password: hashedPassword,
           },
         });
+        revalidateTag(`user-profile-${userId}`);
 
         return new NextResponse(JSON.stringify(updatedUser), {
           status: 200,

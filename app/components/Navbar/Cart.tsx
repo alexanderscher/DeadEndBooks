@@ -1,3 +1,4 @@
+"use client";
 import { Book, ExtendedSession } from "@/types";
 
 import { useSession } from "next-auth/react";
@@ -5,33 +6,30 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { Loader } from "..";
 import { useRouter } from "next/navigation";
+import { useDeviceQueries } from "@/utils/deviceQueries";
 
 type Props = {
-  isMobileDevice: boolean;
+  res: any;
+  userData: any;
+  session: any;
 };
-const Cart = ({ isMobileDevice }: Props) => {
-  const { data: session } = useSession();
+const Cart = ({ res, userData, session }: Props) => {
+  const { isSmallDevice, isMobileDevice } = useDeviceQueries();
+
   const router = useRouter();
   const [pageData, setPageData] = useState<Book[]>([]);
-  console.log(pageData);
   const [reload, setReload] = useState(false);
   const [userId, setUserId] = useState("");
   const [isLoading, setisLoading] = useState(true);
   const [notActive, setNotActive] = useState(false);
-  console.log(pageData);
+
   useEffect(() => {
     setisLoading(true);
     const sessionId = (session as ExtendedSession)?.user?.id;
     setUserId(sessionId as string);
-    const getCart = async () => {
-      const res = await fetch(`/api/cart/${sessionId}`, {
-        cache: "no-cache",
-      });
-      const data = await res.json();
-      setPageData(data);
-      setisLoading(false);
-    };
-    getCart();
+    const data = res;
+    setPageData(data);
+    setisLoading(false);
   }, [session, reload]);
 
   const removeCart = async (cartId: number) => {
@@ -43,8 +41,17 @@ const Cart = ({ isMobileDevice }: Props) => {
       },
       body: JSON.stringify({
         cartId,
+        userId,
       }),
     });
+
+    // Check if the request was successful before reloading
+    if (res.ok) {
+      window.location.reload();
+    } else {
+      console.error("Error removing cart");
+      // Handle error case here
+    }
     setReload(true);
   };
 
@@ -59,11 +66,7 @@ const Cart = ({ isMobileDevice }: Props) => {
     if (!(session as ExtendedSession)?.user?.isActive) {
       setNotActive(true);
     } else {
-      const useres = await fetch(`/api/user/${userId}`, {
-        method: "PUT",
-        cache: "no-cache",
-      });
-      const user = await useres.json();
+      const user = await userData;
       if (user.Cart.length > 3) {
         setModalCheckout({ second: false, first: true });
         return;
@@ -77,11 +80,27 @@ const Cart = ({ isMobileDevice }: Props) => {
       }
     }
   };
+  if (res === null) {
+    return (
+      <div className={`${isSmallDevice ? "mt-10 w-full" : "w-full"} `}>
+        <h1 className="text-[26px]">Login or sign up to view your cart</h1>
+        <div className="mt-10">
+          <h1 className="text-red-500  hover:line-through text-[26px]">
+            <Link href="/login">Log in</Link>
+          </h1>
+          <h1 className="text-red-500  hover:line-through text-[26px]">
+            <Link href="/signup">Sign up</Link>
+          </h1>
+        </div>
+      </div>
+    );
+  }
 
   if (isLoading) {
     return <Loader />;
   }
-  if (pageData.length === 0) {
+
+  if (pageData.length === 0 && res !== null) {
     return (
       <div className="text-[26px]">
         <h1>Your cart is empty</h1>
@@ -122,7 +141,7 @@ const Cart = ({ isMobileDevice }: Props) => {
               } `}
             >
               <h1 className="hover:line-through">
-                <Link href={`/book/${book.title}`}>{book.title}</Link>
+                <Link href={`/book/${book.id}`}>{book.title}</Link>
               </h1>
               <h1 className="mt-2">{book.author}</h1>
               {book.inStock ? (

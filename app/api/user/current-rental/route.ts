@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/prisma/client";
+import { revalidateTag } from "next/cache";
 
 const formatDate = (input: Date | string) => {
   if (!input) {
@@ -108,6 +109,8 @@ export async function POST(request: Request) {
         }
       }
     }
+
+    revalidateTag(`user-profile-${id}`);
 
     return new NextResponse(JSON.stringify(rentals), {
       status: 200,

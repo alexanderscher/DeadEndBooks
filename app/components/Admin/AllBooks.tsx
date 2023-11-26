@@ -3,26 +3,22 @@ import { Book } from "@/types";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { Loader } from "..";
+import { useDeviceQueries } from "@/utils/deviceQueries";
 
 type Props = {
-  isMobileDevice: boolean;
+  res: any;
 };
-const AllBooks = ({ isMobileDevice }: Props) => {
+const AllBooks = ({ res }: Props) => {
+  const { isMobileDevice } = useDeviceQueries();
   const [books, setBooks] = useState<Book[]>([]);
   const [isLoaded, setIsLoaded] = useState(true);
-  console.log(books);
 
   useEffect(() => {
     const getBooks = async () => {
       setIsLoaded(true);
-      const res = await fetch("/api/book", {
-        method: "PUT",
-        next: { revalidate: 60 * 60 * 24 },
-      });
-      const data = await res.json();
+      const data = res;
       setBooks(data);
       setIsLoaded(false);
-      console.log(books);
     };
     getBooks();
   }, []);
@@ -41,7 +37,7 @@ const AllBooks = ({ isMobileDevice }: Props) => {
             className={
               isMobileDevice
                 ? "w-1/2 mt-4 flex flex-col items-start"
-                : "w-[300px] mt-2 "
+                : "w-1/2 mt-2 mr-4"
             }
           >
             <div className="w-full ">
@@ -70,7 +66,7 @@ const AllBooks = ({ isMobileDevice }: Props) => {
                 <img src={book.photo_front} alt="" />
               </div>
               <div className="w-3/4 mr-4 mb-2">
-                <img src={book.photo_front} alt="" />
+                <img src={book.photo_back} alt="" />
               </div>
             </div>
           ) : (

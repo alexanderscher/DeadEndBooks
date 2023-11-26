@@ -1,22 +1,23 @@
 "use client";
 import React, { use, useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
 import { ExtendedSession } from "@/types";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Loader } from "..";
+import { useDeviceQueries } from "@/utils/deviceQueries";
 
 interface Props {
-  isSmallDevice: boolean;
-  isMobileDevice: boolean;
+  title: string;
+  session: any;
 }
-const SingleBook = ({ isSmallDevice, isMobileDevice }: Props) => {
-  const currentPage = usePathname();
-  const title = currentPage.split("/")[2];
+
+const SingleBook = ({ title, session }: Props) => {
+  const { isSmallDevice, isMobileDevice } = useDeviceQueries();
   const router = useRouter();
-  const { data: session } = useSession();
+
   const [userId, setuserId] = useState("");
+
   const [savedLists, setSavedLists] = useState<number[]>([]);
   const [cartLists, setCartLists] = useState<number[]>([]);
   const [savedStatuses, setSavedStatuses] = useState<Record<number, string>>(
@@ -46,15 +47,23 @@ const SingleBook = ({ isSmallDevice, isMobileDevice }: Props) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const sessionId = (session as ExtendedSession)?.user?.id;
-    setuserId(sessionId);
+    if (session) {
+      setuserId((session as ExtendedSession).user.id);
+    }
+  }, [session]);
 
+  useEffect(() => {
     const getBook = async () => {
-      const res = await fetch(`/api/book/${title}`, { cache: "no-cache" });
+      const res = await fetch(`/api/book/${title}`, {
+        method: "GET",
+        cache: "no-store",
+      });
       const data = await res.json();
+      const status = res.status;
       const savedIds = [];
       const cartIds = [];
-      if (res.status === 404) {
+      console.log(status);
+      if (status === 404) {
         router.push("/not-found");
         return;
       }
@@ -69,7 +78,8 @@ const SingleBook = ({ isSmallDevice, isMobileDevice }: Props) => {
 
       if (
         data.Current[0]?.userId &&
-        data.Current[0]?.userId === parseInt(sessionId)
+        data.Current[0]?.userId ===
+          parseInt((session as ExtendedSession).user.id)
       ) {
         setStock((prev) => ({ ...prev, inYourPossesion: true }));
       }
@@ -80,7 +90,7 @@ const SingleBook = ({ isSmallDevice, isMobileDevice }: Props) => {
       setLoading(false);
     };
     getBook();
-  }, [sessionStorage, saved, cart]);
+  }, [saved, cart, userId]);
 
   const handleSave = async () => {
     const uId = parseInt(userId);
@@ -137,281 +147,284 @@ const SingleBook = ({ isSmallDevice, isMobileDevice }: Props) => {
     return <Loader />;
   }
   return (
-    <div className={`flex w-full ${isSmallDevice && "mt-10"}`}>
-      {isSmallDevice ? (
-        <>
-          <div className="w-full">
-            <div className="flex flex-col ">
-              <div className="w-full">
-                <h1 className={`${text}  text-slate-400`}>Title</h1>
-                <h1 className={`${text} border-b-[2px] border-slate-300`}>
-                  {pageData.title}
-                </h1>
-                <h1 className={`${text}  text-slate-400 mt-4`}>Author</h1>
-                <h1 className={`${text} border-b-[2px] border-slate-300`}>
-                  {pageData.author}
-                </h1>
-                <h1 className={`${text}  text-slate-400 mt-4`}>Publisher</h1>
-                <h1 className={`${text} border-b-[2px] border-slate-300`}>
-                  {pageData.publisher}
-                </h1>
-              </div>
-              <div className="w-1/2">
-                {!userId ? (
-                  <div className="mt-4">
-                    <h1 className={` text-red-300 ${text} `}>
-                      Log in to checkout books
-                    </h1>
-                    <Link href="/login">
-                      <h1
-                        className={`book-text mt-4 ${text}
+    <div className={"w-full"}>
+      <div className={`flex w-full ${isSmallDevice && "mt-10"}`}>
+        {isSmallDevice ? (
+          <>
+            <div className="w-full">
+              <div className="flex flex-col ">
+                <div className="w-full">
+                  <h1 className={`${text}  text-slate-400`}>Title</h1>
+                  <h1 className={`${text} border-b-[2px] border-slate-300`}>
+                    {pageData.title}
+                  </h1>
+                  <h1 className={`${text}  text-slate-400 mt-4`}>Author</h1>
+                  <h1 className={`${text} border-b-[2px] border-slate-300`}>
+                    {pageData.author}
+                  </h1>
+                  <h1 className={`${text}  text-slate-400 mt-4`}>Publisher</h1>
+                  <h1 className={`${text} border-b-[2px] border-slate-300`}>
+                    {pageData.publisher}
+                  </h1>
+                </div>
+                <div className="w-1/2">
+                  {!userId ? (
+                    <div className="mt-4">
+                      <h1 className={` text-red-300 ${text} `}>
+                        Log in to checkout books
+                      </h1>
+                      <Link href="/login">
+                        <h1
+                          className={`book-text mt-4 ${text}
                         }  cursor-pointer hover:line-through text-red-500 mt-4`}
-                      >
-                        Log in
-                      </h1>
-                    </Link>
+                        >
+                          Log in
+                        </h1>
+                      </Link>
 
-                    <Link href="/signup">
-                      <h1
-                        className={`${text}
+                      <Link href="/signup">
+                        <h1
+                          className={`${text}
                      cursor-pointer hover:line-through text-red-500 `}
-                      >
-                        Signup
-                      </h1>
-                    </Link>
-                  </div>
-                ) : (
-                  <>
-                    {stock.inYourPossesion ? (
-                      <div className="mt-4">
-                        <h1
-                          className={`${text}
-                  
-                       cursor-pointer hover:line-through text-red-500`}
-                          onClick={handleSave}
                         >
-                          {saved
-                            ? "Saved"
-                            : savedStatuses[parseInt(userId)] || "Save"}
+                          Signup
                         </h1>
-                        <h1
-                          className={`${text}
-                        text-red-500`}
-                        >
-                          In your possesion
-                        </h1>
-                      </div>
-                    ) : (
-                      <div className="mt-4">
-                        <h1 className={`${text} text-red-500 `}>
-                          {pageData.inStock && "In stock"}
-                        </h1>
-                        <h1
-                          className={`${text}
-                       cursor-pointer hover:line-through text-red-500`}
-                          onClick={handleSave}
-                        >
-                          {saved
-                            ? "Saved"
-                            : savedStatuses[parseInt(userId)] || "Save"}
-                        </h1>
-                        {pageData.inStock && (
-                          <h1
-                            className={`${text} 
-                            }  cursor-pointer hover:line-through text-red-500`}
-                            onClick={handleCart}
-                          >
-                            {cart
-                              ? "Added to cart"
-                              : cartStatuses[parseInt(userId)] || "Add to cart"}
-                          </h1>
-                        )}
-
-                        {!pageData.inStock && (
+                      </Link>
+                    </div>
+                  ) : (
+                    <>
+                      {stock.inYourPossesion ? (
+                        <div className="mt-4">
                           <h1
                             className={`${text}
-                            }  cursor-pointer hover:line-through text-red-500`}
+                  
+                       cursor-pointer hover:line-through text-red-500`}
+                            onClick={handleSave}
                           >
-                            Out of stock
+                            {saved
+                              ? "Saved"
+                              : savedStatuses[parseInt(userId)] || "Save"}
                           </h1>
-                        )}
-                      </div>
-                    )}
-                  </>
-                )}
+                          <h1
+                            className={`${text}
+                        text-red-500`}
+                          >
+                            In your possesion
+                          </h1>
+                        </div>
+                      ) : (
+                        <div className="mt-4">
+                          <h1 className={`${text} text-red-500 `}>
+                            {pageData.inStock && "In stock"}
+                          </h1>
+                          <h1
+                            className={`${text}
+                       cursor-pointer hover:line-through text-red-500`}
+                            onClick={handleSave}
+                          >
+                            {saved
+                              ? "Saved"
+                              : savedStatuses[parseInt(userId)] || "Save"}
+                          </h1>
+                          {pageData.inStock && (
+                            <h1
+                              className={`${text} 
+                            }  cursor-pointer hover:line-through text-red-500`}
+                              onClick={handleCart}
+                            >
+                              {cart
+                                ? "Added to cart"
+                                : cartStatuses[parseInt(userId)] ||
+                                  "Add to cart"}
+                            </h1>
+                          )}
+
+                          {!pageData.inStock && (
+                            <h1
+                              className={`${text}
+                            }  cursor-pointer hover:line-through text-red-500`}
+                            >
+                              Out of stock
+                            </h1>
+                          )}
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
+              </div>
+
+              <div className="w-full flex flex-col items-center mt-10">
+                <img className="w-full mb-4" src={pageData.photo_front} />
+                <img className="w-full" src={pageData.photo_back} />
               </div>
             </div>
-
-            <div className="w-full flex flex-col items-center mt-10">
-              <img className="w-full mb-4" src={pageData.photo_front} />
-              <img className="w-full" src={pageData.photo_back} />
+          </>
+        ) : (
+          <>
+            <div className="w-1/2 flex flex-col ">
+              <img
+                className={
+                  isMobileDevice
+                    ? "w-[85%] mb-6 min-w-[100px]"
+                    : isSmallDevice
+                    ? "w-[85%] min-w-[200px] mb-6"
+                    : "w-[80%] min-w-[200px] mb-6"
+                }
+                src={pageData.photo_front}
+              />
+              <img
+                className={
+                  isMobileDevice
+                    ? "w-[85%] mb-6 min-w-[100px]"
+                    : isSmallDevice
+                    ? "w-[85%] min-w-[200px] mb-6"
+                    : "w-[80%] min-w-[200px] mb-6"
+                }
+                src={pageData.photo_back}
+              />
             </div>
-          </div>
-        </>
-      ) : (
-        <>
-          <div className="w-1/2 flex flex-col ">
-            <img
-              className={
-                isMobileDevice
-                  ? "w-[85%] mb-6 min-w-[100px]"
-                  : isSmallDevice
-                  ? "w-[85%] min-w-[200px] mb-6"
-                  : "w-[80%] min-w-[200px] mb-6"
-              }
-              src={pageData.photo_front}
-            />
-            <img
-              className={
-                isMobileDevice
-                  ? "w-[85%] mb-6 min-w-[100px]"
-                  : isSmallDevice
-                  ? "w-[85%] min-w-[200px] mb-6"
-                  : "w-[80%] min-w-[200px] mb-6"
-              }
-              src={pageData.photo_back}
-            />
-          </div>
-          <div className="w-1/2">
-            <h1
-              className={
-                isSmallDevice
-                  ? `${text}  text-slate-400`
-                  : "book-text  text-slate-400"
-              }
-            >
-              Title
-            </h1>
-            <h1 className={isSmallDevice ? `${text}` : "book-text "}>
-              {pageData.title}
-            </h1>
-            <h1
-              className={
-                isSmallDevice
-                  ? `${text}  text-slate-400 mt-4`
-                  : "book-text  text-slate-400 mt-4"
-              }
-            >
-              Author
-            </h1>
-            <h1 className={isSmallDevice ? `${text}` : "book-text"}>
-              {pageData.author}
-            </h1>
-            <h1
-              className={
-                isSmallDevice
-                  ? `${text}  text-slate-400 mt-4`
-                  : "book-text  text-slate-400 mt-4"
-              }
-            >
-              Publisher
-            </h1>
-            <h1 className={isSmallDevice ? `${text}` : "book-text"}>
-              {pageData.publisher}
-            </h1>
+            <div className="w-1/2">
+              <h1
+                className={
+                  isSmallDevice
+                    ? `${text}  text-slate-400`
+                    : "book-text  text-slate-400"
+                }
+              >
+                Title
+              </h1>
+              <h1 className={isSmallDevice ? `${text}` : "book-text "}>
+                {pageData.title}
+              </h1>
+              <h1
+                className={
+                  isSmallDevice
+                    ? `${text}  text-slate-400 mt-4`
+                    : "book-text  text-slate-400 mt-4"
+                }
+              >
+                Author
+              </h1>
+              <h1 className={isSmallDevice ? `${text}` : "book-text"}>
+                {pageData.author}
+              </h1>
+              <h1
+                className={
+                  isSmallDevice
+                    ? `${text}  text-slate-400 mt-4`
+                    : "book-text  text-slate-400 mt-4"
+                }
+              >
+                Publisher
+              </h1>
+              <h1 className={isSmallDevice ? `${text}` : "book-text"}>
+                {pageData.publisher}
+              </h1>
 
-            {!userId ? (
-              <>
-                <h1
-                  className={`${
-                    isSmallDevice ? `${smtext}` : "book-text mt-10"
-                  }  cursor-pointer  text-red-500 mt-10`}
-                >
-                  Please log in to checkout books
-                </h1>
-                <Link href="/login">
+              {!userId ? (
+                <>
                   <h1
                     className={`${
-                      isSmallDevice ? `${smtext}` : "book-text mt-8"
-                    }  cursor-pointer hover:line-through text-red-500 mt-8`}
+                      isSmallDevice ? `${smtext}` : "book-text mt-10"
+                    }  cursor-pointer  text-red-500 mt-10`}
                   >
-                    Log in
+                    Please log in to checkout books
                   </h1>
-                </Link>
+                  <Link href="/login">
+                    <h1
+                      className={`${
+                        isSmallDevice ? `${smtext}` : "book-text mt-8"
+                      }  cursor-pointer hover:line-through text-red-500 mt-8`}
+                    >
+                      Log in
+                    </h1>
+                  </Link>
 
-                <Link href="/signup">
-                  <h1
-                    className={`${
-                      isSmallDevice ? `${smtext}` : "book-text "
-                    }  cursor-pointer hover:line-through text-red-500 `}
-                  >
-                    {" "}
-                    Signup
-                  </h1>
-                </Link>
-              </>
-            ) : (
-              <>
-                {stock.inYourPossesion ? (
-                  <div>
+                  <Link href="/signup">
                     <h1
                       className={`${
-                        isSmallDevice ? `${text}` : "book-text mt-10"
-                      }  cursor-pointer hover:line-through text-red-500 mt-10`}
-                      onClick={handleSave}
+                        isSmallDevice ? `${smtext}` : "book-text "
+                      }  cursor-pointer hover:line-through text-red-500 `}
                     >
-                      {saved
-                        ? "Saved"
-                        : savedStatuses[parseInt(userId)] || "Save"}
+                      {" "}
+                      Signup
                     </h1>
-                    <h1
-                      className={`${
-                        isSmallDevice ? `${text}` : "book-text"
-                      }   text-red-500`}
-                    >
-                      In your possesion
-                    </h1>
-                  </div>
-                ) : (
-                  <div>
-                    <h1
-                      className={
-                        isSmallDevice
-                          ? `${text} text-red-500 mt-10`
-                          : "book-text text-red-500 mt-10"
-                      }
-                    >
-                      {pageData.inStock && "In stock"}
-                    </h1>
-                    <h1
-                      className={`${
-                        isSmallDevice ? `${text}` : "book-text"
-                      }  cursor-pointer hover:line-through text-red-500`}
-                      onClick={handleSave}
-                    >
-                      {saved
-                        ? "Saved"
-                        : savedStatuses[parseInt(userId)] || "Save"}
-                    </h1>
-                    {pageData.inStock && (
+                  </Link>
+                </>
+              ) : (
+                <>
+                  {stock.inYourPossesion ? (
+                    <div>
+                      <h1
+                        className={`${
+                          isSmallDevice ? `${text}` : "book-text mt-10"
+                        }  cursor-pointer hover:line-through text-red-500 mt-10`}
+                        onClick={handleSave}
+                      >
+                        {saved
+                          ? "Saved"
+                          : savedStatuses[parseInt(userId)] || "Save"}
+                      </h1>
+                      <h1
+                        className={`${
+                          isSmallDevice ? `${text}` : "book-text"
+                        }   text-red-500`}
+                      >
+                        In your possesion
+                      </h1>
+                    </div>
+                  ) : (
+                    <div>
+                      <h1
+                        className={
+                          isSmallDevice
+                            ? `${text} text-red-500 mt-10`
+                            : "book-text text-red-500 mt-10"
+                        }
+                      >
+                        {pageData.inStock && "In stock"}
+                      </h1>
                       <h1
                         className={`${
                           isSmallDevice ? `${text}` : "book-text"
                         }  cursor-pointer hover:line-through text-red-500`}
-                        onClick={handleCart}
+                        onClick={handleSave}
                       >
-                        {cart
-                          ? "Added to cart"
-                          : cartStatuses[parseInt(userId)] || "Add to cart"}
+                        {saved
+                          ? "Saved"
+                          : savedStatuses[parseInt(userId)] || "Save"}
                       </h1>
-                    )}
+                      {pageData.inStock && (
+                        <h1
+                          className={`${
+                            isSmallDevice ? `${text}` : "book-text"
+                          }  cursor-pointer hover:line-through text-red-500`}
+                          onClick={handleCart}
+                        >
+                          {cart
+                            ? "Added to cart"
+                            : cartStatuses[parseInt(userId)] || "Add to cart"}
+                        </h1>
+                      )}
 
-                    {!pageData.inStock && (
-                      <h1
-                        className={`${
-                          isSmallDevice ? `${text}` : "book-text"
-                        }  cursor-pointer hover:line-through text-red-500`}
-                      >
-                        Out of stock
-                      </h1>
-                    )}
-                  </div>
-                )}
-              </>
-            )}
-          </div>
-        </>
-      )}
+                      {!pageData.inStock && (
+                        <h1
+                          className={`${
+                            isSmallDevice ? `${text}` : "book-text"
+                          }  cursor-pointer hover:line-through text-red-500`}
+                        >
+                          Out of stock
+                        </h1>
+                      )}
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 };
