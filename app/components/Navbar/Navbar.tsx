@@ -2,7 +2,7 @@
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { use, useEffect, useState } from "react";
+import { useState } from "react";
 import { LogOutButton } from "../../auth";
 import { ExtendedSession } from "@/types";
 import { useDeviceQueries } from "@/utils/deviceQueries";

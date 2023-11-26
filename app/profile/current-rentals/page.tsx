@@ -1,3 +1,4 @@
+"use server";
 import { authOptions } from "@/utils/auth";
 import { Navbar, ProfileNav, Rentals } from "@/app/components";
 import { ExtendedSession } from "@/types";
@@ -10,6 +11,7 @@ const page = async () => {
   const sessionId = (serverSession as ExtendedSession)?.user?.id;
   const isActive = (serverSession as ExtendedSession)?.user?.isActive;
   const url = isProduction();
+  console.log(url, sessionId);
 
   const res = await fetch(`${url}/api/user/current-rental`, {
     method: "POST",
