@@ -15,7 +15,7 @@ const ProfileNav = ({ isActive }: Props) => {
     <div
       className={
         isSmallDevice
-          ? "flex mt-6  border-black text-slate-500"
+          ? "flex mt-6 border-black text-slate-500"
           : "flex w-full text-slate-500"
       }
     >
