@@ -2,7 +2,7 @@
 import { AdminNav, CurrentRentals, Navbar } from "@/app/components";
 import { ExtendedSession } from "@/types";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/utils/auth";
 import { isProduction } from "@/utils/name";
 
 const page = async () => {

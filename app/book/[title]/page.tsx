@@ -4,7 +4,7 @@ import SingleBook from "@/app/components/Book/SingleBook";
 import { Navbar } from "@/app/components";
 import { isProduction } from "@/utils/name";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/utils/auth";
 
 const page = async ({ params }: { params: { title: string } }) => {
   const serverSession = await getServerSession(authOptions);

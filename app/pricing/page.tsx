@@ -3,9 +3,9 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar/Navbar";
 
 import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/route";
 import { isProduction } from "@/utils/name";
 import { ExtendedSession } from "@/types";
+import { authOptions } from "@/utils/auth";
 
 const page = async () => {
   const serverSession = await getServerSession(authOptions);

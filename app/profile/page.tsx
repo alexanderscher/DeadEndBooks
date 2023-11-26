@@ -5,8 +5,8 @@ import { ProfileNav } from "../components";
 import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { ExtendedSession } from "@/types";
-import { authOptions } from "../api/auth/[...nextauth]/route";
 import { isProduction } from "@/utils/name";
+import { authOptions } from "@/utils/auth";
 
 const page = async () => {
   const serverSession = await getServerSession(authOptions);

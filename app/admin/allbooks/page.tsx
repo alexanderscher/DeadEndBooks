@@ -3,7 +3,7 @@ import { AdminNav, Navbar } from "@/app/components";
 import AllBooks from "@/app/components/Admin/AllBooks";
 import { ExtendedSession } from "@/types";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/utils/auth";
 import { isProduction } from "@/utils/name";
 
 const page = async () => {

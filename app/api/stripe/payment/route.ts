@@ -1,9 +1,9 @@
 import { NextResponse, NextRequest } from "next/server";
 import { getServerSession } from "next-auth";
 import { ExtendedSession } from "@/types";
-import { authOptions } from "../../auth/[...nextauth]/route";
 import { stripe } from "@/stripe/stripe";
 import { revalidateTag } from "next/cache";
+import { authOptions } from "@/utils/auth";
 
 export async function POST(request: NextRequest) {
   const isProduction = process.env.NODE_ENV === "production";

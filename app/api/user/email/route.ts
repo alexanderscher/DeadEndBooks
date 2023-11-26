@@ -1,4 +1,4 @@
-import { compare } from "bcrypt";
+import { compare } from "bcryptjs";
 import { NextResponse } from "next/server";
 import prisma from "@/prisma/client";
 import { revalidatePath, revalidateTag } from "next/cache";

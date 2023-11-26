@@ -2,7 +2,7 @@
 import { isProduction } from "@/utils/name";
 import { Books, Navbar } from "../components";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/route";
+import { authOptions } from "@/utils/auth";
 
 const page = async () => {
   const url = isProduction();

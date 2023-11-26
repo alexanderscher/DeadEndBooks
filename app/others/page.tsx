@@ -3,8 +3,8 @@ import Navbar from "../components/Navbar/Navbar";
 import { Others, ProfileNav } from "../components";
 import { getServerSession } from "next-auth";
 import { ExtendedSession } from "@/types";
-import { authOptions } from "../api/auth/[...nextauth]/route";
 import { isProduction } from "@/utils/name";
+import { authOptions } from "@/utils/auth";
 
 const page = async () => {
   const serverSession = await getServerSession(authOptions);

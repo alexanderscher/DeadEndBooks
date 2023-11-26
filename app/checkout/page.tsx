@@ -1,4 +1,4 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/utils/auth";
 import { Checkout, EditProfile, History, Navbar } from "@/app/components";
 
 import { ExtendedSession } from "@/types";

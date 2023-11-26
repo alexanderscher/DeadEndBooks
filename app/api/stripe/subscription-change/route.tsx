@@ -1,10 +1,9 @@
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
-
-import { authOptions } from "../../auth/[...nextauth]/route";
 import { ExtendedSession } from "@/types";
 import { stripe } from "@/stripe/stripe";
 import { revalidateTag } from "next/cache";
+import { authOptions } from "@/utils/auth";
 
 export async function POST(request: NextRequest) {
   const session = await getServerSession(authOptions);

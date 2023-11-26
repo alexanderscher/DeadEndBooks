@@ -1,10 +1,10 @@
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
-import { authOptions } from "../../auth/[...nextauth]/route";
 import { ExtendedSession } from "@/types";
 import { stripe } from "@/stripe/stripe";
 import prisma from "@/prisma/client";
 import { revalidateTag } from "next/cache";
+import { authOptions } from "@/utils/auth";
 
 function isNinetyDaysOrMoreSince(givenDateStr: string) {
   const givenDate = new Date(givenDateStr);

@@ -3,9 +3,9 @@ import Navbar from "../components/Navbar/Navbar";
 import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { ExtendedSession } from "@/types";
-import { authOptions } from "../api/auth/[...nextauth]/route";
 import { isProduction } from "@/utils/name";
 import { Saved } from "../components";
+import { authOptions } from "@/utils/auth";
 
 const page = async () => {
   const serverSession = await getServerSession(authOptions);

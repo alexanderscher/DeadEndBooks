@@ -2,7 +2,7 @@
 // import { PricingCard } from "..";
 // import { useSession } from "next-auth/react";
 // import { getServerSession } from "next-auth";
-// import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+// import { authOptions } from "@/utils/auth";
 // import { ExtendedSession } from "@/types";
 // import { isProduction } from "@/utils/name";
 

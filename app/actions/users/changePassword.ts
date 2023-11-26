@@ -1,7 +1,7 @@
 "use server";
 
 import prisma from "@/prisma/client";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 export const changePassword = async (
   resetPasswordToken: string,
