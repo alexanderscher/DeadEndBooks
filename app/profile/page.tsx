@@ -2,7 +2,6 @@
 import Navbar from "../components/Navbar/Navbar";
 import Profile from "../components/Profile/Profile";
 import { ProfileNav } from "../components";
-import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { ExtendedSession } from "@/types";
 import { isProduction } from "@/utils/name";

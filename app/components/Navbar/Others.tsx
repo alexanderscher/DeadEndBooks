@@ -1,6 +1,4 @@
 "use client";
-import { ExtendedSession } from "@/types";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
 import React, { use, useEffect, useState } from "react";
 import { Navbar } from "..";

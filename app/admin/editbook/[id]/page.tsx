@@ -6,8 +6,8 @@ import { authOptions } from "@/utils/auth";
 import { isProduction } from "@/utils/name";
 
 const page = async ({ params }: { params: { slug: string } }) => {
-  const serverSession = await getServerSession(authOptions);
-  const admin = (serverSession as ExtendedSession)?.user?.admin;
+  // const serverSession = await getServerSession(authOptions);
+  // const admin = (serverSession as ExtendedSession)?.user?.admin;
   const slug = params.slug;
 
   // const url = isProduction();

@@ -7,8 +7,8 @@ import { authOptions } from "@/utils/auth";
 import { isProduction } from "@/utils/name";
 
 const page = async () => {
-  const serverSession = await getServerSession(authOptions);
-  const admin = (serverSession as ExtendedSession)?.user?.admin;
+  // const serverSession = await getServerSession(authOptions);
+  // const admin = (serverSession as ExtendedSession)?.user?.admin;
 
   let data = null;
 

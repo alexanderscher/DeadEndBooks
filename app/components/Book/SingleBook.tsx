@@ -5,13 +5,14 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Loader } from "..";
 import { useDeviceQueries } from "@/utils/deviceQueries";
+import { useSession } from "next-auth/react";
 
 interface Props {
   title: string;
-  session: any;
 }
 
-const SingleBook = ({ title, session }: Props) => {
+const SingleBook = ({ title }: Props) => {
+  const { data: session, status } = useSession();
   const { isSmallDevice, isMobileDevice } = useDeviceQueries();
   const router = useRouter();
 
