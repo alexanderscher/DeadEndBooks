@@ -31,9 +31,6 @@ type Props = {
 
 const Others = ({ res, sessionId }: Props) => {
   const { isSmallDevice } = useDeviceQueries();
-  isSmallDevice: boolean;
-};
-
 
   const [users, setUsers] = useState([
     {
