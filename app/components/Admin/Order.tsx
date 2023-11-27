@@ -45,7 +45,7 @@ type Props = {
   res: any;
 };
 
-const Order = ({ res }: Props) => {
+const Order = () => {
   const { isMobileDevice } = useDeviceQueries();
 
   const [isLoaded, setIsLoaded] = useState(true);
@@ -76,8 +76,10 @@ const Order = ({ res }: Props) => {
     const getOrders = async () => {
       setIsLoaded(true);
       setReload(false);
-
-      const data = res;
+      const res = await fetch(`/api/order/${currentPage.split("/")[3]}`, {
+        method: "PUT",
+      });
+      const data = await res.json();
 
       setOrders(data);
       setIsLoaded(false);

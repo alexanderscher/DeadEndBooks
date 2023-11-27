@@ -29,7 +29,7 @@ const daysLeft = (input: string) => {
   return Math.round(diff / (1000 * 60 * 60 * 24));
 };
 
-export async function GET() {
+export async function PUT() {
   try {
     const rentals = await prisma.current.findMany({
       orderBy: { start_date: "asc" },

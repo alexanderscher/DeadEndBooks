@@ -9,15 +9,6 @@ const page = async () => {
   // const serverSession = await getServerSession(authOptions);
   // const admin = (serverSession as ExtendedSession)?.user?.admin;
 
-  let data = null;
-
-  const url = isProduction();
-  const res = await fetch(`${url}/api/order/pending`, {
-    cache: "no-store",
-    next: { tags: ["orders"] },
-  });
-  data = await res.json();
-
   return (
     <main className={"page"}>
       <>
@@ -25,7 +16,7 @@ const page = async () => {
 
         <div className={"w-full"}>
           <AdminNav />
-          <Order res={data} />
+          <Order />
         </div>
       </>
     </main>

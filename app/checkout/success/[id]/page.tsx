@@ -22,7 +22,6 @@ const page = async ({ params }: { params: { id: number } }) => {
     const res = await fetch(`${url}/api/order/${id}`);
     const data = await res.json();
     orderBooks = data.books;
-    console.log(orderBooks);
   }
 
   const bookArray = [];

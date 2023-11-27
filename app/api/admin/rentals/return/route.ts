@@ -46,7 +46,7 @@ export async function POST(request: Request) {
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    console.error("API error:", error); // Log the error for debugging
+    console.error("API error:", error);
 
     return new NextResponse(JSON.stringify({ error: "Database error" }), {
       status: 500,
