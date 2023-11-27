@@ -11,7 +11,7 @@ export async function PUT(request: Request) {
       shipped: true,
     },
   });
-  revalidatePath("all-orders");
+  revalidatePath("orders");
 
   return new NextResponse(JSON.stringify(book), {
     status: 200,

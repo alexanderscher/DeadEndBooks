@@ -14,7 +14,7 @@ const page = async () => {
   const url = isProduction();
   const res = await fetch(`${url}/api/order/pending`, {
     cache: "no-store",
-    next: { tags: ["all-orders"] },
+    next: { tags: ["orders"] },
   });
   data = await res.json();
 
