@@ -1,7 +1,6 @@
 "use client";
 import { ExtendedSession, UserType } from "@/types";
 import { signOut, useSession } from "next-auth/react";
-import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { Loader } from "..";
 
@@ -12,7 +11,7 @@ interface ChangeEventState {
   newPassword: string;
   email: string;
   userId: string;
-  [key: string]: string; // This is the index signature
+  [key: string]: string;
 }
 
 interface Props {

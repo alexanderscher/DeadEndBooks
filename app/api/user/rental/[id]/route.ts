@@ -50,11 +50,12 @@ const daysLeft = (input: string | Date) => {
   return Math.round(diff / (1000 * 60 * 60 * 24));
 };
 
-export async function POST(request: Request) {
+export async function GET(
+  request: Request,
+  { params }: { params: { id: string } }
+) {
   try {
-    const json = await request.json();
-
-    const id = json;
+    const { id } = params;
 
     if (!id) {
       return new NextResponse("Missing name. Cannot find user.", {
@@ -75,7 +76,6 @@ export async function POST(request: Request) {
         Saved: true,
         Cart: true,
         Current: true,
-
         History: true,
         Orders: true,
       },

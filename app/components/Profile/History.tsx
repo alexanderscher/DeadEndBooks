@@ -1,14 +1,12 @@
 "use client";
-import { ExtendedSession } from "@/types";
-import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { Loader } from "..";
 
 interface Props {
-  res: any;
+  sessionId: string;
 }
 
-const History = ({ res }: Props) => {
+const History = ({ sessionId }: Props) => {
   const [isLoading, setisLoading] = useState(true);
   const [rentals, setRentals] = useState([
     {
@@ -22,14 +20,21 @@ const History = ({ res }: Props) => {
     const getUser = async () => {
       setisLoading(true);
 
-      const data = await res;
-      console.log(data);
+      const res = await fetch(`/api/user/history`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        cache: "no-store",
+        body: JSON.stringify(sessionId),
+      });
+      const data = await res.json();
 
       setRentals(data);
       setisLoading(false);
     };
     getUser();
-  }, [res]);
+  }, [sessionId]);
   if (isLoading) {
     return <Loader />;
   }

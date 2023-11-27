@@ -12,9 +12,10 @@ const page = async () => {
   const sessionId = (serverSession as ExtendedSession)?.user?.id;
   let data = null;
   let userData = null;
+  const url = isProduction();
+  const fuck = `${url}/api/cart/${sessionId}`;
 
   if (sessionId) {
-    const url = isProduction();
     const res = await fetch(`${url}/api/cart/${sessionId}`, {
       next: { revalidate: 60 * 60 * 24, tags: [`cart-${sessionId}`] },
     });

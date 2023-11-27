@@ -1,3 +1,4 @@
+"use server";
 import { authOptions } from "@/utils/auth";
 import { EditProfile, History, Navbar, ProfileNav } from "@/app/components";
 
@@ -9,7 +10,6 @@ import Link from "next/link";
 const page = async () => {
   const serverSession = await getServerSession(authOptions);
   const isActive = (serverSession as ExtendedSession)?.user?.isActive;
-
   const sessionId = (serverSession as ExtendedSession)?.user?.id;
   const url = isProduction();
 

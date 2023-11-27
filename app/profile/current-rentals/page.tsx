@@ -1,29 +1,15 @@
 "use server";
-import { authOptions } from "@/utils/auth";
-import { Navbar, ProfileNav, Rentals } from "@/app/components";
+import Link from "next/link";
+import { getServerSession } from "next-auth";
 import { ExtendedSession } from "@/types";
 import { isProduction } from "@/utils/name";
-import { getServerSession } from "next-auth";
-import Link from "next/link";
+import { authOptions } from "@/utils/auth";
+import { Navbar, ProfileNav, Rentals } from "@/app/components";
 
 const page = async () => {
   const serverSession = await getServerSession(authOptions);
-  const sessionId = (serverSession as ExtendedSession)?.user?.id;
   const isActive = (serverSession as ExtendedSession)?.user?.isActive;
-  const url = isProduction();
-  console.log(url, sessionId);
-
-  const res = await fetch(`${url}/api/user/current-rental`, {
-    method: "POST",
-    cache: "no-store",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    next: { tags: [`user-profile-${sessionId}`] },
-    body: JSON.stringify(sessionId),
-  });
-
-  const data = await res.json();
+  const sessionId = (serverSession as ExtendedSession)?.user?.id;
 
   return (
     <main className={"page"}>
@@ -34,7 +20,7 @@ const page = async () => {
           <div className={" w-full"}>
             <ProfileNav isActive={isActive} />
 
-            <Rentals res={data} />
+            <Rentals sessionId={sessionId} />
           </div>
         ) : (
           <div className={" w-full"}>

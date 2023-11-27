@@ -1,7 +1,6 @@
 "use client";
 import { Book, ExtendedSession } from "@/types";
 
-import { useSession } from "next-auth/react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { Loader } from "..";

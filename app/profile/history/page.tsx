@@ -1,3 +1,4 @@
+"use server";
 import { authOptions } from "@/utils/auth";
 import { History, Navbar, ProfileNav } from "@/app/components";
 import { ExtendedSession } from "@/types";
@@ -9,17 +10,7 @@ const page = async () => {
   const serverSession = await getServerSession(authOptions);
   const isActive = (serverSession as ExtendedSession)?.user?.isActive;
   const sessionId = (serverSession as ExtendedSession)?.user?.id;
-  const url = isProduction();
 
-  const res = await fetch(`${url}/api/user/history`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    cache: "no-store",
-    body: sessionId,
-  });
-  const data = await res.json();
   return (
     <main className={"page"}>
       <>
@@ -29,7 +20,7 @@ const page = async () => {
           <div className={" w-full"}>
             <ProfileNav isActive={isActive} />
 
-            <History res={data} />
+            <History sessionId={sessionId} />
           </div>
         ) : (
           <div className={" w-full"}>
