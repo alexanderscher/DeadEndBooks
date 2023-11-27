@@ -7,7 +7,6 @@ import { authOptions } from "@/utils/auth";
 
 export async function POST(request: NextRequest) {
   const session = await getServerSession(authOptions);
-
   const sessionUserId = (session as ExtendedSession)?.user?.id;
   const isProduction = process.env.NODE_ENV === "production";
   const url = isProduction

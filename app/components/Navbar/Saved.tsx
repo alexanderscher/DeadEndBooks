@@ -8,10 +8,9 @@ import page from "@/app/page";
 import { useDeviceQueries } from "@/utils/deviceQueries";
 
 type Props = {
-  res: any;
   session: any;
 };
-const Saved = ({ res, session }: Props) => {
+const Saved = ({ session }: Props) => {
   const { isSmallDevice, isMobileDevice } = useDeviceQueries();
 
   const [pageData, setPageData] = useState<Book[]>([]);
@@ -29,11 +28,17 @@ const Saved = ({ res, session }: Props) => {
     const getSaved = async () => {
       setIsLoaded(true);
 
-      const data = await res;
-      if (data === null) return;
-      setCartIdList(data.map((book: Book) => book.id));
+      if (sessionId) {
+        const res = await fetch(`/api/saved/${sessionId}`, {
+          cache: "no-cache",
+          next: { revalidate: 60 * 60 * 24, tags: [`saved-${sessionId}`] },
+        });
+        const data = await res.json();
+        setCartIdList(data.map((book: Book) => book.id));
 
-      setPageData(data);
+        setPageData(data);
+      }
+
       setIsLoaded(false);
     };
     getSaved();
@@ -89,14 +94,13 @@ const Saved = ({ res, session }: Props) => {
       }),
     });
     if (res.ok) {
-      window.location.reload();
+      setReload(true);
     } else {
       console.error("Error removing cart");
-      // Handle error case here
     }
     setReload(true);
   };
-  if (res === null) {
+  if (session === null) {
     return (
       <div className={`${isSmallDevice ? "mt-10" : " w-full"}`}>
         <h1 className="text-[26px]">
@@ -118,7 +122,7 @@ const Saved = ({ res, session }: Props) => {
     return <Loader />;
   }
 
-  if (pageData.length === 0 && res !== null) {
+  if (pageData.length === 0 && session) {
     return (
       <div className="text-[26px] ">
         <h1>No books saved</h1>

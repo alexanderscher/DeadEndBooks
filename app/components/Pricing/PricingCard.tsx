@@ -1,7 +1,6 @@
 "use client";
 import { ExtendedSession } from "@/types";
 import axios from "axios";
-import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { Loader } from "..";
 import { usePathname } from "next/navigation";
@@ -17,6 +16,7 @@ const PricingCard = ({ price, session, userData }: priceProps) => {
   const { isSmallDevice } = useDeviceQueries();
   const sessionId = (session as ExtendedSession)?.user?.id;
   const subscriptionID = (session as ExtendedSession)?.user?.subscriptionID;
+
   const [noSession, setNoSession] = useState(false);
   const [isLoading, setisLoading] = useState(true);
   const currentPage = usePathname();
@@ -24,26 +24,22 @@ const PricingCard = ({ price, session, userData }: priceProps) => {
 
   const changeSubscription = async (e: React.MouseEvent<HTMLButtonElement>) => {
     try {
-      if (currentPage === "/profile/subscription") {
-        e.preventDefault();
-
-        if (!sessionId) {
-          setNoSession(true);
-        } else {
-          const { data } = await axios.post(
-            "/api/stripe/subscription-change",
-            {
-              subscriptionID: subscriptionID,
-              priceId: price.id,
+      if (!sessionId) {
+        setNoSession(true);
+      } else {
+        const { data } = await axios.post(
+          "/api/stripe/subscription-change",
+          {
+            subscriptionID: subscriptionID,
+            priceId: price.id,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
             },
-            {
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
-          );
-          window.location.assign(data);
-        }
+          }
+        );
+        window.location.assign(data);
       }
     } catch (error) {
       console.log(error);

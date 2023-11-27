@@ -8,11 +8,9 @@ import { useRouter } from "next/navigation";
 import { useDeviceQueries } from "@/utils/deviceQueries";
 
 type Props = {
-  res: any;
-  userData: any;
   session: any;
 };
-const Cart = ({ res, userData, session }: Props) => {
+const Cart = ({ session }: Props) => {
   const { isSmallDevice, isMobileDevice } = useDeviceQueries();
 
   const router = useRouter();
@@ -24,10 +22,18 @@ const Cart = ({ res, userData, session }: Props) => {
 
   useEffect(() => {
     setisLoading(true);
-    const sessionId = (session as ExtendedSession)?.user?.id;
-    setUserId(sessionId as string);
-    const data = res;
-    setPageData(data);
+
+    const getCart = async () => {
+      const sessionId = (session as ExtendedSession)?.user?.id;
+      setUserId(sessionId as string);
+      const res = await fetch(`api/cart/${sessionId}`, {
+        next: { revalidate: 60 * 60 * 24, tags: [`cart-${sessionId}`] },
+      });
+      const data = await res.json();
+      setPageData(data);
+    };
+    getCart();
+
     setisLoading(false);
   }, [session, reload]);
 
@@ -44,14 +50,11 @@ const Cart = ({ res, userData, session }: Props) => {
       }),
     });
 
-    // Check if the request was successful before reloading
     if (res.ok) {
-      window.location.reload();
+      setReload(true);
     } else {
       console.error("Error removing cart");
-      // Handle error case here
     }
-    setReload(true);
   };
 
   const [modalCheckout, setModalCheckout] = useState({
@@ -65,7 +68,12 @@ const Cart = ({ res, userData, session }: Props) => {
     if (!(session as ExtendedSession)?.user?.isActive) {
       setNotActive(true);
     } else {
-      const user = await userData;
+      const sessionId = (session as ExtendedSession)?.user?.id;
+      const res1 = await fetch(`}/api/user/${sessionId}`, {
+        next: { tags: [`user-profile-${sessionId}`], revalidate: 60 * 60 * 24 },
+      });
+      const user = await res1.json();
+
       if (user.Cart.length > 3) {
         setModalCheckout({ second: false, first: true });
         return;
@@ -79,7 +87,7 @@ const Cart = ({ res, userData, session }: Props) => {
       }
     }
   };
-  if (res === null) {
+  if (session === null) {
     return (
       <div className={`${isSmallDevice ? "mt-10 w-full" : "w-full"} `}>
         <h1 className="text-[26px]">Login or sign up to view your cart</h1>
@@ -99,7 +107,7 @@ const Cart = ({ res, userData, session }: Props) => {
     return <Loader />;
   }
 
-  if (pageData.length === 0 && res !== null) {
+  if (pageData.length === 0 && session) {
     return (
       <div className="text-[26px]">
         <h1>Your cart is empty</h1>

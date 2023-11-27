@@ -109,7 +109,7 @@ const Others = ({ res, sessionId }: Props) => {
     <div className={isSmallDevice ? "mt-10" : " w-full"}>
       {users.map((user) => (
         <div key={user.id} className="mb-10 border-t-[2px] border-black">
-          <h1 className="text-[24px] mt-2 hover:line-through">
+          <h1 className="text-[24px] mt-2 hover:line-through text-red-500">
             <Link href={`/user/${user.id}`}>{user.name}</Link>
           </h1>
           {user.current_books.length === 0 ? (

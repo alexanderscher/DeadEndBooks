@@ -62,7 +62,7 @@ const ProfileNav = ({ isActive }: Props) => {
               : "text-[26px] mr-4"
           } hover:line-through `}
         >
-          <Link href="/pricing">Subscription</Link>
+          <Link href="/profile/subscription">Subscription</Link>
         </button>
       ) : (
         <button

@@ -12,21 +12,12 @@ const page = async () => {
   const sessionId = (serverSession as ExtendedSession)?.user?.id;
   let data = null;
 
-  if (sessionId) {
-    const url = isProduction();
-    const res = await fetch(`${url}/api/saved/${sessionId}`, {
-      next: { revalidate: 60 * 60 * 24, tags: [`saved-${sessionId}`] },
-    });
-    data = await res.json();
-    console.log(data);
-  }
-
   return (
     <main className={"page"}>
       <>
         <Navbar />
         <div className={"w-full"}>
-          <Saved res={data} session={serverSession} />
+          <Saved session={serverSession} />
         </div>
       </>
     </main>

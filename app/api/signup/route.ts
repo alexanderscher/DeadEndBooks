@@ -2,7 +2,7 @@ import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import prisma from "@/prisma/client";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -14,11 +14,11 @@ const stripeId = async (user: any, email: string, name: string) => {
   const stripe = new Stripe(stripeSecretKey!, {
     apiVersion: "2023-10-16",
   });
-
   const customer = await stripe.customers.create({
     email: user.email.toLowerCase()!,
     name: user.name!,
   });
+  revalidateTag("users");
 
   await prisma.user.update({
     where: { id: user.id },
@@ -55,7 +55,6 @@ export async function POST(request: Request): Promise<NextResponse> {
 
         stripeId(user, email, name);
       }
-      revalidatePath("/api/user");
 
       return new NextResponse(JSON.stringify(user), {
         status: 201,
@@ -112,7 +111,7 @@ export async function POST(request: Request): Promise<NextResponse> {
       });
 
       stripeId(user, email, name);
-      revalidatePath("users");
+      revalidateTag("users");
 
       return new NextResponse(JSON.stringify(user), {
         status: 201,
