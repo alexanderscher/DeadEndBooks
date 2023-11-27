@@ -184,8 +184,8 @@ const CurrentRentals = () => {
     const getCurrentRentals = async () => {
       setIsLoaded(true);
       const res = await fetch(`/api/admin/rentals/current-rentals`, {
-        cache: "no-cache",
-        next: { revalidate: 60 * 60 * 24, tags: ["rentals"] },
+        cache: "no-store",
+        next: { tags: ["rentals"] },
       });
       const data = await res.json();
 

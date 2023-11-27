@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/prisma/client";
-import { revalidatePath } from "next/cache";
+import { revalidateTag } from "next/cache";
 
 export async function PUT(request: Request) {
   const json = await request.json();
@@ -11,7 +11,7 @@ export async function PUT(request: Request) {
       shipped: true,
     },
   });
-  revalidatePath("orders");
+  revalidateTag("orders");
 
   return new NextResponse(JSON.stringify(book), {
     status: 200,

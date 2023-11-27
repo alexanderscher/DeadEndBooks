@@ -141,7 +141,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     revalidateTag("other-users");
     revalidateTag(`user-profile-${userId}`);
     revalidateTag(`cart-${userId}`);
-    revalidateTag(`all-orders`);
+    revalidateTag(`orders`);
     revalidateTag("rentals");
 
     return new NextResponse(
