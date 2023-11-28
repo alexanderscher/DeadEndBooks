@@ -2,7 +2,7 @@ import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import prisma from "@/prisma/client";
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidateTag } from "next/cache";
 
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -10,15 +10,19 @@ const stripeSecretKey = isProduction
   ? process.env.STRIPE_SECRET_KEY_LIVE
   : process.env.STRIPE_SECRET_KEY;
 
+if (!stripeSecretKey) {
+  throw new Error("STRIPE_SECRET_KEY is not set in the environment variables.");
+}
+
 const stripeId = async (user: any, email: string, name: string) => {
   const stripe = new Stripe(stripeSecretKey!, {
     apiVersion: "2023-10-16",
   });
   const customer = await stripe.customers.create({
     email: user.email.toLowerCase()!,
-    name: user.name!,
+    name: user.name,
   });
-  revalidateTag("users");
+  console.log(customer);
 
   await prisma.user.update({
     where: { id: user.id },
@@ -32,6 +36,7 @@ export async function POST(request: Request): Promise<NextResponse> {
   try {
     const body = await request.json();
     const { provider, name, email, password } = body.data;
+    console.log(provider);
 
     if (provider && provider === "Google") {
       const existingUser = await prisma.user.findUnique({
@@ -44,16 +49,25 @@ export async function POST(request: Request): Promise<NextResponse> {
       if (existingUser) {
         user = existingUser;
       } else {
+        const stripe = new Stripe(stripeSecretKey!, {
+          apiVersion: "2023-10-16",
+        });
+        const customer = await stripe.customers.create({
+          email: email.toLowerCase()!,
+          name: name,
+        });
         const user = await prisma.user.create({
           data: {
             name: name,
             email: email.toLowerCase(),
             password: "",
             admin: false,
+            stripeCustomerId: customer.id,
           },
         });
 
         stripeId(user, email, name);
+        revalidateTag("users");
       }
 
       return new NextResponse(JSON.stringify(user), {
