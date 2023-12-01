@@ -6,14 +6,14 @@ import { useState } from "react";
 import { LogOutButton } from "../../auth";
 import { ExtendedSession } from "@/types";
 import { useDeviceQueries } from "@/utils/deviceQueries";
+import SearchBar from "@/app/components/Navbar/Searchbar";
 
 interface Props {
-  isSmallDevice: boolean;
-  isMobileDevice: boolean;
+  data?: any;
 }
 
-const Navbar = () => {
-  const { isSmallDevice, isMediumDevice, isMobileDevice } = useDeviceQueries();
+const Navbar = ({ data }: Props) => {
+  const { isSmallDevice, isMobileDevice } = useDeviceQueries();
   const currentPage = usePathname();
   const [sort, setSort] = useState(false);
   const [menu, setMenu] = useState(false);
@@ -79,6 +79,12 @@ const Navbar = () => {
                 isMobileDevice ? "mt-2" : "mt-4"
               }`}
             >
+              {(currentPage.includes("/home") ||
+                currentPage.includes("/library")) && (
+                <div className="mb-5">
+                  <SearchBar color={"black"} data={data} />
+                </div>
+              )}
               <div>
                 <button
                   className={`hover:line-through ${
@@ -234,7 +240,14 @@ const Navbar = () => {
                   <img src="/title.png" alt="" className="w-full" />
                 </Link>
               </div>
-              <div className="flex flex-col items-start">
+              {(currentPage.includes("/home") ||
+                currentPage.includes("/library")) && (
+                <div className="mb-5">
+                  <SearchBar color={"black"} data={data} />
+                </div>
+              )}
+
+              <div className="flex flex-col items-start ">
                 <button className={`hover:line-through text-md`}>
                   <Link href="/home">Library</Link>
                 </button>

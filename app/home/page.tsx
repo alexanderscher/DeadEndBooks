@@ -1,20 +1,20 @@
-"use server";
 import { isProduction } from "@/utils/name";
 import { Books, Navbar } from "../components";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/utils/auth";
+import { SearchProvider } from "@/app/components/Search/SearchContext";
 
 const page = async () => {
   const url = isProduction();
-  // const serverSession = await getServerSession(authOptions);
   const res = await fetch(`${url}/api/book`, {
-    next: { tags: ["all-books"], revalidate: 60 * 60 * 24 },
+    cache: "no-cache",
+    method: "PUT",
+    next: { tags: ["all-books"], revalidate: 0 },
   });
   const data = await res.json();
+
   return (
     <main className={"page"}>
       <>
-        <Navbar />
+        <Navbar data={data} />
         <Books res={data} />
       </>
     </main>

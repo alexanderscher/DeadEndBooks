@@ -1,9 +1,8 @@
-import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
-import { ExtendedSession } from "@/types";
+
 import { stripe } from "@/stripe/stripe";
 import prisma from "@/prisma/client";
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidateTag } from "next/cache";
 
 export async function GET(
   request: Request,
@@ -11,6 +10,7 @@ export async function GET(
 ) {
   try {
     const { id } = params;
+    console.log("id", id);
 
     if (!id) {
       return new NextResponse("Missing name. Cannot find user.", {

@@ -4,6 +4,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { Loader } from "..";
 import { useDeviceQueries } from "@/utils/deviceQueries";
+import SearchBarAdmin from "@/app/components/Admin/SearchBarAdmin";
 
 type Props = {
   res: any;
@@ -12,6 +13,14 @@ const AllBooks = ({ res }: Props) => {
   const { isMobileDevice } = useDeviceQueries();
   const [books, setBooks] = useState<Book[]>([]);
   const [isLoaded, setIsLoaded] = useState(true);
+
+  const [filteredData, setFilteredData] = useState([]);
+
+  const toMapOver = filteredData.length > 0 ? filteredData : books;
+
+  const handleFilterUpdate = (newFilteredData: any) => {
+    setFilteredData(newFilteredData);
+  };
 
   useEffect(() => {
     const getBooks = async () => {
@@ -28,7 +37,9 @@ const AllBooks = ({ res }: Props) => {
   }
   return (
     <div>
-      {books.map((book) => (
+      <SearchBarAdmin data={res} onFilterUpdate={handleFilterUpdate} />
+      {/* {filteredData.length > 0 ? ():()} */}
+      {toMapOver.map((book) => (
         <div
           key={book.id}
           className="border-t-[2px] border-slate-300 mt-6 flex w-full"

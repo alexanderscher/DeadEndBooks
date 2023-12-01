@@ -69,9 +69,12 @@ const Cart = ({ session }: Props) => {
       setNotActive(true);
     } else {
       const sessionId = (session as ExtendedSession)?.user?.id;
-      const res1 = await fetch(`}/api/user/${sessionId}`, {
+
+      const res1 = await fetch(`/api/user/${sessionId}`, {
+        cache: "no-store",
         next: { tags: [`user-profile-${sessionId}`], revalidate: 60 * 60 * 24 },
       });
+      console.log(res1);
       const user = await res1.json();
 
       if (user.Cart.length > 3) {

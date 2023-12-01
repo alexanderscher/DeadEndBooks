@@ -6,6 +6,7 @@ const myFont = localFont({
   src: "../SuisseIntl-Medium/SuisseIntl-Medium.woff",
 });
 import { Providers } from "./providers";
+import { SearchProvider } from "@/app/components/Search/SearchContext";
 export const metadata: Metadata = {
   title: "Dead End Books",
 };
@@ -18,7 +19,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${myFont.className} page-margin `}>
-        <Providers>{children}</Providers>
+        <Providers>
+          <SearchProvider>{children} </SearchProvider>
+        </Providers>
       </body>
     </html>
   );

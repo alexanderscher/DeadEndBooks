@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { Loader } from "..";
 import { useDeviceQueries } from "@/utils/deviceQueries";
+import { useSearchContext } from "@/app/components/Search/SearchContext";
 
 interface BookImage {
   photo_front: string;
@@ -35,7 +36,8 @@ const Books = ({ res }: Props) => {
   const [isLoading, setisLoading] = useState(true);
   const [columnsData, setColumnsData] = useState<BookImage[][]>([]);
   const [data, setData] = useState<BookImage[]>([]);
-  console.log(data);
+  const { filteredData, setFilteredData } = useSearchContext();
+  const toMapOver = filteredData.length > 0 ? filteredData : res;
 
   type Page =
     | "/home"
@@ -57,10 +59,13 @@ const Books = ({ res }: Props) => {
   };
 
   useEffect(() => {
+    setFilteredData([]);
+  }, []);
+
+  useEffect(() => {
     const getBooks = async () => {
       setisLoading(true);
-
-      const data = res;
+      const data = toMapOver;
       const booktoPush = [];
 
       for (const d in data) {
@@ -85,13 +90,13 @@ const Books = ({ res }: Props) => {
     };
 
     getBooks();
-  }, [currentPage, res]);
+  }, [currentPage, toMapOver]);
 
   useEffect(() => {
     const newColumns = isMediumDevice ? 2 : 3;
 
     setColumnsData(splitDataIntoColumns(data, newColumns));
-  }, [isMediumDevice, data]);
+  }, [isMediumDevice, toMapOver]);
 
   if (isLoading) {
     return <Loader />;

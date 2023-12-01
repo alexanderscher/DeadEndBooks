@@ -1,17 +1,18 @@
 import { NextResponse } from "next/server";
 import prisma from "@/prisma/client";
 
-export async function GET() {
+export const dynamic = "force-dynamic";
+
+export async function PUT() {
   try {
     const books = await prisma.book.findMany({
       orderBy: { title: "asc" },
     });
-    console.log(books);
+
     return new NextResponse(JSON.stringify(books), {
       status: 200,
       headers: {
         "Content-Type": "application/json",
-        "Cache-Control": "no-store",
       },
     });
   } catch (err) {
