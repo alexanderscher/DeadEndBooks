@@ -24,7 +24,8 @@ function SearchBar({ data, color = "slate-400", height = "h-8" }: Props) {
           item.author.toLowerCase().includes(newSearchTerm.toLowerCase()))
     );
 
-    setFilteredData(newFilteredData); // Call the callback with the new filtered data
+    setFilteredData(newFilteredData); // Call the callback with the new filtered
+    console.log(newFilteredData);
   };
 
   return (

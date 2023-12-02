@@ -2,7 +2,7 @@
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import { LogOutButton } from "../../auth";
 import { ExtendedSession } from "@/types";
 import { useDeviceQueries } from "@/utils/deviceQueries";
@@ -12,12 +12,27 @@ interface Props {
   data?: any;
 }
 
-const Navbar = ({ data }: Props) => {
+const Navbar = () => {
   const { isSmallDevice, isMobileDevice } = useDeviceQueries();
   const currentPage = usePathname();
   const [sort, setSort] = useState(false);
   const [menu, setMenu] = useState(false);
   const { data: session } = useSession();
+  const [data, setData] = useState<any>([]);
+
+  useEffect(() => {
+    const getBooks = async () => {
+      const res = await fetch(`/api/book`, {
+        cache: "no-cache",
+        method: "PUT",
+        next: { tags: ["all-books"], revalidate: 0 },
+      });
+
+      const ress = await res.json();
+      setData(ress);
+    };
+    getBooks();
+  }, [currentPage]);
 
   return (
     <>

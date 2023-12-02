@@ -9,7 +9,7 @@ import SearchBarAdmin from "@/app/components/Admin/SearchBarAdmin";
 type Props = {
   res: any;
 };
-const AllBooks = ({ res }: Props) => {
+const AllBooks = () => {
   const { isMobileDevice } = useDeviceQueries();
   const [books, setBooks] = useState<Book[]>([]);
   const [isLoaded, setIsLoaded] = useState(true);
@@ -25,7 +25,13 @@ const AllBooks = ({ res }: Props) => {
   useEffect(() => {
     const getBooks = async () => {
       setIsLoaded(true);
-      const data = res;
+
+      const res = await fetch(`/api/book`, {
+        cache: "no-cache",
+        method: "PUT",
+      });
+      const data = await res.json();
+
       setBooks(data);
       setIsLoaded(false);
     };
@@ -37,7 +43,7 @@ const AllBooks = ({ res }: Props) => {
   }
   return (
     <div>
-      <SearchBarAdmin data={res} onFilterUpdate={handleFilterUpdate} />
+      <SearchBarAdmin data={books} onFilterUpdate={handleFilterUpdate} />
       {/* {filteredData.length > 0 ? ():()} */}
       {toMapOver.map((book) => (
         <div

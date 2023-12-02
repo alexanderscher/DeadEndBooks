@@ -78,7 +78,7 @@ export async function POST(request: Request) {
         Orders: true,
       },
     });
-    console.log(user?.History);
+
     if (user?.History.length === 0) {
       return new NextResponse(JSON.stringify([]), {
         status: 200,
@@ -102,8 +102,17 @@ export async function POST(request: Request) {
           }
         }
       }
+      const sortedRentals = [...rentals].sort((a, b) => {
+        // Handle potential undefined values with a default date
+        // You can choose an appropriate default date as per your logic
+        const dateA = a.start_date ? new Date(a.start_date).getTime() : 0;
+        const dateB = b.start_date ? new Date(b.start_date).getTime() : 0;
 
-      return new NextResponse(JSON.stringify(rentals), {
+        // Compare dates to sort in descending order
+        return dateB - dateA;
+      });
+
+      return new NextResponse(JSON.stringify(sortedRentals), {
         status: 200,
       });
     }

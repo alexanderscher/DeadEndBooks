@@ -4,7 +4,7 @@ import prisma from "@/prisma/client";
 export async function PUT() {
   try {
     const rentals = await prisma.history.findMany({
-      orderBy: { start_date: "asc" },
+      orderBy: { start_date: "desc" },
     });
 
     const apiRentals = [];

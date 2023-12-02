@@ -29,7 +29,7 @@ interface Props {
   res: any;
 }
 
-const Books = ({ res }: Props) => {
+const Books = () => {
   const { isSmallDevice, isMediumDevice, isMobileDevice } = useDeviceQueries();
 
   const currentPage = usePathname();
@@ -37,7 +37,7 @@ const Books = ({ res }: Props) => {
   const [columnsData, setColumnsData] = useState<BookImage[][]>([]);
   const [data, setData] = useState<BookImage[]>([]);
   const { filteredData, setFilteredData } = useSearchContext();
-  const toMapOver = filteredData.length > 0 ? filteredData : res;
+  const [books, setBooks] = useState([]);
 
   type Page =
     | "/home"
@@ -59,14 +59,26 @@ const Books = ({ res }: Props) => {
   };
 
   useEffect(() => {
-    setFilteredData([]);
+    const getBooks = async () => {
+      const res = await fetch(`/api/book`, {
+        cache: "no-cache",
+        method: "PUT",
+        next: { tags: ["all-books"], revalidate: 0 },
+      });
+
+      const res1 = await res.json();
+      setBooks(res1);
+    };
+    getBooks();
   }, []);
 
   useEffect(() => {
     const getBooks = async () => {
       setisLoading(true);
-      const data = toMapOver;
+
       const booktoPush = [];
+
+      const data = filteredData.length > 0 ? filteredData : books;
 
       for (const d in data) {
         const expectedMedium =
@@ -78,8 +90,8 @@ const Books = ({ res }: Props) => {
           data[d].medium === expectedMedium
         ) {
           booktoPush.push({
-            photo_front: data[d].photo_front,
-            id: data[d].id,
+            photo_front: data[d].photo_front as string,
+            id: data[d].id as number,
             title: data[d].title,
             medium: data[d].medium,
           });
@@ -90,13 +102,13 @@ const Books = ({ res }: Props) => {
     };
 
     getBooks();
-  }, [currentPage, toMapOver]);
+  }, [filteredData, books]);
 
   useEffect(() => {
     const newColumns = isMediumDevice ? 2 : 3;
-
-    setColumnsData(splitDataIntoColumns(data, newColumns));
-  }, [isMediumDevice, toMapOver]);
+    const newColumnData = splitDataIntoColumns(data, newColumns);
+    setColumnsData(newColumnData);
+  }, [isMediumDevice, data]);
 
   if (isLoading) {
     return <Loader />;
