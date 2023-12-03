@@ -124,8 +124,19 @@ export async function DELETE(
         }
       );
     } else {
-      await utapi.deleteFiles(updatedBook.pb_fileKey);
-      await utapi.deleteFiles(updatedBook.pf_fileKey);
+      try {
+        if (updatedBook.photo_front) {
+          await deleteUploadThingImage(updatedBook.pf_fileKey);
+        }
+        if (updatedBook.photo_back) {
+          await deleteUploadThingImage(updatedBook.pb_fileKey);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+
+      // await utapi.deleteFiles(updatedBook.pb_fileKey);
+      // await utapi.deleteFiles(updatedBook.pf_fileKey);
 
       const deletedBook = await prisma.book.delete({
         where: { id: bookId },
