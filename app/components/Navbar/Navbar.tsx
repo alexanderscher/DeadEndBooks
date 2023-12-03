@@ -247,8 +247,8 @@ const Navbar = () => {
           )}
         </div>
       ) : (
-        <div className="w-1/4 min-w-[200px] max-w-[200px]">
-          <div className="fixed bg-white">
+        <div className="w-1/4 min-w-[200px] max-w-[200px] relative">
+          <div className="fixed bg-white min-w-[200px] max-w-[200px]">
             <div className="">
               <div className="w-[155px]">
                 <Link href="/home">

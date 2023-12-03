@@ -29,7 +29,7 @@ function SearchBar({ data, color = "slate-400", height = "h-8" }: Props) {
   };
 
   return (
-    <div style={{ position: "relative" }}>
+    <div className="relative">
       <input
         type="text"
         className={`border-${color} border-[2px] w-full mt-6 ${height} px-2 focus:outline-none`}
