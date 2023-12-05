@@ -69,7 +69,7 @@ export async function PUT(request: Request) {
   const requiredFields = [
     "name",
     "address",
-    "zipCode",
+    "zipcode",
     "city",
     "state",
     "country",
@@ -99,7 +99,7 @@ export async function PUT(request: Request) {
 
   try {
     const address = await prisma.address.update({
-      where: { id: parseInt(json.userId) },
+      where: { id: parseInt(json.id) },
       data: {
         name: json.name,
         address: json.address,
@@ -116,6 +116,7 @@ export async function PUT(request: Request) {
       headers: { "Content-Type": "application/json" },
     });
   } catch (err) {
+    console.log(err);
     return new NextResponse(JSON.stringify({ error: "Database error" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },

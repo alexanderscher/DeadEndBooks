@@ -9,6 +9,7 @@ import { confirmation } from "@/app/actions/order/confirm";
 import { newOrder } from "@/app/actions/order/admin";
 import { useDeviceQueries } from "@/utils/deviceQueries";
 import Link from "next/link";
+import EditAddressModal from "@/app/components/Navbar/EditAddressModal";
 
 type AddyData = {
   userId: number;
@@ -48,6 +49,19 @@ const Checkout = ({ res, cartBooks, session }: Props) => {
       phone: "",
     },
   ]);
+
+  const [editAddress, setEditAddress] = useState({
+    id: 0,
+    userId: 0,
+    name: "",
+    address: "",
+    city: "",
+    state: "",
+    country: "",
+    zipcode: "",
+    phone: "",
+  });
+
   const [isLoading, setisLoading] = useState(true);
   const [noAddress, setNoAddress] = useState(false);
   const [notActive, setNotActive] = useState(false);
@@ -163,6 +177,7 @@ const Checkout = ({ res, cartBooks, session }: Props) => {
   };
 
   const [modal, setModal] = useState(false);
+  const [addyModal, setAddyModal] = useState(false);
 
   if (res === null) {
     return (
@@ -241,7 +256,18 @@ const Checkout = ({ res, cartBooks, session }: Props) => {
                 <button
                   className="text-red-500 hover:line-through mr-3"
                   onClick={() => {
-                    addressDelete(item.id);
+                    setAddyModal(true),
+                      setEditAddress({
+                        id: item.id,
+                        userId: item.userId,
+                        name: item.name,
+                        address: item.address,
+                        city: item.city,
+                        state: item.state,
+                        country: item.country,
+                        zipcode: item.zipcode,
+                        phone: item.phone,
+                      });
                   }}
                 >
                   Edit
@@ -257,6 +283,13 @@ const Checkout = ({ res, cartBooks, session }: Props) => {
               </div>
             </div>
           ))}
+        {addyModal && (
+          <EditAddressModal
+            setAddyModal={setAddyModal}
+            userId={userId}
+            address={editAddress}
+          />
+        )}
         {address.length === 0 ? (
           <div>
             <h1 className="text-red-300 text-[26px]">
