@@ -18,7 +18,6 @@ interface Props {
 }
 
 const EditAddressModal = ({ setAddyModal, userId, address }: Props) => {
-  console.log(address.zipcode);
   const [formData, setFormData] = useState({
     id: address.id,
     name: address.name,
@@ -37,7 +36,7 @@ const EditAddressModal = ({ setAddyModal, userId, address }: Props) => {
     setFormData((prevState) => ({ ...prevState, [name]: value }));
   };
 
-  const addressEdit = async (e: React.ChangeEvent<HTMLButtonElement>) => {
+  const addressEdit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const res = await fetch(`/api/user/address`, {
       method: "PUT",
@@ -57,6 +56,7 @@ const EditAddressModal = ({ setAddyModal, userId, address }: Props) => {
       },
     });
     const data = await res.json();
+    console.log("data", data);
     if (res.ok) {
       setErrorText(false);
       location.reload();
@@ -131,7 +131,7 @@ const EditAddressModal = ({ setAddyModal, userId, address }: Props) => {
           )}
           <div className="flex  justify-between mt-4">
             <button
-              onClick={() => addressEdit}
+              onClick={(e) => addressEdit(e)}
               className="text-start text-red-500 hover:line-through text-[20px] "
             >
               Submit
