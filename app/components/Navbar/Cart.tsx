@@ -112,8 +112,8 @@ const Cart = ({ session }: Props) => {
 
   if (pageData.length === 0 && session) {
     return (
-      <div className="text-[26px]">
-        <h1>Your cart is empty</h1>
+      <div className={`${isSmallDevice ? "mt-10" : " w-full"}`}>
+        <h1 className="text-[26px]">Your cart is empty</h1>
       </div>
     );
   }

@@ -239,6 +239,14 @@ const Checkout = ({ res, cartBooks, session }: Props) => {
               </div>
               <div>
                 <button
+                  className="text-red-500 hover:line-through mr-3"
+                  onClick={() => {
+                    addressDelete(item.id);
+                  }}
+                >
+                  Edit
+                </button>
+                <button
                   className="text-red-500 hover:line-through"
                   onClick={() => {
                     addressDelete(item.id);

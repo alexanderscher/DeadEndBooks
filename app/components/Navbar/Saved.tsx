@@ -124,8 +124,8 @@ const Saved = ({ session }: Props) => {
 
   if (pageData.length === 0 && session) {
     return (
-      <div className="text-[26px] ">
-        <h1>No books saved</h1>
+      <div className={`${isSmallDevice ? "mt-10" : " w-full"}`}>
+        <h1 className="text-[26px]">No books saved</h1>
       </div>
     );
   }

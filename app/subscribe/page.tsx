@@ -37,20 +37,21 @@ const page = () => {
               <p
                 className={isSmallDevice ? "text-[18px] mt-6" : "w-full mt-10"}
               >
-                Subscribing to Deadend Books gives you access to a diverse
+                Subscribing to Dead End Books gives you access to a diverse
                 collection of art books on painting, sculpture, photography,
                 film, anthologies, exhibition catalogs, and magazines. After
                 creating an account with your personal information, you will be
                 able to checkout up to 3 books for 4 weeks at a time.
-                subscriptions are 16.85/month with a 3 month minimum or $188.00
+                subscriptions are $16.85/month with a 3 month minimum or $188.00
                 for the year. We will cover shipping costs. In your package from
                 Deadend, you will receive a return label, and can send the books
-                back to us in the box they came in. Subscription time starts 3
-                days after your order (to account for shipping time). Your
-                account will show the subscription end date. Late fees will be
-                charged if books are not returned on time. The fee will be $5 a
-                day. 2 weeks past the return date, your card will automatically
-                be charged the price of the book.
+                back to us in the box they came in. Subscription time starts a
+                week after your order to account for shipping. As long as the
+                postage is marked before or on your due date, the book will not
+                be marked late. Late feels will begin on the 40th day of your
+                subscription. The fee is $5/day. On the 50th day, we will
+                consider the book lost or stolen, and will charge you the full
+                price of the book.
               </p>
               <button
                 className={
