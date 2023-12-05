@@ -6,11 +6,10 @@ import React, { useEffect, useState } from "react";
 import { Loader } from "..";
 import { useRouter } from "next/navigation";
 import { useDeviceQueries } from "@/utils/deviceQueries";
+import { useSession } from "next-auth/react";
 
-type Props = {
-  session: any;
-};
-const Cart = ({ session }: Props) => {
+const Cart = () => {
+  const { data: session } = useSession();
   const { isSmallDevice, isMobileDevice } = useDeviceQueries();
 
   const router = useRouter();
@@ -22,9 +21,9 @@ const Cart = ({ session }: Props) => {
 
   useEffect(() => {
     setisLoading(true);
+    const sessionId = (session as ExtendedSession)?.user?.id;
 
     const getCart = async () => {
-      const sessionId = (session as ExtendedSession)?.user?.id;
       setUserId(sessionId as string);
       const res = await fetch(`api/cart/${sessionId}`, {
         next: { revalidate: 60 * 60 * 24, tags: [`cart-${sessionId}`] },
@@ -32,7 +31,9 @@ const Cart = ({ session }: Props) => {
       const data = await res.json();
       setPageData(data);
     };
-    getCart();
+    if (sessionId) {
+      getCart();
+    }
 
     setisLoading(false);
   }, [session, reload]);
