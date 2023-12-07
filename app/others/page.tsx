@@ -10,19 +10,11 @@ const page = async () => {
   const serverSession = await getServerSession(authOptions);
   const sessionId = (serverSession as ExtendedSession)?.user?.id;
 
-  let data = null;
-
-  const url = isProduction();
-  const res = await fetch(`${url}/api/user/other`, {
-    next: { tags: [`other-users`], revalidate: 60 * 60 * 24 },
-  });
-  data = await res.json();
-
   return (
     <main className={"page"}>
       <>
         <Navbar />
-        <Others res={data} sessionId={sessionId} />
+        <Others sessionId={sessionId} />
       </>
     </main>
   );

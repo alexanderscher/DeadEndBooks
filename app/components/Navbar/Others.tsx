@@ -23,11 +23,10 @@ type User = {
 };
 
 type Props = {
-  res: any;
   sessionId: string;
 };
 
-const Others = ({ res, sessionId }: Props) => {
+const Others = ({ sessionId }: Props) => {
   const { isSmallDevice } = useDeviceQueries();
 
   const [users, setUsers] = useState([
@@ -60,10 +59,13 @@ const Others = ({ res, sessionId }: Props) => {
 
   useEffect(() => {
     const getUsers = async () => {
-      const data: User[] = await res;
+      const res = await fetch(`/api/user/other`, {
+        method: "PUT",
+      });
+      const data = await res.json();
 
       const filteredData = data.filter(
-        (user) =>
+        (user: any) =>
           (user.current_books.length > 0 || user.past_books.length > 0) &&
           user.id !== parseInt(sessionId)
       );

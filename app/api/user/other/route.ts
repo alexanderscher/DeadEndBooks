@@ -14,7 +14,7 @@ type ExtendedBook = {
   inStock: boolean;
 };
 
-export async function GET() {
+export async function PUT() {
   try {
     const users = await prisma.user.findMany({
       where: {
