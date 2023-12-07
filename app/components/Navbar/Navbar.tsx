@@ -207,7 +207,7 @@ const Navbar = () => {
                   isMobileDevice ? "text-md" : "text-md"
                 } mr-2`}
               >
-                <Link href={`/library/sculpture`}>Scultpure,</Link>
+                <Link href={`/library/sculpture`}>Sculpture,</Link>
               </button>
               <button
                 className={`hover:line-through ${
@@ -288,7 +288,7 @@ const Navbar = () => {
                         </button>
 
                         <button className="hover:line-through ">
-                          <Link href={`/library/sculpture`}>Scultpure</Link>
+                          <Link href={`/library/sculpture`}>Sculpture</Link>
                         </button>
                         <button className="hover:line-through ">
                           <Link href={`/library/photography_film`}>
