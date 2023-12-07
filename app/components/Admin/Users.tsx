@@ -1,10 +1,7 @@
 "use client";
 import React, { use, useEffect, useState } from "react";
 
-interface Props {
-  res: any;
-}
-const Users = ({ res }: Props) => {
+const Users = () => {
   const [users, setUsers] = useState([
     {
       id: 0,
@@ -20,7 +17,12 @@ const Users = ({ res }: Props) => {
 
   useEffect(() => {
     const getUsers = async () => {
-      const data = res;
+      const res = await fetch(`/api/user`, {
+        cache: "no-cache",
+        method: "PUT",
+      });
+
+      const data = await res.json();
 
       setUsers(data);
     };
