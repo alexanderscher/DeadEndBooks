@@ -73,7 +73,7 @@ const AllBooks = () => {
               <p className="mb-2">{book.publisher}</p>
 
               <button className="text-red-500 hover:line-through">
-                <Link href={`/admin/editbook/${book.id}`}>Edit</Link>
+                <Link href={`/admin/editbook/${book.title}`}>Edit</Link>
               </button>
             </div>
           </div>

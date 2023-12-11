@@ -25,6 +25,7 @@ const Rentals = ({ sessionId }: Props) => {
   useEffect(() => {
     const getUser = async () => {
       const res = await fetch(`/api/user/rental/${sessionId}`, {
+        method: "PUT",
         cache: "no-store",
       });
 
