@@ -121,7 +121,7 @@ const Others = ({ sessionId }: Props) => {
                 {user.past_books.map((book) => (
                   <div key={book.id} className="">
                     <div className="max-w-[200px] mr-6">
-                      <Link href={`/book/${book.title}`}>
+                      <Link href={`/book/${book.id}`}>
                         <img src={book.photo_front} alt="" />
                       </Link>
                     </div>
@@ -137,7 +137,7 @@ const Others = ({ sessionId }: Props) => {
                 {user.current_books.map((book) => (
                   <div key={book.id} className="">
                     <div className="max-w-[200px] mr-6">
-                      <Link href={`/book/${book.title}`}>
+                      <Link href={`/book/${book.id}`}>
                         <img src={book.photo_front} alt="" />
                       </Link>
                     </div>

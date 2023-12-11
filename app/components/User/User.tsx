@@ -56,7 +56,7 @@ const User = ({ res }: Props) => {
           <div className="flex flex-wrap justify-between">
             {user.current.map((book) => (
               <div key={book.id} className="w-[32%] mt-4">
-                <a href={`/book/${book.title}`}>
+                <a href={`/book/${book.id}`}>
                   <img
                     src={book.photo_front}
                     alt={book.title}
@@ -87,7 +87,7 @@ const User = ({ res }: Props) => {
             <div className="flex flex-wrap justify-between">
               {user.history.map((book) => (
                 <div key={book.id} className="w-[32%] mt-4">
-                  <a href={`/book/${book.title}`}>
+                  <a href={`/book/${book.id}`}>
                     <img
                       src={book.photo_front}
                       alt={book.title}

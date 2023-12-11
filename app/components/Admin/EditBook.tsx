@@ -248,7 +248,7 @@ const EditBook = () => {
             }));
           }
         }
-        router.push(`/admin/editbook/${book.title}`);
+        router.push(`/admin/editbook/${book.id}`);
       } catch (error) {
         console.error(error);
       }

@@ -59,6 +59,7 @@ const SingleBook = ({ title }: Props) => {
         cache: "no-store",
       });
       const data = await res.json();
+      console.log(data);
       const status = res.status;
       const savedIds = [];
       const cartIds = [];
@@ -77,6 +78,7 @@ const SingleBook = ({ title }: Props) => {
       }
 
       if (
+        session &&
         data.Current[0]?.userId &&
         data.Current[0]?.userId ===
           parseInt((session as ExtendedSession).user.id)

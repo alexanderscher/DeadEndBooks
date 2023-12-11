@@ -9,6 +9,7 @@ import { Navbar } from "@/app/components";
 const page = async ({ params }: { params: { title: string } }) => {
   // const serverSession = await getServerSession(authOptions);
   const title = params.title;
+
   return (
     <main className="page">
       <>
