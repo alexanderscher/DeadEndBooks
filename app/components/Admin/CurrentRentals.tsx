@@ -26,6 +26,7 @@ interface Rental {
   start_date: string;
   return_date: string;
   user_email: string;
+  user_sub: string;
   bookId: number;
   isLate: number;
   daysLeft: number;
@@ -39,6 +40,7 @@ const CurrentRentals = () => {
       start_date: "",
       return_date: "",
       user_email: "",
+      user_sub: "",
       userId: 0,
       bookId: 0,
       isLate: 0,
@@ -187,6 +189,7 @@ const CurrentRentals = () => {
         method: "PUT",
       });
       const data = await res.json();
+      console.log(data);
 
       setRentals(data);
       setIsLoaded(false);
@@ -224,6 +227,10 @@ const CurrentRentals = () => {
             <div className="flex mt-2 items-center justify-between border-b-[1.5px] border-slate-300">
               <h1>User:</h1>
               <h1 className=" text-md ">{rental.user_email}</h1>
+            </div>
+            <div className="flex mt-2 items-center justify-between border-b-[1.5px] border-slate-300">
+              <h1>Subscription type:</h1>
+              <h1 className=" text-md ">{rental.user_sub}</h1>
             </div>
             <div className="flex mt-2 items-center justify-between border-b-[1.5px] border-slate-300">
               <h1>Start Date:</h1>

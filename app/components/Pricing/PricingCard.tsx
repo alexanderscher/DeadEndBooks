@@ -13,6 +13,7 @@ interface priceProps {
 }
 
 const PricingCard = ({ price, session, userData }: priceProps) => {
+  console.log(price);
   const { isSmallDevice } = useDeviceQueries();
   const sessionId = (session as ExtendedSession)?.user?.id;
   const subscriptionID = (session as ExtendedSession)?.user?.subscriptionID;
@@ -92,6 +93,7 @@ const PricingCard = ({ price, session, userData }: priceProps) => {
   return (
     <div className={`${isSmallDevice ? "mt-10" : "mb-10"}`}>
       <h1 className={`text-[30px]`}>{price.nickname}</h1>
+
       <p className="text-[30px] text-slate-500">
         {(price.unit_amount / 100).toLocaleString("en-US", {
           style: "currency",
@@ -99,7 +101,15 @@ const PricingCard = ({ price, session, userData }: priceProps) => {
         })}{" "}
         {price.nickname === "Yearly Plan" ? "/year" : "/month"}
       </p>
+      {price.nickname === "Local Monthly Plan" && (
+        <>
+          <p className="text-sm text-slate-500">Los Angeles residents only.</p>
 
+          <p className="text-sm text-slate-500">
+            Pick-up and drop-off for your rentals at our Los Angeles library.
+          </p>
+        </>
+      )}
       {userSub === price.nickname && sessionId ? (
         <h1 className="text-[30px] text-red-300">Current subscription</h1>
       ) : currentPage === "/profile/subscription" ? (

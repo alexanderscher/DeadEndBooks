@@ -45,6 +45,7 @@ export async function PUT() {
       const user = await prisma.user.findUnique({
         where: { id: rentals[key].userId as number },
       });
+      console.log(user);
 
       apiRentals.push({
         id: rentals[key].id,
@@ -52,9 +53,11 @@ export async function PUT() {
         orderId: rentals[key].orderId,
         bookId: rentals[key].bookId,
         userId: rentals[key].userId,
+        user_sub: user?.subscriptionType,
         start_date: rentals[key].start_date,
         return_date: rentals[key].return_date,
         user_email: user?.email as string,
+
         isLate: daysLate(rentals[key].return_date.toISOString().split("T")[0]),
         daysLeft: daysLeft(
           rentals[key].return_date.toISOString().split("T")[0]
