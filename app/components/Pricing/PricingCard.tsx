@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { Loader } from "..";
 import { usePathname } from "next/navigation";
 import { useDeviceQueries } from "@/utils/deviceQueries";
+import Image from "next/image";
 
 interface priceProps {
   price: any;
@@ -17,6 +18,7 @@ const PricingCard = ({ price, session, userData }: priceProps) => {
   const { isSmallDevice } = useDeviceQueries();
   const sessionId = (session as ExtendedSession)?.user?.id;
   const subscriptionID = (session as ExtendedSession)?.user?.subscriptionID;
+  const [help, sethelp] = useState(false);
 
   const [noSession, setNoSession] = useState(false);
   const [isLoading, setisLoading] = useState(true);
@@ -92,7 +94,18 @@ const PricingCard = ({ price, session, userData }: priceProps) => {
 
   return (
     <div className={`${isSmallDevice ? "mt-10" : "mb-10"}`}>
-      <h1 className={`text-[30px]`}>{price.nickname}</h1>
+      <div className="flex gap-1">
+        <h1 className={`text-[30px]`}>{price.nickname}</h1>
+        {price.nickname === "Local Monthly Plan" && (
+          <button
+            onClick={() => {
+              sethelp(!help);
+            }}
+          >
+            <img className="w-4 h-4" src="/questions.png"></img>
+          </button>
+        )}
+      </div>
 
       <p className="text-[30px] text-slate-500">
         {(price.unit_amount / 100).toLocaleString("en-US", {
@@ -101,7 +114,8 @@ const PricingCard = ({ price, session, userData }: priceProps) => {
         })}{" "}
         {price.nickname === "Yearly Plan" ? "/year" : "/month"}
       </p>
-      {price.nickname === "Local Monthly Plan" && (
+
+      {price.nickname === "Local Monthly Plan" && help && (
         <>
           <p className="text-sm text-slate-500">Los Angeles residents only.</p>
 
