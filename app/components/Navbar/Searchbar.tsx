@@ -25,7 +25,6 @@ function SearchBar({ data, color = "slate-400", height = "h-8" }: Props) {
     );
 
     setFilteredData(newFilteredData); // Call the callback with the new filtered
-    console.log(newFilteredData);
   };
 
   return (

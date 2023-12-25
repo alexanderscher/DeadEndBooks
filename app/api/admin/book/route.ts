@@ -20,7 +20,6 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  console.log(request);
   const json = await request.json();
 
   const requiredFields = [

@@ -29,7 +29,6 @@ export async function GET(
   { params }: { params: { slug: string } }
 ) {
   const { slug } = params;
-  console.log(slug);
 
   let book;
 

@@ -189,7 +189,6 @@ const CurrentRentals = () => {
         method: "PUT",
       });
       const data = await res.json();
-      console.log(data);
 
       setRentals(data);
       setIsLoaded(false);

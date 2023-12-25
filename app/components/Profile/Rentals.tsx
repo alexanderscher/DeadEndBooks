@@ -20,7 +20,6 @@ const Rentals = ({ sessionId }: Props) => {
       shipped: false,
     },
   ]);
-  console.log(rentals);
 
   useEffect(() => {
     const getUser = async () => {

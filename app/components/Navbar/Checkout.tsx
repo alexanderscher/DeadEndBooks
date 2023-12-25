@@ -152,7 +152,6 @@ const Checkout = ({ res, cartBooks, session }: Props) => {
     });
     if (res.ok) {
       const data = await res.json();
-      console.log(data);
       if (data.orderId !== undefined) {
         const email = await confirmation(data);
         const orderemail = await newOrder(data);

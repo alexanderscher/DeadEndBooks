@@ -59,11 +59,9 @@ const SingleBook = ({ title }: Props) => {
         cache: "no-store",
       });
       const data = await res.json();
-      console.log(data);
       const status = res.status;
       const savedIds = [];
       const cartIds = [];
-      console.log(status);
       if (status === 404) {
         router.push("/not-found");
         return;

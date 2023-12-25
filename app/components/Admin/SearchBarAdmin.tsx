@@ -19,7 +19,6 @@ function SearchBarAdmin({
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newSearchTerm = event.target.value;
     setSearchTerm(newSearchTerm);
-    console.log(newSearchTerm);
 
     const newFilteredData = data.filter(
       (item: any) =>
@@ -28,7 +27,6 @@ function SearchBarAdmin({
         (item.author &&
           item.author.toLowerCase().includes(newSearchTerm.toLowerCase()))
     );
-    console.log(newFilteredData);
 
     onFilterUpdate(newFilteredData); // Call the callback with the new filtered data
   };

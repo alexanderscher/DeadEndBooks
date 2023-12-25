@@ -14,7 +14,6 @@ interface priceProps {
 }
 
 const PricingCard = ({ price, session, userData }: priceProps) => {
-  console.log(price);
   const { isSmallDevice } = useDeviceQueries();
   const sessionId = (session as ExtendedSession)?.user?.id;
   const subscriptionID = (session as ExtendedSession)?.user?.subscriptionID;

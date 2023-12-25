@@ -75,7 +75,6 @@ const Cart = () => {
         cache: "no-store",
         next: { tags: [`user-profile-${sessionId}`], revalidate: 60 * 60 * 24 },
       });
-      console.log(res1);
       const user = await res1.json();
 
       if (user.Cart.length > 3) {

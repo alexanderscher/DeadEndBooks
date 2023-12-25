@@ -56,7 +56,6 @@ const EditAddressModal = ({ setAddyModal, userId, address }: Props) => {
       },
     });
     const data = await res.json();
-    console.log("data", data);
     if (res.ok) {
       setErrorText(false);
       location.reload();

@@ -69,7 +69,6 @@ const Others = ({ sessionId }: Props) => {
           (user.current_books.length > 0 || user.past_books.length > 0) &&
           user.id !== parseInt(sessionId)
       );
-      console.log(filteredData);
 
       filteredData.sort((a: User, b: User) => {
         const aRecentDate =

@@ -35,7 +35,7 @@ export async function PUT(request: Request) {
         name: newName,
       },
     });
-    console.log(updatedUser);
+
     revalidateTag(`user-profile-${userId}`);
 
     return new NextResponse(JSON.stringify(updatedUser), {

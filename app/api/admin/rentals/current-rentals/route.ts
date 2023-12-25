@@ -45,7 +45,6 @@ export async function PUT() {
       const user = await prisma.user.findUnique({
         where: { id: rentals[key].userId as number },
       });
-      console.log(user);
 
       apiRentals.push({
         id: rentals[key].id,
@@ -64,7 +63,6 @@ export async function PUT() {
         ),
       });
     }
-    console.log(apiRentals);
 
     return new NextResponse(JSON.stringify(apiRentals), {
       status: 200,
