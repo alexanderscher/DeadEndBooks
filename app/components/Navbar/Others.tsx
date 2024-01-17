@@ -116,10 +116,10 @@ const Others = ({ sessionId }: Props) => {
           {user.current_books.length === 0 ? (
             <>
               <p className="text-slate-500 text-[18px]">Recent rentals</p>
-              <div className="flex flex-wrap mt-6">
+              <div className="flex mt-6 gap-6">
                 {user.past_books.map((book) => (
                   <div key={book.id} className="">
-                    <div className="max-w-[200px] mr-6">
+                    <div className="max-w-[200px]">
                       <Link href={`/book/${book.id}`}>
                         <img src={book.photo_front} alt="" />
                       </Link>
@@ -132,10 +132,10 @@ const Others = ({ sessionId }: Props) => {
             <>
               <p className="text-slate-500 text-[18px]">Current rentals</p>
 
-              <div className="flex mt-6">
+              <div className="flex  mt-6 gap-6">
                 {user.current_books.map((book) => (
-                  <div key={book.id} className="">
-                    <div className="max-w-[200px] mr-6">
+                  <div key={book.id} className="flex">
+                    <div className="max-w-[200px]">
                       <Link href={`/book/${book.id}`}>
                         <img src={book.photo_front} alt="" />
                       </Link>
