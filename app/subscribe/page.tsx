@@ -49,8 +49,8 @@ const page = () => {
                 package from Dead End, you will receive a return label, and can
                 send the books back to us in the box they came in. Subscription
                 time starts a week after your order date to account for
-                shipping. As long as the books are returned before or on your
-                due date, the book will not be marked late. Late fees are
+                shipping. As long as your return label is scanned before or on
+                your due date, your books will not be marked late. Late fees are
                 $5/day. Two weeks past your due date, we will consider the book
                 lost or stolen, and will charge you the full price of the book.
               </p>
