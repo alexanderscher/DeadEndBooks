@@ -12,6 +12,9 @@ body {
   font-weight: normal;
   font-style: normal;
 }
+img {
+  background-color: bisque;
+}
 
 .page-margin {
   margin: 26px;

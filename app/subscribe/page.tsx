@@ -41,17 +41,17 @@ const page = () => {
                 collection of art books on painting, sculpture, photography,
                 film, anthologies, exhibition catalogs, and magazines. After
                 creating an account with your personal information, you will be
-                able to checkout up to 3 books for 4 weeks at a time.
-                Subscriptions are $16.85/month with a 3 month minimum or $188.00
-                for the year. Local subscriptions are $10/month for Los Angeles
-                residents who can pick up and drop off at our physical library.
-                We will cover shipping costs. In your package from Dead End, you
-                will receive a return label, and can send the books back to us
-                in the box they came in. Subscription time starts a week after
-                your order to account for shipping. As long as the postage is
-                marked before or on your due date, the book will not be marked
-                late. Late fees will begin on the 40th day of your subscription.
-                The fee is $5/day. On the 50th day, we will consider the book
+                able to checkout up to 3 books for 4 weeks at a time. Local
+                subscriptions are $10/month for Los Angeles residents who can
+                pick up and drop off at our physical library. Subscriptions for
+                users outside of LA start at $16.85/month with a 3 month minimum
+                or $188.00 for the year. We will cover shipping costs. In your
+                package from Dead End, you will receive a return label, and can
+                send the books back to us in the box they came in. Subscription
+                time starts a week after your order date to account for
+                shipping. As long as the books are returned before or on your
+                due date, the book will not be marked late. Late fees are
+                $5/day. Two weeks past your due date, we will consider the book
                 lost or stolen, and will charge you the full price of the book.
               </p>
               <button
