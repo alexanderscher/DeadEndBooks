@@ -172,7 +172,7 @@ const Navbar = () => {
                         isMobileDevice ? "text-md" : "text-md"
                       } mr-2`}
                     >
-                      <Link href="/home">Sign up,</Link>
+                      <Link href="/signup">Sign up,</Link>
                     </button>
                     <button
                       className={`hover:line-through ${
