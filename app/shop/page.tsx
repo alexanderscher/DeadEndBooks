@@ -9,21 +9,12 @@ import { authOptions } from "@/utils/auth";
 
 const page = async () => {
   const serverSession = await getServerSession(authOptions);
-  const sessionId = (serverSession as ExtendedSession)?.user?.id;
 
   let prices: any = [];
-  let userData: any = null;
   const url = isProduction();
   const res = await fetch(`${url}/api/stripe/getproducts/shop`);
   const data = await res.json();
   prices = data;
-
-  if (sessionId) {
-    const res1 = await fetch(`${url}/api/user/${sessionId}`, {
-      next: { tags: [`user-profile-${sessionId}`], revalidate: 60 * 60 * 24 },
-    });
-    userData = await res1.json();
-  }
 
   return (
     <main className={"page"}>
@@ -38,7 +29,6 @@ const page = async () => {
                   price={price}
                   key={price.id}
                   session={serverSession}
-                  userData={userData}
                 />
               ))}
           </div>

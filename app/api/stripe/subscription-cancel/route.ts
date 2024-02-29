@@ -53,27 +53,33 @@ export async function GET(req: NextRequest) {
 
     if (user.subscriptionType === "Monthly Plan") {
       console.log("Monthly Plan");
-      if (user.subscriptionDate) {
-        if (isNinetyDaysOrMoreSince(user.subscriptionDate.toString())) {
-          const stripeSubscriptionId = (session as ExtendedSession)?.user
-            ?.subscriptionID;
+      const stripeSubscriptionId = (session as ExtendedSession)?.user
+        ?.subscriptionID;
 
-          const subscription = await stripe.subscriptions.cancel(
-            stripeSubscriptionId
-          );
+      const subscription = await stripe.subscriptions.cancel(
+        stripeSubscriptionId
+      );
+      // if (user.subscriptionDate) {
+      //   if (isNinetyDaysOrMoreSince(user.subscriptionDate.toString())) {
+      //     const stripeSubscriptionId = (session as ExtendedSession)?.user
+      //       ?.subscriptionID;
 
-          return NextResponse.json({ user }, { status: 200 });
-        } else {
-          return NextResponse.json(
-            {
-              error: {
-                message: "Has not been 90 days since subscription.",
-              },
-            },
-            { status: 403 }
-          );
-        }
-      }
+      //     const subscription = await stripe.subscriptions.cancel(
+      //       stripeSubscriptionId
+      //     );
+
+      //     return NextResponse.json({ user }, { status: 200 });
+      //   } else {
+      //     return NextResponse.json(
+      //       {
+      //         error: {
+      //           message: "Has not been 90 days since subscription.",
+      //         },
+      //       },
+      //       { status: 403 }
+      //     );
+      //   }
+      // }
     } else {
       const stripeSubscriptionId = (session as ExtendedSession)?.user
         ?.subscriptionID;

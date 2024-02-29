@@ -6,23 +6,49 @@ import { Loader } from "..";
 import { usePathname } from "next/navigation";
 import { useDeviceQueries } from "@/utils/deviceQueries";
 import Image from "next/image";
+import { isProduction } from "@/utils/name";
 
 interface priceProps {
   price: any;
   session: any;
-  userData: any;
 }
 
-const PricingCard = ({ price, session, userData }: priceProps) => {
+const PricingCard = ({ price, session }: priceProps) => {
   const { isSmallDevice } = useDeviceQueries();
   const sessionId = (session as ExtendedSession)?.user?.id;
   const subscriptionID = (session as ExtendedSession)?.user?.subscriptionID;
   const [help, sethelp] = useState(false);
-
+  const url = isProduction();
   const [noSession, setNoSession] = useState(false);
   const [isLoading, setisLoading] = useState(true);
   const currentPage = usePathname();
   const [userSub, setUserSub] = useState("");
+
+  useEffect(() => {
+    const getData = async () => {
+      if (sessionId) {
+        const res1 = await fetch(`${url}/api/user/${sessionId}`, {
+          next: {
+            tags: [`user-profile-${sessionId}`],
+            revalidate: 60 * 60 * 24,
+          },
+        });
+        const uD = await res1.json();
+
+        if (uD === null) {
+          setUserSub("");
+          return;
+        }
+        if (uD.subscriptionType) {
+          setUserSub(uD.subscriptionType);
+        } else {
+          setUserSub("");
+        }
+      }
+    };
+    getData();
+    setisLoading(false);
+  }, [url, sessionId]);
 
   const changeSubscription = async (e: React.MouseEvent<HTMLButtonElement>) => {
     try {
@@ -47,23 +73,6 @@ const PricingCard = ({ price, session, userData }: priceProps) => {
       console.log(error);
     }
   };
-
-  useEffect(() => {
-    const getUser = async () => {
-      const data = await userData;
-      if (data === null) {
-        return;
-      }
-      if (data.subscriptionType) {
-        setUserSub(data.subscriptionType);
-      } else {
-        setUserSub("");
-      }
-    };
-
-    getUser();
-    setisLoading(false);
-  }, [session]);
 
   const handleSubscription = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -101,7 +110,7 @@ const PricingCard = ({ price, session, userData }: priceProps) => {
               sethelp(!help);
             }}
           >
-            <img className="w-4 h-4" src="/questions.png"></img>
+            <img className="w-4 h-4 bg-white" src="/questions.png"></img>
           </button>
         )}
       </div>
