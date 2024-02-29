@@ -44,7 +44,7 @@ const page = () => {
                 able to checkout up to 3 books for 4 weeks at a time. Local
                 subscriptions are $10/month for Los Angeles residents who can
                 pick up and drop off at our physical library. Subscriptions for
-                users outside of LA are $16.85/month or $188 for the year. We
+                users outside of LA are $16.85/month or $180 for the year. We
                 will cover shipping costs. In your package from Dead End, you
                 will receive a return label, and can send the books back to us
                 in the box they came in. Subscription time starts a week after
