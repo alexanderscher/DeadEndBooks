@@ -6,7 +6,7 @@ interface ResetPasswordEmailTemplateProps {
 }
 const isProduction = process.env.NODE_ENV === "production";
 const url = isProduction
-  ? "https://deadendbooks.org/not-found"
+  ? "https://www.deadendbooks.org/not-found"
   : "http://localhost:3000/not-found";
 
 export const ResetPasswordEmailTemplate: React.FC<

@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
     : process.env.STRIPE_SECRET_KEY;
 
   const url = isProduction
-    ? "https://deadendbooks.org"
+    ? "https://www.deadendbooks.org"
     : "http://localhost:3000";
 
   if (!stripeSecretKey) {

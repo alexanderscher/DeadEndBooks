@@ -58,7 +58,7 @@ const Profile = ({ res }: Props) => {
 
   const isProduction = process.env.NODE_ENV === "production";
   const url = isProduction
-    ? "https://deadendbooks.org/"
+    ? "https://www.deadendbooks.org/"
     : "http://localhost:3000/";
 
   const signout = async () => {

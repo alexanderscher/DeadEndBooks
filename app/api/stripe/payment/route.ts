@@ -8,7 +8,7 @@ import { authOptions } from "@/utils/auth";
 export async function POST(request: NextRequest) {
   const isProduction = process.env.NODE_ENV === "production";
   const url = isProduction
-    ? "https://deadendbooks.org/home"
+    ? "https://www.deadendbooks.org/home"
     : "http://localhost:3000/home";
 
   const stripeSecretKey = isProduction

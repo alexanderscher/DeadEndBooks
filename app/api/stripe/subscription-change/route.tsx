@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
   const sessionUserId = (session as ExtendedSession)?.user?.id;
   const isProduction = process.env.NODE_ENV === "production";
   const url = isProduction
-    ? "https://deadendbooks.org/home"
+    ? "https://www.deadendbooks.org/home"
     : "http://localhost:3000/home";
 
   if (!session?.user) {

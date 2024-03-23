@@ -4,7 +4,7 @@ import { withAuth } from "next-auth/middleware";
 export default withAuth(function middleware(req) {
   const isProduction = process.env.NODE_ENV === "production";
   const url = isProduction
-    ? "https://deadendbooks.org/not-found"
+    ? "https://www.deadendbooks.org/not-found"
     : "http://localhost:3000/not-found";
 
   const token = req.nextauth.token;
