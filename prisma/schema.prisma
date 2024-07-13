@@ -29,13 +29,13 @@ model Book {
 model Current {
   id          Int      @id @default(autoincrement())
   bookId      Int
-  book        Book     @relation(fields: [bookId], references: [id])
-  User        User?    @relation(fields: [userId], references: [id])
+  book        Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  User        User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      Int?
   start_date  DateTime
   return_date DateTime
   orderId     Int
-  order       Orders   @relation(fields: [orderId], references: [id])
+  order       Orders   @relation(fields: [orderId], references: [id], onDelete: Cascade)
 
   @@unique([orderId, bookId])
 }
@@ -43,8 +43,8 @@ model Current {
 model History {
   id          Int      @id @default(autoincrement())
   bookId      Int
-  book        Book     @relation(fields: [bookId], references: [id])
-  User        User?    @relation(fields: [userId], references: [id])
+  book        Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  User        User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      Int?
   start_date  DateTime
   return_date DateTime
@@ -53,16 +53,16 @@ model History {
 model Cart {
   id     Int   @id @default(autoincrement())
   bookId Int
-  book   Book  @relation(fields: [bookId], references: [id])
-  User   User? @relation(fields: [userId], references: [id])
+  book   Book  @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  User   User? @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId Int?
 }
 
 model Saved {
   id     Int   @id @default(autoincrement())
   bookId Int
-  book   Book  @relation(fields: [bookId], references: [id])
-  User   User? @relation(fields: [userId], references: [id])
+  book   Book  @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  User   User? @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId Int?
 }
 
@@ -76,7 +76,7 @@ model Address {
   country String
   phone   String
   userId  Int
-  User    User?  @relation(fields: [userId], references: [id])
+  User    User?  @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model User {
@@ -116,9 +116,9 @@ model OrderAddress {
 
 model Returned {
   orderId  Int
-  order    Orders  @relation(fields: [orderId], references: [id])
+  order    Orders  @relation(fields: [orderId], references: [id], onDelete: Cascade)
   bookId   Int
-  book     Book    @relation(fields: [bookId], references: [id])
+  book     Book    @relation(fields: [bookId], references: [id], onDelete: Cascade)
   returned Boolean @default(false)
 
   @@id([orderId, bookId])
@@ -127,7 +127,7 @@ model Returned {
 model Orders {
   id          Int           @id @default(autoincrement())
   userId      Int
-  User        User          @relation(fields: [userId], references: [id])
+  User        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   books       OrderBook[]
   address     OrderAddress?
   shipped     Boolean
@@ -140,9 +140,9 @@ model Orders {
 
 model OrderBook {
   orderId Int
-  order   Orders @relation(fields: [orderId], references: [id])
+  order   Orders @relation(fields: [orderId], references: [id], onDelete: Cascade)
   bookId  Int
-  book    Book   @relation(fields: [bookId], references: [id])
+  book    Book   @relation(fields: [bookId], references: [id], onDelete: Cascade)
 
   @@id([orderId, bookId])
 }

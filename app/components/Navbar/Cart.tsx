@@ -1,16 +1,15 @@
 "use client";
 import { Book, ExtendedSession } from "@/types";
-
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { Loader } from "..";
 import { useRouter } from "next/navigation";
 import { useDeviceQueries } from "@/utils/deviceQueries";
-import { useSession } from "next-auth/react";
+import { get } from "http";
 
-const Cart = () => {
-  const { data: session } = useSession();
+const Cart = ({ session }: { session: ExtendedSession }) => {
   const { isSmallDevice, isMobileDevice } = useDeviceQueries();
+  console.log(session);
 
   const router = useRouter();
   const [pageData, setPageData] = useState<Book[]>([]);
@@ -25,17 +24,12 @@ const Cart = () => {
 
     const getCart = async () => {
       setUserId(sessionId as string);
-      const res = await fetch(`api/cart/${sessionId}`, {
-        next: { revalidate: 60 * 60 * 24, tags: [`cart-${sessionId}`] },
-      });
+      const res = await fetch(`api/cart/${sessionId}`, {});
       const data = await res.json();
       setPageData(data);
+      setisLoading(false);
     };
-    if (sessionId) {
-      getCart();
-    }
-
-    setisLoading(false);
+    getCart();
   }, [session, reload]);
 
   const removeCart = async (cartId: number) => {
@@ -110,7 +104,7 @@ const Cart = () => {
     return <Loader />;
   }
 
-  if (pageData.length === 0 && session) {
+  if (pageData.length === 0 && !isLoading) {
     return (
       <div className={`${isSmallDevice ? "mt-10" : " w-full"}`}>
         <h1 className="text-[26px]">Your cart is empty</h1>

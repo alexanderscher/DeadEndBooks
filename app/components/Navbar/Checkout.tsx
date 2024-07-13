@@ -1,6 +1,5 @@
 "use client";
 import { Book, ExtendedSession } from "@/types";
-import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { Loader } from "..";
 import AddressModal from "./AddressModal";

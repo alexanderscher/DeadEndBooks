@@ -118,11 +118,12 @@ export const authOptions: NextAuthOptions = {
   },
 
   callbacks: {
-    jwt: ({ token, user }) => {
-      if (user) {
-        const myUser: MyUser = user as MyUser;
+    async jwt({ token }) {
+      const databaseId = await getDatabaseId(token);
 
-        return { ...token, id: user.id, admin: myUser.admin };
+      if (databaseId) {
+        token.id = databaseId[0] as string;
+        token.admin = databaseId[1] as boolean; // Set the admin property
       }
       return token;
     },
@@ -130,7 +131,7 @@ export const authOptions: NextAuthOptions = {
       const databaseId = await getDatabaseId(token);
 
       if (databaseId) {
-        const extendedSession: ExtendedSession = {
+        const extendedSession = {
           ...session,
           user: {
             ...session.user,

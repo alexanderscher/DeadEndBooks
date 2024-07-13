@@ -8,6 +8,7 @@ export default withAuth(function middleware(req) {
     : "http://localhost:3000/not-found";
 
   const token = req.nextauth.token;
+  console.log("Middleware - Token:", token);
   const isAdminRoute = req.url.includes("/admin");
 
   if (isAdminRoute && (!token || token?.admin !== true)) {

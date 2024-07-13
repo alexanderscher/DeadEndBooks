@@ -13,6 +13,7 @@ const webhookSecret: string = isProduction
 const today = new Date();
 
 const webhookHandler = async (req: NextRequest): Promise<NextResponse> => {
+  console.log("🔔 Webhook received!");
   try {
     const buf = await req.text();
     const sig = req.headers.get("stripe-signature")!;
